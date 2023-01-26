@@ -1,0 +1,25 @@
+package com.samares.omf.core.feature.errors;
+
+import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+
+public class FeatureException extends OMFException {
+
+
+    public FeatureException(String errorMsg, ECriticality criticality) {
+        super(errorMsg, criticality);
+    }
+
+    public FeatureException(String errorMsg, Exception exception, ECriticality criticality) {
+        super(errorMsg, exception, criticality);
+    }
+
+    public FeatureException(String debugMessage, String userMessage, ECriticality criticality) {
+        super(debugMessage, userMessage, criticality);
+    }
+
+    public FeatureException(String debugMessage, String userMessage, Exception exception, ECriticality criticality) {
+        super(debugMessage, userMessage, exception, criticality);
+    }
+
+
+}

@@ -1,0 +1,30 @@
+pluginManagement {
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+            url = "$nexusUrl/maven-releases"
+            name 'Samares Nexus releases'
+        }
+        maven {
+            allowInsecureProtocol = true
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+            url = "$nexusUrl/maven-snapshots"
+            name 'Samares Nexus snapshots'
+        }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'OpenMBSEFramework'
+include 'omf-organizer'
+include 'omf-core'
+include 'omf-utils'
+include 'omf-magicdraw-dependencies'
+include 'omf-test'

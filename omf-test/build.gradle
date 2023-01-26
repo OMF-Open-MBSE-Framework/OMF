@@ -1,0 +1,22 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly project(":omf-magicdraw-dependencies")
+    compileOnly project(":omf-core")
+
+    implementation 'junit:junit:4.12'
+    implementation 'ant:ant-junit:1.6.5'
+    implementation 'org.apache.ant:ant:1.8.2'
+}

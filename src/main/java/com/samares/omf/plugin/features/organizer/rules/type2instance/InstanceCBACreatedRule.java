@@ -1,0 +1,78 @@
+/*******************************************************************************
+ * @copyright Copyright (c) 2020-2021 Samares-Engineering
+ * @Licence: EPL 2.0
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since     0.0.0
+ ******************************************************************************/
+package com.samares.omf.plugin.features.organizer.rules.type2instance;
+
+import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
+import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
+import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
+import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+import com.samares.omf.organizer.listeners.ruleEngine.RulePatternBehavior;
+import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
+import org.xml.sax.ErrorHandler;
+
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class InstanceCBACreatedRule extends A_Rule {
+    public String strDefinition = "";
+    public String strInstance = "";
+    public ArrayList<String> strOwner    = null;
+    public Class classDefinition;
+    public Class classInstance;
+
+    public InstanceCBACreatedRule(String id, Class classParent, String strParent, Class classInstance, String strInstance, String strOwner){
+        this(id, classParent, strParent, classInstance, strInstance, new ArrayList(Arrays.asList(strOwner.split("/"))));
+    }
+
+    public InstanceCBACreatedRule(String id, Class classDefinition, String strDefinition, Class classInstance, String strInstance, ArrayList<String> strOwner){
+        super(id);
+        this.classDefinition = classDefinition;
+        this.classInstance   = classInstance;
+        this.strDefinition   = strDefinition;
+        this.strInstance     = strInstance;
+        this.strOwner        = strOwner;
+    }
+
+    @Override
+    public boolean eventMatches(PropertyChangeEvent evt) {
+        if (!OMFPluginEnvOptionsGroup.getInstance().isT2IActivated()) {
+            return false;
+        }
+        if (evt.getSource() instanceof Action) {
+            Action action = (Action) evt.getSource();
+            if (null != evt.getSource()) {
+                if( RulePatternBehavior.isParentBehaviorInstantiationPatternSatisfied(action, this.strDefinition) &&
+                        RulePatternBehavior.ownerHasStereotype(action, this.strOwner)) {
+                    System.out.println("[Test]-Part: " + action.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public PropertyChangeEvent process(PropertyChangeEvent e) {
+        try {
+            RulePatternBehavior.instantiationBehavior(e, this.strInstance);
+        } catch (OMFException ex) {
+            OMFErrorHandler.handleException(ex, false);
+        }
+        return e;
+    }
+
+    @Override
+    public void debug(Object o) {
+
+    }
+
+    @Override
+    public boolean isBlocking() {
+        return false;
+    }
+}

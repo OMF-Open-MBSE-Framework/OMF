@@ -1,0 +1,57 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    maven {
+        allowInsecureProtocol = true
+        credentials {
+            username nexusUsername
+            password nexusPassword
+        }
+        url = "$nexusUrl/maven-releases"
+        name 'Samares Nexus releases'
+    }
+}
+
+configurations {
+    cameo
+}
+
+dependencies {
+    // MCSE 2021x Refresh2
+    cameo 'com.nomagic:mcse:2021x_Refresh2_HF2@zip'
+
+    // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.
+    api fileTree(dir: "$project.parent.buildDir/install", include: ['lib/**.jar'])
+
+    // SysML and MDCustomizationForSysMLProfile
+    api fileTree(dir: "$project.parent.buildDir/install/plugins/com.nomagic.requirements", include: ['lib/**.jar'])
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
+project.tasks.register('installMagicDraw') {
+    it.group = "_install"
+    def cameoConf = project.configurations.cameo
+    def isAlreadyInstalled = new File("$project.parent.buildDir/install").exists()
+    it.doLast {
+        if (cameoConf.isEmpty()) {
+            throw new GradleException("Can't install Magicdraw as magicdraw dependency has not been configured")
+        } else if (isAlreadyInstalled) {
+            print "Skipping installing Magicdraw as it is already installed"
+        } else {
+            print "Installing Magicdraw"
+            project.copy {
+                from project.zipTree(cameoConf.first())
+                into "$project.parent.buildDir/install"
+            }
+        }
+    }
+}
+
+compileJava.dependsOn installMagicDraw
