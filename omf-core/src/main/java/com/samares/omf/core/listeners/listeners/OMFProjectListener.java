@@ -83,7 +83,9 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
 
     @Override
     public void projectOpened(Project project) {
-//        openProject(project);
+        if (OMFUtils.currentProject != project) {
+            openProject(project);
+        }
     }
     @Override
     public void projectClosed(Project project) {
