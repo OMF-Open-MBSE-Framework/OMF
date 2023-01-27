@@ -64,7 +64,6 @@ dependencies {
     cameoDependencies fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 
     pluginLibrary project('omf-core')
-    pluginLibrary project('omf-organizer')
     pluginLibrary project('omf-test')
 
     unitTests 'junit:junit:4.12'

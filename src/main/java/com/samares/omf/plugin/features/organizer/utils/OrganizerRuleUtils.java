@@ -10,8 +10,8 @@ package com.samares.omf.plugin.features.organizer.utils;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
@@ -23,12 +23,9 @@ import com.samares.omf.core.utils.factory.SysMLFactory;
 
 import java.beans.PropertyChangeEvent;
 import java.lang.Class;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
-public class RulePatternBehavior {
+public class OrganizerRuleUtils {
 
     public static boolean isTypeInstantiationPatternSatisfied(Element src, Class srcClass, String strType, Class typeClass) {
         if (!(src instanceof TypedElement) || !srcClass.isInstance(src)) {
@@ -76,14 +73,18 @@ public class RulePatternBehavior {
         return false;
     }
 
-    public static boolean isOwnerStereotype(Element src, ArrayList<String> strOwner) {
-        return Objects.requireNonNull(src.getOwner()).getAppliedStereotype().stream().map(Stereotype::getName)
+    public static boolean ownerHasStereotype(Element src, List<String> strOwner) {
+        Element owner = src.getOwner();
+        if (owner == null) return false;
+        return owner.getAppliedStereotype().stream().map(Stereotype::getName)
                 .anyMatch(strOwner::contains);
     }
 
-    public static void instantiationBehavior(PropertyChangeEvent evt, String strInstance) {
+    public static void instantiationBehavior(PropertyChangeEvent evt, String strInstance) throws OMFException {
         Stereotype stereotype = getStereotypeFromAnyProfile(strInstance);
-        assert stereotype != null;
+        if (stereotype == null) {
+            throw new OMFException("Can't find stereotype " + strInstance + " in project profiles", GenericException.ECriticality.CRITICAL);
+        }
         StereotypesHelper.addStereotype((Element) evt.getSource(), stereotype);
         checkStereotypeApplication((Element) evt.getSource(), strInstance);
     }

@@ -11,7 +11,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
 import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
 import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
-import com.samares.omf.organizer.listeners.ruleEngine.RulePatternBehavior;
+import com.samares.omf.plugin.features.organizer.utils.OrganizerRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -45,7 +45,7 @@ public class OrganizerRule extends A_Rule {
         if (element.getOwner() == null)   //still in creation
             return false;
 
-        if (RulePatternBehavior.hasStereotype(element, this.strInstance)) {
+        if (OrganizerRuleUtils.hasStereotype(element, this.strInstance)) {
             System.out.println("[Test]-" + classInstance.getName() + ": "
                     + element.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
             return true;
@@ -66,7 +66,7 @@ public class OrganizerRule extends A_Rule {
             return evt;
         }
 
-        RulePatternBehavior.organizeOwner(evt, owner);
+        OrganizerRuleUtils.organizeOwner(evt, owner);
         return evt;
     }
 

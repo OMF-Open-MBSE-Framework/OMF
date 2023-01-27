@@ -9,11 +9,10 @@ package com.samares.omf.plugin.features.organizer.rules.instance2type;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
-import com.samares.omf.organizer.listeners.ruleEngine.RulePatternBehavior;
+import com.samares.omf.plugin.features.organizer.utils.OrganizerRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 
 public class ClassToCreateRule extends A_Rule {
     public final String strInstance;
@@ -36,8 +35,8 @@ public class ClassToCreateRule extends A_Rule {
             Property part = (Property) evt.getSource();
             if(part.getOwner() == null)
                 return false;
-            if (null != evt.getSource() &&  RulePatternBehavior.isInstancePropertyWithStr(part, this.strInstance) &&
-                        RulePatternBehavior.isTypeElementTypeNull(part)) {
+            if (null != evt.getSource() &&  OrganizerRuleUtils.isInstancePropertyWithStr(part, this.strInstance) &&
+                        OrganizerRuleUtils.isTypeElementTypeNull(part)) {
                 System.out.println("[Test]-Part: " + part.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
                 return true;
             }
@@ -47,8 +46,8 @@ public class ClassToCreateRule extends A_Rule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent evt) {
-        RulePatternBehavior.createTypeBehavior(evt, this.strType);
-        RulePatternBehavior.organizeType(evt, owner);
+        OrganizerRuleUtils.createTypeBehavior(evt, this.strType);
+        OrganizerRuleUtils.organizeType(evt, owner);
         return evt;
     }
 
