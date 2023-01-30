@@ -104,7 +104,6 @@ public class LockerManager {
 //        if(Objects.isNull(projectService.getLockInfo(element)))
 //            return;
         if(!projectService.isLocked(element)) {
-//            MOFLTLogger.getInstance().log("[LOCK] Element: " + element.getHumanName() + " has been locked by AMA", element, LOG_LEVEL.INFO);
             OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is not lock. => PLEASE UNDO and lock these element before actions  " + lockInfo, element));
 //            projectService.lockElements(Collections.singleton(element), new MyProgressStatus());
 
@@ -132,7 +131,6 @@ public class LockerManager {
 //        if(Objects.isNull(projectService.getLockInfo(element)))
 //            return;
         if(!projectService.isLocked(element)) {
-//            MOFLTLogger.getInstance().log("[LOCK] Element: " + element.getHumanName() + " has been locked by AMA", element, LOG_LEVEL.INFO);
             return new OMFLockException("     [NOT LOCK] " + lockInfo, element);
 //            projectService.lockElements(Collections.singleton(element), new MyProgressStatus());
         }

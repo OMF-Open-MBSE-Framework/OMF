@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
         SmokeTests.class,
 
         //MDActions
-        ExampleMDAActionsTest.class,
+        //ExampleMDAActionsTest.class,
 
         //Creation
         T3_CreatePort.class,

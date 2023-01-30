@@ -52,7 +52,7 @@ public class Feature_A extends AFeature {
 
         OptionImpl testProjectOption =new OptionImpl(
                 new StringProperty("OMF STRING PROPERTY ", "DEFAULT VALUE"),
-                "OMF_CATEGORY",
+                "OMF",
                 OMFEnvironmentOptionsGroup.defaultID,
                 "FEATURE GROUP",
                 OptionKind.Project
@@ -61,14 +61,14 @@ public class Feature_A extends AFeature {
         OptionImpl testProjectOption2 = OptionImpl.createProjectOption(
                 new StringProperty("OMF STRING PROPERTY ", "DEFAULT VALUE"),
                 OMFEnvironmentOptionsGroup.defaultID,
-                "OMF_CATEGORY",
+                "OMF",
                 "FEATURE GROUP"
         );
 
 
         OptionImpl testNewCatEnvOption = new OptionImpl(
                 new BooleanProperty("BooleanField", true),
-                "OMF_CATEGORY",
+                "OMF",
                 OMFEnvironmentOptionsGroup.defaultID,
                 "FEATURE GROUP",
                 OptionKind.Environment

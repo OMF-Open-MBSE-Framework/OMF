@@ -38,14 +38,15 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
         return Arrays.asList(
                 new Feature_A(),
                 new Feature_C(),
-                new Dev(),
-                new Organizer()
+                new Dev()
         );
     }
 
     @Override
     public List<MDFeature> getOnProjectOpeningFeatureToRegister() {
-        return Collections.emptyList();
+        return List.of(
+                new Organizer()
+        );
     }
 
     @Override

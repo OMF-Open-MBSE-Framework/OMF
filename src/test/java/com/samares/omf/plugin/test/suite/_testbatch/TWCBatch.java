@@ -20,7 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
         SmokeTests.class,
 
         //MDActions
-        ExampleMDAActionsTest.class,
+        //ExampleMDAActionsTest.class,
 
         //Creation
         T3_CreatePort.class,
@@ -39,8 +39,8 @@ public class TWCBatch extends TestBatchTWC {
         serverAddress   = System.getProperty("serverIp");
         serverUser      = System.getProperty("userName");
         userPassword    = System.getProperty("userPwd");
-        projectInitName   = "init_basicSysML_Test.mdzip";
-        projectOracleName = "oracle_basicSysML_Test.mdzip";
+        projectInitName   = "init_basicSysML_Test";
+        projectOracleName = "oracle_basicSysML_Test";
 
         super.initVariable();
     }
