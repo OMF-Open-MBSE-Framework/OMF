@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FactoryManager {
-    public static List<A_Factory> l_factory = Arrays.asList(
-            OMFHelper.getInstance(),
+    public static List<AMagicDrawFactory> l_factory = Arrays.asList(
+            OMFFactory.getInstance(),
             SysMLFactory.getInstance()
     );
 
@@ -24,6 +24,7 @@ public class FactoryManager {
     }
 
     public static void initAllFactories(Project project){
-        l_factory.forEach(factory -> factory.reInitFactory(factory.getClass().getSimpleName()));
+        l_factory.forEach(factory -> factory.reInitFactory(factory.getClass().getSimpleName(), project));
     }
+
 }

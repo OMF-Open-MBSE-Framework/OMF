@@ -4,12 +4,12 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer.rules.instance2type;
+package com.samares.omf.plugin.features.stereotypes.rules.instance2type;
 
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
-import com.samares.omf.plugin.features.organizer.utils.OrganizerRuleUtils;
+import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -41,8 +41,8 @@ public class ActivityToCreateRule extends A_Rule {
                 return false;
 
             if (null != evt.getSource()) {
-                return OrganizerRuleUtils.isInstanceActionWithStr(action, this.strInstance) &&
-                        OrganizerRuleUtils.isCBATypeNull(action);
+                return StereotypesRuleUtils.isInstanceActionWithStr(action, this.strInstance) &&
+                        StereotypesRuleUtils.isCBATypeNull(action);
             }
         }
         return false;
@@ -50,8 +50,8 @@ public class ActivityToCreateRule extends A_Rule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        OrganizerRuleUtils.createActivityTypeBehavior(e, this.strType);
-        OrganizerRuleUtils.organizeType(e, owner);
+        StereotypesRuleUtils.createActivityTypeBehavior(e, this.strType);
+        StereotypesRuleUtils.organizeType(e, owner);
         return e;
     }
 

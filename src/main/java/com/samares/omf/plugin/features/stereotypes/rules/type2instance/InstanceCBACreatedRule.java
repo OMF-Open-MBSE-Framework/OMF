@@ -4,13 +4,13 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer.rules.type2instance;
+package com.samares.omf.plugin.features.stereotypes.rules.type2instance;
 
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
 import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
 import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
-import com.samares.omf.plugin.features.organizer.utils.OrganizerRuleUtils;
+import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -45,8 +45,8 @@ public class InstanceCBACreatedRule extends A_Rule {
         if (evt.getSource() instanceof Action) {
             Action action = (Action) evt.getSource();
             if (null != evt.getSource()) {
-                if( OrganizerRuleUtils.isParentBehaviorInstantiationPatternSatisfied(action, this.strDefinition) &&
-                        OrganizerRuleUtils.ownerHasStereotype(action, this.strOwner)) {
+                if( StereotypesRuleUtils.isParentBehaviorInstantiationPatternSatisfied(action, this.strDefinition) &&
+                        StereotypesRuleUtils.ownerHasStereotype(action, this.strOwner)) {
                     System.out.println("[Test]-Part: " + action.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
                     return true;
                 }
@@ -58,7 +58,7 @@ public class InstanceCBACreatedRule extends A_Rule {
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
         try {
-            OrganizerRuleUtils.instantiationBehavior(e, this.strInstance);
+            StereotypesRuleUtils.instantiationBehavior(e, this.strInstance);
         } catch (OMFException ex) {
             OMFErrorHandler.handleException(ex, false);
         }

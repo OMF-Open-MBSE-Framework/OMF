@@ -4,7 +4,7 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer.utils;
+package com.samares.omf.plugin.features.stereotypes.utils;
 
 
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
@@ -25,7 +25,7 @@ import java.beans.PropertyChangeEvent;
 import java.lang.Class;
 import java.util.*;
 
-public class OrganizerRuleUtils {
+public class StereotypesRuleUtils {
 
     public static boolean isTypeInstantiationPatternSatisfied(Element src, Class srcClass, String strType, Class typeClass) {
         if (!(src instanceof TypedElement) || !srcClass.isInstance(src)) {
@@ -109,7 +109,7 @@ public class OrganizerRuleUtils {
         Association association;
         if (opt_association.isEmpty()) {
             Element exOwner = typedElement.getOwner();
-            association = SysMLFactory.magicDrawFactory.createAssociationInstance();   //CREATE COMPOSITION
+            association = SysMLFactory.getInstance().getMagicDrawFactory().createAssociationInstance();   //CREATE COMPOSITION
             association.setOwner(type.getOwner());
             association.getMemberEnd().get(0).setType((Type) typedElement.getOwner());  //SRC COMPOSITION (OWNER OF PART PROPERTY
             association.getOwnedEnd().set(1, (Property) typedElement);

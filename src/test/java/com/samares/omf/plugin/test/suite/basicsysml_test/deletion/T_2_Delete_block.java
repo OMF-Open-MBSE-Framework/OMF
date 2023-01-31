@@ -7,8 +7,8 @@
 package com.samares.omf.plugin.test.suite.basicsysml_test.deletion;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.samares.omf.core.utils.factory.SysMLFactory;
 import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
-import com.samares.omf.plugin.test.utils.SysMLTestFactory;
 
 /**
  * Important write the <Wizard.class> to get the right wizard
@@ -31,7 +31,7 @@ public class T_2_Delete_block extends AbstractModelComparatorTestCase {
     public void testAction() {
         // Action to test
         Class port = (Class) findTestedElementByID("_2021x_2_302b0611_1670957740478_263727_3439");
-        SysMLTestFactory.getInstance().removeElement(port);
+        SysMLFactory.getInstance().removeElement(port);
     }
 
     @Override

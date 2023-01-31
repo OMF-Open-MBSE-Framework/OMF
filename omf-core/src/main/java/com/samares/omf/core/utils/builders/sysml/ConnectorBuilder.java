@@ -21,7 +21,7 @@ import com.samares.omf.core.utils.builders.BetaFactory;
 import com.samares.omf.core.utils.builders.exceptions.BuilderException;
 import com.samares.omf.core.utils.builders.generic.AGenericBuilder;
 import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.factory.OMFHelper;
+import com.samares.omf.core.utils.factory.OMFFactory;
 import com.samares.omf.core.utils.profile.Profile;
 
 import java.util.Collection;
@@ -291,13 +291,13 @@ public class ConnectorBuilder extends NamedElementBuilder {
 
         if (autoEndSetting) {
             try {
-                OMFHelper.getInstance().setConnectorEnd(srcCE, srcPart, (Port) src,
+                OMFFactory.getInstance().setConnectorEnd(srcCE, srcPart, (Port) src,
                         srcPropertyPath.stream()
                                 .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
                                 .map(Property.class::cast)
                                 .collect(Collectors.toList()));
 
-                OMFHelper.getInstance().setConnectorEnd(dstCE, dstPart, (Port) dst,
+                OMFFactory.getInstance().setConnectorEnd(dstCE, dstPart, (Port) dst,
                         dstPropertyPath.stream()
                                 .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
                                 .map(Property.class::cast)

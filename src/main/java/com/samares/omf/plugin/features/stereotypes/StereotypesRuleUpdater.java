@@ -4,11 +4,10 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer;
+package com.samares.omf.plugin.features.stereotypes;
 
 
 import com.nomagic.magicdraw.uml.Finder;
-import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction;
 import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activity;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
@@ -22,12 +21,12 @@ import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
 import com.samares.omf.core.utils.errorManagement.OMFLogger;
 import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
 import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
-import com.samares.omf.plugin.features.organizer.rules.type2instance.InstanceCBACreatedRule;
-import com.samares.omf.plugin.features.organizer.utils.String2Class;
+import com.samares.omf.plugin.features.stereotypes.rules.type2instance.InstanceCBACreatedRule;
+import com.samares.omf.plugin.features.stereotypes.utils.String2Class;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
-import com.samares.omf.plugin.features.organizer.rules.instance2type.ActivityToCreateRule;
-import com.samares.omf.plugin.features.organizer.rules.instance2type.ClassToCreateRule;
-import com.samares.omf.plugin.features.organizer.rules.type2instance.InstancePropertyCreatedRule;
+import com.samares.omf.plugin.features.stereotypes.rules.instance2type.ActivityToCreateRule;
+import com.samares.omf.plugin.features.stereotypes.rules.instance2type.ClassToCreateRule;
+import com.samares.omf.plugin.features.stereotypes.rules.type2instance.InstancePropertyCreatedRule;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -36,15 +35,15 @@ import java.util.List;
 /**
  * Updates rules based on configuration in CSV files
  */
-public class OrganizerRuleUpdater {
+public class StereotypesRuleUpdater {
     private IFeatureRuleEngine organizerEngine;
-    private static OrganizerRuleUpdater instance = null;
+    private static StereotypesRuleUpdater instance = null;
 
-    private OrganizerRuleUpdater() {}
+    private StereotypesRuleUpdater() {}
 
-    public static OrganizerRuleUpdater getInstance() {
+    public static StereotypesRuleUpdater getInstance() {
         if (null == instance)
-            instance = new OrganizerRuleUpdater();
+            instance = new StereotypesRuleUpdater();
         return instance;
     }
 

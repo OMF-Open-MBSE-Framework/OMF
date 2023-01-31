@@ -17,7 +17,6 @@ import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.utils.profile.Profile;
 
@@ -27,24 +26,17 @@ import java.util.Objects;
 /**
  * The type Fa factory.
  */
-public class SysMLFactory extends A_Factory{
-
-    /**
-     * The constant magicDrawFactory.
-     */
-    public static ElementsFactory magicDrawFactory;
-    private Project project;
-
-    private SysMLFactory() {
-        project = OMFUtils.currentProject;
-        magicDrawFactory = project.getElementsFactory();
-    }
-
+public class SysMLFactory extends AMagicDrawFactory {
     /**
      * Gets instance.
      * @return the instance
      */
     public static SysMLFactory getInstance() {
+        return getInstance(OMFUtils.currentProject);
+    }
+
+    public static SysMLFactory getInstance(Project project) {
+        SysMLFactory.SysMLFactoryHolder.instance.setProject(project);
         return SysMLFactoryHolder.instance;
     }
 
@@ -53,7 +45,7 @@ public class SysMLFactory extends A_Factory{
      * @return the class
      */
     public Class createInterfaceBlock() {
-        Class interfaceBlock = magicDrawFactory.createClassInstance();
+        Class interfaceBlock = getMagicDrawFactory().createClassInstance();
         StereotypesHelper.addStereotype(interfaceBlock, Profile.getSysml().interfaceBlock().getStereotype());
         return interfaceBlock;
     }
@@ -63,7 +55,7 @@ public class SysMLFactory extends A_Factory{
      * @return the class
      */
     public Class createClass() {
-        return magicDrawFactory.createClassInstance();
+        return getMagicDrawFactory().createClassInstance();
     }
 
     /**
@@ -71,7 +63,7 @@ public class SysMLFactory extends A_Factory{
      * @return the Activity
      */
     public Activity createActivity() {
-        return magicDrawFactory.createActivityInstance();
+        return getMagicDrawFactory().createActivityInstance();
     }
 
     public Class createInterfaceBlock(Element owner) {
@@ -86,7 +78,7 @@ public class SysMLFactory extends A_Factory{
      * @return the class
      */
     public Class createBlock() {
-        Class block = magicDrawFactory.createClassInstance();
+        Class block = getMagicDrawFactory().createClassInstance();
         StereotypesHelper.addStereotype(block, Profile.getSysml().block().getStereotype());
         return block;
     }
@@ -103,7 +95,7 @@ public class SysMLFactory extends A_Factory{
      * @return the property
      */
     public Property createFlowProperty() {
-        Property flowProperty = magicDrawFactory.createPropertyInstance();
+        Property flowProperty = getMagicDrawFactory().createPropertyInstance();
         StereotypesHelper.addStereotype(flowProperty, Profile.getSysml().flowProperty().getStereotype());
         Profile.getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
         return flowProperty;
@@ -116,46 +108,36 @@ public class SysMLFactory extends A_Factory{
      * @return the property
      */
     public Property createProperty(String name) {
-        Property prop = magicDrawFactory.createPropertyInstance();
+        Property prop = getMagicDrawFactory().createPropertyInstance();
         prop.setName(name);
         return prop;
     }
 
     public Signal createSignal(Element owner) {
-        Signal signal = magicDrawFactory.createSignalInstance();
+        Signal signal = getMagicDrawFactory().createSignalInstance();
         signal.setOwner(owner);
         return signal;
     }
 
-    public Port createProxyPort(Class owner) {
+    public Port createProxyPort(Element owner) {
         Port p = createProxyPort();
         p.setOwner(owner);
         return p;
     }
 
     public Port createProxyPort() {
-        Port port = magicDrawFactory.createPortInstance();
+        Port port = getMagicDrawFactory().createPortInstance();
         StereotypesHelper.addStereotype(port, Profile.getSysml().proxyPort().getStereotype());
         return port;
     }
 
-    /**
-     * Create connector connector.
-     *
-     * @param portSource          the port source
-     * @param portTarget          the port target
-     * @param pathSource          the path source
-     * @param pathTarget          the path target
-     * @param owner               the owner
-     * @return the connector
-     */
     public Connector createConnector(Port portSource, Port portTarget, List<Property> pathSource, List<Property> pathTarget, Element owner) {
 
-        Connector connector = magicDrawFactory.createConnectorInstance();
+        Connector connector = getMagicDrawFactory().createConnectorInstance();
 
         connector.setOwner(owner);
 
-        ConnectorEnd connectorEndA = magicDrawFactory.createConnectorEndInstance();
+        ConnectorEnd connectorEndA = getMagicDrawFactory().createConnectorEndInstance();
         connectorEndA.setRole(portSource);
         connectorEndA.set_connectorOfEnd(connector);
 
@@ -164,7 +146,7 @@ public class SysMLFactory extends A_Factory{
             Profile.getSysml().elementPropertyPath().setPropertyPath(connectorEndA, pathSource);
         }
 
-        ConnectorEnd connectorEndB = magicDrawFactory.createConnectorEndInstance();
+        ConnectorEnd connectorEndB = getMagicDrawFactory().createConnectorEndInstance();
 
         connectorEndB.setRole(portTarget);
         connectorEndB.set_connectorOfEnd(connector);
@@ -187,6 +169,4 @@ public class SysMLFactory extends A_Factory{
     private static class SysMLFactoryHolder {
         private static final SysMLFactory instance = new SysMLFactory();
     }
-
-
 }

@@ -4,7 +4,7 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer.actions;
+package com.samares.omf.plugin.features.stereotypes.actions;
 
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
@@ -16,21 +16,21 @@ import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
 import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
 import com.samares.omf.core.utils.errorManagement.OMFLogger;
-import com.samares.omf.plugin.features.organizer.OrganizerRuleUpdater;
+import com.samares.omf.plugin.features.stereotypes.StereotypesRuleUpdater;
 
 import java.util.List;
 
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Refresh rules based on config files", category = "Organizer")
-public class RefreshRulesBasedOnConfigFiles extends AGenericAction {
+@MDAction(actionName = "Refresh stereotypes rules based on config files", category = "Stereotypes")
+public class RefreshStereotypesRulesBasedOnConfigFiles extends AGenericAction {
     protected Project project = null;
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
         try {
             OMFLogger.getInstance().log("Parsing config files", null, OMFLogLevel.INFO);
-            OrganizerRuleUpdater.getInstance().updateAllRulesBasedOnConfigFiles();
+            StereotypesRuleUpdater.getInstance().updateAllRulesBasedOnConfigFiles();
             OMFLogger.getInstance().log("Rules updated based on config files", null, OMFLogLevel.INFO);
         } catch (Exception e) {
             OMFLogger.getInstance().log("[Error] While parsing listeners, please verify the configuration file and try again", null, OMFLogLevel.ERROR);

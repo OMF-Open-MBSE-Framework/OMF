@@ -1,4 +1,4 @@
-package com.samares.omf.plugin.features.organizer.utils;
+package com.samares.omf.plugin.features.stereotypes.utils;
 
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;

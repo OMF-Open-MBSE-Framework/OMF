@@ -4,13 +4,13 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer.rules.type2instance;
+package com.samares.omf.plugin.features.stereotypes.rules.type2instance;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
 import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
 import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
-import com.samares.omf.plugin.features.organizer.utils.OrganizerRuleUtils;
+import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -51,9 +51,9 @@ public class InstancePropertyCreatedRule extends A_Rule {
             return false;
         }
         Element srcElement = (Element) evt.getSource();
-        boolean isTypeInstantiationPatternSatisfied = OrganizerRuleUtils.isTypeInstantiationPatternSatisfied(
+        boolean isTypeInstantiationPatternSatisfied = StereotypesRuleUtils.isTypeInstantiationPatternSatisfied(
                 srcElement, classOfInstance, this.stereoOfType, this.classOfType);
-        boolean ownerHasSpecifiedStereotype = OrganizerRuleUtils.ownerHasStereotype(srcElement, this.ownerValidStereotypes);
+        boolean ownerHasSpecifiedStereotype = StereotypesRuleUtils.ownerHasStereotype(srcElement, this.ownerValidStereotypes);
         if(isTypeInstantiationPatternSatisfied && ownerHasSpecifiedStereotype) {
             System.out.println("[Test]-Part: " + srcElement.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
             return true;
@@ -64,7 +64,7 @@ public class InstancePropertyCreatedRule extends A_Rule {
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
         try {
-            OrganizerRuleUtils.instantiationBehavior(e, this.stereoOfInstance);
+            StereotypesRuleUtils.instantiationBehavior(e, this.stereoOfInstance);
         } catch (OMFException ex) {
             OMFErrorHandler.handleException(ex, false);
         }

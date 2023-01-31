@@ -23,7 +23,7 @@ import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.plugin.features.dev.Dev;
 import com.samares.omf.plugin.features.feature_A.Feature_A;
 import com.samares.omf.plugin.features.feature_C.Feature_C;
-import com.samares.omf.plugin.features.organizer.Organizer;
+import com.samares.omf.plugin.features.stereotypes.Stereotypes;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -45,7 +45,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
     public List<MDFeature> getOnProjectOpeningFeatureToRegister() {
         return List.of(
-                new Organizer()
+                new Stereotypes()
         );
     }
 

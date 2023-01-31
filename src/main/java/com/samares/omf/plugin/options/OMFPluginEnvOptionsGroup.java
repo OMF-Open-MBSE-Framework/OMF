@@ -30,11 +30,12 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
     /**
      * ID of property group 1.
      */
-    public static final String OWNER_CONFIGURATION_GROUP = "Organizer";
+    public static final String ORGANIZER_CONFIG_GRP = "Organizer";
     public static final String ORGANIZER_CONFIG_FILE_PATH_ID = "Automation organizer configuration file path";
     public static final String ORGANIZER_ACTIVATION_ID = "Activate automatic element organization";
 
-    public static final String CONFIGURATION_GROUP = "Stereotypes";
+    public static final String T2I_CONFIG_GRP = "Type";
+    public static final String I2T_CONFIG_GRP = "Instance";
 
     public static final String T2I_CONFIG_FILE_PATH_ID = "Automation type to instance configuration file path";
     public static final String I2T_CONFIG_FILE_PATH_ID = "Automation instance to type creation configuration file path";
@@ -53,7 +54,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
     }
 
     public OMFPluginEnvOptionsGroup() {
-        super(ID, OWNER_CONFIGURATION_GROUP);
+        super(ID, ORGANIZER_CONFIG_GRP);
         l_unchangedPropertyID.add(ORGANIZER_CONFIG_FILE_PATH_ID);
         l_unchangedPropertyID.add(ORGANIZER_ACTIVATION_ID);
     }
@@ -75,7 +76,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
     public void addOwnerPropertyOption(String id, String name, Element owner) {
         ElementProperty property = new ElementProperty(name, owner);
         property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
-        property.setGroup(OWNER_CONFIGURATION_GROUP);
+        property.setGroup(ORGANIZER_CONFIG_GRP);
         addProperty(property, true);
     }
 
@@ -119,7 +120,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
         BooleanProperty isActivatedProperty = new BooleanProperty(T2I_ACTIVATION_ID, isActivated);
         isActivatedProperty.setValue(isActivated);
         isActivatedProperty.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
-        isActivatedProperty.setGroup(CONFIGURATION_GROUP);
+        isActivatedProperty.setGroup(T2I_CONFIG_GRP);
         addProperty(isActivatedProperty, true);
     }
 
@@ -127,7 +128,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
         BooleanProperty isActivatedProperty = new BooleanProperty(I2T_ACTIVATION_ID, isActivated);
         isActivatedProperty.setValue(isActivated);
         isActivatedProperty.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
-        isActivatedProperty.setGroup(CONFIGURATION_GROUP);
+        isActivatedProperty.setGroup(T2I_CONFIG_GRP);
         addProperty(isActivatedProperty, true);
     }
 
@@ -140,7 +141,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
         StringProperty property = new StringProperty(T2I_CONFIG_FILE_PATH_ID, path);
         property.setValue(path);
         property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
-        property.setGroup(CONFIGURATION_GROUP);
+        property.setGroup(T2I_CONFIG_GRP);
         addProperty(property, true);
     }
 
@@ -153,7 +154,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
         StringProperty property = new StringProperty(I2T_CONFIG_FILE_PATH_ID, path);
         property.setValue(path);
         property.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
-        property.setGroup(CONFIGURATION_GROUP);
+        property.setGroup(T2I_CONFIG_GRP);
         addProperty(property, true);
     }
 

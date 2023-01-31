@@ -4,12 +4,12 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.organizer.rules.instance2type;
+package com.samares.omf.plugin.features.stereotypes.rules.instance2type;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
-import com.samares.omf.plugin.features.organizer.utils.OrganizerRuleUtils;
+import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -35,8 +35,8 @@ public class ClassToCreateRule extends A_Rule {
             Property part = (Property) evt.getSource();
             if(part.getOwner() == null)
                 return false;
-            if (null != evt.getSource() &&  OrganizerRuleUtils.isInstancePropertyWithStr(part, this.strInstance) &&
-                        OrganizerRuleUtils.isTypeElementTypeNull(part)) {
+            if (null != evt.getSource() &&  StereotypesRuleUtils.isInstancePropertyWithStr(part, this.strInstance) &&
+                        StereotypesRuleUtils.isTypeElementTypeNull(part)) {
                 System.out.println("[Test]-Part: " + part.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
                 return true;
             }
@@ -46,8 +46,8 @@ public class ClassToCreateRule extends A_Rule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent evt) {
-        OrganizerRuleUtils.createTypeBehavior(evt, this.strType);
-        OrganizerRuleUtils.organizeType(evt, owner);
+        StereotypesRuleUtils.createTypeBehavior(evt, this.strType);
+        StereotypesRuleUtils.organizeType(evt, owner);
         return evt;
     }
 

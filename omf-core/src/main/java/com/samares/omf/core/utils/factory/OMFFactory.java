@@ -8,6 +8,7 @@
 package com.samares.omf.core.utils.factory;
 
 
+import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.openapi.uml.PresentationElementsManager;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.magicdraw.uml.Finder;
@@ -24,37 +25,28 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares.omf.core.utils.OMFConstants;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.utils.diagrams.InternalDiagramManagement;
 import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
 import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
 import com.samares.omf.core.utils.profile.Profile;
-import org.bridj.cpp.std.list;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class OMFHelper extends A_Factory{
-
-    public static ElementsFactory magicDrawFactory;
-
-    private OMFHelper() {
-        magicDrawFactory = OMFUtils.currentProject.getElementsFactory();
+public class OMFFactory extends AMagicDrawFactory {
+    private OMFFactory() {
+        setProject(OMFUtils.currentProject);
     }
 
-    public static OMFHelper getInstance() {
+    public static OMFFactory getInstance() {
         return OMFHelperHolder.instance;
     }
 
-    /**
-     * Re init factory.
-     */
-    public static void reInitFactory() {
-        magicDrawFactory = OMFUtils.currentProject.getElementsFactory();
-        System.out.println("OMF Factory reinitialized for " + OMFUtils.currentProject.getName());
+    public static OMFFactory getInstance(Project project) {
+        OMFHelperHolder.instance.setProject(project);
+        return OMFHelperHolder.instance;
     }
 
     public ArrayList<Property> computeDelegationPathPropertyUsingPEE(Property son, Property mother, Diagram diagram) throws OMFException {
@@ -223,7 +215,7 @@ public class OMFHelper extends A_Factory{
     }
 
     public Connector old_createDirectConnectorPath(Property srcPart, Port srcPort, Property targetPart, Port targetPort, Class connectorOwner, boolean withRefresh) throws OMFException {
-        Connector connector = magicDrawFactory.createConnectorInstance();
+        Connector connector = getMagicDrawFactory().createConnectorInstance();
         ConnectorEnd ce1 = Objects.requireNonNull(ModelHelper.getFirstEnd(connector), "Connector first end is null");
         ConnectorEnd ce2 = Objects.requireNonNull(ModelHelper.getSecondEnd(connector), "Connector second end is null");
 
@@ -245,7 +237,7 @@ public class OMFHelper extends A_Factory{
     }
 
     public Connector createDirectConnectorPath_singleInstance(Property srcPart, Port srcPort, Property targetPart, Port targetPort, Class connectorOwner, boolean withRefresh, List<Property> availableParts) throws OMFException {
-        Connector connector = magicDrawFactory.createConnectorInstance();
+        Connector connector = getMagicDrawFactory().createConnectorInstance();
         ConnectorEnd ce1 = Objects.requireNonNull(ModelHelper.getFirstEnd(connector), "Connector first end is null");
         ConnectorEnd ce2 = Objects.requireNonNull(ModelHelper.getSecondEnd(connector), "Connector second end is null");
 
@@ -266,7 +258,7 @@ public class OMFHelper extends A_Factory{
     }
 
     public Connector createDirectConnectorPath(Property srcPart, Port srcPort, Property targetPart, Port targetPort, Class connectorOwner, List<Property> srcPropertyPathList, List<Property> dstPropertyPathList) throws OMFException {
-        Connector connector = magicDrawFactory.createConnectorInstance();
+        Connector connector = getMagicDrawFactory().createConnectorInstance();
         ConnectorEnd ce1 = Objects.requireNonNull(ModelHelper.getFirstEnd(connector), "Connector first end is null");
         ConnectorEnd ce2 = Objects.requireNonNull(ModelHelper.getSecondEnd(connector), "Connector second end is null");
 
@@ -305,7 +297,7 @@ public class OMFHelper extends A_Factory{
     }
 
     private static class OMFHelperHolder {
-        private static final OMFHelper instance = new OMFHelper();
+        private static final OMFFactory instance = new OMFFactory();
     }
 
 

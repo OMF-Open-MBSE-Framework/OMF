@@ -1,4 +1,4 @@
-package com.samares.omf.plugin.test.utils;
+package com.samares.omf.plugin.test.profiles;
 
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml2.Profiles;

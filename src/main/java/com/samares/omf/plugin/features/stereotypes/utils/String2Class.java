@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares.omf.plugin.features.organizer.utils;
+package com.samares.omf.plugin.features.stereotypes.utils;
 
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
