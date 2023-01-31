@@ -9,8 +9,8 @@ package com.samares.omf.plugin.features.stereotypes.rules.organizer;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.OMFException;
 import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 

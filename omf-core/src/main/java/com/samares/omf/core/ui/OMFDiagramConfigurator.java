@@ -18,7 +18,7 @@ import com.samares.omf.core.actions.v2.AGenericAction;
 import com.samares.omf.core.actions.v2.configurators.FeatureActionConfigurator;
 import com.samares.omf.core.ui.actions.diagram.debug.DebugOnOffOptionsDiagram;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFErrorHandler;
 
 import javax.annotation.CheckForNull;
 import java.lang.reflect.Method;

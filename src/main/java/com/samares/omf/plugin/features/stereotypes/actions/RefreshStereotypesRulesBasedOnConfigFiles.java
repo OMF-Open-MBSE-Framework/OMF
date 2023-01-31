@@ -13,9 +13,9 @@ import com.samares.omf.core.actions.v2.annotations.DeactivateListener;
 import com.samares.omf.core.actions.v2.annotations.MDAction;
 import com.samares.omf.core.actions.v2.annotations.MenuAction;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
-import com.samares.omf.core.utils.errorManagement.OMFLogger;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFLogLevel;
+import com.samares.omf.core.errors.OMFLogger;
 import com.samares.omf.plugin.features.stereotypes.StereotypesRuleUpdater;
 
 import java.util.List;

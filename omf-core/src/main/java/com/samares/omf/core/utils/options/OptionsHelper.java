@@ -8,8 +8,8 @@ import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyManager;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+import com.samares.omf.core.errors.exceptions.GenericException;
+import com.samares.omf.core.errors.exceptions.OMFException;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;

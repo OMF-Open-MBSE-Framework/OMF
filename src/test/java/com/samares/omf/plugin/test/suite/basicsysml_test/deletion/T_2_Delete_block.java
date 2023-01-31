@@ -7,7 +7,7 @@
 package com.samares.omf.plugin.test.suite.basicsysml_test.deletion;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.samares.omf.core.utils.factory.SysMLFactory;
+import com.samares.omf.core.factory.SysMLFactory;
 import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
 
 /**

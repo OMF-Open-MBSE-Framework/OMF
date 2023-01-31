@@ -6,9 +6,9 @@ import com.samares.omf.core.feature.errors.FeatureException;
 import com.samares.omf.core.listeners.IElementListener;
 import com.samares.omf.core.listeners.IListenerManager;
 import com.samares.omf.core.listeners.ruleEngineListener.ruleEngine.IRuleEngine;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.DevelopmentException;
-import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.DevelopmentException;
+import com.samares.omf.core.errors.exceptions.GenericException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

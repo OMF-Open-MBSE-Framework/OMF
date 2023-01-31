@@ -12,8 +12,8 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
 import com.samares.omf.core.listeners.util.ListenerConfig;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFLogLevel;
 import com.samares.omf.core.utils.ColorPrinter;
 
 import java.beans.PropertyChangeEvent;

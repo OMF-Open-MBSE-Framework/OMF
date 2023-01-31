@@ -16,10 +16,10 @@ import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
-import com.samares.omf.core.utils.factory.SysMLFactory;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.GenericException;
+import com.samares.omf.core.errors.exceptions.OMFException;
+import com.samares.omf.core.factory.SysMLFactory;
 
 import java.beans.PropertyChangeEvent;
 import java.lang.Class;

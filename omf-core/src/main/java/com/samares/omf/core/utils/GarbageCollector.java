@@ -10,7 +10,7 @@ package com.samares.omf.core.utils;
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFErrorHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;

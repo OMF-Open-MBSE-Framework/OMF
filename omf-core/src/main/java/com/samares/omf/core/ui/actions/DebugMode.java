@@ -13,9 +13,9 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares.omf.core.utils.OMFConstants;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
-import com.samares.omf.core.utils.errorManagement.OMFLogger;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFLogLevel;
+import com.samares.omf.core.errors.OMFLogger;
 
 import javax.annotation.CheckForNull;
 import java.awt.event.ActionEvent;

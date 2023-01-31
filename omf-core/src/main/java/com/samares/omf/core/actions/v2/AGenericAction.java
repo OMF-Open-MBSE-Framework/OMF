@@ -20,8 +20,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.actions.v2.annotations.*;
 import com.samares.omf.core.listeners.OMFListenerManager;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.DevelopmentException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.DevelopmentException;
 
 import javax.annotation.CheckForNull;
 import javax.swing.*;

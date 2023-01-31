@@ -6,7 +6,7 @@
  ******************************************************************************/
 package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
 
-import com.samares.omf.core.featureplugin.APlugin;
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.IRule;
 
 import java.beans.PropertyChangeEvent;

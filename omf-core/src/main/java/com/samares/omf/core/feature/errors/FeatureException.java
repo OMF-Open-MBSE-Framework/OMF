@@ -1,6 +1,6 @@
 package com.samares.omf.core.feature.errors;
 
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+import com.samares.omf.core.errors.exceptions.OMFException;
 
 public class FeatureException extends OMFException {
 

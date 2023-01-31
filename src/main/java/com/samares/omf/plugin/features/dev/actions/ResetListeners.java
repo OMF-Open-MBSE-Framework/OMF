@@ -14,11 +14,10 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.actions.v2.AGenericAction;
 import com.samares.omf.core.actions.v2.annotations.BrowserAction;
 import com.samares.omf.core.actions.v2.annotations.MDAction;
-import com.samares.omf.core.actions.v2.annotations.MenuAction;
 import com.samares.omf.core.listeners.OMFListenerManager;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
-import com.samares.omf.core.utils.errorManagement.OMFLogger;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFLogLevel;
+import com.samares.omf.core.errors.OMFLogger;
 
 import java.util.List;
 

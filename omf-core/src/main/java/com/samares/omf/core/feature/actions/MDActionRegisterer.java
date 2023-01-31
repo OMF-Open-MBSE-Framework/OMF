@@ -7,8 +7,8 @@ import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.errors.FeatureException;
 import com.samares.omf.core.ui.OMFDiagramConfigurator;
 import com.samares.omf.core.ui.OMFMainMenuConfigurator;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.GenericException;
 
 public class MDActionRegisterer implements IFeatureRegisterer {
     private final OMFBrowserConfigurator browserConfigurator;

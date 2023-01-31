@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction;
 import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.samares.omf.core.listeners.OMFListenerManager;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFErrorHandler;
 
 import java.awt.event.ActionEvent;
 

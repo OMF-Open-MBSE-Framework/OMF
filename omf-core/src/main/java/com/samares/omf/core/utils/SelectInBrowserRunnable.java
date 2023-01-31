@@ -16,16 +16,16 @@ import java.lang.ref.WeakReference;
 
 public class SelectInBrowserRunnable implements Runnable
 {
-    private WeakReference<Element> mElement;
+    private final WeakReference<Element> mElement;
 
     public SelectInBrowserRunnable(Element element)
     {
-        mElement = new WeakReference<Element>(element);
+        mElement = new WeakReference<>(element);
     }
 
     public void run()
     {
-        Element element = (Element) mElement.get();
+        Element element = mElement.get();
         if (element != null)
         {
             Browser browser = Application.getInstance().getMainFrame().getBrowser();
@@ -38,7 +38,7 @@ public class SelectInBrowserRunnable implements Runnable
 
                 while (treePath == null && parent != null)
                 {
-                    parent = (Element) parent.getOwner();
+                    parent = parent.getOwner();
                     treePath = tree.openNode(parent);
                 }
 

@@ -15,8 +15,9 @@ import com.samares.omf.core.feature.IFeatureRegisterer;
 import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.listeners.OMFListenerManager;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.factory.FactoryManager;
+import com.samares.omf.core.factory.FactoryManager;
 import com.samares.omf.core.utils.profile.Profile;
+import com.samares.omf.core.utils.utils.VersionUtils;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -199,7 +200,7 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
      */
     protected void notifyUserAboutPluginCompatibility(boolean isValidVersion){
         if(!isValidVersion) {
-            String minCoreVersion = OMFUtils.versionCsvReader();
+            String minCoreVersion = VersionUtils.versionCsvReader();
             String warningMessage = "Profile version is outdated and not compatible with this Plugin version";
             warningMessage += (minCoreVersion != null && !minCoreVersion.equals("")) ?
                     "\nPlease use a profile with the minimum version for the plugin compatibility : " + minCoreVersion

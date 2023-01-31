@@ -1,9 +1,9 @@
 package com.samares.omf.plugin.test.ui;
 
 import com.nomagic.actions.NMAction;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
-import com.samares.omf.core.utils.errorManagement.exceptions.NotImplementedException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.GenericException;
+import com.samares.omf.core.errors.exceptions.NotImplementedException;
 
 import java.awt.event.ActionEvent;
 

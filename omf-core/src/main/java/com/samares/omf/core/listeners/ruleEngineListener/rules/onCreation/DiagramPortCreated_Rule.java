@@ -11,13 +11,12 @@ import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares.omf.core.listeners.listeners.OrchestratorListener;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
 import com.samares.omf.core.listeners.util.ListenerConfig;
-import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.OMFLogLevel;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFLogLevel;
 import com.samares.omf.core.utils.ColorPrinter;
+import com.samares.omf.core.utils.utils.diagrams.DiagramUtils;
 
 import java.beans.PropertyChangeEvent;
 
@@ -39,7 +38,7 @@ public class DiagramPortCreated_Rule extends A_Rule {
         try {
             Element src = (Element) evt.getSource();
 
-            final boolean isPortCreatedOnDiagramBorder = (src instanceof Port) && src.getOwner() == OMFUtils.getOpenedDiagram().getOwner();
+            final boolean isPortCreatedOnDiagramBorder = (src instanceof Port) && src.getOwner() == DiagramUtils.getOpenedDiagram().getOwner();
             final boolean isPortCreatedFromConnection = ListenerConfig.getInstance().hasPortCreatedFromConnection();
             final boolean isPasting = CopyPasteManager.isPasting();
 

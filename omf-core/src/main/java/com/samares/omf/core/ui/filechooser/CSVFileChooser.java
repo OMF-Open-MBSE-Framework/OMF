@@ -7,8 +7,8 @@
 package com.samares.omf.core.ui.filechooser;
 
 
-import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.utils.utils.CSVParseUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,12 +33,12 @@ public class CSVFileChooser {
 
     public void open() {
         try {
-            OMFUtils.setCurrentDirectory(fileChooser);
+            CSVParseUtils.setCurrentDirectory(fileChooser);
             int result = this.fileChooser.showOpenDialog(null);
 
             if (result == JFileChooser.APPROVE_OPTION) {
                 this.selectedFile = this.fileChooser.getSelectedFile();
-                OMFUtils.setDefaultPath(selectedFile);
+                CSVParseUtils.setDefaultPath(selectedFile);
             } else if (result == JFileChooser.CANCEL_OPTION) {
                 this.selectedFile = null;
             }

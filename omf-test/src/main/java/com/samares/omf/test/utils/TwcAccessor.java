@@ -10,13 +10,12 @@ import com.nomagic.magicdraw.teamwork2.ITeamworkService;
 import com.nomagic.magicdraw.teamwork2.ServerLoginInfo;
 import com.nomagic.task.EmptyProgressStatus;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.exceptions.GenericException;
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+import com.samares.omf.core.errors.exceptions.GenericException;
+import com.samares.omf.core.errors.exceptions.OMFException;
 
 import javax.annotation.CheckForNull;
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 
 

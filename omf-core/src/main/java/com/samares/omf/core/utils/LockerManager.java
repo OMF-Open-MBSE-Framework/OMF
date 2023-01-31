@@ -17,8 +17,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.transaction.ModelValidationResult;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFLockException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.OMFLockException;
 
 import javax.annotation.CheckForNull;
 import java.beans.PropertyChangeEvent;

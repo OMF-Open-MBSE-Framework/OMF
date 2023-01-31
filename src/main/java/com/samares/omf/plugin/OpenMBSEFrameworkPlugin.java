@@ -12,7 +12,7 @@ import com.nomagic.magicdraw.properties.Property;
 import com.samares.omf.core.actions.v2.configurators.OMFBrowserConfigurator;
 import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.options.AOptionListener;
-import com.samares.omf.core.featureplugin.APlugin;
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.core.listeners.IListenerManager;
 import com.samares.omf.core.listeners.OMFListenerManager;
 import com.samares.omf.core.listeners.listeners.OMFProjectListener;

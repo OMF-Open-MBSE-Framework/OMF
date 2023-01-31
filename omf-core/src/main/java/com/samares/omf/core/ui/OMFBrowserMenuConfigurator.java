@@ -18,9 +18,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.actions.v2.configurators.FeatureActionConfigurator;
 import com.samares.omf.core.ui.actions.browser.debug.DebugCreateElement;
 import com.samares.omf.core.ui.actions.browser.debug.DebugOnOffOptionsBrowser;
-import com.samares.omf.core.utils.builders.BetaFactory;
+import com.samares.omf.core.builders.BetaFactory;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
+import com.samares.omf.core.errors.OMFErrorHandler;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

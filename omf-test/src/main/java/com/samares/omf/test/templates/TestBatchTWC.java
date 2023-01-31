@@ -15,8 +15,8 @@ import com.nomagic.magicdraw.teamwork2.locks.LockService;
 import com.nomagic.task.EmptyProgressStatus;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.utils.OMFUtils;
-import com.samares.omf.core.utils.errorManagement.OMFErrorHandler;
-import com.samares.omf.core.utils.errorManagement.exceptions.OMFException;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.OMFException;
 import com.samares.omf.test.projectmanager.TestCloseProjects;
 import com.samares.omf.test.utils.TwcAccessor;
 

@@ -1,11 +1,11 @@
 package com.samares.omf.plugin.features.feature_C.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.plugin.OpenMBSEFrameworkPlugin;
 import com.samares.omf.core.actions.v2.AGenericAction;
 import com.samares.omf.core.actions.v2.annotations.*;
 import com.samares.omf.core.feature.FeatureRegister;
-import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.plugin.features.feature_A.Feature_A;
 
 import java.util.List;
