@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * @copyright Copyright (c) 2022-2023 Samares-Engineering
+ * @Licence: EPL 2.0
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since     0.0.0
+ ******************************************************************************/
+
 package com.samares.omf.plugin.test.feature.mdActions;
 
 import com.nomagic.magicdraw.esi.EsiUtils;

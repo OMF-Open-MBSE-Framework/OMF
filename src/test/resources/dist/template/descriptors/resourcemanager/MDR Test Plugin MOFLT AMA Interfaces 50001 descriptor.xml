@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ @copyright Copyright (c) 2022-2023 Samares-Engineering
+  ~ @Licence: EPL 2.0
+  ~ @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+  ~ @since     0.0.0
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
 <resourceDescriptor critical="false"
                     date="${build.timestamp}"
                     description="OMF Test Plugin"

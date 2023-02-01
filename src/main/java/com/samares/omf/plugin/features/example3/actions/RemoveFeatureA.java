@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * @copyright Copyright (c) 2022-2023 Samares-Engineering
+ * @Licence: EPL 2.0
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since     0.0.0
+ ******************************************************************************/
+
 package com.samares.omf.plugin.features.example3.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;

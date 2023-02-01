@@ -1,8 +1,9 @@
-/*
- * @copyright Copyright (c) 2021 Airbus SAS
+/*******************************************************************************
+ * @copyright Copyright (c) 2022-2023 Samares-Engineering
+ * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.1.0
- */
+ * @since     0.0.0
+ ******************************************************************************/
 package com.samares.omf.core.errors.exceptions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
