@@ -18,25 +18,17 @@ import java.util.List;
 @MDAction(actionName = "Copy Element ID", category = "",
         keyStroke = "control shift c")
 public class CopyElementIDAction extends AGenericAction {
-
-
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null) return false;
-        return true;
+        return OMFUtils.currentProject != null;
     }
-
-
-
+    
     @Override
-    public void actionToPerform(List<Element> l_selected) {
-        if(l_selected == null || l_selected.size() !=1) return;
+    public void actionToPerform(List<Element> selectedElements) {
+        if(selectedElements == null || selectedElements.size() !=1) return;
         Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-        Transferable tText = new StringSelection(l_selected.get(0).getLocalID());
+        Transferable tText = new StringSelection(selectedElements.get(0).getLocalID());
         clip.setContents(tText, null);
 
     }
-
-
-
 }

@@ -25,17 +25,14 @@ public class RemoveProjectOptions extends AGenericAction {
 
         if(selectedElements.isEmpty()) return false;
 
-        if(selectedElements.stream().anyMatch(Class.class::isInstance)) return true;
-
-        return false;
-//        return true;
+        return selectedElements.stream().anyMatch(Class.class::isInstance);
     }
 
 
 
     @Override
-    public void actionToPerform(List<Element> l_selected) {
-        if(l_selected == null)
+    public void actionToPerform(List<Element> selectedElements) {
+        if(selectedElements == null)
             return;
         ProjectOptions.removeConfigurator(FeatureProjectOptionsConfigurator.getInstance());
     }

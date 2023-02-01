@@ -172,20 +172,20 @@ public class InternalDiagramManagement {
     public static void refreshAllConnectors(List<Connector> createdConnectors, Diagram diagram) {
         try {
             //displaysPorts
-            List<Port> l_connectedPorts = createdConnectors.stream()
+            List<Port> connectedPorts = createdConnectors.stream()
                     .map(Connector::getEnd)
                     .flatMap(Collection::stream)
                     .map(ConnectorEnd::getRole)
-                    .filter(end -> end instanceof Port)
-                    .map(port -> (Port) port)
+                    .filter(Port.class::isInstance)
+                    .map(Port.class::cast)
                     .distinct()
                     .collect(Collectors.toList());
 
 
-            Set<Property> set_usedParts = new HashSet<>(OMFUtils.getAllPartsInContext((Class) diagram.getOwner(), null));
+            Set<Property> usedPartsSet = new HashSet<>(OMFUtils.getAllPartsInContext((Class) diagram.getOwner(), null));
 
-            l_connectedPorts
-                    .forEach(port -> set_usedParts.stream()
+            connectedPorts
+                    .forEach(port -> usedPartsSet.stream()
                             .filter(part -> part.getType() == port.getOwner())
                             .forEach(part -> refreshSinglePort(port, part, diagram)));
 
@@ -255,7 +255,7 @@ public class InternalDiagramManagement {
                         if (isSrcDiagramOwner)
                             dstPortPEE = (dstPortViewList.size() == 0) ? //if no shape => create new one
                                     manager.createShapeElement(dstPort, diagramPresentationElement.getDiagramFrame())
-                                    ://else select the one from l_dstPart
+                                    :
                                     dstPortViewList.stream()
                                             .filter(dstPortPE -> dstParts.contains(dstPortPE.getParent().getElement()))
                                             .findFirst().get();

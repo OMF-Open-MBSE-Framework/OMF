@@ -105,9 +105,9 @@ public class StereotypesRuleUtils {
         type.setOwner(Objects.requireNonNull(typedElement.getOwner()).getOwner());
         type.setName("TO_RENAME");
 
-        Optional<DirectedRelationship> opt_association = typedElement.get_directedRelationshipOfTarget().stream().filter(Association.class::isInstance).findFirst();
+        Optional<DirectedRelationship> foundDirectedRelationship = typedElement.get_directedRelationshipOfTarget().stream().filter(Association.class::isInstance).findFirst();
         Association association;
-        if (opt_association.isEmpty()) {
+        if (foundDirectedRelationship.isEmpty()) {
             Element exOwner = typedElement.getOwner();
             association = SysMLFactory.getInstance().getMagicDrawFactory().createAssociationInstance();   //CREATE COMPOSITION
             association.setOwner(type.getOwner());
@@ -118,7 +118,7 @@ public class StereotypesRuleUtils {
             typedElement.setType(type);
             typedElement.setOwner(exOwner);//Property has moved, surely not the best way to do this...
         } else {
-            association = (Association) opt_association.get();
+            association = (Association) foundDirectedRelationship.get();
         }
 
         association.getMemberEnd().get(1).setAggregation(AggregationKindEnum.COMPOSITE);

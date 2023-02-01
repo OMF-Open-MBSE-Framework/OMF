@@ -24,7 +24,7 @@ import java.util.List;
 public class TypeBuilder extends NamedElementBuilder {
     protected boolean createNewElement = false;
 
-    private List<PropertyBuilder> l_propertyBuilders;
+    private List<PropertyBuilder> propertyBuilders;
 
     public TypeBuilder() {
         super();
@@ -32,8 +32,8 @@ public class TypeBuilder extends NamedElementBuilder {
 
     public TypeBuilder(Type type) {
         super(type);
-        stereotype(Profile.getSysml().interfaceBlock().getStereotype());
-        l_propertyBuilders = new ArrayList<>();
+        stereotype(Profile.getInstance().getSysml().interfaceBlock().getStereotype());
+        propertyBuilders = new ArrayList<>();
     }
 
     public TypeBuilder(TypeBuilder typeBuilder) {
@@ -45,7 +45,7 @@ public class TypeBuilder extends NamedElementBuilder {
         if (!fromInheritedConstructor)
             this.createNewElement = typeBuilder.createNewElement;
 
-        this.l_propertyBuilders = typeBuilder.l_propertyBuilders;
+        this.propertyBuilders = typeBuilder.propertyBuilders;
 
     }
 
@@ -82,12 +82,12 @@ public class TypeBuilder extends NamedElementBuilder {
     }
 
     public TypeBuilder withProperty(PropertyBuilder propertyBuilder) {
-        l_propertyBuilders.add(propertyBuilder);
+        propertyBuilders.add(propertyBuilder);
         return this;
     }
 
-    public TypeBuilder withProperty(List<PropertyBuilder> l_propertyBuilders) {
-        this.l_propertyBuilders.addAll(l_propertyBuilders);
+    public TypeBuilder withProperty(List<PropertyBuilder> propertyBuilders) {
+        this.propertyBuilders.addAll(propertyBuilders);
         return this;
     }
 
@@ -145,8 +145,8 @@ public class TypeBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public TypeBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public TypeBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 
@@ -197,11 +197,11 @@ public class TypeBuilder extends NamedElementBuilder {
         this.createNewElement = createNewElement;
     }
 
-    public List<PropertyBuilder> getL_propertyBuilders() {
-        return l_propertyBuilders;
+    public List<PropertyBuilder> getPropertyBuilders() {
+        return propertyBuilders;
     }
 
-    public void setL_propertyBuilders(List<PropertyBuilder> l_propertyBuilders) {
-        this.l_propertyBuilders = l_propertyBuilders;
+    public void setPropertyBuilders(List<PropertyBuilder> propertyBuilders) {
+        this.propertyBuilders = propertyBuilders;
     }
 }

@@ -16,9 +16,8 @@ import com.samares.omf.core.errors.OMFErrorHandler;
 import java.awt.event.ActionEvent;
 
 public abstract class ActionHolder {
-
-    DiagramActionImpl diagram_action;
-    BrowserActionImpl browser_action;
+    DiagramActionImpl diagramAction;
+    BrowserActionImpl browserAction;
     String actionName;
     String sessionName;
 
@@ -29,14 +28,14 @@ public abstract class ActionHolder {
     public ActionHolder(String actionName, String sessionName) {
         this.actionName = actionName;
         this.sessionName = sessionName;
-        browser_action = new BrowserActionImpl(this);
-        diagram_action = new DiagramActionImpl(this);
+        browserAction = new BrowserActionImpl(this);
+        diagramAction = new DiagramActionImpl(this);
     }
 
     public void diagramActionPerformed(ActionEvent e) {
         Runnable runnable = () -> {
             try {
-                execBehavior(e, diagram_action, browser_action);
+                execBehavior(e, diagramAction, browserAction);
             } catch (Exception exception) {
                 OMFErrorHandler.handleException(exception, true);
             }
@@ -50,14 +49,14 @@ public abstract class ActionHolder {
         OMFListenerManager.getInstance().activateAllListeners();
     }
 
-    public abstract void execBehavior(ActionEvent e, DiagramActionImpl diagram_action, BrowserActionImpl browser_action);
+    public abstract void execBehavior(ActionEvent e, DiagramActionImpl diagramAction, BrowserActionImpl browserAction);
 
-    public DefaultDiagramAction getDiagram_action() {
-        return diagram_action;
+    public DefaultDiagramAction getDiagramAction() {
+        return diagramAction;
     }
 
-    public DefaultBrowserAction getBrowser_action() {
-        return browser_action;
+    public DefaultBrowserAction getBrowserAction() {
+        return browserAction;
     }
 
 

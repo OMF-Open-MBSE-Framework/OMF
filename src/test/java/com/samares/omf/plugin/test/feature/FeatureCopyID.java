@@ -15,8 +15,6 @@ public class FeatureCopyID extends AFeature {
 
     public FeatureCopyID() {
         super("Copy Element ID");
-
-
     }
 
     @Override

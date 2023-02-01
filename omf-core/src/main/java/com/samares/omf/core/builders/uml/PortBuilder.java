@@ -23,8 +23,6 @@ import java.util.Collection;
 
 public class PortBuilder extends PropertyBuilder {
     protected boolean createNewElement = false;
-
-
     protected boolean isConjugated = false;
     protected boolean behavior = false;
 
@@ -49,7 +47,6 @@ public class PortBuilder extends PropertyBuilder {
 
     }
 
-
     public PortBuilder ends(Collection<ConnectorEnd> ends) {
         this.ends = ends;
         return this;
@@ -72,7 +69,6 @@ public class PortBuilder extends PropertyBuilder {
             typeBuilder.owner(typeOwner);
         return this;
     }
-
 
     @Override
     public PortBuilder reuseBuilder(AGenericBuilder builderToReuse) {
@@ -163,8 +159,8 @@ public class PortBuilder extends PropertyBuilder {
     }
 
     @Override
-    public PortBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public PortBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 

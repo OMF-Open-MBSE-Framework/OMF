@@ -66,7 +66,7 @@ public class OMFUtils {
         List<Property> properties = currentElement.getOwnedAttribute().stream()
                 .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
                 .filter(property -> Objects.nonNull(property.getType()))
-                .filter(property -> Profile.getSysml().block().is(property.getType()))
+                .filter(property -> Profile.getInstance().getSysml().block().is(property.getType()))
                 .collect(Collectors.toList());
 
         for (Property p : properties) {
@@ -78,11 +78,11 @@ public class OMFUtils {
     }
 
     public static boolean isTypeOut(Type type) {
-        return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
+        return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
     }
 
     public static boolean isTypeIn(Type type) {
-        return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
+        return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
     }
 
     public static Property getPartFromPropertyPath(Element partType, List<Property> listPropertyPath) {
@@ -110,12 +110,12 @@ public class OMFUtils {
      * @return the part
      */
     public static Property getPartInContextWithID(Element partType, String id, List<Property> availableParts) {
-        return availableParts.stream().filter(property -> partType.equals((property).getType()) && Profile.getSysml().block().is(property.getOwner())).iterator().next();
+        return availableParts.stream().filter(property -> partType.equals((property).getType()) && Profile.getInstance().getSysml().block().is(property.getOwner())).iterator().next();
     }
 
     public static List<Property> getPropertyPathListFromConnectorEnd(ConnectorEnd ce) {
         ConnectableElement end = ce.getRole();
-        ArrayList<Element> elementPath = new ArrayList(Profile.getSysml().elementPropertyPath().getPropertyPath(ce));
+        ArrayList<Element> elementPath = new ArrayList(Profile.getInstance().getSysml().elementPropertyPath().getPropertyPath(ce));
         List<Property> propertyPath = OMFUtils.getPropertyListFromElementList(elementPath);
 //
 

@@ -18,9 +18,6 @@ public class OMFMainMenuConfigurator extends FeatureActionConfigurator implement
     /**
      * Action will be added to manager.
      */
-//    private NMAction debugModeActivation   = new DebugMode(               "Debug Mode",                     "Debug Mode");
-    //private NMAction resetListeners        = new ResetListeners("Reset Listeners", "Reset Listeners");
-
     @Override
     public void configure(ActionsManager actionsManager) {
         configureFeatureActions(actionsManager);

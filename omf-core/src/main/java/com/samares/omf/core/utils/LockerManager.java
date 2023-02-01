@@ -138,29 +138,29 @@ public class LockerManager {
     }
 
 
-    public List<OMFLockException> checkCreation(@CheckForNull List<PropertyChangeEvent> l_evt, Set<Element> s_checkedElements) {
-        return defaultCheck(l_evt, s_checkedElements);
+    public List<OMFLockException> checkCreation(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+        return defaultCheck(events, checkedElements);
     }
 
 
-    public Collection<? extends OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> l_evt, Set<Element> s_checkedElements) {
-        return defaultCheck(l_evt, s_checkedElements);
+    public Collection<? extends OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+        return defaultCheck(events, checkedElements);
     }
-    public Collection<? extends OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> l_evt, Set<Element> s_checkedElements) {
-        return defaultCheck(l_evt, s_checkedElements);
+    public Collection<? extends OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+        return defaultCheck(events, checkedElements);
     }
 
-    private List<OMFLockException> defaultCheck(List<PropertyChangeEvent> l_evt, Set<Element> s_checkedElements) {
-        Map<Element, String> m_elementsToCheck = filterElementToCheck(l_evt, s_checkedElements);
+    private List<OMFLockException> defaultCheck(List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+        Map<Element, String> elementsToCheckMap = filterElementToCheck(events, checkedElements);
 
-        s_checkedElements.addAll(m_elementsToCheck.keySet());
+        checkedElements.addAll(elementsToCheckMap.keySet());
 
-        ArrayList<OMFLockException> l_lockException = new ArrayList<>();
+        ArrayList<OMFLockException> lockExceptions = new ArrayList<>();
 
-        m_elementsToCheck.forEach((element, propertyName) ->
-                checkElement(element, propertyName).ifPresent(l_lockException::add));
+        elementsToCheckMap.forEach((element, propertyName) ->
+                checkElement(element, propertyName).ifPresent(lockExceptions::add));
 
-        return l_lockException;
+        return lockExceptions;
     }
 
     /**
@@ -190,22 +190,22 @@ public class LockerManager {
 
     /**
      * Will filter all events removing all already checked elements, and irrelevant elements. It will also retrieve the real modified element in the case of TaggedValue .
-     * @param l_evt
-     * @param s_checkedElements
+     * @param events
+     * @param checkedElements
      * @return map<Modified Element, Modified PropertyName>
      */
-    private Map<Element, String> filterElementToCheck(@CheckForNull List<PropertyChangeEvent> l_evt, Set<Element> s_checkedElements) {
+    private Map<Element, String> filterElementToCheck(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         Predicate <? super PropertyChangeEvent> hasTheGoodClass =
                    (evt -> Element.class.isInstance(evt.getSource())
                             && !ConnectorEnd.class.isInstance(evt.getSource())
                             && !Stereotype.class.isInstance(evt.getSource())
                             && !Stereotype.class.isInstance(((Element) evt.getSource()).getOwner()));
-        Predicate <? super PropertyChangeEvent> isNot_TaggedValue = evt -> !(evt.getPropertyName().equals("_elementTaggedValue"));
-        Predicate <? super PropertyChangeEvent> isNot_End = evt -> !(evt.getPropertyName().equals("end"));
-        Predicate <? super PropertyChangeEvent> isNot_ParticipatesInInteraction = evt -> !(evt.getPropertyName().startsWith("participates"));
+        Predicate <? super PropertyChangeEvent> isNotTaggedValue = evt -> !(evt.getPropertyName().equals("_elementTaggedValue"));
+        Predicate <? super PropertyChangeEvent> isNotEnd = evt -> !(evt.getPropertyName().equals("end"));
+        Predicate <? super PropertyChangeEvent> isNotParticipatesInInteraction = evt -> !(evt.getPropertyName().startsWith("participates"));
         Predicate <? super PropertyChangeEvent> isTaggedValue =        evt -> (evt.getSource() instanceof TaggedValue);
         Predicate <? super PropertyChangeEvent> isElementTaggedValue = evt -> (evt.getSource() instanceof ElementTaggedValue);
-        Predicate <? super PropertyChangeEvent> isNotAlreadyChecked = (evt -> !s_checkedElements.contains(evt.getSource()));
+        Predicate <? super PropertyChangeEvent> isNotAlreadyChecked = (evt -> !checkedElements.contains(evt.getSource()));
 
 
         Predicate <? super Map.Entry> notNull = (entry -> entry.getKey() != null);
@@ -214,11 +214,11 @@ public class LockerManager {
 
         Function<? super  PropertyChangeEvent, Element> manageElementTaggedValue = evt -> {
             if(isElementTaggedValue.test(evt)) {
-                s_checkedElements.addAll(((ElementTaggedValue) evt.getSource()).getValue().stream().filter(Element.class::isInstance).collect(Collectors.toList()));
+                checkedElements.addAll(((ElementTaggedValue) evt.getSource()).getValue().stream().filter(Element.class::isInstance).collect(Collectors.toList()));
                 return null;
             }
             if(isTaggedValue.test(evt)) {
-                s_checkedElements.add((TaggedValue) evt.getSource());
+                checkedElements.add((TaggedValue) evt.getSource());
                 return null;
             }
             return (Element) evt.getSource();
@@ -231,19 +231,19 @@ public class LockerManager {
 
 
 
-        HashMap<Element, String> m_elementsPropertyName = new HashMap<>();
-        l_evt.stream()
-                .filter(isNot_TaggedValue)
-                .filter(isNot_End)
-                .filter(isNot_ParticipatesInInteraction)
+        HashMap<Element, String> elementToPropertieNamesMap = new HashMap<>();
+        events.stream()
+                .filter(isNotTaggedValue)
+                .filter(isNotEnd)
+                .filter(isNotParticipatesInInteraction)
                 .filter(isNotAComputedProperty)
                 .filter(hasTheGoodClass)
                 .filter(isNotAlreadyChecked)
                 .map(evtToEntry)
                 .filter(notNull)
-                .forEach(entry -> m_elementsPropertyName.put(entry.getKey(),entry.getValue()));
+                .forEach(entry -> elementToPropertieNamesMap.put(entry.getKey(),entry.getValue()));
 
-        return m_elementsPropertyName;
+        return elementToPropertieNamesMap;
     }
 
     public ModelValidationResult validateLocks(Element element)  {

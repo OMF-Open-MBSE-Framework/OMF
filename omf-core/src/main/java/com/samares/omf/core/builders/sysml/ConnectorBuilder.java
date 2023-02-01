@@ -145,8 +145,8 @@ public class ConnectorBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public ConnectorBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public ConnectorBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 
@@ -285,9 +285,9 @@ public class ConnectorBuilder extends NamedElementBuilder {
             Objects.requireNonNull(ModelHelper.getSecondEnd(connectorBuilt), "Connector second end is null").setRole(dst);
 
         if (srcPropertyPath != null)
-            Profile.getSysml().elementPropertyPath().setPropertyPath(srcCE, srcPropertyPath);
+            Profile.getInstance().getSysml().elementPropertyPath().setPropertyPath(srcCE, srcPropertyPath);
         if (dstPropertyPath != null)
-            Profile.getSysml().elementPropertyPath().setPropertyPath(dstCE, dstPropertyPath);
+            Profile.getInstance().getSysml().elementPropertyPath().setPropertyPath(dstCE, dstPropertyPath);
 
         if (autoEndSetting) {
             try {

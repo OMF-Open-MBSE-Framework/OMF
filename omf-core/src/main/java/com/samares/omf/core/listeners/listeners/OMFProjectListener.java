@@ -26,12 +26,12 @@ import java.util.List;
 public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRegisterer {
     public static final String PROFILE_NAME = "";
     private FeatureRegister featureRegisterer;
-    private List<MDFeature> l_delayedFeature;
-    private List<MDFeature> l_optionProjectFeature;
+    private List<MDFeature> delayedFeature;
+    private List<MDFeature> optionProjectFeature;
 
     public OMFProjectListener(){
-        l_delayedFeature = new ArrayList<>();
-        l_optionProjectFeature = new ArrayList<>();
+        delayedFeature = new ArrayList<>();
+        optionProjectFeature = new ArrayList<>();
     }
     public OMFProjectListener(FeatureRegister featureRegister){
         this();
@@ -39,19 +39,19 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
     }
 
 
-    public void addFeatureToRegisterAtProjectOpening(List<MDFeature> l_featureToRegister){
-        l_delayedFeature.addAll(l_featureToRegister);
+    public void addFeatureToRegisterAtProjectOpening(List<MDFeature> featuresToRegister){
+        delayedFeature.addAll(featuresToRegister);
     }
 
     public void addProjectOptionToRegister(List<MDFeature> allProjectOptionsFeatures) {
-        l_optionProjectFeature.addAll(allProjectOptionsFeatures);
+        optionProjectFeature.addAll(allProjectOptionsFeatures);
     }
 
     public void removeFeatureFromRegisteringList(MDFeature feature){
-        l_delayedFeature.remove(feature);
+        delayedFeature.remove(feature);
     }
-    public void removeAllFeatureFromRegisteringList(List<MDFeature> l_featureToRemove){
-        l_delayedFeature.removeAll(l_featureToRemove);
+    public void removeAllFeatureFromRegisteringList(List<MDFeature> featuresToRemove){
+        delayedFeature.removeAll(featuresToRemove);
     }
 
     @Override
@@ -65,21 +65,21 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
     }
 
     @Override
-    public void registerAllFeatures(List<MDFeature> l_feature) {
-        IFeatureRegisterer.super.registerAllFeatures(l_feature);
+    public void registerAllFeatures(List<MDFeature> features) {
+        IFeatureRegisterer.super.registerAllFeatures(features);
     }
 
     @Override
-    public void unregisterAllFeatures(List<MDFeature> l_feature) {
-        IFeatureRegisterer.super.unregisterAllFeatures(l_feature);
+    public void unregisterAllFeatures(List<MDFeature> features) {
+        IFeatureRegisterer.super.unregisterAllFeatures(features);
     }
 
 
-    private void registerAllProjectOptionFeatures(List<MDFeature> l_optionProjectFeature) {
-        l_optionProjectFeature.forEach(feature -> featureRegisterer.getOptionRegisterer().registerProjectOptions(feature));
+    private void registerAllProjectOptionFeatures(List<MDFeature> optionProjectFeature) {
+        optionProjectFeature.forEach(feature -> featureRegisterer.getOptionRegisterer().registerProjectOptions(feature));
     }
-    private void unRegisterAllProjectOptionFeatures(List<MDFeature> l_optionProjectFeature) {
-        l_optionProjectFeature.forEach(feature -> featureRegisterer.getOptionRegisterer().unregisterProjectOptions(feature));
+    private void unRegisterAllProjectOptionFeatures(List<MDFeature> optionProjectFeature) {
+        optionProjectFeature.forEach(feature -> featureRegisterer.getOptionRegisterer().unregisterProjectOptions(feature));
     }
 
     @Override
@@ -241,8 +241,8 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
 //        checkProfileVersion();
         OMFListenerManager.getInstance().registerAllListeners();
         OMFListenerManager.getInstance().activateAllListeners();
-        registerAllFeatures(l_delayedFeature);
-        registerAllProjectOptionFeatures(l_optionProjectFeature);
+        registerAllFeatures(delayedFeature);
+        registerAllProjectOptionFeatures(optionProjectFeature);
 //        ProjectOptions.addConfigurator(OMFProjectOptionsConfigurator.getInstance());
     }
 
@@ -252,8 +252,8 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
             return;
         OMFListenerManager.getInstance().removeAllListeners();
         OMFUtils.currentProject = null;
-        unregisterAllFeatures(l_delayedFeature);
-        unRegisterAllProjectOptionFeatures(l_optionProjectFeature);
+        unregisterAllFeatures(delayedFeature);
+        unRegisterAllProjectOptionFeatures(optionProjectFeature);
     }
 
 

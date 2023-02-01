@@ -146,8 +146,8 @@ public class PropertyBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public PropertyBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public PropertyBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 

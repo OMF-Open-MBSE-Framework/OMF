@@ -60,7 +60,7 @@ public class SysMLFactory extends AMagicDrawFactory {
 
     public Class createInterfaceBlock() {
         Class interfaceBlock = getMagicDrawFactory().createClassInstance();
-        StereotypesHelper.addStereotype(interfaceBlock, Profile.getSysml().interfaceBlock().getStereotype());
+        StereotypesHelper.addStereotype(interfaceBlock, Profile.getInstance().getSysml().interfaceBlock().getStereotype());
         return interfaceBlock;
     }
 
@@ -82,7 +82,7 @@ public class SysMLFactory extends AMagicDrawFactory {
 
     public Class createBlock() {
         Class block = getMagicDrawFactory().createClassInstance();
-        StereotypesHelper.addStereotype(block, Profile.getSysml().block().getStereotype());
+        StereotypesHelper.addStereotype(block, Profile.getInstance().getSysml().block().getStereotype());
         return block;
     }
 
@@ -98,8 +98,8 @@ public class SysMLFactory extends AMagicDrawFactory {
 
     public Property createFlowProperty() {
         Property flowProperty = getMagicDrawFactory().createPropertyInstance();
-        StereotypesHelper.addStereotype(flowProperty, Profile.getSysml().flowProperty().getStereotype());
-        Profile.getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
+        StereotypesHelper.addStereotype(flowProperty, Profile.getInstance().getSysml().flowProperty().getStereotype());
+        Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
         return flowProperty;
     }
 
@@ -139,7 +139,7 @@ public class SysMLFactory extends AMagicDrawFactory {
 
     public Port createProxyPort() {
         Port port = getMagicDrawFactory().createPortInstance();
-        StereotypesHelper.addStereotype(port, Profile.getSysml().proxyPort().getStereotype());
+        StereotypesHelper.addStereotype(port, Profile.getInstance().getSysml().proxyPort().getStereotype());
         return port;
     }
 
@@ -182,8 +182,8 @@ public class SysMLFactory extends AMagicDrawFactory {
         ConnectorEnd connectorEnd = createConnectorEnd(port, connector);
 
         if (!Objects.equals(port.getOwner(), owner) && path != null) {
-            StereotypesHelper.addStereotype(connectorEnd, Profile.getSysml().nestedConnectorEnd().getStereotype());
-            Profile.getSysml().elementPropertyPath().setPropertyPath(connectorEnd, path);
+            StereotypesHelper.addStereotype(connectorEnd, Profile.getInstance().getSysml().nestedConnectorEnd().getStereotype());
+            Profile.getInstance().getSysml().elementPropertyPath().setPropertyPath(connectorEnd, path);
         }
         return connectorEnd;
     }

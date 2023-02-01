@@ -27,8 +27,8 @@ public class RegisterFeatureA extends AGenericAction {
 
 
     @Override
-    public void actionToPerform(List<Element> l_selected) {
-        if(l_selected == null)
+    public void actionToPerform(List<Element> selectedElements) {
+        if(selectedElements == null)
             return;
 
         FeatureRegister featureManager = OpenMBSEFrameworkPlugin.getInstance().getFeatureRegister();

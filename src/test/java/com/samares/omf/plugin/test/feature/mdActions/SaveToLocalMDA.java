@@ -28,8 +28,8 @@ public class SaveToLocalMDA extends AGenericAction {
 
 
     @Override
-    public void actionToPerform(List<Element> l_selected) {
-        if(l_selected == null || l_selected.size() !=1) return;
+    public void actionToPerform(List<Element> selectedElements) {
+        if(selectedElements == null || selectedElements.size() !=1) return;
 
         File save = new File("c:/TMP/"+ OMFUtils.currentProject.getName() + ".mdzip");
         EsiUtils.convertToLocal(OMFUtils.currentProject, save);

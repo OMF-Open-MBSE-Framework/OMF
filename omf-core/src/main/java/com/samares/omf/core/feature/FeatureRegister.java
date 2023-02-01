@@ -20,7 +20,7 @@ public class FeatureRegister implements IFeatureRegisterer{
     MDActionRegisterer mdActionRegisterer;
 
     OptionRegisterer optionRegisterer;
-    List<MDFeature> l_registeredFeatures = new ArrayList<>();
+    List<MDFeature> registeredFeatures = new ArrayList<>();
 
     //TODO: Create a class regrouping all Configurators
     public FeatureRegister(OMFBrowserConfigurator browser, OMFDiagramConfigurator diagramConfigurator, OMFMainMenuConfigurator menuConfigurator, IListenerManager listenerManager){
@@ -38,11 +38,11 @@ public class FeatureRegister implements IFeatureRegisterer{
      * @return
      */
     public void registerFeature(MDFeature mdFeature){
-        boolean isAlreadyRegistered = l_registeredFeatures.stream().anyMatch(mdFeature.getClass()::isInstance);
+        boolean isAlreadyRegistered = registeredFeatures.stream().anyMatch(mdFeature.getClass()::isInstance);
         if(isAlreadyRegistered)
             return;
 
-        l_registeredFeatures.add(mdFeature);
+        registeredFeatures.add(mdFeature);
         mdFeature.activate();
         optionRegisterer.registerFeature(mdFeature);
         mdActionRegisterer.registerFeature(mdFeature);
@@ -50,20 +50,14 @@ public class FeatureRegister implements IFeatureRegisterer{
     }
 
     public void unregisterFeature(MDFeature mdFeature){
-        boolean isNotRegistered = !l_registeredFeatures.contains(mdFeature);
-        l_registeredFeatures.remove(mdFeature);
+        boolean isNotRegistered = !registeredFeatures.contains(mdFeature);
+        registeredFeatures.remove(mdFeature);
 
         mdFeature.deactivate();
         mdActionRegisterer.unregisterFeature(mdFeature);
         ruleEngineRegisterer.unregisterFeature(mdFeature);
         optionRegisterer.unregisterFeature(mdFeature);
-//        return isNotRegistered;
     }
-
-    public List<MDFeature> getRegisteredFeatures() {
-        return l_registeredFeatures;
-    }
-
 
     //-------------------------------- GETTER / SETTER --------------------------------------------
     public OMFBrowserConfigurator getBrowserConfigurator() {
@@ -102,10 +96,10 @@ public class FeatureRegister implements IFeatureRegisterer{
     public void setOptionRegisterer(OptionRegisterer optionRegisterer) {
         this.optionRegisterer = optionRegisterer;
     }
-    public List<MDFeature> getL_registeredFeatures() {
-        return l_registeredFeatures;
+    public List<MDFeature> getRegisteredFeatures() {
+        return registeredFeatures;
     }
-    public void setL_registeredFeatures(List<MDFeature> l_registeredFeatures) {
-        this.l_registeredFeatures = l_registeredFeatures;
+    public void setRegisteredFeatures(List<MDFeature> registeredFeatures) {
+        this.registeredFeatures = registeredFeatures;
     }
 }

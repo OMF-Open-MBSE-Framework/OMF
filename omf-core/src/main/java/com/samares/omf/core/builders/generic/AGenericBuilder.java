@@ -33,7 +33,7 @@ public abstract class AGenericBuilder<ConcreteBuiltElement extends Element> impl
     protected Set<AGenericBuilder> ownedElementBuilder;
     protected AGenericBuilder builderToReuse;
     protected Element defaultOwner;
-    protected AGenericBuilder defaultOwner_Builder;
+    protected AGenericBuilder defaultOwnerBuilder;
 
     protected AGenericBuilder() {
         this(null);
@@ -118,8 +118,8 @@ public abstract class AGenericBuilder<ConcreteBuiltElement extends Element> impl
         return this;
     }
 
-    public AGenericBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public AGenericBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
 
     }
@@ -234,11 +234,11 @@ public abstract class AGenericBuilder<ConcreteBuiltElement extends Element> impl
         this.defaultOwner = defaultOwner;
     }
 
-    public AGenericBuilder getDefaultOwner_Builder() {
-        return defaultOwner_Builder;
+    public AGenericBuilder getDefaultOwnerBuilder() {
+        return defaultOwnerBuilder;
     }
 
-    public void setDefaultOwner_Builder(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public void setDefaultOwnerBuilder(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
     }
 }

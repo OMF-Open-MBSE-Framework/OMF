@@ -24,6 +24,7 @@ import com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.Message;
 import com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.MessageOccurrenceSpecification;
 import com.nomagic.uml2.impl.jmi.UML2ModelHelper;
 import org.omg.mof.model.Class;
+import org.omg.mof.model.MofAttribute;
 import org.omg.mof.model.Reference;
 import org.omg.mof.model.StructuralFeature;
 
@@ -44,8 +45,8 @@ public class ElementModelComparator implements ModelComparator {
     }
 
     public boolean compareModels(Project project1, Project project2) {
-        List model1 = project1.getModels();
-        List model2 = project2.getModels();
+        List<Package> model1 = project1.getModels();
+        List<Package> model2 = project2.getModels();
         return compareModels(model1, model2);
     }
 
@@ -53,21 +54,17 @@ public class ElementModelComparator implements ModelComparator {
         return compareModels(Collections.singleton(subModelRoot1), Collections.singleton(subModelRoot2));
     }
 
-    public boolean compareModels(Collection<Package> l_package1, Collection<Package> l_package2) {
+    public boolean compareModels(Collection<Package> model1Packages, Collection<Package> model2Packages) {
         //TODO: areSizeEquals => size of comparable elements (filter(noNeedToCompare))
-        boolean areSizeEquals = l_package1.size() == l_package2.size();
+        boolean areSizeEquals = model1Packages.size() == model2Packages.size();
         if (areSizeEquals) {
-            Iterator packageIterator = l_package1.iterator();
-
-            while(packageIterator.hasNext()) {
-                Package package1 = (Package)packageIterator.next();
-                boolean findAnySimilarPackage = l_package2.stream().anyMatch(package2 -> areElementsEqual(package1, package2));
+            for (Package package1 : model1Packages) {
+                boolean findAnySimilarPackage = model2Packages.stream().anyMatch(package2 -> areElementsEqual(package1, package2));
                 if (!findAnySimilarPackage)
                     return false;
             }
         }
 
-//        return areSizeEquals();
         return areSizeEquals && noChangesFound();
     }
 
@@ -83,8 +80,8 @@ public class ElementModelComparator implements ModelComparator {
         if (!areAttributesEqual(elem1, elem2))
             areEquals = false;
 
-        List<Reference> l_ref = ModelReflection.getReferences((Class) abstractRefObject1.refClass().refMetaObject());
-        if(!areReferencesEqual(l_ref, abstractRefObject1, abstractRefObject2))
+        List<Reference> references = ModelReflection.getReferences((Class) abstractRefObject1.refClass().refMetaObject());
+        if(!areReferencesEqual(references, abstractRefObject1, abstractRefObject2))
             areEquals = false;
         return areEquals;
     }
@@ -107,23 +104,23 @@ public class ElementModelComparator implements ModelComparator {
         AbstractRefObject refE2 = (AbstractRefObject)elem2;
 
         Class classE1 = (Class)refE1.refClass().refMetaObject();
-        List l_attrE1 = ModelReflection.getInstance(elem1).getAttributes(classE1);
-        Iterator it_attrE1 = l_attrE1.iterator();
+        List<MofAttribute> attributesE1 = ModelReflection.getInstance(elem1).getAttributes(classE1);
 
         String attributeName;
         Object valueAttr1;
         Object valueAttr2;
         boolean areAttributesEqual = true;
+        Iterator mofAttributeIterator = attributesE1.iterator();
         do {
             boolean isRefE1SetAttributeName;
             boolean isRefE2SetAttributeName;
             do {
                 //Filter on comparable attributes
                 do {
-                    if (!it_attrE1.hasNext())
+                    if (!mofAttributeIterator.hasNext())
                         return areAttributesEqual;
 
-                    StructuralFeature e1Attribute = (StructuralFeature)it_attrE1.next();
+                    StructuralFeature e1Attribute = (StructuralFeature)mofAttributeIterator.next();
                     attributeName = e1Attribute.getName();
                 } while(noNeedToCompareAttribute(attributeName, elem1, elem2));
 
@@ -138,7 +135,7 @@ public class ElementModelComparator implements ModelComparator {
                 areAttributesEqual = false;
             }
 
-        } while(it_attrE1.hasNext());
+        } while(mofAttributeIterator.hasNext());
 
         return areAttributesEqual;
     }
@@ -154,19 +151,19 @@ public class ElementModelComparator implements ModelComparator {
     /**
      *
      * Example: Compare Block A and Block B, it will compare all references values like ownedElements, ownedProperties, owner etc.
-     * @param i_reference1 (reference field to compare) initialized with ModelReflection.getReferences((Class) ref1.refClass().refMetaObject());
+     * @param ref1Iterable (reference field to compare) initialized with ModelReflection.getReferences((Class) ref1.refClass().refMetaObject());
      * @param ref1 (Element)
      * @param ref2 (Element)
      * @return
      */
-    private boolean areReferencesEqual(Iterable<Reference> i_reference1, AbstractRefObject ref1, AbstractRefObject ref2) {
+    private boolean areReferencesEqual(Iterable<Reference> ref1Iterable, AbstractRefObject ref1, AbstractRefObject ref2) {
         Collection<String> ref1DerivedFeaturesTitles = ref1.getDerivedFeatures();
-        Iterator itRef1 = i_reference1.iterator();
+        Iterator itRef1 = ref1Iterable.iterator();
 
         String refName;
         boolean isCompositeRef;
-        Object l_ref2Values = null;
-        Object l_ref1Values = null;
+        Object ref2Values = null;
+        Object ref1Values = null;
 
         boolean areReferenceEquals = true;
 
@@ -210,14 +207,14 @@ public class ElementModelComparator implements ModelComparator {
 
             if (ref1Value != null && ref2Value != null) {
                 if (ref1Value instanceof Collection) {
-                    l_ref1Values = ref1Value;
-                    l_ref2Values = ref2Value;
+                    ref1Values = ref1Value;
+                    ref2Values = ref2Value;
                 } else {
-                    l_ref1Values = Collections.singletonList((Element) ref1Value);
-                    l_ref2Values = Collections.singletonList((Element) ref2Value);
+                    ref1Values = Collections.singletonList((Element) ref1Value);
+                    ref2Values = Collections.singletonList((Element) ref2Value);
                 }
 
-                if(!checkIfReferenceEquals(refName, isCompositeRef, (Element) ref1, (Element) ref2, (Collection) l_ref1Values, (Collection) l_ref2Values, diffResult, areReferenceEquals))
+                if(!checkIfReferenceEquals(refName, isCompositeRef, (Element) ref1, (Element) ref2, (Collection) ref1Values, (Collection) ref2Values, diffResult, areReferenceEquals))
                     areReferenceEquals = false;
                 continue;
             }
@@ -232,7 +229,7 @@ public class ElementModelComparator implements ModelComparator {
                     diffResult = "Added" + diffResult + getFullName((Element) ref1Value);
                 }
 
-                if (!areObjectReferencesEqual(refName, isCompositeRef, (Element) ref1, (Element) ref2, (Collection) l_ref1Values, (Collection) l_ref2Values)) {
+                if (!areObjectReferencesEqual(refName, isCompositeRef, (Element) ref1, (Element) ref2, (Collection) ref1Values, (Collection) ref2Values)) {
                     addChange((Element) ref1, (Element) ref2, diffResult);
                     areReferenceEquals = false;
                 }
@@ -242,22 +239,17 @@ public class ElementModelComparator implements ModelComparator {
 
         // I WERE HERE
         } while (itRef1.hasNext());
-
-
-
         return areReferenceEquals;
     }
 
-
-
-    public boolean checkIfReferenceEquals(String refName, boolean isCompositeRef, Element ref1, Element ref2, Collection l_ref1Values, Collection l_ref2Values, String diffResult, boolean areReferenceEquals){
+    public boolean checkIfReferenceEquals(String refName, boolean isCompositeRef, Element ref1, Element ref2, Collection ref1Values, Collection ref2Values, String diffResult, boolean areReferenceEquals){
         if(diffResult == null) //Initialize diffResult //TODO REFACTOR THIS
             diffResult = "- ";
 
         if(noNeedToCompareAttribute(refName,  ref1,  ref2))
             return true;
 
-        if(!areObjectReferencesEqual(refName, isCompositeRef, ref1, ref2, l_ref1Values, l_ref2Values)) {
+        if(!areObjectReferencesEqual(refName, isCompositeRef, ref1, ref2, ref1Values, ref2Values)) {
             Object ref1Value = ((AbstractRefObject) ref1).get(refName);
             Object ref2Value = ((AbstractRefObject) ref2).get(refName);
             Element e1 = null;
@@ -283,55 +275,46 @@ public class ElementModelComparator implements ModelComparator {
         return areReferenceEquals;
     }
 
-
-
-
-    protected boolean areObjectReferencesEqual(String refName, boolean isCompositeRef, Element elemA, Element elemB, Collection<Element> l_ref1Values, Collection<Element> l_ref2Values) {
-//        boolean noChangesFound = noChangesFound();
+    protected boolean areObjectReferencesEqual(String refName, boolean isCompositeRef, Element elemA, Element elemB, Collection<Element> ref1Values, Collection<Element> ref2Values) {
         boolean noChangesFound = true;
 
-
-//        if(elemA instanceof  NamedElement)
-//            ColorPrinter.status("ELEMN 1 CHECKKED: " + elemA.getClassType().getSimpleName() + " -  " +((NamedElement) elemA).getName());
-
-//        boolean noChangesFound = true;
-        ArrayList l_refElements1 = new ArrayList(l_ref1Values);
-        ArrayList l_refElements2 = new ArrayList(l_ref2Values);
-        ArrayList newArraylist = new ArrayList(l_refElements1.size() + l_refElements2.size());
-        Iterator itRef1 = l_refElements1.iterator();
+        ArrayList refElements1 = new ArrayList(ref1Values);
+        ArrayList refElements2 = new ArrayList(ref2Values);
+        ArrayList newArraylist = new ArrayList(refElements1.size() + refElements2.size());
+        Iterator itRef1 = refElements1.iterator();
 
         Element bestMatch;
         while(itRef1.hasNext()) {
             Element valueAttr1 = (Element) itRef1.next();
-            List l_equivalantElem = (List)l_refElements2.stream()
+            List equivalentElems = (List)refElements2.stream()
                     .filter(elem -> areSameObjects(valueAttr1, (Element) elem))
                     .collect(Collectors.toList());
 
-            if (!l_equivalantElem.isEmpty()) {
+            if (!equivalentElems.isEmpty()) {
                 newArraylist.add(valueAttr1);
                 itRef1.remove();
-                bestMatch = findBestMatchingElement(valueAttr1, l_equivalantElem);
+                bestMatch = findBestMatchingElement(valueAttr1, equivalentElems);
                 newArraylist.add(bestMatch);
-                l_refElements2.remove(bestMatch);
+                refElements2.remove(bestMatch);
             }
         }
 
-        removeNotComparable(l_refElements1);
-        removeNotComparable(l_refElements2);
+        removeNotComparable(refElements1);
+        removeNotComparable(refElements2);
         Element elem1;
         if (isCompositeRef) {
-            addNewElements(l_refElements2, refName, elemA, elemB);
-            addRemovedElements(l_refElements1, refName, elemA, elemB);
+            addNewElements(refElements2, refName, elemA, elemB);
+            addRemovedElements(refElements1, refName, elemA, elemB);
         } else {
-            Iterator itRefElem = l_refElements1.iterator();
-            if(!l_refElements2.isEmpty() || !l_refElements1.isEmpty())
+            Iterator itRefElem = refElements1.iterator();
+            if(!refElements2.isEmpty() || !refElements1.isEmpty())
                 noChangesFound = false;
             while(itRefElem.hasNext()) {
                 elem1 = (Element)itRefElem.next();
                 addChange(elemA, elemB, "Removed reference " + refName + " to " + getFullName(elem1));
             }
 
-            itRefElem = l_refElements2.iterator();
+            itRefElem = refElements2.iterator();
             while(itRefElem.hasNext()) {
                 elem1 = (Element)itRefElem.next();
                 addChange(elemA, elemB, "Added reference " + refName + " to " + getFullName(elem1));
@@ -350,20 +333,20 @@ public class ElementModelComparator implements ModelComparator {
 //        return noChangesFound();
     }
 
-    private Element findBestMatchingElement(Element element, List<Element> l_elemToMatch) {
-        List<Element> l_matchingElements = new ArrayList();
-        if (l_elemToMatch.size() > 1) {
+    private Element findBestMatchingElement(Element element, List<Element> elemsToMatch) {
+        List<Element> matchingElements = new ArrayList();
+        if (elemsToMatch.size() > 1) {
             boolean isLoggingEnabled = isLoggingEnabled();
             setLoggingEnabled(false);
-            l_matchingElements = l_elemToMatch.stream().filter(var2x -> areAttributesEqual(element, var2x)).collect(Collectors.toList());
-            if (((List)l_matchingElements).size() > 1) {
-                ((List)l_matchingElements).removeIf((var1x) -> !equalsChildStructure((Element) var1x, element));
+            matchingElements = elemsToMatch.stream().filter(var2x -> areAttributesEqual(element, var2x)).collect(Collectors.toList());
+            if (((List)matchingElements).size() > 1) {
+                ((List)matchingElements).removeIf((var1x) -> !equalsChildStructure((Element) var1x, element));
             }
 
             setLoggingEnabled(isLoggingEnabled);
         }
 
-        return !(l_matchingElements).isEmpty() ? (l_matchingElements).get(0) : l_elemToMatch.get(0);
+        return !(matchingElements).isEmpty() ? (matchingElements).get(0) : elemsToMatch.get(0);
     }
 
     private static boolean equalsChildStructure(Element var0, Element var1) {
@@ -462,14 +445,14 @@ public class ElementModelComparator implements ModelComparator {
                 if (!areSameObjects(type1, type2))
                     return false;
 
-                Collection c_e1Ends = propE1.getEnd();
-                Collection c_e2Ends = prop2.getEnd();
-                if (c_e1Ends.size() != c_e2Ends.size())
+                Collection e1Ends = propE1.getEnd();
+                Collection e2Ends = prop2.getEnd();
+                if (e1Ends.size() != e2Ends.size())
                     return false;
 
-                if (!c_e1Ends.isEmpty()) {
-                    ConnectorEnd ceE1 = (ConnectorEnd)c_e1Ends.iterator().next();
-                    ConnectorEnd ceE2 = (ConnectorEnd)c_e2Ends.iterator().next();
+                if (!e1Ends.isEmpty()) {
+                    ConnectorEnd ceE1 = (ConnectorEnd)e1Ends.iterator().next();
+                    ConnectorEnd ceE2 = (ConnectorEnd)e2Ends.iterator().next();
                     if (!areSameObjects(ceE1, ceE2))
                         return false;
 
@@ -624,25 +607,20 @@ public class ElementModelComparator implements ModelComparator {
 
     }
 
-    private void addNewElements(Iterable<Element> l_elements, String changeDesc, Element elem1, Element elem2) {
+    private void addNewElements(Iterable<Element> elements, String changeDesc, Element elem1, Element elem2) {
         if (isLoggingEnabled()) {
 
-            for (Element var6 : l_elements) {
-                //                if(var6 instanceof Property) {
-//                    StringBuilder newDesc = new StringBuilder(changeDesc).append("\n\t");
-//                    newDesc.append("value : ");
-//                    newDesc.append(((Property) var6).getDefaultValue());
-//                }
+            for (Element var6 : elements) {
                 added.add(new Entry(var6, changeDesc, elem1, elem2));
             }
         }
 
     }
 
-    private void addRemovedElements(Iterable<Element> l_elements, String changeDesc, Element elem1, Element elem2) {
+    private void addRemovedElements(Iterable<Element> elements, String changeDesc, Element elem1, Element elem2) {
         if (isLoggingEnabled()) {
 
-            for (Element var6 : l_elements) {
+            for (Element var6 : elements) {
                 removed.add(new Entry(var6, changeDesc, elem1, elem2));
             }
         }

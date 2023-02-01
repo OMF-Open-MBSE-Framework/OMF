@@ -31,7 +31,7 @@ public class TemplateMDAction extends AGenericAction {
 
 
     @Override
-    public void actionToPerform(List<Element> l_selected) {
+    public void actionToPerform(List<Element> selectedElements) {
 
     }
 }

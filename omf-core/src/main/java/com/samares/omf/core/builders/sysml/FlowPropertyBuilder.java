@@ -30,7 +30,7 @@ public class FlowPropertyBuilder extends PropertyBuilder {
 
     public FlowPropertyBuilder(Property property) {
         super(property);
-        stereotype(Profile.getSysml().flowProperty().getStereotype());
+        stereotype(Profile.getInstance().getSysml().flowProperty().getStereotype());
     }
 
     public FlowPropertyBuilder(FlowPropertyBuilder flowPropertyBuilder) {
@@ -125,8 +125,8 @@ public class FlowPropertyBuilder extends PropertyBuilder {
     }
 
     @Override
-    public FlowPropertyBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public FlowPropertyBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 

@@ -30,7 +30,7 @@ public class ProxyPortBuilder extends PortBuilder {
 
     public ProxyPortBuilder(Port port) {
         super(port);
-        stereotype(Profile.getSysml().proxyPort().getStereotype());
+        stereotype(Profile.getInstance().getSysml().proxyPort().getStereotype());
     }
 
     public ProxyPortBuilder(ProxyPortBuilder proxyPortBuilder) {
@@ -178,8 +178,8 @@ public class ProxyPortBuilder extends PortBuilder {
     }
 
     @Override
-    public ProxyPortBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public ProxyPortBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 

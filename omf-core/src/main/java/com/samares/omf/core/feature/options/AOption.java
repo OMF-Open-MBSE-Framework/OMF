@@ -33,11 +33,11 @@ public abstract class AOption implements IOption {
 
     
     private List<AOptionListener> registeredListener = new ArrayList<>();
-    private List<AOptionListener> l_listenerToRegister = new ArrayList<>();
+    private List<AOptionListener> listenerToRegister = new ArrayList<>();
 
 
     public void addListenerToRegister(AOptionListener listener) {
-        l_listenerToRegister.add(listener);
+        listenerToRegister.add(listener);
     }
     public Property getRegisteredProperty() {
         return optionCategory.getProperty(property.getID());
@@ -143,7 +143,7 @@ public abstract class AOption implements IOption {
             OMFUtils.currentProject.getOptions().addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, property);
         FeatureProjectOptionsConfigurator.getInstance().addOption(this);
 //        optionCategory.addProperty(property);
-        l_listenerToRegister.forEach(this::addListener);
+        listenerToRegister.forEach(this::addListener);
     }
 
     private void registerEnvOption() {
@@ -160,7 +160,7 @@ public abstract class AOption implements IOption {
             optionCategory = getOrCreateEnvCategory(uriOptions, categoryName);
         }
 
-        l_listenerToRegister.forEach(this::addListener);
+        listenerToRegister.forEach(this::addListener);
     }
 
     private AbstractPropertyOptionsGroup getOrCreateEnvCategory(String uriOptions, String categoryName) {
@@ -236,8 +236,8 @@ public abstract class AOption implements IOption {
         this.optionCategory = optionCategory;
     }
 
-    public List<AOptionListener> getL_listenerToRegister() {
-        return l_listenerToRegister;
+    public List<AOptionListener> getListenerToRegister() {
+        return listenerToRegister;
     }
     @Override
     public String getCategoryName() {

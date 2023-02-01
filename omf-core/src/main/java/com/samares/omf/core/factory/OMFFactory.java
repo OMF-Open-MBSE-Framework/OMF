@@ -61,7 +61,7 @@ public class OMFFactory extends AMagicDrawFactory {
         boolean isMotherDiagramBorder = mother instanceof Port && mother.getOwner() == diagram.getOwner();
         Element elementToFind = mother instanceof Port ? mother.getOwner() : mother;
 
-        ArrayList<Property> l_parts = new ArrayList<Property>();
+        ArrayList<Property> parts = new ArrayList<Property>();
         PresentationElement parentItemPEE = sonPEE.getParent();
 
         while (parentItemPEE.getElement() == elementToFind) {
@@ -69,20 +69,20 @@ public class OMFFactory extends AMagicDrawFactory {
                 throw new OMFException("[Connection] no presentation element for mother element: " + mother.getName() + " and son: " + son.getName(), GenericException.ECriticality.CRITICAL);
 
             if (sonPEE instanceof PartView)
-                l_parts.add(((PartView) sonPEE).getElement());
+                parts.add(((PartView) sonPEE).getElement());
 
             parentItemPEE = sonPEE.getParent();
         }
 
         if (!(mother instanceof Port))   //Mother == Part property => last element of the list
-            l_parts.add(mother);
-        Collections.reverse(l_parts);
+            parts.add(mother);
+        Collections.reverse(parts);
 
-        return l_parts;
+        return parts;
     }
 
     public void setInterfaceDirection(Class originalIinterface, SysMLProfile.FlowDirectionKindEnum direction) {
-        originalIinterface.getOwnedAttribute().forEach(property -> Profile.getSysml().flowProperty().setDirection(property, direction));
+        originalIinterface.getOwnedAttribute().forEach(property -> Profile.getInstance().getSysml().flowProperty().setDirection(property, direction));
     }
 
 
@@ -90,9 +90,9 @@ public class OMFFactory extends AMagicDrawFactory {
     //Update Direction
 
     public Boolean isInterfaceOut(Type type) {
-        boolean isIn = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
-        boolean isOut = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
-        boolean isInOut = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.INOUT));
+        boolean isIn = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
+        boolean isOut = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
+        boolean isInOut = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.INOUT));
 
         if (isIn && isInOut || isInOut)
             return false;
@@ -109,22 +109,22 @@ public class OMFFactory extends AMagicDrawFactory {
 
     public void conjugateFlowProperty(Property flowProperty) {
 //        SysML.FlowProperty.setName(NamingRules.getFfpBuilderName().name(SysML.FlowProperty.getName()).switchPrefixFromName().switchSuffixFromName().build());
-        if(Profile.getSysml().flowProperty().getDirection(flowProperty) == SysMLProfile.FlowDirectionKindEnum.IN) {
-            Profile.getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
+        if(Profile.getInstance().getSysml().flowProperty().getDirection(flowProperty) == SysMLProfile.FlowDirectionKindEnum.IN) {
+            Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
 //            SysML.FlowProperty.setName(NamingRules.getFfpBuilderName().name(SysML.FlowProperty.getName()).outPrefix().outSuffix().build());
         } else {
-            Profile.getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.IN);
+            Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.IN);
 //            SysML.FlowProperty.setName(NamingRules.getFfpBuilderName().name(SysML.FlowProperty.getName()).inPrefix().inSuffix().build());
         }
     }
 
     //Compatibility
-    public Port getCompatibleFlow(Port pa, List<Port> l_fiPorts) {
-        List<Port> compatiblePort = getElementWithCompatibleType(pa, l_fiPorts);
+    public Port getCompatibleFlow(Port pa, List<Port> ports) {
+        List<Port> compatiblePort = getElementWithCompatibleType(pa, ports);
 
 
         if (null == compatiblePort || compatiblePort.size() > 1)
-            compatiblePort = getElementWithCompatibleName(pa, l_fiPorts);
+            compatiblePort = getElementWithCompatibleName(pa, ports);
 
         if (null == compatiblePort || compatiblePort.size() > 1)
             return null;
@@ -134,7 +134,7 @@ public class OMFFactory extends AMagicDrawFactory {
     public List<Port> getElementWithCompatibleType(Port portA, List<Port> ports) {
         Type portAType = Objects.requireNonNull(portA.getType(), "Can't find type on port " + portA.getName());
         Optional<Property> optPropA = portAType.getOwnedElement().stream()
-                .filter(Profile.getSysml().flowProperty()::is)
+                .filter(Profile.getInstance().getSysml().flowProperty()::is)
                 .map(Property.class::cast)
                 .findFirst();
 
@@ -147,7 +147,7 @@ public class OMFFactory extends AMagicDrawFactory {
         ArrayList<Port> matchPort = new ArrayList<>();
         for (Port portB : ports) {
             Type portBType = Objects.requireNonNull(portB.getType(), "Can't find type on port " + portB.getName());
-            if (portBType.getOwnedElement().stream().allMatch(Profile.getSysml().flowProperty()::is))
+            if (portBType.getOwnedElement().stream().allMatch(Profile.getInstance().getSysml().flowProperty()::is))
                 break;
 
             Property flowB = (Property) portBType.getOwnedElement().iterator().next();
@@ -201,8 +201,8 @@ public class OMFFactory extends AMagicDrawFactory {
             pathSource = new ArrayList<>(ConnectorUtils.calculateNestedPath(new ArrayList<>(), part, owner, availableParts));
 
         if (port != null && port.getOwner() != null && !owner.equals(port.getOwner()) && pathSource != null) {
-            StereotypesHelper.addStereotype(ce, Profile.getSysml().nestedConnectorEnd().getStereotype());
-            Profile.getSysml().elementPropertyPath().setPropertyPath(ce, pathSource);
+            StereotypesHelper.addStereotype(ce, Profile.getInstance().getSysml().nestedConnectorEnd().getStereotype());
+            Profile.getInstance().getSysml().elementPropertyPath().setPropertyPath(ce, pathSource);
             ce.setPartWithPort(part);
         }
     }
@@ -210,7 +210,7 @@ public class OMFFactory extends AMagicDrawFactory {
     public void setNestedConnectorEnd(ConnectorEnd ce, Property part, Port port) {
         ce.setRole(port);
 
-        StereotypesHelper.addStereotype(ce, Profile.getSysml().nestedConnectorEnd().getStereotype());
+        StereotypesHelper.addStereotype(ce, Profile.getInstance().getSysml().nestedConnectorEnd().getStereotype());
         StereotypesHelper.setStereotypePropertyValue(ce, StereotypesHelper.getFirstVisibleStereotype(ce), "propertyPath", part);
 
         ce.setPartWithPort(part);

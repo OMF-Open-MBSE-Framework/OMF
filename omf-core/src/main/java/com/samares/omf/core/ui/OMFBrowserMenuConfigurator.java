@@ -55,12 +55,12 @@ public class OMFBrowserMenuConfigurator extends FeatureActionConfigurator implem
             final boolean isPreconditionOk = (tree.getSelectedNode() == null) || Application.getInstance().getProject() == null;
             if (isPreconditionOk)
                 return;
-            ArrayList<MDActionsCategory> l_category = new ArrayList();
+            ArrayList<MDActionsCategory> mdActionsCategories = new ArrayList();
 
 
             betaCategory = new MDActionsCategory("[Beta] beta features", "[Beta] beta features");
             betaCategory.setNested(true);
-            l_category.add(betaCategory);
+            mdActionsCategories.add(betaCategory);
 
             devCategory = new MDActionsCategory("Dev", "Dev");
             devCategory.setNested(true);
@@ -76,7 +76,7 @@ public class OMFBrowserMenuConfigurator extends FeatureActionConfigurator implem
 
             configureFeatureActions(actionsManager);
 
-            l_category.stream().filter(cat -> !cat.isEmpty()).forEach(cat -> actionsManager.addCategory(cat));
+            mdActionsCategories.stream().filter(cat -> !cat.isEmpty()).forEach(cat -> actionsManager.addCategory(cat));
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, false);
         }
@@ -96,7 +96,7 @@ public class OMFBrowserMenuConfigurator extends FeatureActionConfigurator implem
         return null;
     }
 
-    private void addDebug_optionsAction(MDActionsCategory betaCategory) {
+    private void addDebugOptionsAction(MDActionsCategory betaCategory) {
         for (Method setter : OMFEnvironmentOptionsGroup.class.getDeclaredMethods()) {
             if (setter.getName().startsWith("set")) {
                 Optional<Method> getter = Arrays.stream(OMFEnvironmentOptionsGroup.class.getDeclaredMethods())

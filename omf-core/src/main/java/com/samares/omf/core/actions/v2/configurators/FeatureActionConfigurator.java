@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 public class FeatureActionConfigurator {
 
-    List<AGenericAction> l_genericActions = new ArrayList<>();
+    List<AGenericAction> genericActions = new ArrayList<>();
 
 
     protected void configureFeatureActions(ActionsManager actionsManager) {
@@ -26,7 +26,7 @@ public class FeatureActionConfigurator {
         resetMDActions(actionsManager);
         if(BrowserContextAMConfigurator.class.isInstance(this)) {
             check = AGenericAction::checkBrowserAvailability;
-            l_genericActions.stream()
+            genericActions.stream()
                     .filter(check)
                     .forEach(action -> this.registerBrowserAction(actionsManager, findOrCreateCategory(actionsManager, action), action));
 //            triggerListener(ConfiguratorKind.BROWSER);
@@ -35,7 +35,7 @@ public class FeatureActionConfigurator {
 
         if(DiagramContextAMConfigurator.class.isInstance(this)) {
             check = AGenericAction::checkDiagramAvailability;
-            l_genericActions.stream()
+            genericActions.stream()
                     .filter(check)
                     .forEach(action -> this.registerDiagramAction(actionsManager, findOrCreateCategory(actionsManager, action), action));
         }
@@ -43,7 +43,7 @@ public class FeatureActionConfigurator {
 
         // registering MenuActions
         if(OMFMainMenuConfigurator.class.isInstance(this)) {
-            l_genericActions.stream()
+            genericActions.stream()
                     .filter(AGenericAction::isMenuAction)
                     .forEach(action -> this.registerMenuAction(actionsManager, findOrCreateCategory(actionsManager, action), action, action.checkMenuAvailability()));
 //            triggerListener(ConfiguratorKind.MENU);
@@ -54,7 +54,7 @@ public class FeatureActionConfigurator {
     public void resetMDActions(ActionsManager actionsManager) {
         List<ActionsCategory> registeredCategories = actionsManager.getCategories();
 
-        l_genericActions.stream()
+        genericActions.stream()
                         .forEach(action -> findCategory(actionsManager, action).ifPresent(category ->
                             action.getAllActions().forEach(category::removeAction)));
 
@@ -137,16 +137,16 @@ public class FeatureActionConfigurator {
 
 
     public void addNewAction(AGenericAction action){
-        l_genericActions.add(action);
+        genericActions.add(action);
     }
     public void removeNewAction(AGenericAction action){
-        l_genericActions.remove(action);
+        genericActions.remove(action);
     }
     public void addNewAction(List<AGenericAction> actions){
-        l_genericActions.addAll(actions);
+        genericActions.addAll(actions);
     }
     public void removeAction(List<AGenericAction> actions){
-        l_genericActions.removeAll(actions);
+        genericActions.removeAll(actions);
     }
 
 

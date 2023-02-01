@@ -20,9 +20,9 @@ package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
  public class AnalysisRuleEngine extends RuleEngine {
      public AnalysisRuleEngine(){
          super();
-         List l_r = Arrays.asList(
+         List rules = Arrays.asList(
                  new PortCreatedFromConnectionRule("onPortCreationFromConnector",   null)
          );
-         addAllRules(l_r);
+         addAllRules(rules);
      }
  }

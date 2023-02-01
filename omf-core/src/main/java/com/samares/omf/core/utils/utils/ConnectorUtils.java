@@ -29,8 +29,8 @@ public class ConnectorUtils {
      */
     public static Class getCommonAncestor(Property part1, Property part2, Class untilObject, List<Property> availableParts) throws OMFException {
         Class commonAncestor = null;
-        List<Property> nestedPart1List = old_calculateNestedPath(new ArrayList<>(), part1, untilObject, availableParts);
-        List<Property> nestedPart2List = old_calculateNestedPath(new ArrayList<>(), part2, untilObject, availableParts);
+        List<Property> nestedPart1List = oldCalculateNestedPath(new ArrayList<>(), part1, untilObject, availableParts);
+        List<Property> nestedPart2List = oldCalculateNestedPath(new ArrayList<>(), part2, untilObject, availableParts);
 
         for (Property p : nestedPart1List) {
             if (nestedPart2List.contains(p)) {
@@ -76,9 +76,9 @@ public class ConnectorUtils {
      * @param availableParts the available parts
      * @return the list
      */
-    public static List<Property> old_calculateNestedPath(List<Property> nestedPath, Property currentPart,
-                                                         Class untilObject,
-                                                         List<Property> availableParts) throws OMFException {
+    public static List<Property> oldCalculateNestedPath(List<Property> nestedPath, Property currentPart,
+                                                        Class untilObject,
+                                                        List<Property> availableParts) throws OMFException {
         if (untilObject.equals(currentPart.getOwner())) {
             nestedPath.add(currentPart);
             return nestedPath;
@@ -120,8 +120,8 @@ public class ConnectorUtils {
         }
     }
 
-    public static ConnectableElement getHighestConnectableElementFromConnectorList(List<Connector> l_inConnector, Element commonAncestor, List<Property> listPropertyPath) {
-        Optional<ConnectorEnd> optCE = l_inConnector.stream()
+    public static ConnectableElement getHighestConnectableElementFromConnectorList(List<Connector> inConnectors, Element commonAncestor, List<Property> listPropertyPath) {
+        Optional<ConnectorEnd> optCE = inConnectors.stream()
                 .map(Connector::getEnd)
                 .flatMap(Collection::stream)
                 .filter(ce -> ce.getPartWithPort() == null)
@@ -137,8 +137,8 @@ public class ConnectorUtils {
     }
 
     public static boolean areFlowPropertyDirectionCompatible(Property a, Property b, boolean isMotherToSon) {
-        SysMLProfile.FlowDirectionKindEnum dirA = Profile.getSysml().flowProperty().getDirection(a);
-        SysMLProfile.FlowDirectionKindEnum dirB = Profile.getSysml().flowProperty().getDirection(b);
+        SysMLProfile.FlowDirectionKindEnum dirA = Profile.getInstance().getSysml().flowProperty().getDirection(a);
+        SysMLProfile.FlowDirectionKindEnum dirB = Profile.getInstance().getSysml().flowProperty().getDirection(b);
 
         if (isMotherToSon) {
             return dirA == dirB;

@@ -11,23 +11,23 @@ public abstract class AFeature implements MDFeature{
 
     protected String name;
     protected boolean isActivated;
-    private List<AGenericAction> l_mdActions;
-    private List<IFeatureRuleEngine> l_liveActions;
+    private List<AGenericAction> mdActions;
+    private List<IFeatureRuleEngine> liveActions;
 
-    private List<IOption> l_options;
+    private List<IOption> options;
 
     public AFeature(String name){
         this.name = name;
-        this.l_options      = initOptions();
-        this.l_mdActions    = initFeatureActions();
-        this.l_liveActions  = initLiveActions();
+        this.options      = initOptions();
+        this.mdActions = initFeatureActions();
+        this.liveActions = initLiveActions();
     }
 
-    public AFeature(String name, List<AGenericAction> l_mdActions,List<IFeatureRuleEngine> l_liveActions, List<IOption> l_options){
+    public AFeature(String name, List<AGenericAction> mdActions, List<IFeatureRuleEngine> liveActions, List<IOption> options){
         this.name = name;
-        this.l_options = new ArrayList<>( l_options);
-        this.l_mdActions = new ArrayList<>(l_mdActions);
-        this.l_liveActions = new ArrayList<>( l_liveActions);
+        this.options = new ArrayList<>( options);
+        this.mdActions = new ArrayList<>(mdActions);
+        this.liveActions = new ArrayList<>(liveActions);
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class AFeature implements MDFeature{
 
     @Override
     public List<AGenericAction> getMDActions() {
-        return l_mdActions;
+        return mdActions;
     }
 
     @Override
@@ -73,12 +73,12 @@ public abstract class AFeature implements MDFeature{
 
     @Override
     public List<IFeatureRuleEngine> getLiveActions() {
-        return l_liveActions;
+        return liveActions;
     }
 
     @Override
     public List<IOption> getOptions() {
-        return l_options;
+        return options;
     }
 
 

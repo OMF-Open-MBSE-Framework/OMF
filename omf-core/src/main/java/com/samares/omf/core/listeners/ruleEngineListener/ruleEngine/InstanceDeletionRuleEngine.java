@@ -13,9 +13,9 @@ public class InstanceDeletionRuleEngine extends RuleEngine {
 
     public InstanceDeletionRuleEngine(){
         super();
-        List l_r = Arrays.asList(
+        List rules = Arrays.asList(
 //                new Rule("ruleName", "stereotypeName")
         );
-        addAllRules(l_r);
+        addAllRules(rules);
     }
 }

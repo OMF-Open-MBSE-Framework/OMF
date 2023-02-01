@@ -26,10 +26,10 @@ public class ExampleMDAction2 extends AGenericAction {
 
 
     @Override
-    public void actionToPerform(List<Element> l_selected) {
-        if(l_selected == null)
+    public void actionToPerform(List<Element> selectedElements) {
+        if(selectedElements == null)
             return;
-        l_selected.stream()
+        selectedElements.stream()
                 .filter(NamedElement.class::isInstance)
                 .map(NamedElement.class::cast)
                 .forEach(e -> ColorPrinter.status(e.getName()));

@@ -43,7 +43,7 @@ public class ConnectionDirector implements IGenericBuilder {
     List<Element> dstPropertyPath;
 
 
-    ArrayList<Connector> l_createdConnectors;
+    ArrayList<Connector> createdConnectors;
 
     private boolean directConnection;
     private ConnectorBuilder defaultConnectorBuilder;
@@ -59,7 +59,7 @@ public class ConnectionDirector implements IGenericBuilder {
     //TODO Refactor constructors
     public ConnectionDirector() {
         super();
-        this.l_createdConnectors = new ArrayList<>();
+        this.createdConnectors = new ArrayList<>();
     }
 
     public ConnectionDirector src(AGenericBuilder srcBuilder) {
@@ -121,16 +121,16 @@ public class ConnectionDirector implements IGenericBuilder {
     public List<Connector> build() throws BuilderException {
         preBuild();
 
-        List<Connector> l_connectors = new ArrayList<>();
+        List<Connector> connectors = new ArrayList<>();
         if (srcBuilder != null)
             src = (ConnectableElement) srcBuilder.build();
         if (dstBuilder != null)
             dst = (ConnectableElement) dstBuilder.build();
 
 //        if(directConnection)
-//            l_connectors.add(createDirectConnection());
+//            connectors.add(createDirectConnection());
 
-        return l_connectors;
+        return connectors;
     }
 
     public ConnectionDirector createDirectConnection() throws BuilderException {
@@ -175,7 +175,7 @@ public class ConnectionDirector implements IGenericBuilder {
 
     public ConnectionDirector createDirectConnectorPath(ConnectorBuilder connectorBuilder) throws OMFException, BuilderException {
         Connector connector = connectorBuilder.build();
-        l_createdConnectors.add(connector);
+        createdConnectors.add(connector);
         return this;
     }
 
@@ -196,7 +196,7 @@ public class ConnectionDirector implements IGenericBuilder {
     }
 
     public ArrayList<Connector> getConnectors() {
-        return l_createdConnectors;
+        return createdConnectors;
     }
 
     public ConnectionDirector withDefaultConnectionBuilder(ConnectorBuilder connectorBuilder) {
@@ -231,12 +231,12 @@ public class ConnectionDirector implements IGenericBuilder {
     }
 
     public ConnectionDirector withRefresh() {
-        InternalDiagramManagement.refreshAllConnectors(l_createdConnectors, DiagramUtils.getOpenedDiagram());
+        InternalDiagramManagement.refreshAllConnectors(createdConnectors, DiagramUtils.getOpenedDiagram());
         return this;
     }
 
-    public ConnectionDirector connectConnectionFromSonToMother(Property src, ConnectorBuilder templateConnectorBuilder, Property dst, List<Element> l_sonPropertyPath) throws BuilderException {
-        List<Element> partList = l_sonPropertyPath.stream()
+    public ConnectionDirector connectConnectionFromSonToMother(Property src, ConnectorBuilder templateConnectorBuilder, Property dst, List<Element> sonPropertyPaths) throws BuilderException {
+        List<Element> partList = sonPropertyPaths.stream()
                 .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
                 .collect(Collectors.toList());
         partList.add(0, src);
@@ -266,7 +266,7 @@ public class ConnectionDirector implements IGenericBuilder {
                     .src((ConnectableElement) connectorBuilder.getDstBuilder()
                             .getElementToBuild());
 
-            l_createdConnectors.add(connector);
+            createdConnectors.add(connector);
         }
 
         return this;

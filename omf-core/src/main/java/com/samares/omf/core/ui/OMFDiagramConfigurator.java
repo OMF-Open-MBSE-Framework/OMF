@@ -37,7 +37,7 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
 //    private MDActionsCategory betaCategory = null;
 //    private MDActionsCategory debugCategory = null;
 
-    List<AGenericAction> l_genericActions = new ArrayList<>();
+    List<AGenericAction> genericActions = new ArrayList<>();
 
 
     public OMFDiagramConfigurator() {
@@ -60,15 +60,15 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
                 return;
 
 
-//            ArrayList<MDActionsCategory> l_category = new ArrayList();
+//            ArrayList<MDActionsCategory> categories = new ArrayList();
 
 //            betaCategory = new MDActionsCategory("[BETA] ", "[BETA] OMF");
 //            betaCategory.setNested(true);
-//            l_category.add(betaCategory);
+//            categories.add(betaCategory);
 //
 //            debugCategory = new MDActionsCategory("[Debug] ", "[Debug] OMF");
 //            debugCategory.setNested(true);
-//            l_category.add(debugCategory);
+//            categories.add(debugCategory);
 //
 //            final boolean isPresentationListEmpty = presentationElements.length > 0;
 //
@@ -78,10 +78,10 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
 //
 //
 //            if (betaFeaturesActivated)
-//                addDebug_optionsAction(debugCategory);
+//                addDebugOptionsAction(debugCategory);
 
 
-//            l_category.stream().filter(cat -> !cat.isEmpty()).forEach(cat -> actionsManager.addCategory(cat));
+//            categories.stream().filter(cat -> !cat.isEmpty()).forEach(cat -> actionsManager.addCategory(cat));
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, false);
         }
@@ -93,7 +93,7 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
         return AMConfigurator.MEDIUM_PRIORITY;
     }
 
-    private void addDebug_optionsAction(MDActionsCategory betaCategory) {
+    private void addDebugOptionsAction(MDActionsCategory betaCategory) {
         for (Method setter : OMFEnvironmentOptionsGroup.class.getDeclaredMethods()) {
             if (setter.getName().startsWith("set")) {
                 Optional<Method> getter = Arrays.stream(OMFEnvironmentOptionsGroup.class.getDeclaredMethods())

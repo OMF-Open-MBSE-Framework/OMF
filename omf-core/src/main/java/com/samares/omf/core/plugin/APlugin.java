@@ -40,7 +40,7 @@ public abstract class APlugin extends Plugin {
     private FeatureProjectOptionsConfigurator projectOptionConfigurator;
     private OMFEnvironmentOptionsGroup environmentOptionConfigurator;
 
-    private List<MDFeature> l_features;
+    private List<MDFeature> features;
     private FeatureRegister featureRegister;
     private boolean isInitialized = false;
 
@@ -60,7 +60,7 @@ public abstract class APlugin extends Plugin {
     private OMFProjectListener projectListener;
 
     public APlugin(){
-        l_features = new ArrayList<>();
+        features = new ArrayList<>();
     }
 
     //------------------------ ELEMENTS TO REGISTER AT INIT -------------------------------------------//
@@ -153,11 +153,11 @@ public abstract class APlugin extends Plugin {
     }
 
     private void configureFeatures() {
-        List<MDFeature> l_defaultFeature = getDefaultFeatureRegistered();
-        if(l_defaultFeature == null || l_defaultFeature.isEmpty()){
+        List<MDFeature> defaultFeatures = getDefaultFeatureRegistered();
+        if(defaultFeatures == null || defaultFeatures.isEmpty()){
 
         }
-        getL_features().addAll(l_defaultFeature);
+        getFeatures().addAll(defaultFeatures);
     }
 
 
@@ -190,8 +190,9 @@ public abstract class APlugin extends Plugin {
         OMFDiagramConfigurator diagramConfigurator = getFeatureRegisteringDiagramConfigurator();
         if (diagramConfigurator == null)
             ColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
-        else
-        actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM,diagramConfigurator);
+        else {
+            actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM,diagramConfigurator);
+        }
 
         OMFMainMenuConfigurator menuConfigurator = getFeatureRegisteringMainMenuConfigurator();
         if (menuConfigurator == null)
@@ -204,18 +205,18 @@ public abstract class APlugin extends Plugin {
 
 
     protected void registerFeatures() {
-        l_features.forEach(featureRegister::registerFeature);
+        features.forEach(featureRegister::registerFeature);
 
         if (projectListener == null)
             ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
         else {
             projectListener.addFeatureToRegisterAtProjectOpening(getOnProjectOpeningFeatureToRegister());
-            projectListener.addProjectOptionToRegister(getAllProjectOptionsFeatures(l_features));
+            projectListener.addProjectOptionToRegister(getAllProjectOptionsFeatures(features));
         }
     }
 
-    private List<MDFeature> getAllProjectOptionsFeatures(List<MDFeature> l_features) {
-        return l_features.stream()
+    private List<MDFeature> getAllProjectOptionsFeatures(List<MDFeature> featuress) {
+        return featuress.stream()
                 .filter(feature -> feature.getOptions().stream().anyMatch(option-> option.getKind() == OptionKind.Project))
                 .collect(Collectors.toList());
     }
@@ -263,8 +264,8 @@ public abstract class APlugin extends Plugin {
     }
 
     public abstract List<AOptionListener> getEnvironmentOptionsListener();
-    public List<MDFeature> getL_features() {
-        return l_features;
+    public List<MDFeature> getFeatures() {
+        return features;
     }
 
     public FeatureRegister getFeatureRegister() {

@@ -31,14 +31,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class LockManagerListener extends AElementListener implements TransactionCommitListener {
-    boolean cancelRequest = false;
-
     public LockManagerListener() {
         super();
-        l_lockException = new ArrayList<>();
+        lockExceptions = new ArrayList<>();
     }
 
-    List<OMFLockException> l_lockException;
+    List<OMFLockException> lockExceptions;
 
     @CheckForNull
     @Override
@@ -48,34 +46,31 @@ public class LockManagerListener extends AElementListener implements Transaction
             if (OMFListenerManager.getInstance().isListenersActivated())
                 return null;
 
-            Set<Element> s_checkedElements = new HashSet<>();
+            Set<Element> checkedElements = new HashSet<>();
 
             Map<EVT_TYPE, List<PropertyChangeEvent>> groups = collection.stream()
                     .collect(Collectors.groupingBy(pce -> this.getGroup(pce)));
 
-//            l_lockException.addAll(LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), s_checkedElements));
-//            l_lockException.addAll(LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), s_checkedElements));
-//            l_lockException.addAll(LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), s_checkedElements));
             boolean hasDeletedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.DELETE));
             boolean hasUpdatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.CREATION));
             boolean hasCreatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.UPDATE));
-            Collection<? extends OMFLockException> l_deletion = Collections.emptyList();
-            Collection<? extends OMFLockException> l_creation = Collections.emptyList();
-            Collection<? extends OMFLockException> l_update = Collections.emptyList();
+            Collection<? extends OMFLockException> deletions = Collections.emptyList();
+            Collection<? extends OMFLockException> creations = Collections.emptyList();
+            Collection<? extends OMFLockException> updates = Collections.emptyList();
             if (hasDeletedEvent)
-                l_deletion = LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), s_checkedElements);
+                deletions = LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), checkedElements);
             if (hasUpdatedEvent)
-                l_creation = LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), s_checkedElements);
+                creations = LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), checkedElements);
             if (hasCreatedEvent)
-                l_update = LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), s_checkedElements);
+                updates = LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), checkedElements);
 
-            l_deletion.forEach(e -> e.setUserMessage("D]-" + e.getUserMessage()));
-            l_creation.forEach(e -> e.setUserMessage("C]-" + e.getUserMessage()));
-            l_update.forEach(e -> e.setUserMessage("U]-" + e.getUserMessage()));
+            deletions.forEach(e -> e.setUserMessage("D]-" + e.getUserMessage()));
+            creations.forEach(e -> e.setUserMessage("C]-" + e.getUserMessage()));
+            updates.forEach(e -> e.setUserMessage("U]-" + e.getUserMessage()));
 
-            l_lockException.addAll(l_deletion);
-            l_lockException.addAll(l_creation);
-            l_lockException.addAll(l_update);
+            lockExceptions.addAll(deletions);
+            lockExceptions.addAll(creations);
+            lockExceptions.addAll(updates);
 
 
         } catch (Exception e) {
@@ -84,7 +79,6 @@ public class LockManagerListener extends AElementListener implements Transaction
 
         return null;
     }
-
 
     private EVT_TYPE getGroup(PropertyChangeEvent pce) {
 
@@ -105,7 +99,7 @@ public class LockManagerListener extends AElementListener implements Transaction
     public void allTransactionsCommitted() {
         try {
 
-            boolean isThereLockExceptionTriggered = !l_lockException.isEmpty();
+            boolean isThereLockExceptionTriggered = !lockExceptions.isEmpty();
 
             if (!isThereLockExceptionTriggered)
                 return;
@@ -122,9 +116,9 @@ public class LockManagerListener extends AElementListener implements Transaction
                             " or are not editable (e.g. project usages access)?",
                     NotificationSeverity.ERROR));
 
-            l_lockException.stream()
+            lockExceptions.stream()
                     .forEach(OMFErrorHandler::handleException);
-            l_lockException.clear();
+            lockExceptions.clear();
             UndoManager.getInstance().requestHardUndo();
 
         } catch (Exception e) {
@@ -161,6 +155,4 @@ public class LockManagerListener extends AElementListener implements Transaction
         UPDATE,
         DELETE
     }
-
-
 }

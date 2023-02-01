@@ -67,7 +67,7 @@ public abstract class NamedElementBuilder extends AGenericBuilder {
             throw new BuilderException("Element has not been initialized", this);
         if (name == null)
             name = "";
-        boolean elementToBuildHasNoOwner = defaultOwner_Builder == null && owner == null && (builderToReuse != null && builderToReuse.getOwner() == null);
+        boolean elementToBuildHasNoOwner = defaultOwnerBuilder == null && owner == null && (builderToReuse != null && builderToReuse.getOwner() == null);
         if (elementToBuildHasNoOwner)
             throw new BuilderException("Element: " + name + " owner is null", this);
     }
@@ -86,9 +86,9 @@ public abstract class NamedElementBuilder extends AGenericBuilder {
         if (name != null)
             element.setName(name);
 
-        boolean setOwnerBasedOnDefaultBuilderOwner = defaultOwner_Builder != null && defaultOwner_Builder.getOwner() != null && owner == null;
+        boolean setOwnerBasedOnDefaultBuilderOwner = defaultOwnerBuilder != null && defaultOwnerBuilder.getOwner() != null && owner == null;
         if (setOwnerBasedOnDefaultBuilderOwner)
-            element.setOwner(defaultOwner_Builder.getOwner());
+            element.setOwner(defaultOwnerBuilder.getOwner());
 
         if (defaultOwner != null && owner == null)
             element.setOwner(defaultOwner);

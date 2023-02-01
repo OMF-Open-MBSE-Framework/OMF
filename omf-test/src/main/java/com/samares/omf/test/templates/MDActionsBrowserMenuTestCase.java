@@ -43,8 +43,8 @@ public abstract class MDActionsBrowserMenuTestCase extends AbstractModelComparat
         ContainmentTree tree = OMFUtils.currentProject.getBrowser().getContainmentTree();
         tree.setSelectedNodes(new Node[]{new Node(element, ElementIcon.getIcon(element))});
 
-        List<BrowserContextAMConfigurator> l_browserMenuConfigurators = getBrowserMenus();
-        l_browserMenuConfigurators.forEach(configurator -> configurator.configure(actionManager, tree));
+        List<BrowserContextAMConfigurator> browserMenuConfigurators = getBrowserMenus();
+        browserMenuConfigurators.forEach(configurator -> configurator.configure(actionManager, tree));
         ActionsCategory mdActionsCategory = getCategory(actionManager, mdActionsCategoryName);
 
         executeAction(actionToTestName, element, mdActionsCategory);
@@ -102,19 +102,19 @@ public abstract class MDActionsBrowserMenuTestCase extends AbstractModelComparat
             Assertions.fail("[Technical error] Cannot retrieved the Browser configurator");
 
 
-        List l_accessibleBrowserMenu = null;
+        List accessibleBrowserMenu = null;
         try {
             Method method = optMethod.get();
             method.setAccessible(true);
             Object res = method.invoke(actionsConfiguratorsManager,"ContainmentBrowserMenu");
             if(res != null && res instanceof List)
-                l_accessibleBrowserMenu = (List) res;
+                accessibleBrowserMenu = (List) res;
         } catch (IllegalAccessException | InvocationTargetException e) {
             Assertions.fail("[Technical error] Cannot retrieved the Browser configurator");
             throw new RuntimeException(e);
         }
 
-        return (List<BrowserContextAMConfigurator>) l_accessibleBrowserMenu.stream()
+        return (List<BrowserContextAMConfigurator>) accessibleBrowserMenu.stream()
                 .filter(BrowserContextAMConfigurator.class::isInstance)
                 .map(BrowserContextAMConfigurator.class::cast)
                 .collect(Collectors.toList());

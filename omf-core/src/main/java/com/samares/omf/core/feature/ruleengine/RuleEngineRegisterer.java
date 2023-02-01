@@ -64,11 +64,11 @@ public class RuleEngineRegisterer implements IFeatureRegisterer {
     public void addRuleEngine(IFeatureRuleEngine ruleEngine){
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<IRuleEngine>> m_evt_ruleEngine = listener.getRuleEngineMap();
+        HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
 
-        m_evt_ruleEngine.computeIfAbsent(category, l_re ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
-        m_evt_ruleEngine.get(category).add(ruleEngine);
+        ruleEngineMap.get(category).add(ruleEngine);
 
     }
 
@@ -81,11 +81,11 @@ public class RuleEngineRegisterer implements IFeatureRegisterer {
     public void addRuleEngine(IFeatureRuleEngine ruleEngine, int featurePriority){
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<IRuleEngine>> m_evt_ruleEngine = listener.getRuleEngineMap();
+        HashMap<String, List<IRuleEngine>> ruleEngines = listener.getRuleEngineMap();
 
-        m_evt_ruleEngine.computeIfAbsent(category, l_re ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        ruleEngines.computeIfAbsent(category, ruleEngineName ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
-        m_evt_ruleEngine.get(category).add(featurePriority, ruleEngine);
+        ruleEngines.get(category).add(featurePriority, ruleEngine);
     }
 
     /**
@@ -96,9 +96,9 @@ public class RuleEngineRegisterer implements IFeatureRegisterer {
     public void removeRuleEngine(IFeatureRuleEngine ruleEngine){
             String category = ruleEngine.getCategory();
             IElementListener listener = getListenerFromCategory(category);
-            HashMap<String, List<IRuleEngine>> m_evt_ruleEngine = listener.getRuleEngineMap();
-            if (m_evt_ruleEngine.containsKey(category))
-                m_evt_ruleEngine.get(category).remove(ruleEngine);
+            HashMap<String, List<IRuleEngine>> ruleEngines = listener.getRuleEngineMap();
+            if (ruleEngines.containsKey(category))
+                ruleEngines.get(category).remove(ruleEngine);
     }
 
     //TODO: Rethink priority management: does the priority is guaranteed ? Priority shall be linked to the RE/Feature

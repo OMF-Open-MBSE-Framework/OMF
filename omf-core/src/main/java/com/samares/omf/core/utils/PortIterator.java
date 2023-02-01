@@ -37,15 +37,15 @@ public class PortIterator implements Iterator<List<ConnectableElement>> {
 
     @Override
     public List<ConnectableElement> next() {
-        List<ConnectorEnd> l_oppositeEnd = connectableElementList
+        List<ConnectorEnd> oppositeEnd = connectableElementList
                 .stream()
                 .map(ConnectableElement::getEnd)
                 .flatMap(Collection::stream)
                 .map(ModelHelper::getOppositeEnd)
                 .filter(connectorEnd -> !edgeDone.contains(connectorEnd.get_connectorOfEnd()))
                 .collect(Collectors.toList());
-        l_oppositeEnd.stream().map(ConnectorEnd::get_connectorOfEnd).forEach(edgeDone::add);
-        connectableElementList = l_oppositeEnd.stream().map(ConnectorEnd::getRole).collect(Collectors.toList());
+        oppositeEnd.stream().map(ConnectorEnd::get_connectorOfEnd).forEach(edgeDone::add);
+        connectableElementList = oppositeEnd.stream().map(ConnectorEnd::getRole).collect(Collectors.toList());
         return connectableElementList;
     }
 }

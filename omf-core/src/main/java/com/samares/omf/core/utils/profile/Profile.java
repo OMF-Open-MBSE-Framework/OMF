@@ -16,12 +16,13 @@ import com.samares.omf.core.utils.OMFConstants;
 import com.samares.omf.core.utils.OMFUtils;
 
 public class Profile {
+    private MagicDrawProfile magicDrawProfile = null;
+    private StandardProfile standardProfile = null;
+    private SysMLProfile sysmlProfile = null;
+    private MDCustomizationForSysMLProfile mdCustomSysMLProfile = null;
 
-    private MagicDrawProfile mdProfile  = null;
-    private StandardProfile standard  = null;
-    private SysMLProfile sysml  = null;
-    private MDCustomizationForSysMLProfile sysml_additional_stereotypes = null;
     private Project project;
+
     private static Profile instance = null;
 
     public Profile(Project project){
@@ -45,48 +46,36 @@ public class Profile {
 
     public void init(Project project){
         this.project = project;
-
-        this.standard = StandardProfile.getInstanceByProject(project);
-        this.sysml = SysMLProfile.getInstanceByProject(project);
-        this.sysml_additional_stereotypes = MDCustomizationForSysMLProfile.getInstanceByProject(project);
-        this.mdProfile = MagicDrawProfile.getInstanceByProject(project);
+        this.standardProfile = StandardProfile.getInstanceByProject(project);
+        this.sysmlProfile = SysMLProfile.getInstanceByProject(project);
+        this.mdCustomSysMLProfile = MDCustomizationForSysMLProfile.getInstanceByProject(project);
+        this.magicDrawProfile = MagicDrawProfile.getInstanceByProject(project);
 
         OMFConstants.reinitConstants();
     }
 
-    public MagicDrawProfile get_MdProfile() {
-        return mdProfile;
+    public MagicDrawProfile getMagicDraw() {
+        return magicDrawProfile;
     }
 
-    public StandardProfile get_Standard() {
-        return standard;
+    public StandardProfile getStandard() {
+        return standardProfile;
     }
 
-    public SysMLProfile get_Sysml() {
-        return sysml;
+    public SysMLProfile getSysml() {
+        return sysmlProfile;
     }
 
-    public MDCustomizationForSysMLProfile get_SysML_Additional_stereotypes() {
-        return sysml_additional_stereotypes;
+    public MDCustomizationForSysMLProfile getMDCustomSysml() {
+        return mdCustomSysMLProfile;
     }
 
-    public static MagicDrawProfile getMdProfile() {
-        return getInstance().get_MdProfile();
-    }
-
-    public static StandardProfile getStandard() {
-        return getInstance().get_Standard();
-    }
-
-    public static SysMLProfile getSysml() {
-        return getInstance().get_Sysml();
-    }
     public Project getProject() {
         return project;
     }
 
     public static MDCustomizationForSysMLProfile getSysmlAdditionalStereotypes() {
-        return getInstance().get_SysML_Additional_stereotypes();
+        return getInstance().getMDCustomSysml();
     }
 
 }

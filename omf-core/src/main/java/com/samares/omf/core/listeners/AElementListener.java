@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public abstract class AElementListener implements IElementListener {
     private boolean activated;
 
-    private HashMap<String, List<IRuleEngine>> m_event_ruleEngine = new HashMap<>();
+    private HashMap<String, List<IRuleEngine>> rulesEngines = new HashMap<>();
 
     private int priority = 0;
 
@@ -38,45 +38,45 @@ public abstract class AElementListener implements IElementListener {
 
     @Override
     public HashMap<String, List<IRuleEngine>> getRuleEngineMap() {
-        return m_event_ruleEngine;
+        return rulesEngines;
     }
 
     @Override
-    public void setRuleEngineMap(HashMap<String, List<IRuleEngine>> m_event_ruleEngine) {
-        this.m_event_ruleEngine = m_event_ruleEngine;
+    public void setRuleEngineMap(HashMap<String, List<IRuleEngine>> rulesEngines) {
+        this.rulesEngines = rulesEngines;
     }
 
     @Override
     public boolean manageAnalysis(PropertyChangeEvent event) {
-        List<IRuleEngine> l_re = getRuleEngineMap().get(RECategoryEnum.ANALYSE.toString());
-        return processAllMatchingRules(l_re, event);
+        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.ANALYSE.toString());
+        return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageCreation(PropertyChangeEvent event) {
-        List<IRuleEngine> l_re = getRuleEngineMap().get(RECategoryEnum.CREATE.toString());
-        return processAllMatchingRules(l_re, event);
+        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.CREATE.toString());
+        return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageUpdate(PropertyChangeEvent event) {
-        List<IRuleEngine> l_re = getRuleEngineMap().get(RECategoryEnum.UPDATE.toString());
-        return processAllMatchingRules(l_re, event);
+        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.UPDATE.toString());
+        return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageDeletion(PropertyChangeEvent event) {
-        List<IRuleEngine> l_re = getRuleEngineMap().get(RECategoryEnum.DELETE.toString());
-        return processAllMatchingRules(l_re, event);
+        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.DELETE.toString());
+        return processAllMatchingRules(ruleEngines, event);
     }
 
     /**
      * @return true if at least one rule matched
      */
-    private boolean processAllMatchingRules(List<IRuleEngine> l_re, PropertyChangeEvent event) {
-        if(l_re == null)
+    private boolean processAllMatchingRules(List<IRuleEngine> ruleEngines, PropertyChangeEvent event) {
+        if(ruleEngines == null)
             return false;
-        return l_re.stream()
+        return ruleEngines.stream()
                 .map(ruleEngine -> ruleEngine.processAllMatchingRule(event))
                 .collect(Collectors.toList())
                 .contains(true);

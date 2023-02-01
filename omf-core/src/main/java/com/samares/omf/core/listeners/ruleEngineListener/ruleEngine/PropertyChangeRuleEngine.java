@@ -13,9 +13,9 @@ public class PropertyChangeRuleEngine extends RuleEngine {
 
     public PropertyChangeRuleEngine(){
         super();
-        List l_r = Arrays.asList(
+        List rules = Arrays.asList(
 //                new Rule("ruleName", "stereotypeName")
         );
-        addAllRules(l_r);
+        addAllRules(rules);
     }
 }

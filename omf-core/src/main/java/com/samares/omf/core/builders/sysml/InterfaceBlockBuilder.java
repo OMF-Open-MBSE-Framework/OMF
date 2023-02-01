@@ -25,8 +25,7 @@ import java.util.stream.Collectors;
 
 public class InterfaceBlockBuilder extends TypeBuilder {
     protected boolean createNewElement = false;
-
-    private List<FlowPropertyBuilder> l_flowPropertyBuilders;
+    private List<FlowPropertyBuilder> flowPropertyBuilders;
 
     public InterfaceBlockBuilder() {
         super();
@@ -34,7 +33,7 @@ public class InterfaceBlockBuilder extends TypeBuilder {
 
     public InterfaceBlockBuilder(Type type) {
         super(type);
-        stereotype(Profile.getSysml().interfaceBlock().getStereotype());
+        stereotype(Profile.getInstance().getSysml().interfaceBlock().getStereotype());
     }
 
     public InterfaceBlockBuilder(InterfaceBlockBuilder interfaceBlockBuilder) {
@@ -45,7 +44,7 @@ public class InterfaceBlockBuilder extends TypeBuilder {
         super(interfaceBlockBuilder, true);
         if (!fromInheritedConstructor)
             this.createNewElement = interfaceBlockBuilder.createNewElement;
-        this.l_flowPropertyBuilders = interfaceBlockBuilder.l_flowPropertyBuilders.stream().collect(Collectors.toList());
+        this.flowPropertyBuilders = interfaceBlockBuilder.flowPropertyBuilders.stream().collect(Collectors.toList());
     }
 
     @Override
@@ -81,8 +80,8 @@ public class InterfaceBlockBuilder extends TypeBuilder {
     }
 
     @Override
-    public InterfaceBlockBuilder withProperty(List<PropertyBuilder> l_propertyBuilders) {
-        return (InterfaceBlockBuilder) super.withProperty(l_propertyBuilders);
+    public InterfaceBlockBuilder withProperty(List<PropertyBuilder> propertyBuilders) {
+        return (InterfaceBlockBuilder) super.withProperty(propertyBuilders);
     }
 
     @Override
@@ -132,8 +131,8 @@ public class InterfaceBlockBuilder extends TypeBuilder {
     }
 
     @Override
-    public InterfaceBlockBuilder defaultOwner(AGenericBuilder defaultOwner_Builder) {
-        this.defaultOwner_Builder = defaultOwner_Builder;
+    public InterfaceBlockBuilder defaultOwner(AGenericBuilder defaultOwnerBuilder) {
+        this.defaultOwnerBuilder = defaultOwnerBuilder;
         return this;
     }
 
@@ -180,11 +179,11 @@ public class InterfaceBlockBuilder extends TypeBuilder {
         this.createNewElement = createNewElement;
     }
 
-    public List<FlowPropertyBuilder> getL_flowPropertyBuilders() {
-        return l_flowPropertyBuilders;
+    public List<FlowPropertyBuilder> getFlowPropertyBuilders() {
+        return flowPropertyBuilders;
     }
 
-    public void setL_flowPropertyBuilders(List<FlowPropertyBuilder> l_flowPropertyBuilders) {
-        this.l_flowPropertyBuilders = l_flowPropertyBuilders;
+    public void setFlowPropertyBuilders(List<FlowPropertyBuilder> flowPropertyBuilders) {
+        this.flowPropertyBuilders = flowPropertyBuilders;
     }
 }

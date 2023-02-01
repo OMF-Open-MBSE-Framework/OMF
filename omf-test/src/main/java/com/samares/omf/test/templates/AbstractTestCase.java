@@ -471,8 +471,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         ContainmentTree tree = OMFUtils.currentProject.getBrowser().getContainmentTree();
         tree.setSelectedNodes(new Node[]{new Node(selectedElement, ElementIcon.getIcon(selectedElement))});
 
-        List<BrowserContextAMConfigurator> l_browserMenuConfigurators = getBrowserMenus();
-        l_browserMenuConfigurators.forEach(configurator -> configurator.configure(actionManager, tree));
+        List<BrowserContextAMConfigurator> browserMenuConfigurators = getBrowserMenus();
+        browserMenuConfigurators.forEach(configurator -> configurator.configure(actionManager, tree));
         ActionsCategory mdActionsCategory = getCategory(actionManager, mdActionsCategoryName);
 
         executeAction(actionToTestName, selectedElement, mdActionsCategory);
@@ -505,8 +505,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
                 selectedPresentationElements,
                 selectedPresentationElements[0]);
 
-        List<DiagramContextAMConfigurator> l_diagramConfigurator = this.getDiagramMenus(currentDiagram);
-        l_diagramConfigurator.forEach((configurator) -> {
+        List<DiagramContextAMConfigurator> diagramConfigurator = this.getDiagramMenus(currentDiagram);
+        diagramConfigurator.forEach((configurator) -> {
             configurator.configure(actionManager, currentDiagramPresentation, selectedPresentationElements, selectedPresentationElements[0]);
         });
         ActionsCategory mdActionsCategory = this.getCategory(actionManager, mdActionsCategoryName);
@@ -543,19 +543,19 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             Assertions.fail("[Technical error] Cannot retrieved the Browser configurator");
 
 
-        List l_accessibleBrowserMenu = null;
+        List accessibleBrowserMenus = null;
         try {
             Method method = optMethod.get();
             method.setAccessible(true);
             Object res = method.invoke(actionsConfiguratorsManager,"ContainmentBrowserMenu");
             if(res != null && res instanceof List)
-                l_accessibleBrowserMenu = (List) res;
+                accessibleBrowserMenus = (List) res;
         } catch (IllegalAccessException | InvocationTargetException e) {
             Assertions.fail("[Technical error] Cannot retrieved the Browser configurator");
             throw new RuntimeException(e);
         }
 
-        return (List<BrowserContextAMConfigurator>) l_accessibleBrowserMenu.stream()
+        return (List<BrowserContextAMConfigurator>) accessibleBrowserMenus.stream()
                 .filter(BrowserContextAMConfigurator.class::isInstance)
                 .map(BrowserContextAMConfigurator.class::cast)
                 .collect(Collectors.toList());
@@ -574,19 +574,19 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             Assertions.fail("[Technical error] Cannot retrieved the Diagram configurator");
 
 
-        List l_accessibleDiagramMenu = null;
+        List accessibleDiagramMenus = null;
         try {
             Method method = optMethod.get();
             method.setAccessible(true);
             Object res = method.invoke(actionsConfiguratorsManager,diagram.get_representation().getType() + "Context");
             if(res != null && res instanceof List)
-                l_accessibleDiagramMenu = (List) res;
+                accessibleDiagramMenus = (List) res;
         } catch (IllegalAccessException | InvocationTargetException e) {
             Assertions.fail("[Technical error] Cannot retrieved the Diagram configurator");
             throw new RuntimeException(e);
         }
 
-        return (List<DiagramContextAMConfigurator>) l_accessibleDiagramMenu.stream()
+        return (List<DiagramContextAMConfigurator>) accessibleDiagramMenus.stream()
                 .filter(DiagramContextAMConfigurator.class::isInstance)
                 .map(DiagramContextAMConfigurator.class::cast)
                 .collect(Collectors.toList());
@@ -612,8 +612,6 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
                 .ifPresentOrElse(action -> action.actionPerformed(actionEvent), () -> fail("Action: " + actionToTestName + " was not found in category: " + mdActionsCategory));
 
     }
-
-
 
     //------------------------ GETTERS SETTERS -----------------------------------------//
 
@@ -689,11 +687,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         this.testPackageName = testPackageName;
     }
 
-
     public ProjectsComparator createNewProjectComparator(String logFile) {
         return createProjectComparator(logFile);
     }
-
-
 }
 

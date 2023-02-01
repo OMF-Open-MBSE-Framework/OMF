@@ -11,41 +11,35 @@ import com.nomagic.magicdraw.actions.MDActionsCategory;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ACategory extends MDActionsCategory {
-    private List<AGenericAction> l_actions;
+    private List<AGenericAction> actions;
 
     public ACategory(){
         this("", new ArrayList<>());
     }
     public ACategory(String name, List<AGenericAction> allActions){
         super(name, name);
-        this.l_actions = allActions;
+        this.actions = allActions;
     }
-
-
 
     public ACategory registerBrowserActions(){
         this.setNested(true);
-        l_actions.stream()
+        actions.stream()
                 .filter(AGenericAction::checkBrowserAvailability)
                 .map(AGenericAction::getBrowserAction)
                 .forEach(this::addAction);
         return this;
     }
     public ACategory registerDiagramActions(){
-        l_actions.stream()
+        actions.stream()
                 .map(AGenericAction::getDiagramAction)
                 .forEach(this::addAction);
         return this;
     }
     public ACategory registerMenuActions(){
-        l_actions.stream()
+        actions.stream()
                 .map(AGenericAction::getMenuAction)
                 .forEach(this::addAction);
         return this;
     }
-
-
-
 }

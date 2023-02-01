@@ -32,10 +32,10 @@ import java.util.stream.Stream;
 
 public abstract class AGenericAction {
 
-    private Node[] l_browserSelectedNodes;
-    private List<Element> l_browserSelectedElements;
-    private List<PresentationElement> l_diagramSelectedPresentationElements;
-    private List<Element> l_diagramSelectedElements;
+    private Node[] browserSelectedNodes;
+    private List<Element> browserSelectedElements;
+    private List<PresentationElement> diagramSelectedPresentationElements;
+    private List<Element> diagramSelectedElements;
 
     private DefaultBrowserAction browserAction;
 
@@ -63,7 +63,7 @@ public abstract class AGenericAction {
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
                 init();
-                executeBrowserAction(l_browserSelectedElements);
+                executeBrowserAction(browserSelectedElements);
             }
             @Override
             public void updateState() {
@@ -76,7 +76,7 @@ public abstract class AGenericAction {
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
                 init();
-                executeDiagramAction(l_diagramSelectedElements);
+                executeDiagramAction(diagramSelectedElements);
             }
             @Override
             public void updateState() {
@@ -88,7 +88,7 @@ public abstract class AGenericAction {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
-                executeMenuAction(l_browserSelectedElements);
+                executeMenuAction(browserSelectedElements);
             }
 
             @Override
@@ -101,10 +101,10 @@ public abstract class AGenericAction {
     }
 
     public AGenericAction init(){
-        l_browserSelectedNodes  = getSelectedBrowserNodes();
-        l_browserSelectedElements = getSelectedBrowserElements();
-        l_diagramSelectedPresentationElements = getSelectedDiagramPresentationElements();
-        l_diagramSelectedElements = getSelectedDiagramElements();
+        browserSelectedNodes = getSelectedBrowserNodes();
+        browserSelectedElements = getSelectedBrowserElements();
+        diagramSelectedPresentationElements = getSelectedDiagramPresentationElements();
+        diagramSelectedElements = getSelectedDiagramElements();
         if(Strings.isNullOrEmpty(categoryName))
             categoryName = getCategory();
         if(Strings.isNullOrEmpty(name))

@@ -18,10 +18,10 @@ package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
 
      public InstancePortCreationRuleEngine(){
          super();
-         List l_r = Arrays.asList(
+         List rules = Arrays.asList(
                  new DiagramPortCreatedRule("onPortCreationOnDiagram",   null, null)
          );
-         addAllRules(l_r);
+         addAllRules(rules);
      }
 
      @Override

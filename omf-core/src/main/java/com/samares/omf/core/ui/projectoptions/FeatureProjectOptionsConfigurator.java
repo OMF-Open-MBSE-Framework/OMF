@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FeatureProjectOptionsConfigurator implements ProjectOptionsConfigurator {
 
-    private List<IOption> l_options;
+    private List<IOption> options;
     String projectOptionMainCategory;
 
     private static FeatureProjectOptionsConfigurator instance;
@@ -31,16 +31,16 @@ public class FeatureProjectOptionsConfigurator implements ProjectOptionsConfigur
     }
 
     public FeatureProjectOptionsConfigurator(){
-        l_options = new ArrayList<>();
+        options = new ArrayList<>();
     }
     public FeatureProjectOptionsConfigurator(String categoryName){
-        l_options = new ArrayList<>();
+        options = new ArrayList<>();
         this.projectOptionMainCategory = categoryName;
     }
     
     @Override
     public void configure(ProjectOptions projectOptions) {
-        l_options.forEach(opt -> createIfAbsent(opt, projectOptions));
+        options.forEach(opt -> createIfAbsent(opt, projectOptions));
     }
 
     private void createIfAbsent(IOption opt, ProjectOptions projectOptions) {
@@ -55,20 +55,20 @@ public class FeatureProjectOptionsConfigurator implements ProjectOptionsConfigur
     }
 
     public void addOption(IOption projectOption){
-        l_options.add(projectOption);
+        options.add(projectOption);
     }
 
-    public void addAllOption(List<IOption> l_projectOption){
-        l_options.addAll(l_projectOption);
+    public void addAllOption(List<IOption> projectOptions){
+        options.addAll(projectOptions);
     }
 
 
     public void removeOption(IOption projectOption){
-        l_options.remove(projectOption);
+        options.remove(projectOption);
     }
 
-    public void removeAllOption(List<IOption> l_projectOption){
-        l_options.removeAll(l_projectOption);
+    public void removeAllOption(List<IOption> projectOptions){
+        options.removeAll(projectOptions);
     }
 
 }

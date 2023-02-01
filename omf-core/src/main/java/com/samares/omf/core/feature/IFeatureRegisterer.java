@@ -8,10 +8,10 @@ public interface IFeatureRegisterer {
     void registerFeature(MDFeature mdFeature);
     void unregisterFeature(MDFeature mdFeature);
 
-    default void registerAllFeatures(List<MDFeature> l_feature){
-        if(l_feature != null) new ArrayList<>(l_feature).forEach(this::registerFeature);
+    default void registerAllFeatures(List<MDFeature> features){
+        if(features != null) new ArrayList<>(features).forEach(this::registerFeature);
     }
-    default void unregisterAllFeatures(List<MDFeature> l_feature){
-        if(l_feature != null) new ArrayList<>(l_feature).forEach(this::unregisterFeature);
+    default void unregisterAllFeatures(List<MDFeature> features){
+        if(features != null) new ArrayList<>(features).forEach(this::unregisterFeature);
     }
 }

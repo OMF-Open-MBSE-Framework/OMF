@@ -11,35 +11,35 @@ import java.util.function.Predicate;
 
 public class EventChecker {
 
-    private final ArrayList<Predicate<? super PropertyChangeEvent>> l_predicate;
+    private final ArrayList<Predicate<? super PropertyChangeEvent>> predicates;
 
     public EventChecker(){
-        this.l_predicate = new ArrayList<>();
+        this.predicates = new ArrayList<>();
     }
 
     public boolean test(PropertyChangeEvent evt){
-        return l_predicate.stream()
+        return predicates.stream()
                 .allMatch(predicate -> predicate.test(evt));
     }
 
     public EventChecker isInstanceCreated(){
-        l_predicate.add(evt -> evt.getPropertyName().equals(UML2MetamodelConstants.INSTANCE_CREATED));
+        predicates.add(evt -> evt.getPropertyName().equals(UML2MetamodelConstants.INSTANCE_CREATED));
         return this;
     }
     public EventChecker isInstanceDeleted(){
-        l_predicate.add(
+        predicates.add(
                 evt ->  evt.getPropertyName().equals(UML2MetamodelConstants.BEFORE_DELETE)
                     ||  evt.getPropertyName().equals(UML2MetamodelConstants.INSTANCE_DELETED));
         return this;
     }
 
     public EventChecker isSourceNotNull() {
-        l_predicate.add(evt -> Objects.nonNull(evt.getSource()));
+        predicates.add(evt -> Objects.nonNull(evt.getSource()));
         return this;
     }
     public EventChecker isBlock() {
         isSourceNotNull();
-        l_predicate.add(evt -> Profile.getInstance().get_Sysml().block().is((Element) evt.getSource()));
+        predicates.add(evt -> Profile.getInstance().getSysml().block().is((Element) evt.getSource()));
         return this;
     }
 }

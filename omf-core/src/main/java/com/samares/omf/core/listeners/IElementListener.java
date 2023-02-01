@@ -20,7 +20,7 @@ public interface IElementListener {
 
     HashMap<String, List<IRuleEngine>> getRuleEngineMap();
 
-    void setRuleEngineMap(HashMap<String, List<IRuleEngine>> m_event_ruleEngine);
+    void setRuleEngineMap(HashMap<String, List<IRuleEngine>> rulesEngines);
 
     /**
      * @return true if at least one rule matched

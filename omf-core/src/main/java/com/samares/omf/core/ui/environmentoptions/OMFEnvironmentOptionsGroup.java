@@ -59,16 +59,16 @@ public class OMFEnvironmentOptionsGroup extends AEnvironmentFeatureConfigurator 
         addProperty(propertyAA, true);
     }
 
-    public boolean isActivateAutomation_value() {
+    public boolean isActivateAutomationValue() {
         BooleanProperty p = (BooleanProperty) Objects.requireNonNull(getPropertyByName(ID_ACTIVATE_AUTOMATION), "");
         return p.getBoolean();
     }
 
-    public void setActivateAutomation_value(boolean isAutomationsActivated) {
+    public void setActivateAutomationValue(boolean isAutomationsActivated) {
         getPropertyByName(ID_ACTIVATE_AUTOMATION).setValue(isAutomationsActivated);
     }
 
-    public void setDeactivateAutomation_value(boolean shallWizardBeTriggered) {
+    public void setDeactivateAutomationValue(boolean shallWizardBeTriggered) {
         getPropertyByName(ID_ACTIVATE_AUTOMATION).setValue(shallWizardBeTriggered);
     }
 }
