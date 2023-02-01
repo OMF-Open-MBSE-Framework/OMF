@@ -28,7 +28,7 @@ public class ClassToCreateRule extends ARule {
 
     @Override
     public boolean eventMatches(PropertyChangeEvent evt) {
-        if (!OMFPluginEnvOptionsGroup.getInstance().isI2TActivated()) {
+        if (!OMFPluginEnvOptionsGroup.getInstance().isTypeActivated()) {
             return false;
         }
         if (evt.getSource() instanceof Property) {

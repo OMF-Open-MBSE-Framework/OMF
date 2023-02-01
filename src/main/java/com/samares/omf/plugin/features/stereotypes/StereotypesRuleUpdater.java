@@ -49,8 +49,8 @@ public class StereotypesRuleUpdater {
 
     public void updateAllRulesBasedOnConfigFiles(){
         organizerEngine.removeAllRules();
-        createType2InstanceRules((OMFPluginEnvOptionsGroup.getInstance().getT2IConfigFilePath()));
-        createInstance2TypeRules(OMFPluginEnvOptionsGroup.getInstance().getI2TConfigFilePath());
+        createInstanceRules((OMFPluginEnvOptionsGroup.getInstance().getInstanceConfigFilePath()));
+        createTypeRules(OMFPluginEnvOptionsGroup.getInstance().getTypeConfigFilePath());
         createOrganizerRules(OMFPluginEnvOptionsGroup.getInstance().getOrganizerConfigFilePath());
     }
 
@@ -60,12 +60,12 @@ public class StereotypesRuleUpdater {
      */
     public void initAllRulesBasedOnConfigFiles(){
         organizerEngine.removeAllRules();
-        createType2InstanceRules((OMFPluginEnvOptionsGroup.getT2IConfigFilePathDefaultValue()));
-        createInstance2TypeRules(OMFPluginEnvOptionsGroup.getI2TConfigFilePathDefaultValue());
+        createInstanceRules((OMFPluginEnvOptionsGroup.getInstanceConfigFilePathDefaultValue()));
+        createTypeRules(OMFPluginEnvOptionsGroup.getTypeConfigFilePathDefaultValue());
         createOrganizerRules(OMFPluginEnvOptionsGroup.getOrganizerConfigFilePathDefaultValue());
     }
 
-    private void createType2InstanceRules(String configFilePath) {
+    private void createInstanceRules(String configFilePath) {
         List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, ';');
         for (List<String> line : linesToParse) {
             String typeListener = line.get(0);
@@ -109,7 +109,7 @@ public class StereotypesRuleUpdater {
         }
     }
 
-    private void createInstance2TypeRules(String configFilePath) {
+    private void createTypeRules(String configFilePath) {
         List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, ';');
         for (List<String> line : linesToParse) {
             String typeListener = line.get(0);
