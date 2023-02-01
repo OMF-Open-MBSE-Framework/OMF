@@ -4,41 +4,39 @@
  * @since     0.1.0
  */
 
-package com.samares.omf.plugin.test.suite.basicsysml_test.portcreation;
+package com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion;
 
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares.omf.core.factory.SysMLFactory;
 import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
 
 /**
  * Important write the <Wizard.class> to get the right wizard
  */
-public class T3_CreatePort extends AbstractModelComparatorTestCase {
+public class T_2_Delete_block extends AbstractModelComparatorTestCase {
 
     @Override
     public void initVariables() {
-        setName("[B] create proxy port");
-        testCaseID = "Create1";
-        testPackageName = "1 create proxy port";
+        setName("[B]  Port Deletion");
+        testCaseID = "Delete1";
+        testPackageName = "1 Delete block";
     }
 
     @Override
     public void initEnvOptions() {
         setEnvironmentOptionValueByCategoryName("OMF", "Activate OMF Automations", true);
-
     }
 
     @Override
     public void testAction() {
         // Action to test
-        Element owner = findTestedElementByID("_2021x_2_302b0611_1670957597348_883331_3236");
-        openDiagram("_2021x_2_302b0611_1670957709771_148945_3383");
-        SysMLFactory.getInstance().createProxyPort(owner);
+        Class port = (Class) findTestedElementByID("_2021x_2_302b0611_1670957740478_263727_3439");
+        SysMLFactory.getInstance().removeElement(port);
     }
-
 
     @Override
     public void reInitEnvOptions() {
+
     }
 
 

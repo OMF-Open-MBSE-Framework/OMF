@@ -18,9 +18,10 @@ import com.samares.omf.core.ui.OMFDiagramConfigurator;
 import com.samares.omf.core.ui.OMFMainMenuConfigurator;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
+import com.samares.omf.plugin.test.suites.batches.TWCStereotypesBatch;
 import com.samares.omf.test.BatchLauncher;
 import com.samares.omf.plugin.test.feature.Feature_CopyID;
-import com.samares.omf.plugin.test.suite._testbatch.TWCBatch;
+import com.samares.omf.plugin.test.suites.batches.TWCBatch;
 import com.samares.omf.test.templates.ATestBatch;
 import com.samares.omf.plugin.test.ui.TestMainMenuConfigurator;
 
@@ -33,6 +34,7 @@ public class TestPlugin extends APlugin {
 
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
+            TWCStereotypesBatch.class,
             TWCBatch.class
     );
 
@@ -59,7 +61,7 @@ public class TestPlugin extends APlugin {
 
     @Override
     public List<MDFeature> getDefaultFeatureRegistered() {
-        return Arrays.asList(
+        return List.of(
                 new Feature_CopyID()
         );
     }

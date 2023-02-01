@@ -4,7 +4,7 @@
  * @since     0.1.0
  */
 
-package com.samares.omf.plugin.test.suite.md_actions;
+package com.samares.omf.plugin.test.suites.testcases.mdactions;
 
 
 import com.samares.omf.test.templates.MDActionsBrowserMenuTestCase;

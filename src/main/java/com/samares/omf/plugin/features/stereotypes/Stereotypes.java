@@ -40,7 +40,7 @@ public class Stereotypes extends AFeature {
     public List<IOption> initOptions() {
         // Organizer
         StringProperty organizerConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.ORGANIZER_CONFIG_FILE_PATH_ID,
-                OMFPluginEnvOptionsGroup.getOrganizerPathListenerConfigurationDefaultValue());
+                OMFPluginEnvOptionsGroup.getOrganizerConfigFilePathDefaultValue());
         var organizerConfigFilePath = new OptionImpl(
                 organizerConfigFilePathProp,
                 OMFPluginEnvOptionsGroup.ORGANIZER_CONFIG_GRP,
@@ -59,7 +59,7 @@ public class Stereotypes extends AFeature {
 
         // Type to instance
         StringProperty t2IConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.T2I_CONFIG_FILE_PATH_ID,
-                OMFPluginEnvOptionsGroup.getT2IPathListenerConfigurationDefaultValue());
+                OMFPluginEnvOptionsGroup.getT2IConfigFilePathDefaultValue());
         var t2iConfigFilePath = new OptionImpl(
                 t2IConfigFilePathProp,
                 OMFPluginEnvOptionsGroup.T2I_CONFIG_GRP,
@@ -77,10 +77,10 @@ public class Stereotypes extends AFeature {
 
         // Instance to type
         StringProperty i2TConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.I2T_CONFIG_FILE_PATH_ID,
-                OMFPluginEnvOptionsGroup.getI2TPathListenerConfigurationDefaultValue());
+                OMFPluginEnvOptionsGroup.getI2TConfigFilePathDefaultValue());
         var i2TConfigFilePath = new OptionImpl(
                 i2TConfigFilePathProp,
-                OMFPluginEnvOptionsGroup.T2I_CONFIG_GRP,
+                OMFPluginEnvOptionsGroup.I2T_CONFIG_GRP,
                 OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Environment
         );
@@ -88,7 +88,7 @@ public class Stereotypes extends AFeature {
 
         var i2TActivation = new OptionImpl(
                 new BooleanProperty(OMFPluginEnvOptionsGroup.I2T_ACTIVATION_ID, true),
-                OMFPluginEnvOptionsGroup.T2I_CONFIG_GRP,
+                OMFPluginEnvOptionsGroup.I2T_CONFIG_GRP,
                 OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Environment
         );

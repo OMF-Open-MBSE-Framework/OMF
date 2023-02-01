@@ -4,12 +4,10 @@
  * @since     0.1.0
  */
 
-package com.samares.omf.plugin.test.suite._testbatch;
+package com.samares.omf.plugin.test.suites.batches;
 
-import com.samares.omf.plugin.test.suite.SmokeTests;
-import com.samares.omf.plugin.test.suite.basicsysml_test.deletion.T_2_Delete_block;
-import com.samares.omf.plugin.test.suite.basicsysml_test.portcreation.T3_CreatePort;
-import com.samares.omf.plugin.test.suite.md_actions.ExampleMDAActionsTest;
+import com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation.T3_CreatePort;
+import com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion.T_2_Delete_block;
 import com.samares.omf.test.templates.ATestBatchLocal;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -4,7 +4,7 @@
  * @since     0.1.0
  */
 
-package com.samares.omf.plugin.test.suite;
+package com.samares.omf.plugin.test.suites.batches;
 
 
 import com.nomagic.magicdraw.plugins.PluginUtils;

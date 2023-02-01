@@ -60,12 +60,10 @@ public class StereotypesRuleUpdater {
      */
     public void initAllRulesBasedOnConfigFiles(){
         organizerEngine.removeAllRules();
-        createType2InstanceRules((OMFPluginEnvOptionsGroup.getT2IPathListenerConfigurationDefaultValue()));
-        createInstance2TypeRules(OMFPluginEnvOptionsGroup.getI2TPathListenerConfigurationDefaultValue());
-        createOrganizerRules(OMFPluginEnvOptionsGroup.getOrganizerPathListenerConfigurationDefaultValue());
+        createType2InstanceRules((OMFPluginEnvOptionsGroup.getT2IConfigFilePathDefaultValue()));
+        createInstance2TypeRules(OMFPluginEnvOptionsGroup.getI2TConfigFilePathDefaultValue());
+        createOrganizerRules(OMFPluginEnvOptionsGroup.getOrganizerConfigFilePathDefaultValue());
     }
-
-
 
     private void createType2InstanceRules(String configFilePath) {
         List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, ';');

@@ -24,13 +24,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The type Fa factory.
+ * Factory class to facilitate the creation of Sysml elements in MagicDraw
  */
 public class SysMLFactory extends AMagicDrawFactory {
-    /**
-     * Gets instance.
-     * @return the instance
-     */
     public static SysMLFactory getInstance() {
         return getInstance(OMFUtils.currentProject);
     }
@@ -40,30 +36,32 @@ public class SysMLFactory extends AMagicDrawFactory {
         return SysMLFactoryHolder.instance;
     }
 
-    /**
-     * Create interface block class.
-     * @return the class
+    private static class SysMLFactoryHolder {
+        private static final SysMLFactory instance = new SysMLFactory();
+    }
+
+    /*
+    Activity
      */
+
+    public Activity createActivity() {
+        return getMagicDrawFactory().createActivityInstance();
+    }
+
+    public Activity createActivity(Element owner) {
+        Activity activity = getMagicDrawFactory().createActivityInstance();
+        activity.setOwner(owner);
+        return activity;
+    }
+
+    /*
+    Class
+     */
+
     public Class createInterfaceBlock() {
         Class interfaceBlock = getMagicDrawFactory().createClassInstance();
         StereotypesHelper.addStereotype(interfaceBlock, Profile.getSysml().interfaceBlock().getStereotype());
         return interfaceBlock;
-    }
-
-    /**
-     * Create a Class
-     * @return the class
-     */
-    public Class createClass() {
-        return getMagicDrawFactory().createClassInstance();
-    }
-
-    /**
-     * Create an Activity instance
-     * @return the Activity
-     */
-    public Activity createActivity() {
-        return getMagicDrawFactory().createActivityInstance();
     }
 
     public Class createInterfaceBlock(Element owner) {
@@ -72,11 +70,16 @@ public class SysMLFactory extends AMagicDrawFactory {
         return interfaceBlock;
     }
 
-    /**
-     * Create block class.
-     *
-     * @return the class
-     */
+    public Class createClass() {
+        return getMagicDrawFactory().createClassInstance();
+    }
+
+    public Class createClass(Element owner) {
+        Class mdClass = createClass();
+        mdClass.setOwner(owner);
+        return mdClass;
+    }
+
     public Class createBlock() {
         Class block = getMagicDrawFactory().createClassInstance();
         StereotypesHelper.addStereotype(block, Profile.getSysml().block().getStereotype());
@@ -89,11 +92,10 @@ public class SysMLFactory extends AMagicDrawFactory {
         return block;
     }
 
-    /**
-     * Create flow property property.
-     *
-     * @return the property
+    /*
+    Property
      */
+
     public Property createFlowProperty() {
         Property flowProperty = getMagicDrawFactory().createPropertyInstance();
         StereotypesHelper.addStereotype(flowProperty, Profile.getSysml().flowProperty().getStereotype());
@@ -101,22 +103,44 @@ public class SysMLFactory extends AMagicDrawFactory {
         return flowProperty;
     }
 
-    /**
-     * Create property property.
-     *
-     * @param name the name
-     * @return the property
+    public Property createFlowProperty(Element owner) {
+        Property flowProperty = createFlowProperty();
+        flowProperty.setOwner(owner);
+        return flowProperty;
+    }
+
+    public Property createProperty() {
+        return getMagicDrawFactory().createPropertyInstance();
+    }
+
+    public Property createProperty(Element owner) {
+        Property property = createProperty();
+        property.setOwner(owner);
+        return property;
+    }
+
+    /*
+    Signal
      */
-    public Property createProperty(String name) {
-        Property prop = getMagicDrawFactory().createPropertyInstance();
-        prop.setName(name);
-        return prop;
+
+    public Signal createSignal() {
+        return getMagicDrawFactory().createSignalInstance();
     }
 
     public Signal createSignal(Element owner) {
-        Signal signal = getMagicDrawFactory().createSignalInstance();
+        Signal signal = createSignal();
         signal.setOwner(owner);
         return signal;
+    }
+
+    /*
+    Port
+     */
+
+    public Port createProxyPort() {
+        Port port = getMagicDrawFactory().createPortInstance();
+        StereotypesHelper.addStereotype(port, Profile.getSysml().proxyPort().getStereotype());
+        return port;
     }
 
     public Port createProxyPort(Element owner) {
@@ -125,48 +149,49 @@ public class SysMLFactory extends AMagicDrawFactory {
         return p;
     }
 
-    public Port createProxyPort() {
-        Port port = getMagicDrawFactory().createPortInstance();
-        StereotypesHelper.addStereotype(port, Profile.getSysml().proxyPort().getStereotype());
-        return port;
+    /*
+    Connector
+     */
+
+    public Connector createConnector() {
+        return getMagicDrawFactory().createConnectorInstance();
     }
 
-    public Connector createConnector(Port portSource, Port portTarget, List<Property> pathSource, List<Property> pathTarget, Element owner) {
-
-        Connector connector = getMagicDrawFactory().createConnectorInstance();
-
+    public Connector createConnector(Element owner) {
+        Connector connector = createConnector();
         connector.setOwner(owner);
+        return connector;
+    }
 
-        ConnectorEnd connectorEndA = getMagicDrawFactory().createConnectorEndInstance();
-        connectorEndA.setRole(portSource);
-        connectorEndA.set_connectorOfEnd(connector);
+    public Connector createConnectorBetweenPorts(Port portSource, Port portTarget,
+                                                 List<Property> pathSource, List<Property> pathTarget,
+                                                 Element owner) {
+        Connector connector = createConnector(owner);
+        ConnectorEnd connectorEndSource = createConnectorEnd(portSource, pathSource, owner, connector);
 
-        if (!Objects.equals(portSource.getOwner(), owner) && pathSource != null) {
-            StereotypesHelper.addStereotype(connectorEndA, Profile.getSysml().nestedConnectorEnd().getStereotype());
-            Profile.getSysml().elementPropertyPath().setPropertyPath(connectorEndA, pathSource);
-        }
-
-        ConnectorEnd connectorEndB = getMagicDrawFactory().createConnectorEndInstance();
-
-        connectorEndB.setRole(portTarget);
-        connectorEndB.set_connectorOfEnd(connector);
-
-        if (!Objects.equals(portTarget.getOwner(), owner) && pathTarget != null) {
-            StereotypesHelper.addStereotype(connectorEndB, Profile.getSysml().nestedConnectorEnd().getStereotype());
-            Profile.getSysml().elementPropertyPath().setPropertyPath(connectorEndB, pathTarget);
-        }
+        ConnectorEnd connectorEndTarget = createConnectorEnd(portTarget, pathTarget, owner, connector);
 
         connector.getEnd().clear();
-        connector.getEnd().add(connectorEndA);
-        connector.getEnd().add(connectorEndB);
+        connector.getEnd().add(connectorEndSource);
+        connector.getEnd().add(connectorEndTarget);
 
         return connector;
     }
 
-    /**
-     *
-     */
-    private static class SysMLFactoryHolder {
-        private static final SysMLFactory instance = new SysMLFactory();
+    private ConnectorEnd createConnectorEnd(Port port, List<Property> path, Element owner, Connector connector) {
+        ConnectorEnd connectorEnd = createConnectorEnd(port, connector);
+
+        if (!Objects.equals(port.getOwner(), owner) && path != null) {
+            StereotypesHelper.addStereotype(connectorEnd, Profile.getSysml().nestedConnectorEnd().getStereotype());
+            Profile.getSysml().elementPropertyPath().setPropertyPath(connectorEnd, path);
+        }
+        return connectorEnd;
+    }
+
+    private ConnectorEnd createConnectorEnd(Port port, Connector connector) {
+        ConnectorEnd connectorEnd = getMagicDrawFactory().createConnectorEndInstance();
+        connectorEnd.setRole(port);
+        connectorEnd.set_connectorOfEnd(connector);
+        return connectorEnd;
     }
 }

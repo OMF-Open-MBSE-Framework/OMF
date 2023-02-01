@@ -30,7 +30,7 @@ public class OrganizerRule extends A_Rule {
         this.owner = owner;
         this.classInstance = classInstance;
         this.idOption = idOption;
-        OMFPluginEnvOptionsGroup.getInstance().addOwnerPropertyOption(id, idOption, owner);
+        OMFPluginEnvOptionsGroup.getInstance().addOwnerPropertyOption(idOption, owner);
     }
 
     @Override
