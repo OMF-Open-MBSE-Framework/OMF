@@ -41,7 +41,7 @@ public class InstancePropertyCreatedRule extends ARule {
 
     @Override
     public boolean eventMatches(PropertyChangeEvent evt) {
-       if (!OMFPluginEnvOptionsGroup.getInstance().isT2IActivated()) {
+       if (!OMFPluginEnvOptionsGroup.getInstance().isInstanceActivated()) {
             return false;
         }
         if (evt.getSource() == null) {

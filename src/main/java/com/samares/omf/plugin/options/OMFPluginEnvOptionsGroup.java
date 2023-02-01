@@ -81,60 +81,60 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
     }
 
     /*
-    Type to instance group
+    Type group
      */
 
-    public static final String T2I_CONFIG_GRP = "Type";
-    public static final String T2I_CONFIG_FILE_PATH_ID = "Automation type to instance configuration file path";
-    public static final String T2I_ACTIVATION_ID = "Activate automatic instance stereotype application";
+    public static final String INSTANCE_CONFIG_GRP = "Instance";
+    public static final String INSTANCE_CONFIG_FILE_PATH = "Automation type to instance configuration file path";
+    public static final String INSTANCE_ACTIVATION_ID = "Activate automatic instance stereotype application";
 
-    public static String getT2IConfigFilePathDefaultValue() {
+    public static String getInstanceConfigFilePathDefaultValue() {
         return System.getProperty("user.dir") + "/plugins/com.samares.omf.plugin/resources/instance_config.csv";
     }
 
-    public String getT2IConfigFilePath() {
-        StringProperty p = (StringProperty) getPropertyByName(T2I_CONFIG_FILE_PATH_ID);
+    public String getInstanceConfigFilePath() {
+        StringProperty p = (StringProperty) getPropertyByName(INSTANCE_CONFIG_FILE_PATH);
         return p.getString();
     }
 
-    public void setT2IConfigFilePath(String path) {
-        getPropertyByName(T2I_CONFIG_FILE_PATH_ID).setValue(path);
+    public void setInstanceConfigFilePath(String path) {
+        getPropertyByName(INSTANCE_CONFIG_FILE_PATH).setValue(path);
     }
 
-    public boolean isT2IActivated() {
-        return (boolean) getPropertyByName(T2I_ACTIVATION_ID).getValue();
+    public boolean isInstanceActivated() {
+        return (boolean) getPropertyByName(INSTANCE_ACTIVATION_ID).getValue();
     }
 
-    public void setT2IActivated(boolean isActivated) {
-        getPropertyByName(T2I_ACTIVATION_ID).setValue(isActivated);
+    public void setInstanceActivated(boolean isActivated) {
+        getPropertyByName(INSTANCE_ACTIVATION_ID).setValue(isActivated);
     }
 
     /*
-    Instance to type group
+    Instance group
      */
-    public static final String I2T_CONFIG_GRP = "Instance";
-    public static final String I2T_CONFIG_FILE_PATH_ID = "Automation instance to type creation configuration file path";
+    public static final String TYPE_CONFIG_GRP = "Type";
+    public static final String TYPE_CONFIG_FILE_PATH_ID = "Automation instance to type creation configuration file path";
 
-    public static final String I2T_ACTIVATION_ID = "Activate automatic type creation on instance creation";
+    public static final String TYPE_ACTIVATION_ID = "Activate automatic type creation on instance creation";
 
-    public static String getI2TConfigFilePathDefaultValue() {
+    public static String getTypeConfigFilePathDefaultValue() {
         return System.getProperty("user.dir") + "/plugins/com.samares.omf.plugin/resources/type_config.csv";
     }
 
-    public boolean isI2TActivated() {
-        return (boolean) getPropertyByName(I2T_ACTIVATION_ID).getValue();
+    public boolean isTypeActivated() {
+        return (boolean) getPropertyByName(TYPE_ACTIVATION_ID).getValue();
     }
 
-    public void setI2TActivated(boolean isActivated) {
-        getPropertyByName(I2T_ACTIVATION_ID).setValue(isActivated);
+    public void setTypeActivated(boolean isActivated) {
+        getPropertyByName(TYPE_ACTIVATION_ID).setValue(isActivated);
     }
 
-    public String getI2TConfigFilePath() {
-        StringProperty p = (StringProperty) getPropertyByName(I2T_CONFIG_FILE_PATH_ID);
+    public String getTypeConfigFilePath() {
+        StringProperty p = (StringProperty) getPropertyByName(TYPE_CONFIG_FILE_PATH_ID);
         return p.getString();
     }
 
-    public void setI2TConfigFilePath(String path) {
-        getPropertyByName(I2T_CONFIG_FILE_PATH_ID).setValue(path);
+    public void setTypeConfigFilePath(String path) {
+        getPropertyByName(TYPE_CONFIG_FILE_PATH_ID).setValue(path);
     }
 }

@@ -65,37 +65,37 @@ public class Stereotypes extends AFeature {
         );
 
         // Type to instance
-        StringProperty t2IConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.T2I_CONFIG_FILE_PATH_ID,
-                OMFPluginEnvOptionsGroup.getT2IConfigFilePathDefaultValue());
+        StringProperty instanceConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_FILE_PATH,
+                OMFPluginEnvOptionsGroup.getInstanceConfigFilePathDefaultValue());
         var t2iConfigFilePath = new OptionImpl(
-                t2IConfigFilePathProp,
-                OMFPluginEnvOptionsGroup.T2I_CONFIG_GRP,
+                instanceConfigFilePathProp,
+                OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_GRP,
                 OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Environment
         );
 
 
-        var t2IActivation = new OptionImpl(
-                new BooleanProperty(OMFPluginEnvOptionsGroup.T2I_ACTIVATION_ID, true),
-                OMFPluginEnvOptionsGroup.T2I_CONFIG_GRP,
+        var instanceActivation = new OptionImpl(
+                new BooleanProperty(OMFPluginEnvOptionsGroup.INSTANCE_ACTIVATION_ID, true),
+                OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_GRP,
                 OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Environment
         );
 
         // Instance to type
-        StringProperty i2TConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.I2T_CONFIG_FILE_PATH_ID,
-                OMFPluginEnvOptionsGroup.getI2TConfigFilePathDefaultValue());
-        var i2TConfigFilePath = new OptionImpl(
-                i2TConfigFilePathProp,
-                OMFPluginEnvOptionsGroup.I2T_CONFIG_GRP,
+        StringProperty typeConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.TYPE_CONFIG_FILE_PATH_ID,
+                OMFPluginEnvOptionsGroup.getTypeConfigFilePathDefaultValue());
+        var typeConfigFilePath = new OptionImpl(
+                typeConfigFilePathProp,
+                OMFPluginEnvOptionsGroup.TYPE_CONFIG_GRP,
                 OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Environment
         );
 
 
-        var i2TActivation = new OptionImpl(
-                new BooleanProperty(OMFPluginEnvOptionsGroup.I2T_ACTIVATION_ID, true),
-                OMFPluginEnvOptionsGroup.I2T_CONFIG_GRP,
+        var typeActivation = new OptionImpl(
+                new BooleanProperty(OMFPluginEnvOptionsGroup.TYPE_ACTIVATION_ID, true),
+                OMFPluginEnvOptionsGroup.TYPE_CONFIG_GRP,
                 OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Environment
         );
@@ -104,9 +104,9 @@ public class Stereotypes extends AFeature {
                 organizerConfigFilePath,
                 organizerActivation,
                 t2iConfigFilePath,
-                t2IActivation,
-                i2TConfigFilePath,
-                i2TActivation
+                instanceActivation,
+                typeConfigFilePath,
+                typeActivation
         );
     }
 }

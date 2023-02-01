@@ -9,6 +9,7 @@ package com.samares.omf.plugin.test.suites.testcases.stereotypes;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares.omf.core.factory.SysMLFactory;
+import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
 
 /**
@@ -25,7 +26,7 @@ public class ExampleStereotypesTest extends AbstractModelComparatorTestCase {
 
     @Override
     public void initEnvOptions() {
-        setEnvironmentOptionValueByCategoryName("Stereotype", "Activate OMF Automations", true);
+        setEnvironmentOptionValueByCategoryName(OMFPluginEnvOptionsGroup.TYPE_CONFIG_FILE_PATH_ID, "", true);
     }
 
     @Override
