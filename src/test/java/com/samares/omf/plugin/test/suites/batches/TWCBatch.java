@@ -6,8 +6,8 @@
 
 package com.samares.omf.plugin.test.suites.batches;
 
-import com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation.T3_CreatePort;
-import com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion.T_2_Delete_block;
+import com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
+import com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion.T2DeleteBlock;
 import com.samares.omf.test.templates.TestBatchTWC;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -21,10 +21,10 @@ import org.junit.runners.Suite.SuiteClasses;
         //ExampleMDAActionsTest.class,
 
         //Creation
-        T3_CreatePort.class,
+        T3CreatePort.class,
 
         //Deletion
-        T_2_Delete_block.class,
+        T2DeleteBlock.class,
 
 })
 

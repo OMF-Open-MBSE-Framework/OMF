@@ -8,14 +8,14 @@ package com.samares.omf.plugin.features.stereotypes.rules.instance2type;
 
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
+import com.samares.omf.core.listeners.ruleEngineListener.rules.ARule;
 import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
-public class ActivityToCreateRule extends A_Rule {
+public class ActivityToCreateRule extends ARule {
     public String strInstance   = "";
     public String strType = "";
     public Element owner = null;

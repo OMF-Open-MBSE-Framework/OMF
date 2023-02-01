@@ -21,8 +21,8 @@ import com.samares.omf.core.ui.OMFMainMenuConfigurator;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.plugin.features.dev.Dev;
-import com.samares.omf.plugin.features.feature_A.Feature_A;
-import com.samares.omf.plugin.features.feature_C.Feature_C;
+import com.samares.omf.plugin.features.example1.ExampleFeature1;
+import com.samares.omf.plugin.features.example3.ExampleFeature3;
 import com.samares.omf.plugin.features.stereotypes.Stereotypes;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
@@ -36,8 +36,8 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
     public List<MDFeature> getDefaultFeatureRegistered() {
         return Arrays.asList(
-                new Feature_A(),
-                new Feature_C(),
+                new ExampleFeature1(),
+                new ExampleFeature3(),
                 new Dev()
         );
     }

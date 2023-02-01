@@ -7,12 +7,11 @@
 package com.samares.omf.plugin.options;
 
 import com.nomagic.magicdraw.core.Application;
-import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.ElementProperty;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.ui.environmentoptions.EnvOptionResources_OMF;
+import com.samares.omf.core.ui.environmentoptions.OMFEnvOptionResources;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 
 import java.util.Objects;
@@ -22,7 +21,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
     private static final String OMF_PLUGIN_CATEGORY_NAME = "OMF Plugin";
 
     @SuppressWarnings("ConstantConditions")
-    public static final PropertyResourceProvider PROPERTY_RESOURCE_PROVIDER = (key, property) -> EnvOptionResources_OMF.getString(key);
+    public static final PropertyResourceProvider PROPERTY_RESOURCE_PROVIDER = (key, property) -> OMFEnvOptionResources.getString(key);
 
     public static OMFPluginEnvOptionsGroup getInstance() {
         return Objects.requireNonNull(
@@ -35,7 +34,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
 
     @Override
     public String getName() {
-        return EnvOptionResources_OMF.getString(OMF_PLUGIN_CATEGORY_NAME);
+        return OMFEnvOptionResources.getString(OMF_PLUGIN_CATEGORY_NAME);
     }
 
     /*

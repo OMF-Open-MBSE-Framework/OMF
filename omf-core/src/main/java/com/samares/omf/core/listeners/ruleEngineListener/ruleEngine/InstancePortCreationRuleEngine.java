@@ -8,7 +8,7 @@
 package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
 
  import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
- import com.samares.omf.core.listeners.ruleEngineListener.rules.onCreation.DiagramPortCreated_Rule;
+ import com.samares.omf.core.listeners.ruleEngineListener.rules.onCreation.DiagramPortCreatedRule;
 
  import java.beans.PropertyChangeEvent;
  import java.util.Arrays;
@@ -19,7 +19,7 @@ package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
      public InstancePortCreationRuleEngine(){
          super();
          List l_r = Arrays.asList(
-                 new DiagramPortCreated_Rule("onPortCreationOnDiagram",   null, null)
+                 new DiagramPortCreatedRule("onPortCreationOnDiagram",   null, null)
          );
          addAllRules(l_r);
      }

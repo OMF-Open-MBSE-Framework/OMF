@@ -13,7 +13,7 @@ import com.samares.omf.core.errors.OMFLogLevel;
 import com.samares.omf.core.utils.OMFConstants;
 import com.samares.omf.core.errors.OMFLogger;
 
-public class GenericException extends Exception implements I_Exception{
+public class GenericException extends Exception implements IException {
     protected String message;
     protected Element createdElement;
 

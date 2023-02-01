@@ -12,7 +12,7 @@ import com.samares.omf.core.errors.OMFLogger;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class OMFLockException extends OMFException implements I_Exception {
+public class OMFLockException extends OMFException implements IException {
 
     public Collection<Element> lockedElements;
     public Exception exception;

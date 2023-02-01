@@ -7,7 +7,7 @@
 package com.samares.omf.plugin.features.stereotypes.rules.type2instance;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.listeners.ruleEngineListener.rules.A_Rule;
+import com.samares.omf.core.listeners.ruleEngineListener.rules.ARule;
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.exceptions.OMFException;
 import com.samares.omf.plugin.features.stereotypes.utils.StereotypesRuleUtils;
@@ -17,7 +17,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class InstancePropertyCreatedRule extends A_Rule {
+public class InstancePropertyCreatedRule extends ARule {
     public final Class classOfType;
     public final Class classOfInstance;
     public final String stereoOfType;

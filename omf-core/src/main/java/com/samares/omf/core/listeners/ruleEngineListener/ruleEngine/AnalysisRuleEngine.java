@@ -8,7 +8,7 @@
 package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
 
 
- import com.samares.omf.core.listeners.ruleEngineListener.rules.onCreation.PortCreatedFromConnection_Rule;
+ import com.samares.omf.core.listeners.ruleEngineListener.rules.onCreation.PortCreatedFromConnectionRule;
 
  import java.util.Arrays;
  import java.util.List;
@@ -21,7 +21,7 @@ package com.samares.omf.core.listeners.ruleEngineListener.ruleEngine;
      public AnalysisRuleEngine(){
          super();
          List l_r = Arrays.asList(
-                 new PortCreatedFromConnection_Rule("onPortCreationFromConnector",   null)
+                 new PortCreatedFromConnectionRule("onPortCreationFromConnector",   null)
          );
          addAllRules(l_r);
      }

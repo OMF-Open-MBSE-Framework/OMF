@@ -20,7 +20,7 @@ import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.plugin.test.suites.batches.TWCStereotypesBatch;
 import com.samares.omf.test.BatchLauncher;
-import com.samares.omf.plugin.test.feature.Feature_CopyID;
+import com.samares.omf.plugin.test.feature.FeatureCopyID;
 import com.samares.omf.plugin.test.suites.batches.TWCBatch;
 import com.samares.omf.test.templates.ATestBatch;
 import com.samares.omf.plugin.test.ui.TestMainMenuConfigurator;
@@ -62,7 +62,7 @@ public class TestPlugin extends APlugin {
     @Override
     public List<MDFeature> getDefaultFeatureRegistered() {
         return List.of(
-                new Feature_CopyID()
+                new FeatureCopyID()
         );
     }
 
