@@ -39,19 +39,19 @@ public class RuleEngine implements IRuleEngine {
         if (skipRules(evt))
             return new ArrayList<>();
 
-        List<IRule> l_rulesToExecute = new ArrayList<>();
+        List<IRule> rulesToExecute = new ArrayList<>();
 
         for (IRule rule : rules) {  //return all matching rules until the first Blocking rule is found
             if(!rule.isActivated())
                 continue;
             if (rule.matches(evt)) {
-                l_rulesToExecute.add(rule);
+                rulesToExecute.add(rule);
                 if (rule.isBlocking())
                     break;
             }
 
         }
-        return l_rulesToExecute;
+        return rulesToExecute;
 
     }
 

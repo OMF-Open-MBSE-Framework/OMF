@@ -153,12 +153,12 @@ public class StereotypesRuleUpdater {
         for (List<String> line : linesToParse) {
             String createdElementStereotype = line.get(0);
             String classOfElement = line.get(1);
-            String viewpointPackage_StereotypeName = line.get(2);
-            String viewpointPackage_AMT_id = line.get(3);
+            String viewpointPackageStereotypeName = line.get(2);
+            String viewpointPackageAMTid = line.get(3);
             List<String> ownersPossiblesList = OMFUtils.getValuesWithinLine(line.get(4), "/");
-            String futurStorageStereotype = line.get(5);
-            String futurStorageAMT_id = line.get(6);
-            String classOfAMT_id = line.get(7);
+            String futureStorageStereotype = line.get(5);
+            String futureStorageAMTid = line.get(6);
+            String classOfAMTid = line.get(7);
 
             if (isStereotypeExistingByName(createdElementStereotype)) {
                 OMFErrorHandler.handleException(new OMFException("[Organizer] While parsing file configuration." +
@@ -177,17 +177,17 @@ public class StereotypesRuleUpdater {
 
             java.lang.Class storageClass = null;
             try {
-                storageClass = String2Class.valueOf(classOfAMT_id.toUpperCase()).getClassValue();
+                storageClass = String2Class.valueOf(classOfAMTid.toUpperCase()).getClassValue();
             } catch (Exception e) {
                 OMFErrorHandler.handleException(new OMFException("[Organizer] While parsing file configuration." +
-                        "\n classOfAMT_id: \"" + classOfAMT_id + "\" unknown", OMFException.ECriticality.ALERT), false);
+                        "\n classOfAMT_id: \"" + classOfAMTid + "\" unknown", OMFException.ECriticality.ALERT), false);
                 continue;
             }
 
             //TODO ADD THE NEW RULE
-//            engine_organizer.addRule(new Organizer_Rule(id, createdElementStereotype, classElementCreated,
-//                    futurStorageAMT_id, storageClass,
-//                    futurStorageStereotype, viewpointPackage_StereotypeName, viewpointPackage_AMT_id, ownersPossiblesList));
+//            organizerEngine.addRule(new OrganizerRule(id, createdElementStereotype, classElementCreated,
+//                    futurStorageAMTid, storageClass,
+//                    futurStorageStereotype, viewpointPackageStereotypeName, viewpointPackageAMTid, ownersPossiblesList));
         }
     }
 

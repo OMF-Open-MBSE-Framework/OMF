@@ -8,7 +8,6 @@
 package com.samares.omf.test.projectcomparator;
 
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparatorFilter;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue;
@@ -20,7 +19,7 @@ public class ElementFilter implements ModelComparatorFilter {
         //Each attributes of stereotype
         if(element instanceof Diagram || element.getOwner() instanceof Diagram)
             return false;
-        if(Profile.getInstance().get_MdProfile().legend().is(element) || Profile.getInstance().get_MdProfile().legend().is(element.getOwner()))
+        if(Profile.getInstance().getMagicDraw().legend().is(element) || Profile.getInstance().getMagicDraw().legend().is(element.getOwner()))
             return false;
         if (element instanceof TaggedValue) {
             TaggedValue taggedValue = (TaggedValue) element;

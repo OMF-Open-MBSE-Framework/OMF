@@ -23,10 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import static org.junit.Assert.assertNotNull;
 
 public class TestHelper {
-
-//    public static TestLogger logger = null;
-
-
     public static boolean compareTestProjects(Element initProject, Element oracleProject, String testPackageName) {
         Package testPackage = Finder.byNameRecursively().find(initProject, Package.class, testPackageName);
         Package resultPackage = Finder.byNameRecursively().find(oracleProject, Package.class, testPackageName);
@@ -95,7 +91,7 @@ public class TestHelper {
     }
 
 
-    public static boolean test_compareTestProjects(AbstractTestCase testCase) {
+    public static boolean testCompareTestProjects(AbstractTestCase testCase) {
         Project initProject = testCase.getInitProject();
         Project oracleProject = testCase.getOracleProject();
         String testPackageName = testCase.getTestPackageName();

@@ -7,7 +7,6 @@
 package com.samares.omf.core.utils;
 
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares.omf.core.utils.profile.Profile;
 
 public class OMFConstants {
     public final static String SYSML_PACKAGE_NAME = "SysML";
@@ -16,9 +15,9 @@ public class OMFConstants {
     public static boolean GUI_REQUIRED = true;
     public static boolean DEBUG_MODE_ACTIVATED = false;
 
-    public static Stereotype stereotype_exemple;
+    public static Stereotype stereotypeExample;
     static public void reinitConstants() {
-//        stereotype_exemple = Profile.getInstance().getSysml().getBlock();
+//        stereotypeExample = Profile.getInstance().getSysml().getBlock();
     }
 }
 
