@@ -65,16 +65,39 @@ public abstract class AFeature implements MDFeature{
     }
 
     @Override
-    public void activate() {
+    public final void activate() {
         isActivated = true;
-    }
-    @Override
-    public void deactivate() {
-        isActivated = false;
+        onActivation();
     }
 
     @Override
-    public boolean isActivated(boolean b) {
+    public final void deactivate() {
+        isActivated = false;
+        onDeactivation();
+    }
+
+    /**
+     * Override this to inject code to be run on feature activation
+     */
+    public void onActivation() {}
+
+    /**
+     * Override this to inject code to be run on feature deactivation
+     */
+    public void onDeactivation() {}
+
+    /**
+     * Override this to inject code to be run on project opening
+     */
+    public void onProjectOpen() {}
+
+    /**
+     * Override this to inject code to be run on project closing
+     */
+    public void onProjectClose() {}
+
+    @Override
+    public boolean isActivated() {
         return isActivated;
     }
 
@@ -87,6 +110,4 @@ public abstract class AFeature implements MDFeature{
     public List<IOption> getOptions() {
         return options;
     }
-
-
 }

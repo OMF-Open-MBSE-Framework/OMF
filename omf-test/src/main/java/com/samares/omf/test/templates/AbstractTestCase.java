@@ -338,28 +338,28 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     }
 
     /**
-     * Search in all the Environment options the given property in the given category. If absent it will make the test fail. Case and White space non-sensitive.
-     * @param category name of the category (General, OMF, OMF ORGANIZER)
+     * Search in all the Environment options the given property in the given group. If absent it will make the test fail. Case and White space non-sensitive.
+     * @param group name of the group (General, OMF, OMF ORGANIZER)
      * @param optionName name of the option
      * @return Property option
      */
-    protected Property getEnvironmentOptionByCategoryName(String category, String optionName){
-        Optional<AbstractPropertyOptionsGroup> optCategory = Application.getInstance().getEnvironmentOptions().getGroups()
+    protected Property getEnvironmentOptionByGroupName(String group, String optionName){
+        Optional<AbstractPropertyOptionsGroup> optGroup = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
                 .map(AbstractPropertyOptionsGroup.class::cast)
-                .filter(cat -> cat.getName().equals(category))
+                .filter(cat -> cat.getName().equals(group))
                 .findAny();
 
-        if(optCategory.isEmpty())
-            Assert.fail("The environment options category: " + category + " wasn't found");
+        if(optGroup.isEmpty())
+            Assert.fail("The environment options group: " + group + " wasn't found");
 
-        Optional<Property> optOption = optCategory.get().getOptions().getProperties().stream()
+        Optional<Property> optOption = optGroup.get().getOptions().getProperties().stream()
                 .filter(property -> TestHelper.compareStringsNoCaseNoSpace(property.getName(), optionName))
                 .findAny();
 
         if(optOption.isEmpty())
-            Assert.fail("The environment options: " + optionName + " wasn't found in the category: " + category);
+            Assert.fail("The environment options: " + optionName + " wasn't found in the group: " + group);
         return optOption.get();
     }
 
@@ -404,24 +404,24 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Search for the environment option and compare it with the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param category
+     * @param group
      * @param optionName
      * @param value
      */
-    protected boolean compareOptionValueByCategoryName(String category, String optionName, Object value){
-        return getEnvironmentOptionByCategoryName(category, optionName).getValue().equals(value);
+    protected boolean compareOptionValueByCategoryName(String group, String optionName, Object value){
+        return getEnvironmentOptionByGroupName(group, optionName).getValue().equals(value);
     }
 
     /**
      * Search for the environment option and compare it with the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param id
+     * @param group
      * @param optionName
      * @param value
      */
-    protected boolean compareOptionValueByCategoryID(String id, String optionName, Object value){
-        return getEnvironmentOptionByCategoryName(id, optionName).getValue().equals(value);
+    protected boolean compareOptionValueByGroupID(String group, String optionName, Object value){
+        return getEnvironmentOptionByGroupName(group, optionName).getValue().equals(value);
     }
 
     /**
@@ -437,24 +437,24 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Search for the envvironment option and will set the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param category
+     * @param groupName
      * @param optionName
      * @param value
      */
-    protected void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value){
-        setOptionValue(getEnvironmentOptionByCategoryName(category, optionName), value);
+    protected void setEnvironmentOptionValueByGroupName(String groupName, String optionName, Object value){
+        setOptionValue(getEnvironmentOptionByGroupName(groupName, optionName), value);
     }
 
     /**
      * Search for the environment option searching by Environment ID, then set the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOptionByID for more detail
-     * @param id
+     * @param group
      * @param optionName
      * @param value
      */
-    protected void setEnvironmentOptionValueByID(String id, String optionName, Object value){
-        setOptionValue(getEnvironmentOptionByCategoryName(id, optionName), value);
+    protected void setEnvironmentOptionValueByID(String group, String optionName, Object value){
+        setOptionValue(getEnvironmentOptionByGroupName(group, optionName), value);
     }
 
 

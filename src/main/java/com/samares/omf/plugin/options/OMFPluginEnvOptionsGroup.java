@@ -85,7 +85,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
      */
 
     public static final String INSTANCE_CONFIG_GRP = "Instance";
-    public static final String INSTANCE_CONFIG_FILE_PATH = "Automation type to instance configuration file path";
+    public static final String INSTANCE_CONFIG_FILE_PATH_ID = "Automation type to instance configuration file path";
     public static final String INSTANCE_ACTIVATION_ID = "Activate automatic instance stereotype application";
 
     public static String getInstanceConfigFilePathDefaultValue() {
@@ -93,12 +93,12 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
     }
 
     public String getInstanceConfigFilePath() {
-        StringProperty p = (StringProperty) getPropertyByName(INSTANCE_CONFIG_FILE_PATH);
+        StringProperty p = (StringProperty) getPropertyByName(INSTANCE_CONFIG_FILE_PATH_ID);
         return p.getString();
     }
 
     public void setInstanceConfigFilePath(String path) {
-        getPropertyByName(INSTANCE_CONFIG_FILE_PATH).setValue(path);
+        getPropertyByName(INSTANCE_CONFIG_FILE_PATH_ID).setValue(path);
     }
 
     public boolean isInstanceActivated() {

@@ -10,37 +10,49 @@ package com.samares.omf.plugin.test.suites.testcases.stereotypes;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares.omf.core.factory.SysMLFactory;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
+import com.samares.omf.plugin.test.utils.StereotypesTestUtils;
 import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
 
-/**
- * Important write the <Wizard.class> to get the right wizard
- */
 public class ExampleStereotypesTest extends AbstractModelComparatorTestCase {
 
     @Override
     public void initVariables() {
         setName("Example stereotypes test");
         testCaseID = "Stereo1";
-        testPackageName = "Stereo Example";
+        testPackageName = "Example stereotypes test case";
     }
 
     @Override
     public void initEnvOptions() {
-        setEnvironmentOptionValueByCategoryName(OMFPluginEnvOptionsGroup.TYPE_CONFIG_FILE_PATH_ID, "", true);
+        String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
+
+        // Set instance config csv file
+        String instanceConfigFilePath = configFolder + "/stereotypes_example_test/instance_config.csv";
+        setEnvironmentOptionValueByGroupName(OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_GRP,
+                OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_FILE_PATH_ID, instanceConfigFilePath);
+
+        // Set type config csv file
+        String typeConfigFilePath = configFolder + "/stereotypes_example_test/type_config.csv";
+        setEnvironmentOptionValueByGroupName(OMFPluginEnvOptionsGroup.TYPE_CONFIG_GRP,
+                OMFPluginEnvOptionsGroup.TYPE_CONFIG_FILE_PATH_ID, typeConfigFilePath);
+
+        // Set organizer config csv file
+        String organizerConfigFilePath = configFolder + "/stereotypes_example_test/organizer_config.csv";
+        setEnvironmentOptionValueByGroupName(OMFPluginEnvOptionsGroup.ORGANIZER_CONFIG_GRP,
+                OMFPluginEnvOptionsGroup.ORGANIZER_CONFIG_FILE_PATH_ID, organizerConfigFilePath);
     }
 
     @Override
     public void testAction() {
-        // Action to test
-        Class port = (Class) findTestedElementByID("_2021x_2_302b0611_1670957740478_263727_3439");
-        SysMLFactory.getInstance().removeElement(port);
+        // Update stereotype rules (as if we clicked on the "Refresh stereotypes rules" button in cameo)
+        StereotypesTestUtils.updateAllRulesBasedOnConfigFiles();
+
+
     }
 
     @Override
     public void reInitEnvOptions() {
 
     }
-
-
 }
 

@@ -14,6 +14,7 @@ import com.samares.omf.core.feature.FeatureRegister;
 import com.samares.omf.core.feature.IFeatureRegisterer;
 import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.factory.FactoryManager;
 import com.samares.omf.core.utils.profile.Profile;
@@ -244,8 +245,8 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
         registerAllFeatures(delayedFeature);
         registerAllProjectOptionFeatures(optionProjectFeature);
 //        ProjectOptions.addConfigurator(OMFProjectOptionsConfigurator.getInstance());
+        APlugin.getInstance().getFeatures().forEach(MDFeature::onProjectOpen);
     }
-
 
     protected void closeProject() {
         if(OMFUtils.currentProject == null)
@@ -254,6 +255,7 @@ public class OMFProjectListener implements ProjectPartLoadedListener, IFeatureRe
         OMFUtils.currentProject = null;
         unregisterAllFeatures(delayedFeature);
         unRegisterAllProjectOptionFeatures(optionProjectFeature);
+        APlugin.getInstance().getFeatures().forEach(MDFeature::onProjectClose);
     }
 
 

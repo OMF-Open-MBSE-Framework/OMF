@@ -26,14 +26,14 @@ public class MDActionRegisterer implements IFeatureRegisterer {
     public MDActionRegisterer(OMFBrowserConfigurator browserConfigurator, OMFDiagramConfigurator diagramConfigurator, OMFMainMenuConfigurator menuConfigurator) {
         this.browserConfigurator = browserConfigurator;
         this.diagramConfigurator = diagramConfigurator;
-        this.menuConfigurator    = menuConfigurator;
+        this.menuConfigurator = menuConfigurator;
     }
 
     public void registerFeature(MDFeature mdFeature) {
        try{
             registerMDAction(mdFeature);
             refreshConfigurators();
-       }catch (Exception e){
+       } catch (Exception e){
            OMFErrorHandler.handleException(new FeatureException(
                    "[Feature Registerer] Unable to register MDAction for feature: " + mdFeature.getName(),
                    e, GenericException.ECriticality.CRITICAL), false);

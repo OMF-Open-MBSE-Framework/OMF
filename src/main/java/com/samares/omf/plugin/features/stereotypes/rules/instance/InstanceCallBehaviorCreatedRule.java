@@ -4,7 +4,7 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares.omf.plugin.features.stereotypes.rules.type2instance;
+package com.samares.omf.plugin.features.stereotypes.rules.instance;
 
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.samares.omf.core.listeners.ruleEngineListener.rules.ARule;
@@ -17,18 +17,18 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InstanceCBACreatedRule extends ARule {
+public class InstanceCallBehaviorCreatedRule extends ARule {
     public String strDefinition = "";
     public String strInstance = "";
     public ArrayList<String> strOwner    = null;
     public Class classDefinition;
     public Class classInstance;
 
-    public InstanceCBACreatedRule(String id, Class classParent, String strParent, Class classInstance, String strInstance, String strOwner){
-        this(id, classParent, strParent, classInstance, strInstance, new ArrayList(Arrays.asList(strOwner.split("/"))));
+    public InstanceCallBehaviorCreatedRule(String id, Class classParent, String strParent, Class classInstance, String strInstance, String strOwner){
+        this(id, classParent, strParent, classInstance, strInstance, new ArrayList<>(Arrays.asList(strOwner.split("/"))));
     }
 
-    public InstanceCBACreatedRule(String id, Class classDefinition, String strDefinition, Class classInstance, String strInstance, ArrayList<String> strOwner){
+    public InstanceCallBehaviorCreatedRule(String id, Class classDefinition, String strDefinition, Class classInstance, String strInstance, ArrayList<String> strOwner){
         super(id);
         this.classDefinition = classDefinition;
         this.classInstance   = classInstance;

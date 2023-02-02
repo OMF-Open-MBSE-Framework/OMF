@@ -25,7 +25,7 @@ public class T3CreatePort extends AbstractModelComparatorTestCase {
 
     @Override
     public void initEnvOptions() {
-        setEnvironmentOptionValueByCategoryName("OMF", "Activate OMF Automations", true);
+        setEnvironmentOptionValueByGroupName("OMF", "Activate OMF Automations", true);
 
     }
 

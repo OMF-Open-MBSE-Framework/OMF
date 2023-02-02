@@ -14,21 +14,18 @@ import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
 import java.util.List;
 
 public interface MDFeature {
-
-
     String getName();
 
     void activate();
     void deactivate();
-    boolean isActivated(boolean b);
+    boolean isActivated();
+    void onActivation();
+    void onDeactivation();
+    void onProjectOpen();
+    void onProjectClose();
 
-
-    List<AGenericAction>  getMDActions();
+    List<AGenericAction> getMDActions();
     List<IFeatureRuleEngine> getLiveActions();
 
     List<IOption> getOptions();
-
-
-
-
 }

@@ -61,7 +61,7 @@ public class TestPlugin extends APlugin {
     }
 
     @Override
-    public List<MDFeature> getDefaultFeatureRegistered() {
+    public List<MDFeature> getFeaturesRegisteredOnPluginInit() {
         return List.of(
                 new FeatureCopyID()
         );
@@ -83,7 +83,7 @@ public class TestPlugin extends APlugin {
     }
 
     @Override
-    public List<MDFeature> getOnProjectOpeningFeatureToRegister() {
+    public List<MDFeature> getFeaturesRegisteredOnProjectOpening() {
         return Collections.emptyList();
     }
 

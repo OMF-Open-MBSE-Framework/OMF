@@ -31,7 +31,7 @@ import java.util.List;
 public class ExampleFeature1 extends AFeature {
 
     public ExampleFeature1(){
-       super("FEATURE A");
+       super("ExampleFeature1");
     }
 
     @Override

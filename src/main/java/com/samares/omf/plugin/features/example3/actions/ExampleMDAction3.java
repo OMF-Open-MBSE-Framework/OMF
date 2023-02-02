@@ -21,15 +21,11 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "unregister Feature B", category = "Feature")
+@MDAction(actionName = "unregister Feature B", category = "Test Category")
 public class ExampleMDAction3 extends AGenericAction {
-
-
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null)
-            return false;
-        return true;
+        return OMFUtils.currentProject != null;
     }
 
 

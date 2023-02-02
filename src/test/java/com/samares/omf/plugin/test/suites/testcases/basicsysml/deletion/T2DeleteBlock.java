@@ -25,7 +25,7 @@ public class T2DeleteBlock extends AbstractModelComparatorTestCase {
 
     @Override
     public void initEnvOptions() {
-        setEnvironmentOptionValueByCategoryName("OMF", "Activate OMF Automations", true);
+        setEnvironmentOptionValueByGroupName("OMF", "Activate OMF Automations", true);
     }
 
     @Override

@@ -77,14 +77,14 @@ public abstract class APlugin extends Plugin {
      * NOTE: Features can be registered later, by code or the project is opened (use instead getOnProjectOpeningFeatureToRegister())
      * @return List of feature to register at plugin initialization
      */
-    public abstract List<MDFeature> getDefaultFeatureRegistered();
+    public abstract List<MDFeature> getFeaturesRegisteredOnPluginInit();
 
     /**
      * Define all the features to register at project opening. Features will be unregistered when the project is closed, or on project switching
      * NOTE: Features can be registered later, by code or the project is opened (use instead getOnProjectOpeningFeatureToRegister())
      * @return List of feature to register at plugin initialization
      */
-    public abstract List<MDFeature> getOnProjectOpeningFeatureToRegister();
+    public abstract List<MDFeature> getFeaturesRegisteredOnProjectOpening();
 
     /**
      * Define the BrowserConfigurator to register at plugin initialization.
@@ -160,7 +160,7 @@ public abstract class APlugin extends Plugin {
     }
 
     private void configureFeatures() {
-        List<MDFeature> defaultFeatures = getDefaultFeatureRegistered();
+        List<MDFeature> defaultFeatures = getFeaturesRegisteredOnPluginInit();
         if(defaultFeatures == null || defaultFeatures.isEmpty()){
 
         }
@@ -217,7 +217,7 @@ public abstract class APlugin extends Plugin {
         if (projectListener == null)
             ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
         else {
-            projectListener.addFeatureToRegisterAtProjectOpening(getOnProjectOpeningFeatureToRegister());
+            projectListener.addFeatureToRegisterAtProjectOpening(getFeaturesRegisteredOnProjectOpening());
             projectListener.addProjectOptionToRegister(getAllProjectOptionsFeatures(features));
         }
     }

@@ -20,16 +20,17 @@ import com.samares.omf.core.feature.ruleengine.RECategoryEnum;
 import com.samares.omf.plugin.features.stereotypes.actions.RefreshStereotypesRulesBasedOnConfigFiles;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class Stereotypes extends AFeature {
-    public Stereotypes() {
-        super("Organizer");
+public class StereotypesFeature extends AFeature {
+    public StereotypesFeature() {
+        super("Stereotypes");
     }
 
     @Override
     public List<AGenericAction> initFeatureActions() {
-        return List.of(
+        return Arrays.asList(
                 new RefreshStereotypesRulesBasedOnConfigFiles()
         );
     }
@@ -37,10 +38,7 @@ public class Stereotypes extends AFeature {
     @Override
     public List<IFeatureRuleEngine> initLiveActions() {
         IFeatureRuleEngine creationRE = new FeatureRuleEngine(RECategoryEnum.CREATE);
-        // We delegate management of rules to OrganizeListenerConfig
-        StereotypesRuleUpdater.getInstance().setOrganizerRuleEngine(creationRE);
-        StereotypesRuleUpdater.getInstance().initAllRulesBasedOnConfigFiles();
-        return List.of(creationRE);
+        return Arrays.asList(creationRE);
     }
 
     @Override
@@ -65,7 +63,7 @@ public class Stereotypes extends AFeature {
         );
 
         // Type to instance
-        StringProperty instanceConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_FILE_PATH,
+        StringProperty instanceConfigFilePathProp = new StringProperty(OMFPluginEnvOptionsGroup.INSTANCE_CONFIG_FILE_PATH_ID,
                 OMFPluginEnvOptionsGroup.getInstanceConfigFilePathDefaultValue());
         var t2iConfigFilePath = new OptionImpl(
                 instanceConfigFilePathProp,
@@ -108,5 +106,12 @@ public class Stereotypes extends AFeature {
                 typeConfigFilePath,
                 typeActivation
         );
+    }
+
+    @Override
+    public void onProjectOpen() {
+        // We delegate management of rules to OrganizeListenerConfig
+        StereotypesRuleUpdater.getInstance().setOrganizerRuleEngine(getLiveActions().get(0));
+        StereotypesRuleUpdater.getInstance().initAllRulesBasedOnConfigFiles();
     }
 }

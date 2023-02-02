@@ -23,7 +23,7 @@ import java.util.List;
 public class ExampleFeature2 extends AFeature {
 
     public ExampleFeature2(){
-        super("Feature B");
+        super("ExampleFeature2");
     }
 
     @Override

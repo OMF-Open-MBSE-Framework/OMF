@@ -22,7 +22,7 @@ import java.util.List;
 public class ExampleFeature3 extends AFeature {
 
     public ExampleFeature3(){
-        super("Feature C");
+        super("ExampleFeature3");
     }
 
 

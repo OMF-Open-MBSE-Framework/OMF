@@ -15,14 +15,14 @@ public class StereotypesTestUtils {
     /**
      * Refreshes stereotype config files. Paths are set in corresponding environment variables
      */
-    static void updateAllRulesBasedOnConfigFiles() {
+    public static void updateAllRulesBasedOnConfigFiles() {
         StereotypesRuleUpdater.getInstance().updateAllRulesBasedOnConfigFiles();
     }
 
     /**
      * Get path of test plugin resources dir
      */
-    static String getStereotypeConfigFolder() {
+    public static String getStereotypeConfigFolder() {
         return System.getProperty("user.dir") + "/plugins/com.samares.omf.test.plugin/resources";
     }
 }

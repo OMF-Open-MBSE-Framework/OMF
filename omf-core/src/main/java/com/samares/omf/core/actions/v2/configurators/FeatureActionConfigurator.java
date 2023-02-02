@@ -68,7 +68,8 @@ public class FeatureActionConfigurator {
     }
 
 
-    private void registerMenuAction(ActionsManager actionsManager, MDActionsCategory category, AGenericAction menuAction, boolean test) {
+    private void registerMenuAction(ActionsManager actionsManager, MDActionsCategory category, AGenericAction menuAction,
+                                    boolean test) {
         if(!actionsManager.getCategories().contains(category) ) {
             actionsManager.addCategory(category);
             category.setNested(true);

@@ -23,29 +23,28 @@ import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.plugin.features.dev.Dev;
 import com.samares.omf.plugin.features.example1.ExampleFeature1;
 import com.samares.omf.plugin.features.example3.ExampleFeature3;
-import com.samares.omf.plugin.features.stereotypes.Stereotypes;
+import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
 public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
-    public List<MDFeature> getDefaultFeatureRegistered() {
-        return Arrays.asList(
+    public List<MDFeature> getFeaturesRegisteredOnPluginInit() {
+        return List.of(
                 new ExampleFeature1(),
+                new Dev(),
                 new ExampleFeature3(),
-                new Dev()
+                new StereotypesFeature()
         );
     }
 
     @Override
-    public List<MDFeature> getOnProjectOpeningFeatureToRegister() {
+    public List<MDFeature> getFeaturesRegisteredOnProjectOpening() {
         return List.of(
-                new Stereotypes()
         );
     }
 
@@ -96,7 +95,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                         .findFirst()
                         .ifPresent(opt -> {
                             if ((boolean) opt.getValue())
-                                getFeatureRegister().registerAllFeatures(getDefaultFeatureRegistered());
+                                getFeatureRegister().registerAllFeatures(getFeaturesRegisteredOnPluginInit());
                             else
                                 getFeatureRegister().unregisterAllFeatures(getFeatureRegister().getRegisteredFeatures());
 

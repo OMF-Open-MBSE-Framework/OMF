@@ -21,12 +21,12 @@ import com.samares.omf.core.errors.OMFLogLevel;
 import com.samares.omf.core.errors.OMFLogger;
 import com.samares.omf.core.errors.exceptions.GenericException;
 import com.samares.omf.core.errors.exceptions.OMFException;
-import com.samares.omf.plugin.features.stereotypes.rules.type2instance.InstanceCBACreatedRule;
+import com.samares.omf.plugin.features.stereotypes.rules.instance.InstanceCallBehaviorCreatedRule;
 import com.samares.omf.plugin.features.stereotypes.utils.String2Class;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
-import com.samares.omf.plugin.features.stereotypes.rules.instance2type.ActivityToCreateRule;
-import com.samares.omf.plugin.features.stereotypes.rules.instance2type.ClassToCreateRule;
-import com.samares.omf.plugin.features.stereotypes.rules.type2instance.InstancePropertyCreatedRule;
+import com.samares.omf.plugin.features.stereotypes.rules.type.ActivityToCreateRule;
+import com.samares.omf.plugin.features.stereotypes.rules.type.ClassToCreateRule;
+import com.samares.omf.plugin.features.stereotypes.rules.instance.InstancePropertyCreatedRule;
 
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -96,7 +96,7 @@ public class StereotypesRuleUpdater {
                     break;
                 case "Activity2CallBehavior":
                     organizerEngine.addRule(
-                            new InstanceCBACreatedRule(ruleId, Activity.class, typeStereotype,
+                            new InstanceCallBehaviorCreatedRule(ruleId, Activity.class, typeStereotype,
                                     CallBehaviorAction.class, instanceStereotype, instanceOwner)
                     );
                     break;
