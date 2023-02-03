@@ -9,12 +9,12 @@ package com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.factory.SysMLFactory;
-import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
+import com.samares.omf.test.templates.AModelComparatorTestCase;
 
 /**
  * Important write the <Wizard.class> to get the right wizard
  */
-public class T3CreatePort extends AbstractModelComparatorTestCase {
+public class T3CreatePort extends AModelComparatorTestCase {
 
     @Override
     public void initVariables() {

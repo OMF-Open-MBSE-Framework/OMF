@@ -19,7 +19,6 @@ import com.samares.omf.core.ui.OMFDiagramConfigurator;
 import com.samares.omf.core.ui.OMFMainMenuConfigurator;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares.omf.plugin.test.suites.batches.TWCStereotypesBatch;
 import com.samares.omf.test.BatchLauncher;
 import com.samares.omf.plugin.test.feature.FeatureCopyID;
 import com.samares.omf.plugin.test.suites.batches.TWCBatch;
@@ -35,7 +34,6 @@ public class TestPlugin extends APlugin {
 
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
-            TWCStereotypesBatch.class,
             TWCBatch.class
     );
 

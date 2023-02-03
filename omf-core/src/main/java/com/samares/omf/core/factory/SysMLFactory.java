@@ -13,6 +13,7 @@ import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activit
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
@@ -96,8 +97,18 @@ public class SysMLFactory extends AMagicDrawFactory {
     Property
      */
 
+    public Property createProperty() {
+        return getMagicDrawFactory().createPropertyInstance();
+    }
+
+    public Property createProperty(Element owner) {
+        Property property = createProperty();
+        property.setOwner(owner);
+        return property;
+    }
+
     public Property createFlowProperty() {
-        Property flowProperty = getMagicDrawFactory().createPropertyInstance();
+        Property flowProperty = createProperty();
         StereotypesHelper.addStereotype(flowProperty, Profile.getInstance().getSysml().flowProperty().getStereotype());
         Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
         return flowProperty;
@@ -109,14 +120,22 @@ public class SysMLFactory extends AMagicDrawFactory {
         return flowProperty;
     }
 
-    public Property createProperty() {
-        return getMagicDrawFactory().createPropertyInstance();
+    public Property createPartProperty() {
+        Property partProperty = createProperty();
+        StereotypesHelper.addStereotype(partProperty, Profile.getInstance().getMDCustomSysml().partProperty().getStereotype());
+        return partProperty;
     }
 
-    public Property createProperty(Element owner) {
-        Property property = createProperty();
-        property.setOwner(owner);
-        return property;
+    public Property createPartProperty(Element owner) {
+        Property partProperty = createPartProperty();
+        partProperty.setOwner(owner);
+        return partProperty;
+    }
+
+    public Property createPartProperty(Element owner, Type type) {
+        Property partProperty = createPartProperty(owner);
+        partProperty.setType(type);
+        return partProperty;
     }
 
     /*

@@ -62,7 +62,7 @@ public class OMFPluginEnvOptionsGroup extends OMFEnvironmentOptionsGroup {
         return (boolean) getPropertyByName(ORGANIZER_ACTIVATION_ID).getValue();
     }
 
-    public void setOrganizerActivation(boolean isActivated) {
+    public void setOrganizerActivated(boolean isActivated) {
         getPropertyByName(ORGANIZER_ACTIVATION_ID).setValue(isActivated);
     }
 

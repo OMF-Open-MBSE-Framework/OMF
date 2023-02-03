@@ -64,7 +64,7 @@ public class OMFEnvironmentOptionsGroup extends AEnvironmentFeatureConfigurator 
         return p.getBoolean();
     }
 
-    public void setActivateAutomationValue(boolean isAutomationsActivated) {
+    public void setAutomationsActivated(boolean isAutomationsActivated) {
         getPropertyByName(ID_ACTIVATE_AUTOMATION).setValue(isAutomationsActivated);
     }
 

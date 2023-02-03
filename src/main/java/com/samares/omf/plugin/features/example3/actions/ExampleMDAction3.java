@@ -21,7 +21,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "unregister Feature B", category = "Test Category")
+@MDAction(actionName = "unregister Feature B", category = "Feature")
 public class ExampleMDAction3 extends AGenericAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

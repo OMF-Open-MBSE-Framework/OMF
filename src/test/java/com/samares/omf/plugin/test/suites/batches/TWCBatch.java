@@ -9,6 +9,7 @@ package com.samares.omf.plugin.test.suites.batches;
 
 import com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
 import com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion.T2DeleteBlock;
+import com.samares.omf.plugin.test.suites.testcases.stereotypes.ExampleStereotypesTest;
 import com.samares.omf.test.templates.TestBatchTWC;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -26,6 +27,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
         //Deletion
         T2DeleteBlock.class,
+
+        ExampleStereotypesTest.class
 
 })
 

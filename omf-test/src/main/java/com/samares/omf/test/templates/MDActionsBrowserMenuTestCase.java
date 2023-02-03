@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class MDActionsBrowserMenuTestCase extends AbstractModelComparatorTestCase {
+public abstract class MDActionsBrowserMenuTestCase extends AModelComparatorTestCase {
 
     protected String elementToTestID;
     protected String actionToTestName;

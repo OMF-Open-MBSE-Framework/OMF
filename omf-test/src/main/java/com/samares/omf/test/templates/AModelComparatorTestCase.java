@@ -10,7 +10,7 @@ package com.samares.omf.test.templates;
 
 import com.samares.omf.test.utils.TestHelper;
 
-public abstract class AbstractModelComparatorTestCase extends AbstractTestCase{
+public abstract class AModelComparatorTestCase extends AbstractTestCase{
 
     @Override
     public void setUpTest() throws Exception {

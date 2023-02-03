@@ -9,12 +9,12 @@ package com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares.omf.core.factory.SysMLFactory;
-import com.samares.omf.test.templates.AbstractModelComparatorTestCase;
+import com.samares.omf.test.templates.AModelComparatorTestCase;
 
 /**
  * Important write the <Wizard.class> to get the right wizard
  */
-public class T2DeleteBlock extends AbstractModelComparatorTestCase {
+public class T2DeleteBlock extends AModelComparatorTestCase {
 
     @Override
     public void initVariables() {
