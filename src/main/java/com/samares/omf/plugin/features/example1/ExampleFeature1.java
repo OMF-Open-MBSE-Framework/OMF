@@ -19,10 +19,10 @@ import com.samares.omf.core.feature.options.OptionKind;
 import com.samares.omf.core.feature.ruleengine.FeatureRuleEngine;
 import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
 import com.samares.omf.core.feature.ruleengine.RECategoryEnum;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.plugin.features.example1.actions.ExampleMDAction1;
 import com.samares.omf.plugin.features.example1.actions.RemoveProjectOptions;
 import com.samares.omf.plugin.features.example1.rules.creation.BlockCreation;
+import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
@@ -51,35 +51,33 @@ public class ExampleFeature1 extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        OptionImpl testEnvOption = OptionImpl.createEnvOptionWithURI(
+        OptionImpl testEnvOption = new OptionImpl(
                 new BooleanProperty("BooleanField", true),
-                "FEATURE GROUP",
-                OMFEnvironmentOptionsGroup.defaultID
+                "FEATURE GROUP 1",
+                OMFPluginEnvOptionsGroup.getInstance(),
+                OptionKind.Environment
+        );
+        OptionImpl testNewCatEnvOption = new OptionImpl(
+                new BooleanProperty("BooleanField 2", true),
+                "FEATURE GROUP 2",
+                OMFPluginEnvOptionsGroup.getInstance(),
+                OptionKind.Environment
         );
 
-        OptionImpl testProjectOption =new OptionImpl(
-                new StringProperty("OMF STRING PROPERTY ", "DEFAULT VALUE"),
-                "OMF",
-                OMFEnvironmentOptionsGroup.defaultID,
-                "FEATURE GROUP",
+        OptionImpl testProjectOption = new OptionImpl(
+                new StringProperty("OMF STRING PROPERTY 1", "DEFAULT VALUE"),
+                "PROJECT FEATURE GROUP 1",
+                OMFPluginEnvOptionsGroup.getInstance(),
                 OptionKind.Project
         );
 
-        OptionImpl testProjectOption2 = OptionImpl.createProjectOption(
-                new StringProperty("OMF STRING PROPERTY ", "DEFAULT VALUE"),
-                OMFEnvironmentOptionsGroup.defaultID,
-                "OMF",
-                "FEATURE GROUP"
+        OptionImpl testProjectOption2 = new OptionImpl(
+                new StringProperty("OMF STRING PROPERTY 2", "DEFAULT VALUE"),
+                "PROJECT FEATURE GROUP 2",
+                OMFPluginEnvOptionsGroup.getInstance(),
+                OptionKind.Project
         );
 
-
-        OptionImpl testNewCatEnvOption = new OptionImpl(
-                new BooleanProperty("BooleanField", true),
-                "OMF",
-                OMFEnvironmentOptionsGroup.defaultID,
-                "FEATURE GROUP",
-                OptionKind.Environment
-        );
 
         testEnvOption.addListenerToRegister(new AOptionListener() {
             @Override
