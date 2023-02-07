@@ -9,11 +9,10 @@ package com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.factory.SysMLFactory;
+import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares.omf.test.templates.AModelComparatorTestCase;
 
-/**
- * Important write the <Wizard.class> to get the right wizard
- */
 public class T3CreatePort extends AModelComparatorTestCase {
 
     @Override
@@ -25,8 +24,7 @@ public class T3CreatePort extends AModelComparatorTestCase {
 
     @Override
     public void initEnvOptions() {
-        setEnvironmentOptionValueByGroupName("OMF", "Activate OMF Automations", true);
-
+        OMFPluginEnvOptionsGroup.getInstance().setAutomationsActivated(true);
     }
 
     @Override
