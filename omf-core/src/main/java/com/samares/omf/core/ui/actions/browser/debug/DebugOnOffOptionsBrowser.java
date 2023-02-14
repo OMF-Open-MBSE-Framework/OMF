@@ -10,7 +10,7 @@ import com.google.common.base.Function;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserStateAction;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;
 
@@ -55,13 +55,13 @@ public class DebugOnOffOptionsBrowser extends DefaultBrowserStateAction {
         };
 
 
-        OMFListenerManager.getInstance().removeAllListeners();
+        ListenerManager.getInstance().removeAllListeners();
         try {
             SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, "[Debug] option state: " + name + " in progress", runnable);
         } catch (Exception exception) {
             OMFErrorHandler.handleException(exception, false);
         }
-        OMFListenerManager.getInstance().activateAllListeners();
+        ListenerManager.getInstance().activateAllListeners();
     }
 
     public void activateDeactivateOption() throws InvocationTargetException, IllegalAccessException {

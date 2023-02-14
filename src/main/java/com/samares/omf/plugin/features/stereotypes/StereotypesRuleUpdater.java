@@ -13,7 +13,7 @@ import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activit
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.utils.utils.CSVParseUtils;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;

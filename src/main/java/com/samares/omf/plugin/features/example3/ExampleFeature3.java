@@ -7,13 +7,14 @@
 
 package com.samares.omf.plugin.features.example3;
 
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.plugin.features.example3.actions.ExampleMDAction3;
 import com.samares.omf.plugin.features.example3.actions.RegisterFeatureA;
 import com.samares.omf.plugin.features.example3.actions.RemoveFeatureA;
-import com.samares.omf.core.actions.v2.AGenericAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,13 +22,13 @@ import java.util.List;
 
 public class ExampleFeature3 extends AFeature {
 
-    public ExampleFeature3(){
-        super("ExampleFeature3");
+    public ExampleFeature3(APlugin plugin){
+        super(plugin, "ExampleFeature3");
     }
 
 
     @Override
-    public List<AGenericAction> initFeatureActions() {
+    public List<AUIAction> initFeatureActions() {
         return Arrays.asList(
                 new ExampleMDAction3(),
                 new RegisterFeatureA(),

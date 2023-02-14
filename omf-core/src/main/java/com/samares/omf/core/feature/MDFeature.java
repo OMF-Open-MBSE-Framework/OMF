@@ -7,9 +7,10 @@
 
 package com.samares.omf.core.feature;
 
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
+import com.samares.omf.core.plugin.APlugin;
 
 import java.util.List;
 
@@ -24,8 +25,11 @@ public interface MDFeature {
     void onProjectOpen();
     void onProjectClose();
 
-    List<AGenericAction> getMDActions();
-    List<IFeatureRuleEngine> getLiveActions();
+    APlugin getPlugin();
+    List<IUIAction> getUIActions();
+    List<IFeatureRuleEngine> getRuleEngines();
 
     List<IOption> getOptions();
+
+    void setPlugin(APlugin plugin);
 }

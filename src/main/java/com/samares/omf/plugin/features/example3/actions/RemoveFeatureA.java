@@ -8,11 +8,11 @@
 package com.samares.omf.plugin.features.example3.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.*;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.plugin.OpenMBSEFrameworkPlugin;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.*;
-import com.samares.omf.core.feature.FeatureRegister;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.FeatureRegisterer;
 import com.samares.omf.plugin.features.example1.ExampleFeature1;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Remove FEATURE A", category = "Feature")
-public class RemoveFeatureA extends AGenericAction {
+public class RemoveFeatureA extends AUIAction {
 
 
     @Override
@@ -38,7 +38,7 @@ public class RemoveFeatureA extends AGenericAction {
         if(selectedElements == null)
             return;
 
-        FeatureRegister featureManager = OpenMBSEFrameworkPlugin.getInstance().getFeatureRegister();
+        FeatureRegisterer featureManager = OpenMBSEFrameworkPlugin.getInstance().getFeatureRegister();
         featureManager.getRegisteredFeatures().stream()
                 .filter(ExampleFeature1.class::isInstance)
                 .findFirst()

@@ -9,14 +9,13 @@ package com.samares.omf.plugin.features.stereotypes;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.samares.omf.core.actions.v2.AGenericAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.options.OptionImpl;
-import com.samares.omf.core.feature.options.OptionKind;
-import com.samares.omf.core.feature.ruleengine.FeatureRuleEngine;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
-import com.samares.omf.core.feature.ruleengine.RECategoryEnum;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.options.option.OptionImpl;
+import com.samares.omf.core.feature.registrables.options.option.OptionKind;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares.omf.plugin.features.stereotypes.actions.RefreshStereotypesRulesBasedOnConfigFiles;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
@@ -29,7 +28,7 @@ public class StereotypesFeature extends AFeature {
     }
 
     @Override
-    public List<AGenericAction> initFeatureActions() {
+    public List<AUIAction> initFeatureActions() {
         return Arrays.asList(
                 new RefreshStereotypesRulesBasedOnConfigFiles()
         );
@@ -37,7 +36,7 @@ public class StereotypesFeature extends AFeature {
 
     @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        IFeatureRuleEngine creationRE = new FeatureRuleEngine(RECategoryEnum.CREATE);
+        IFeatureRuleEngine creationRE = newRuleEngine(RECategoryEnum.CREATE);
         return Arrays.asList(creationRE);
     }
 
@@ -111,7 +110,7 @@ public class StereotypesFeature extends AFeature {
     @Override
     public void onProjectOpen() {
         // We delegate management of rules to OrganizeListenerConfig
-        StereotypesRuleUpdater.getInstance().setOrganizerRuleEngine(getLiveActions().get(0));
+        StereotypesRuleUpdater.getInstance().setOrganizerRuleEngine(getRuleEngines().get(0));
         StereotypesRuleUpdater.getInstance().initAllRulesBasedOnConfigFiles();
     }
 }

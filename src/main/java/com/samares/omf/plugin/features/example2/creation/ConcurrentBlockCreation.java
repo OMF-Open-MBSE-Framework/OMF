@@ -8,7 +8,7 @@
 package com.samares.omf.plugin.features.example2.creation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.samares.omf.core.listeners.ruleEngineListener.rules.ARule;
+import com.samares.omf.core.feature.registrables.rule_engines.rule.ARule;
 import com.samares.omf.plugin.features.stereotypes.utils.EventChecker;
 
 import java.beans.PropertyChangeEvent;

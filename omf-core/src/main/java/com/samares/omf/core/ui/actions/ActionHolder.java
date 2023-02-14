@@ -9,7 +9,7 @@ package com.samares.omf.core.ui.actions;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction;
 import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
-import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;
 
@@ -40,13 +40,13 @@ public abstract class ActionHolder {
                 OMFErrorHandler.handleException(exception, true);
             }
         };
-        OMFListenerManager.getInstance().removeAllListeners();
+        ListenerManager.getInstance().removeAllListeners();
         try {
             SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, sessionName, runnable);
         } catch (Exception exception) {
             OMFErrorHandler.handleException(exception, false);
         }
-        OMFListenerManager.getInstance().activateAllListeners();
+        ListenerManager.getInstance().activateAllListeners();
     }
 
     public abstract void execBehavior(ActionEvent e, DiagramActionImpl diagramAction, BrowserActionImpl browserAction);

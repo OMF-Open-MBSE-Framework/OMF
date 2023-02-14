@@ -8,10 +8,10 @@
 package com.samares.omf.plugin.test.feature.mdActions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.BrowserAction;
-import com.samares.omf.core.actions.v2.annotations.DiagramAction;
-import com.samares.omf.core.actions.v2.annotations.MDAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.BrowserAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.DiagramAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.MDAction;
 import com.samares.omf.core.utils.OMFUtils;
 
 import java.awt.*;
@@ -24,7 +24,7 @@ import java.util.List;
 @BrowserAction
 @MDAction(actionName = "Copy Element ID", category = "",
         keyStroke = "control shift c")
-public class CopyElementIDAction extends AGenericAction {
+public class CopyElementIDAction extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         return OMFUtils.currentProject != null;

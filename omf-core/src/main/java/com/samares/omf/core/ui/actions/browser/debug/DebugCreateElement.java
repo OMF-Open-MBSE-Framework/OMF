@@ -12,7 +12,7 @@ import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.browser.Node;
 import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;
 
@@ -53,13 +53,13 @@ public class DebugCreateElement extends DefaultBrowserAction {
         };
 
 
-        OMFListenerManager.getInstance().removeAllListeners();
+        ListenerManager.getInstance().removeAllListeners();
         try {
             SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, "[Debug] create: " + name + " in progress", runnable);
         } catch (Exception exception) {
             OMFErrorHandler.handleException(exception, false);
         }
-        OMFListenerManager.getInstance().activateAllListeners();
+        ListenerManager.getInstance().activateAllListeners();
     }
 
 }

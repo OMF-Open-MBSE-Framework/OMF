@@ -11,10 +11,10 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.BrowserAction;
-import com.samares.omf.core.actions.v2.annotations.MDAction;
-import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.BrowserAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.MDAction;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.OMFLogLevel;
 import com.samares.omf.core.errors.OMFLogger;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @BrowserAction
 @MDAction(actionName = "Toggle listener activation", category = "Dev")
-public class ResetListeners extends AGenericAction {
+public class ResetListeners extends AUIAction {
     public boolean activated = true;
     protected Project project = null;
 
@@ -31,10 +31,10 @@ public class ResetListeners extends AGenericAction {
     public void actionToPerform(List<Element> selectedElements) {
         try {
             if (activated) {
-                OMFListenerManager.getInstance().deactivateAllListeners();
+                ListenerManager.getInstance().deactivateAllListeners();
                 OMFLogger.getInstance().log("DEACTIVATED", null, OMFLogLevel.INFO);
             } else {
-                OMFListenerManager.getInstance().activateAllListeners();
+                ListenerManager.getInstance().activateAllListeners();
                 OMFLogger.getInstance().log("ACTIVATED", null, OMFLogLevel.INFO);
             }
             activated = !activated;

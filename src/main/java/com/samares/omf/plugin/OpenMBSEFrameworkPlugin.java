@@ -9,15 +9,15 @@ package com.samares.omf.plugin;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares.omf.core.actions.v2.configurators.OMFBrowserConfigurator;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares.omf.core.feature.MDFeature;
-import com.samares.omf.core.feature.options.AOptionListener;
+import com.samares.omf.core.feature.registrables.options.option.AOptionListener;
 import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.core.listeners.IListenerManager;
-import com.samares.omf.core.listeners.OMFListenerManager;
-import com.samares.omf.core.listeners.listeners.OMFProjectListener;
-import com.samares.omf.core.ui.OMFDiagramConfigurator;
-import com.samares.omf.core.ui.OMFMainMenuConfigurator;
+import com.samares.omf.core.listeners.ListenerManager;
+import com.samares.omf.core.listeners.listeners.ProjectListener;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.plugin.features.dev.Dev;
@@ -74,13 +74,13 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     }
 
     @Override
-    public OMFProjectListener getProjectListener() {
-        return new OMFProjectListener(getFeatureRegister());
+    public ProjectListener getProjectListener() {
+        return new ProjectListener(this);
     }
 
     @Override
     public IListenerManager getListenerManager() {
-        return OMFListenerManager.getInstance();
+        return ListenerManager.getInstance();
     }
 
     @Override
@@ -95,9 +95,9 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                         .findFirst()
                         .ifPresent(opt -> {
                             if ((boolean) opt.getValue())
-                                getFeatureRegister().registerAllFeatures(getFeaturesRegisteredOnPluginInit());
+                                getFeatureRegister().registerFeatures(getFeaturesRegisteredOnPluginInit());
                             else
-                                getFeatureRegister().unregisterAllFeatures(getFeatureRegister().getRegisteredFeatures());
+                                getFeatureRegister().unregisterFeatures(getFeatureRegister().getRegisteredFeatures());
 
                         });
             }

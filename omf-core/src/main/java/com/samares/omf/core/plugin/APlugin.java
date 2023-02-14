@@ -13,15 +13,15 @@ import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
-import com.samares.omf.core.actions.v2.configurators.OMFBrowserConfigurator;
-import com.samares.omf.core.feature.FeatureRegister;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
+import com.samares.omf.core.feature.FeatureRegisterer;
 import com.samares.omf.core.feature.MDFeature;
-import com.samares.omf.core.feature.options.AOptionListener;
-import com.samares.omf.core.feature.options.OptionKind;
+import com.samares.omf.core.feature.registrables.options.option.AOptionListener;
+import com.samares.omf.core.feature.registrables.options.option.OptionKind;
 import com.samares.omf.core.listeners.IListenerManager;
-import com.samares.omf.core.listeners.listeners.OMFProjectListener;
-import com.samares.omf.core.ui.OMFDiagramConfigurator;
-import com.samares.omf.core.ui.OMFMainMenuConfigurator;
+import com.samares.omf.core.listeners.listeners.ProjectListener;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.core.utils.ColorPrinter;
@@ -48,23 +48,20 @@ public abstract class APlugin extends Plugin {
     private OMFEnvironmentOptionsGroup environmentOptionConfigurator;
 
     private List<MDFeature> features;
-    private FeatureRegister featureRegister;
+    private FeatureRegisterer featureRegisterer;
     private boolean isInitialized = false;
 
-    private static APlugin instance;
 
+    // TODO Remove
     public static APlugin getInstance(){
         return (APlugin) Application.getInstance().getPluginManager().B().stream()
                 .filter(APlugin.class::isInstance)
                 .findFirst()
                 .orElseThrow();
-//        if(instance == null)
-//            instance = new APlugin();
-//        return instance;
     }
 
     private IListenerManager listenerManager;
-    private OMFProjectListener projectListener;
+    private ProjectListener projectListener;
 
     public APlugin(){
         features = new ArrayList<>();
@@ -122,7 +119,7 @@ public abstract class APlugin extends Plugin {
      * This Listener will be used for FeatureRegistering at projectOpening and registration of ProjectOptions
      * @return ProjectOptionsGroup to register
      */
-    public abstract OMFProjectListener getProjectListener();
+    public abstract ProjectListener getProjectListener();
 
     /**
      * Define the ListenerManager to register at plugin Initialization
@@ -207,12 +204,12 @@ public abstract class APlugin extends Plugin {
         else
             actionManager.addMainMenuConfigurator(menuConfigurator);
 
-        featureRegister = new FeatureRegister(browserConfigurator, diagramConfigurator, menuConfigurator, listenerManager);
+        featureRegisterer = new FeatureRegisterer(this);
     }
 
 
     protected void registerFeatures() {
-        features.forEach(featureRegister::registerFeature);
+        features.forEach(featureRegisterer::registerFeature);
 
         if (projectListener == null)
             ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
@@ -275,8 +272,8 @@ public abstract class APlugin extends Plugin {
         return features;
     }
 
-    public FeatureRegister getFeatureRegister() {
-        return featureRegister;
+    public FeatureRegisterer getFeatureRegister() {
+        return featureRegisterer;
     }
 
     public boolean isInitialized() {

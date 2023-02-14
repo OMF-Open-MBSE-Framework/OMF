@@ -7,7 +7,7 @@
 
 package com.samares.omf.core.listeners;
 
-import com.samares.omf.core.listeners.ruleEngineListener.ruleEngine.IRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;

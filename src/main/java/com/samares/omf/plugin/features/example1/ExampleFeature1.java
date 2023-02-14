@@ -10,15 +10,16 @@ package com.samares.omf.plugin.features.example1;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.samares.omf.core.actions.v2.AGenericAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
-import com.samares.omf.core.feature.options.AOptionListener;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.options.OptionImpl;
-import com.samares.omf.core.feature.options.OptionKind;
-import com.samares.omf.core.feature.ruleengine.FeatureRuleEngine;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
-import com.samares.omf.core.feature.ruleengine.RECategoryEnum;
+import com.samares.omf.core.feature.registrables.options.option.AOptionListener;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.options.option.OptionImpl;
+import com.samares.omf.core.feature.registrables.options.option.OptionKind;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.FeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.plugin.features.example1.actions.ExampleMDAction1;
 import com.samares.omf.plugin.features.example1.actions.RemoveProjectOptions;
 import com.samares.omf.plugin.features.example1.rules.creation.BlockCreation;
@@ -30,12 +31,12 @@ import java.util.List;
 
 public class ExampleFeature1 extends AFeature {
 
-    public ExampleFeature1(){
-       super("ExampleFeature1");
+    public ExampleFeature1(APlugin plugin){
+       super(plugin, "ExampleFeature1");
     }
 
     @Override
-    public List<AGenericAction> initFeatureActions() {
+    public List<AUIAction> initFeatureActions() {
         return Arrays.asList(
                 new ExampleMDAction1(),
                 new RemoveProjectOptions()
@@ -44,7 +45,7 @@ public class ExampleFeature1 extends AFeature {
 
     @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        IFeatureRuleEngine creationRE = new FeatureRuleEngine(RECategoryEnum.CREATE);
+        IFeatureRuleEngine creationRE = new FeatureRuleEngine(plugin, RECategoryEnum.CREATE);
         creationRE.addRule(new BlockCreation());
         return List.of(creationRE);
     }

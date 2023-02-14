@@ -8,8 +8,8 @@ package com.samares.omf.plugin.features.stereotypes.actions;
 
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.*;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.*;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.OMFLogLevel;
@@ -23,7 +23,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Refresh stereotypes rules based on config files", category = "Stereotypes")
-public class RefreshStereotypesRulesBasedOnConfigFiles extends AGenericAction {
+public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
     protected Project project = null;
 
     @Override

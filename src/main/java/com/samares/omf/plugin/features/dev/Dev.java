@@ -7,22 +7,23 @@
 
 package com.samares.omf.plugin.features.dev;
 
-import com.samares.omf.core.actions.v2.AGenericAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.plugin.features.dev.actions.ResetListeners;
 
 import java.util.Collections;
 import java.util.List;
 
 public class Dev extends AFeature {
-    public Dev() {
-        super("Dev");
+    public Dev(APlugin plugin) {
+        super(plugin,"Dev");
     }
 
     @Override
-    public List<AGenericAction> initFeatureActions() {
+    public List<AUIAction> initFeatureActions() {
         return List.of(
              new ResetListeners()
         );

@@ -9,8 +9,8 @@ package com.samares.omf.plugin.features.example2.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.*;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.*;
 import com.samares.omf.core.utils.ColorPrinter;
 import com.samares.omf.core.utils.OMFUtils;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "[B] print their name", category = "Feature")
-public class ExampleMDAction2 extends AGenericAction {
+public class ExampleMDAction2 extends AUIAction {
 
 
     @Override

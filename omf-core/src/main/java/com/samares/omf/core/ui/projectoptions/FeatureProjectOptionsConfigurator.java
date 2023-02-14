@@ -9,7 +9,7 @@ package com.samares.omf.core.ui.projectoptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptionsConfigurator;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares.omf.core.feature.options.IOption;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
 
 import java.util.ArrayList;
 import java.util.List;

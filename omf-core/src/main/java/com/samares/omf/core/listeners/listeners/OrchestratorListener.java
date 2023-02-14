@@ -8,7 +8,7 @@ package com.samares.omf.core.listeners.listeners;
 
 import com.nomagic.uml2.transaction.TransactionCommitListener;
 import com.samares.omf.core.listeners.AElementListener;
-import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.utils.AllCreatedElements;
 import com.samares.omf.core.utils.GarbageCollector;
 import com.samares.omf.core.utils.OMFUtils;
@@ -33,7 +33,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
 
         hasSessionBeenCanceled = false;
 
-        OMFListenerManager.getInstance().activateAllListeners();
+        ListenerManager.getInstance().activateAllListeners();
     }
 
     @Override

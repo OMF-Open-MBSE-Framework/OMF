@@ -7,10 +7,10 @@
 
 package com.samares.omf.plugin.test.feature;
 
-import com.samares.omf.core.actions.v2.AGenericAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.plugin.test.feature.mdActions.CopyElementIDAction;
 import com.samares.omf.plugin.test.feature.mdActions.SaveToLocalMDA;
 
@@ -25,7 +25,7 @@ public class FeatureCopyID extends AFeature {
     }
 
     @Override
-    public List<AGenericAction> initFeatureActions() {
+    public List<AUIAction> initFeatureActions() {
         return Arrays.asList(
                 new CopyElementIDAction(),
                 new SaveToLocalMDA());

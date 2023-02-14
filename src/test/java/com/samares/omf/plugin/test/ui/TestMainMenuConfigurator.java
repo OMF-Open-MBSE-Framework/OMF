@@ -11,7 +11,7 @@ import com.nomagic.actions.ActionsCategory;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
-import com.samares.omf.core.ui.OMFMainMenuConfigurator;
+import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
 
 public class TestMainMenuConfigurator extends OMFMainMenuConfigurator {
     private static final String menuName = "OMF TEST";

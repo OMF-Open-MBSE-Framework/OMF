@@ -70,6 +70,7 @@ dependencies {
     unitTests 'ant:ant-junit:1.6.5'
     unitTests 'org.apache.ant:ant:1.8.2'
     unitTests project('omf-test')
+    unitTests project('omf-core')
 
     //zippedMDPlugin "com.nomagic.magicdraw:devtools:2021xR2@zip"
 }

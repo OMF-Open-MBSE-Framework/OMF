@@ -10,8 +10,8 @@ package com.samares.omf.plugin.features.example1.actions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.*;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.*;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.core.utils.OMFUtils;
 
@@ -22,7 +22,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Remove Options", category = "Feature")
-public class RemoveProjectOptions extends AGenericAction {
+public class RemoveProjectOptions extends AUIAction {
 
 
     @Override

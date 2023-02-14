@@ -14,7 +14,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
 import com.nomagic.uml2.transaction.TransactionManager;
 import com.samares.omf.core.listeners.AElementListener;
-import com.samares.omf.core.listeners.OMFListenerManager;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.utils.LockerManager;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;
@@ -44,7 +44,7 @@ public class LockManagerListener extends AElementListener implements Transaction
     public Runnable transactionCommited(Collection<PropertyChangeEvent> collection) {
         try {
             //if listeners is activated then no automation has been triggered
-            if (OMFListenerManager.getInstance().isListenersActivated())
+            if (ListenerManager.getInstance().isListenersActivated())
                 return null;
 
             Set<Element> checkedElements = new HashSet<>();

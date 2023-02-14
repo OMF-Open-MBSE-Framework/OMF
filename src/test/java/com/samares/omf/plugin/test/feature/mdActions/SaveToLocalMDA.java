@@ -9,10 +9,10 @@ package com.samares.omf.plugin.test.feature.mdActions;
 
 import com.nomagic.magicdraw.esi.EsiUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.actions.v2.annotations.BrowserAction;
-import com.samares.omf.core.actions.v2.annotations.DiagramAction;
-import com.samares.omf.core.actions.v2.annotations.MDAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.BrowserAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.DiagramAction;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.MDAction;
 import com.samares.omf.core.utils.OMFUtils;
 
 import java.io.File;
@@ -22,7 +22,7 @@ import java.util.List;
 @BrowserAction
 @MDAction(actionName = "SAVE TO LOCAL", category = "",
         keyStroke = "control shift c")
-public class SaveToLocalMDA extends AGenericAction {
+public class SaveToLocalMDA extends AUIAction {
 
 
     @Override

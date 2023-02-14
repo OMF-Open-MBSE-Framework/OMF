@@ -7,61 +7,62 @@
 
 package com.samares.omf.core.feature;
 
-import com.samares.omf.core.actions.v2.AGenericAction;
-import com.samares.omf.core.feature.options.IOption;
-import com.samares.omf.core.feature.ruleengine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
+import com.samares.omf.core.feature.registrables.options.option.IOption;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.FeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares.omf.core.plugin.APlugin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AFeature implements MDFeature{
 
+    protected APlugin plugin;
+
     protected String name;
     protected boolean isActivated;
-    private List<AGenericAction> mdActions;
-    private List<IFeatureRuleEngine> liveActions;
+    private final List<IUIAction> mdActions;
+    private final List<IFeatureRuleEngine> liveActions;
+    private final List<IOption> options;
 
-    private List<IOption> options;
-
-    public AFeature(String name){
+    protected AFeature(String name){
         this.name = name;
-        this.options      = initOptions();
+        this.options = initOptions();
         this.mdActions = initFeatureActions();
         this.liveActions = initLiveActions();
-    }
-
-    public AFeature(String name, List<AGenericAction> mdActions, List<IFeatureRuleEngine> liveActions, List<IOption> options){
-        this.name = name;
-        this.options = new ArrayList<>( options);
-        this.mdActions = new ArrayList<>(mdActions);
-        this.liveActions = new ArrayList<>(liveActions);
     }
 
     /**
      * Define all the feature action there, it will be automatically registered with the feature.
      * @return list of MDAction to register
      */
-    public abstract List<AGenericAction> initFeatureActions();
+    public abstract List<IUIAction> initFeatureActions();
 
     /**
      * Define all the feature live actions (RuleEngines) there, it will be automatically registered with the feature.
      * @return list of IFeatureRuleEngine to register
      */
     public abstract List<IFeatureRuleEngine> initLiveActions();
+
     /**
      * Define all the feature options (Environment && Project) there, it will be automatically registered with the feature.
      * @return list of IOption to register
      */
     public abstract List<IOption> initOptions();
-
     @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public List<AGenericAction> getMDActions() {
+    public List<IUIAction> getUIActions() {
         return mdActions;
+    }
+
+    protected IFeatureRuleEngine newRuleEngine(RECategoryEnum category) {
+        return new FeatureRuleEngine(plugin, category);
     }
 
     @Override
@@ -102,12 +103,20 @@ public abstract class AFeature implements MDFeature{
     }
 
     @Override
-    public List<IFeatureRuleEngine> getLiveActions() {
+    public List<IFeatureRuleEngine> getRuleEngines() {
         return liveActions;
     }
 
     @Override
     public List<IOption> getOptions() {
         return options;
+    }
+
+    public APlugin getPlugin() {
+        return plugin;
+    }
+
+    public void setPlugin(APlugin plugin) {
+        this.plugin = plugin;
     }
 }

@@ -9,11 +9,11 @@ package com.samares.omf.plugin.features.example1.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares.omf.core.actions.v2.annotations.*;
+import com.samares.omf.core.feature.registrables.actions.actions.annotations.*;
 import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.plugin.features.example2.ExampleFeature2;
 import com.samares.omf.plugin.OpenMBSEFrameworkPlugin;
-import com.samares.omf.core.actions.v2.AGenericAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 
 import java.util.List;
 
@@ -22,9 +22,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Register feature B", category = "Feature")
-public class ExampleMDAction1 extends AGenericAction {
-
-
+public class ExampleMDAction1 extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(OMFUtils.currentProject == null)
@@ -33,8 +31,6 @@ public class ExampleMDAction1 extends AGenericAction {
 
         return selectedElements.stream().anyMatch(Port.class::isInstance);
     }
-
-
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
