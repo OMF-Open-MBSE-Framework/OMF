@@ -345,7 +345,7 @@ public abstract class AUIAction implements IUIAction {
     }
 
     @Override
-    public void setFeature(MDFeature feature) {
+    public void initRegisterableItem(MDFeature feature) {
         this.feature = feature;
     }
 }

@@ -55,7 +55,8 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
     @Override
     public void testAction() {
         // Update stereotype rules (as if we clicked on the "Refresh stereotypes rules" button in cameo)
-        StereotypesTestUtils.updateAllRulesBasedOnConfigFiles();
+        //TODO get feature
+        //feature.getRuleUpdater().updateAllRulesBasedOnConfigFiles();
 
         // Open IBD
         openDiagram("_2021x_2_1a330482_1675267228353_653606_61");

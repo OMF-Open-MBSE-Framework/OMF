@@ -7,18 +7,12 @@
 
 package com.samares.omf.plugin.test.utils;
 
+import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.features.stereotypes.StereotypesRuleUpdater;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 public class StereotypesTestUtils {
     private StereotypesTestUtils() {}
-
-    /**
-     * Refreshes stereotype config files. Paths are set in corresponding environment variables
-     */
-    public static void updateAllRulesBasedOnConfigFiles() {
-        StereotypesRuleUpdater.getInstance().updateAllRulesBasedOnConfigFiles();
-    }
 
     /**
      * Get path of test plugin resources dir

@@ -37,15 +37,6 @@ import java.util.List;
  */
 public class StereotypesRuleUpdater {
     private IFeatureRuleEngine organizerEngine;
-    private static StereotypesRuleUpdater instance = null;
-
-    private StereotypesRuleUpdater() {}
-
-    public static StereotypesRuleUpdater getInstance() {
-        if (null == instance)
-            instance = new StereotypesRuleUpdater();
-        return instance;
-    }
 
     public void updateAllRulesBasedOnConfigFiles(){
         organizerEngine.removeAllRules();

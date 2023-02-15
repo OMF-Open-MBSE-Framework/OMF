@@ -39,7 +39,7 @@ public class RegisterFeatureA extends AUIAction {
             return;
 
         FeatureRegisterer featureManager = feature.getPlugin().getFeatureRegister();
-        featureManager.registerFeature(new ExampleFeature1(this.getFeature().getPlugin()));
+        featureManager.registerFeature(new ExampleFeature1());
 
     }
 }

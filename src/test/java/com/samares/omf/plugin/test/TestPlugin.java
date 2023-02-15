@@ -59,49 +59,44 @@ public class TestPlugin extends APlugin {
     }
 
     @Override
-    public List<MDFeature> getFeaturesRegisteredOnPluginInit() {
+    public List<MDFeature> initFeatures() {
         return List.of(
-                new FeatureCopyID(this)
+                new FeatureCopyID()
         );
     }
 
     @Override
-    public OMFBrowserConfigurator getFeatureRegisteringBrowserConfigurator() {
+    public OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator() {
         return new OMFBrowserConfigurator();
     }
 
     @Override
-    public OMFDiagramConfigurator getFeatureRegisteringDiagramConfigurator() {
+    public OMFDiagramConfigurator initFeatureRegisteringDiagramConfigurator() {
         return new OMFDiagramConfigurator();
     }
 
     @Override
-    public OMFMainMenuConfigurator getFeatureRegisteringMainMenuConfigurator() {
+    public OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator() {
         return new TestMainMenuConfigurator();
     }
 
     @Override
-    public List<MDFeature> getFeaturesRegisteredOnProjectOpening() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public OMFEnvironmentOptionsGroup getFeatureRegisteringEnvironmentOptionGroup() {
+    public OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
         return null;
     }
 
     @Override
-    public FeatureProjectOptionsConfigurator getFeatureRegisteringProjectOptionGroup() {
+    public FeatureProjectOptionsConfigurator initFeatureRegisteringProjectOptionGroup() {
         return FeatureProjectOptionsConfigurator.getInstance();
     }
 
     @Override
-    public ProjectListener getProjectListener() {
+    public ProjectListener initProjectListener() {
         return new ProjectListener(this);
     }
 
     @Override
-    public IListenerManager getListenerManager() {
+    public IListenerManager initListenerManager() {
         return ListenerManager.getInstance();
     }
 
@@ -116,7 +111,7 @@ public class TestPlugin extends APlugin {
     }
 
     @Override
-    public List<AOptionListener> getEnvironmentOptionsListener() {
+    public List<AOptionListener> initEnvironmentOptionsListener() {
         return Collections.emptyList();
     }
 }

@@ -64,59 +64,52 @@ public abstract class APlugin extends Plugin {
      * NOTE: Features can be registered later, by code or the project is opened (use instead getOnProjectOpeningFeatureToRegister())
      * @return List of feature to register at plugin initialization
      */
-    public abstract List<MDFeature> getFeaturesRegisteredOnPluginInit();
-
-    /**
-     * Define all the features to register at project opening. Features will be unregistered when the project is closed, or on project switching
-     * NOTE: Features can be registered later, by code or the project is opened (use instead getOnProjectOpeningFeatureToRegister())
-     * @return List of feature to register at plugin initialization
-     */
-    public abstract List<MDFeature> getFeaturesRegisteredOnProjectOpening();
+    public abstract List<MDFeature> initFeatures();
 
     /**
      * Define the BrowserConfigurator to register at plugin initialization.
      * This Configurator will be used for FeatureRegistering
      * @return BrowserConfigurator to register
      */
-    public abstract OMFBrowserConfigurator getFeatureRegisteringBrowserConfigurator();
+    public abstract OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator();
     /**
      * Define the DiagramConfigurator to register at plugin initialization.
      * This Configurator will be used for FeatureRegistering
      * @return DiagramConfigurator to register
      */
-    public abstract OMFDiagramConfigurator getFeatureRegisteringDiagramConfigurator();
+    public abstract OMFDiagramConfigurator initFeatureRegisteringDiagramConfigurator();
     /**
      * Define the MainMenuConfigurator to register at plugin initialization.
      * This Configurator will be used for FeatureRegistering
      * @return MainMenuConfigurator to register
      */
-    public abstract OMFMainMenuConfigurator getFeatureRegisteringMainMenuConfigurator();
+    public abstract OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator();
 
     /**
      * Define the EnvironmentOptionsGroup to register at plugin Initialization
      * This Configurator will be used for FeatureRegistering
      * @return EnvironmentOptionsGroup to register
      */
-    public abstract OMFEnvironmentOptionsGroup getFeatureRegisteringEnvironmentOptionGroup();
+    public abstract OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup();
     /**
      * Define the ProjectOptionsGroup to register at plugin Initialization
      * This Configurator will be used for FeatureRegistering
      * @return ProjectOptionsGroup to register
      */
-    public abstract FeatureProjectOptionsConfigurator getFeatureRegisteringProjectOptionGroup();
+    public abstract FeatureProjectOptionsConfigurator initFeatureRegisteringProjectOptionGroup();
     /**
      * Define the ProjectListener to register at plugin Initialization
      * This Listener will be used for FeatureRegistering at projectOpening and registration of ProjectOptions
      * @return ProjectOptionsGroup to register
      */
-    public abstract ProjectListener getProjectListener();
+    public abstract ProjectListener initProjectListener();
 
     /**
      * Define the ListenerManager to register at plugin Initialization
      * This ListenerManager will be used for FeatureRegistering with liveActions and all registration of listeners
      * @return ProjectOptionsGroup to register
      */
-    public abstract IListenerManager getListenerManager();
+    public abstract IListenerManager initListenerManager();
 
 
 
@@ -143,15 +136,12 @@ public abstract class APlugin extends Plugin {
     }
 
     private void configureListenerManager() {
-        this.listenerManager = getListenerManager();
+        this.listenerManager = initListenerManager();
     }
 
     private void configureFeatures() {
-        List<MDFeature> defaultFeatures = getFeaturesRegisteredOnPluginInit();
-        if(defaultFeatures == null || defaultFeatures.isEmpty()){
-
-        }
-        getFeatures().addAll(defaultFeatures);
+        List<MDFeature> pluginFeatures = this.initFeatures();
+        features.addAll(pluginFeatures);
     }
 
 
@@ -164,7 +154,7 @@ public abstract class APlugin extends Plugin {
     }
 
     protected void configureProjectListener() {
-        projectListener = getProjectListener();
+        projectListener = initProjectListener();
         if(projectListener != null)
             Application.getInstance().getProjectsManager().addProjectListener(projectListener);
         else
@@ -175,20 +165,20 @@ public abstract class APlugin extends Plugin {
     protected void configureActions() {
         ActionsConfiguratorsManager actionManager = ActionsConfiguratorsManager.getInstance();
 
-        OMFBrowserConfigurator browserConfigurator = getFeatureRegisteringBrowserConfigurator();
+        OMFBrowserConfigurator browserConfigurator = initFeatureRegisteringBrowserConfigurator();
         if (browserConfigurator == null)
             ColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
         else
             actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
 
-        OMFDiagramConfigurator diagramConfigurator = getFeatureRegisteringDiagramConfigurator();
+        OMFDiagramConfigurator diagramConfigurator = initFeatureRegisteringDiagramConfigurator();
         if (diagramConfigurator == null)
             ColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
         else {
             actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM,diagramConfigurator);
         }
 
-        OMFMainMenuConfigurator menuConfigurator = getFeatureRegisteringMainMenuConfigurator();
+        OMFMainMenuConfigurator menuConfigurator = initFeatureRegisteringMainMenuConfigurator();
         if (menuConfigurator == null)
             ColorPrinter.warn("[OMF] NO MAIN MENU CONFIGURATOR REGISTERED");
         else
@@ -200,19 +190,6 @@ public abstract class APlugin extends Plugin {
 
     protected void registerFeatures() {
         features.forEach(featureRegisterer::registerFeature);
-
-        if (projectListener == null)
-            ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
-        else {
-            projectListener.addFeatureToRegisterAtProjectOpening(getFeaturesRegisteredOnProjectOpening());
-            projectListener.addProjectOptionToRegister(getAllProjectOptionsFeatures(features));
-        }
-    }
-
-    private List<MDFeature> getAllProjectOptionsFeatures(List<MDFeature> featuress) {
-        return featuress.stream()
-                .filter(feature -> feature.getOptions().stream().anyMatch(option-> option.getKind() == OptionKind.Project))
-                .collect(Collectors.toList());
     }
 
     protected void configureEnvironmentOptions() {
@@ -220,7 +197,7 @@ public abstract class APlugin extends Plugin {
         EnvironmentOptions options = application.getEnvironmentOptions();
 
 
-        environmentOptionConfigurator = getFeatureRegisteringEnvironmentOptionGroup();
+        environmentOptionConfigurator = initFeatureRegisteringEnvironmentOptionGroup();
         if(environmentOptionConfigurator == null){
             ColorPrinter.warn("[OMF] NO ENVIRONMENT OPTIONS REGISTERED");
             return;
@@ -229,14 +206,14 @@ public abstract class APlugin extends Plugin {
 
         options.addGroup(environmentOptionConfigurator);
 
-        environmentOptionsListener = getEnvironmentOptionsListener();
+        environmentOptionsListener = initEnvironmentOptionsListener();
         if(!environmentOptionsListener.isEmpty())
             environmentOptionsListener.forEach(options::addEnvironmentChangeListener);
 
     }
 
     private void configureProjectOptions() {
-        projectOptionConfigurator = getFeatureRegisteringProjectOptionGroup();
+        projectOptionConfigurator = initFeatureRegisteringProjectOptionGroup();
 
         if(projectOptionConfigurator == null){
             ColorPrinter.warn("[OMF] NO PROJECT OPTIONS REGISTERED");
@@ -257,7 +234,7 @@ public abstract class APlugin extends Plugin {
         return true;
     }
 
-    public abstract List<AOptionListener> getEnvironmentOptionsListener();
+    public abstract List<AOptionListener> initEnvironmentOptionsListener();
     public List<MDFeature> getFeatures() {
         return features;
     }

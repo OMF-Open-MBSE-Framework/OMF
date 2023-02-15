@@ -7,21 +7,18 @@
 
 package com.samares.omf.plugin.features.dev;
 
-import com.jidesoft.plaf.basic.UIAction;
-import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
-import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.plugin.features.dev.actions.ResetListeners;
 
 import java.util.Collections;
 import java.util.List;
 
 public class Dev extends AFeature {
-    public Dev(APlugin plugin) {
-        super(plugin, "Dev");
+    public Dev() {
+        super( "Dev");
     }
 
     @Override
@@ -32,12 +29,27 @@ public class Dev extends AFeature {
     }
 
     @Override
+    protected List<IUIAction> initDelayedFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IFeatureRuleEngine> initLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
+    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IOption> initOptions() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<IOption> initDelayedOptions() {
         return Collections.emptyList();
     }
 }

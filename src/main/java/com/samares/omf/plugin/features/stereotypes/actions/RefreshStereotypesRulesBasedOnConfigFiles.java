@@ -14,6 +14,7 @@ import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.OMFLogLevel;
 import com.samares.omf.core.errors.OMFLogger;
+import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.features.stereotypes.StereotypesRuleUpdater;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
     public void actionToPerform(List<Element> selectedElements) {
         try {
             OMFLogger.getInstance().log("Parsing config files", null, OMFLogLevel.INFO);
-            StereotypesRuleUpdater.getInstance().updateAllRulesBasedOnConfigFiles();
+            ((StereotypesFeature) feature).getRuleUpdater().updateAllRulesBasedOnConfigFiles();
             OMFLogger.getInstance().log("Rules updated based on config files", null, OMFLogLevel.INFO);
         } catch (Exception e) {
             OMFLogger.getInstance().log("[Error] While parsing, please verify the configuration file and try again", null, OMFLogLevel.ERROR);

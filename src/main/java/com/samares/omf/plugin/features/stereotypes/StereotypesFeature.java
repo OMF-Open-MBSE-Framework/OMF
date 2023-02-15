@@ -16,6 +16,7 @@ import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.options.option.OptionImpl;
 import com.samares.omf.core.feature.registrables.options.option.OptionKind;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.FeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares.omf.core.plugin.APlugin;
@@ -23,12 +24,14 @@ import com.samares.omf.plugin.features.stereotypes.actions.RefreshStereotypesRul
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class StereotypesFeature extends AFeature {
-    public StereotypesFeature(APlugin plugin) {
-        super(plugin, "Stereotypes");
+    public StereotypesFeature() {
+        super( "Stereotypes");
     }
+    private final StereotypesRuleUpdater ruleUpdater = new StereotypesRuleUpdater();
 
     @Override
     public List<IUIAction> initFeatureActions() {
@@ -38,9 +41,19 @@ public class StereotypesFeature extends AFeature {
     }
 
     @Override
+    protected List<IUIAction> initDelayedFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        IFeatureRuleEngine creationRE = newRuleEngine(RECategoryEnum.CREATE);
+        IFeatureRuleEngine creationRE = new FeatureRuleEngine(RECategoryEnum.CREATE);
         return Arrays.asList(creationRE);
+    }
+
+    @Override
+    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -111,9 +124,18 @@ public class StereotypesFeature extends AFeature {
     }
 
     @Override
+    protected List<IOption> initDelayedOptions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public void onProjectOpen() {
         // We delegate management of rules to OrganizeListenerConfig
-        StereotypesRuleUpdater.getInstance().setOrganizerRuleEngine(getRuleEngines().get(0));
-        StereotypesRuleUpdater.getInstance().initAllRulesBasedOnConfigFiles();
+        ruleUpdater.setOrganizerRuleEngine(getRuleEngines().get(0));
+        ruleUpdater.initAllRulesBasedOnConfigFiles();
+    }
+
+    public StereotypesRuleUpdater getRuleUpdater() {
+        return ruleUpdater;
     }
 }

@@ -33,58 +33,52 @@ import java.util.List;
 
 public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
-    public List<MDFeature> getFeaturesRegisteredOnPluginInit() {
+    public List<MDFeature> initFeatures() {
         return List.of(
-                new ExampleFeature1(this),
-                new Dev(this),
-                new ExampleFeature3(this),
-                new StereotypesFeature(this)
+                new ExampleFeature1(),
+                new Dev(),
+                new ExampleFeature3(),
+                new StereotypesFeature()
         );
     }
 
     @Override
-    public List<MDFeature> getFeaturesRegisteredOnProjectOpening() {
-        return List.of(
-        );
-    }
-
-    @Override
-    public OMFBrowserConfigurator getFeatureRegisteringBrowserConfigurator() {
+    public OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator() {
         return new OMFBrowserConfigurator();
     }
 
     @Override
-    public OMFDiagramConfigurator getFeatureRegisteringDiagramConfigurator() {
+    public OMFDiagramConfigurator initFeatureRegisteringDiagramConfigurator() {
         return new OMFDiagramConfigurator();
     }
 
     @Override
-    public OMFMainMenuConfigurator getFeatureRegisteringMainMenuConfigurator() {
+    public OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator() {
         return new OMFMainMenuConfigurator();
     }
 
     @Override
-    public OMFEnvironmentOptionsGroup getFeatureRegisteringEnvironmentOptionGroup() {
+    public OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
         return new OMFPluginEnvOptionsGroup();
     }
 
     @Override
-    public FeatureProjectOptionsConfigurator getFeatureRegisteringProjectOptionGroup() {
+    public FeatureProjectOptionsConfigurator initFeatureRegisteringProjectOptionGroup() {
         return FeatureProjectOptionsConfigurator.getInstance();
     }
 
     @Override
-    public ProjectListener getProjectListener() {
+    public ProjectListener initProjectListener() {
         return new ProjectListener(this);
     }
 
     @Override
-    public IListenerManager getListenerManager() {
+    public IListenerManager initListenerManager() {
         return ListenerManager.getInstance();
     }
 
     @Override
-    public List<AOptionListener> getEnvironmentOptionsListener() {
+    public List<AOptionListener> initEnvironmentOptionsListener() {
         var optionListener = new AOptionListener() {
             @Override
             public void updateByEnvironmentProperties(List<Property> list) {
@@ -95,7 +89,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                         .findFirst()
                         .ifPresent(opt -> {
                             if ((boolean) opt.getValue())
-                                getFeatureRegister().registerFeatures(getFeaturesRegisteredOnPluginInit());
+                                getFeatureRegister().registerFeatures(OpenMBSEFrameworkPlugin.this.initFeatures());
                             else
                                 getFeatureRegister().unregisterFeatures(getFeatureRegister().getRegisteredFeatures());
 

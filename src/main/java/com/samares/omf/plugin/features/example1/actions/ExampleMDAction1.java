@@ -36,7 +36,7 @@ public class ExampleMDAction1 extends AUIAction {
     public void actionToPerform(List<Element> selectedElements) {
         if(selectedElements == null)
             return;
-        getFeature().getPlugin().getFeatureRegister().registerFeature(new ExampleFeature2(this.getFeature().getPlugin()));
+        getFeature().getPlugin().getFeatureRegister().registerFeature(new ExampleFeature2());
 
         
 //        new OpenProject("C:\\workspace\\DEV\\SAMARES\\OMF\\src\\main\\resources\\OMF_DEVELOPING.mdzip").testAction();

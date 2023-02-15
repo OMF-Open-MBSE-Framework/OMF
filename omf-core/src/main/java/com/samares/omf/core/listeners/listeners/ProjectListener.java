@@ -25,50 +25,9 @@ import java.util.List;
 public class ProjectListener implements ProjectPartLoadedListener {
     public static final String PROFILE_NAME = "";
     private final APlugin plugin;
-    private final List<MDFeature> delayedFeature = new ArrayList<>();
-    private final List<MDFeature> optionProjectFeature = new ArrayList<>();
 
     public ProjectListener(APlugin plugin){
         this.plugin = plugin;
-    }
-
-    public void addFeatureToRegisterAtProjectOpening(List<MDFeature> featuresToRegister){
-        delayedFeature.addAll(featuresToRegister);
-    }
-
-    public void addProjectOptionToRegister(List<MDFeature> allProjectOptionsFeatures) {
-        optionProjectFeature.addAll(allProjectOptionsFeatures);
-    }
-
-    public void removeFeatureFromRegisteringList(MDFeature feature){
-        delayedFeature.remove(feature);
-    }
-    public void removeAllFeatureFromRegisteringList(List<MDFeature> featuresToRemove){
-        delayedFeature.removeAll(featuresToRemove);
-    }
-
-    public void registerFeature(MDFeature mdFeature) {
-        plugin.getFeatureRegister().registerFeature(mdFeature);
-    }
-
-    public void unregisterFeature(MDFeature mdFeature) {
-        plugin.getFeatureRegister().unregisterFeature(mdFeature);
-    }
-
-    public void registerFeatures(List<MDFeature> features) {
-        plugin.getFeatureRegister().registerFeatures(features);
-    }
-
-    public void unregisterFeatures(List<MDFeature> features) {
-        plugin.getFeatureRegister().unregisterFeatures(features);
-    }
-
-
-    private void registerAllProjectOptionFeatures(List<MDFeature> optionProjectFeature) {
-        optionProjectFeature.forEach(feature -> plugin.getFeatureRegister().getOptionRegisterer().register(feature));
-    }
-    private void unRegisterAllProjectOptionFeatures(List<MDFeature> optionProjectFeature) {
-        optionProjectFeature.forEach(feature -> plugin.getFeatureRegister().getOptionRegisterer().register(feature));
     }
 
     @Override
@@ -156,7 +115,6 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     }
 
-
 //    private boolean checkVersion() {
 //        OMFEnvironmentOptionsGroup.getInstance();
 //        String version = null;
@@ -227,13 +185,10 @@ public class ProjectListener implements ProjectPartLoadedListener {
         OMFUtils.currentProject = project;
         FactoryManager.initAllFactories(project);
         Profile.getInstance();
-//        checkProfileVersion();
         ListenerManager.getInstance().registerAllListeners();
         ListenerManager.getInstance().activateAllListeners();
-        registerFeatures(delayedFeature);
-        registerAllProjectOptionFeatures(optionProjectFeature);
-//        ProjectOptions.addConfigurator(OMFProjectOptionsConfigurator.getInstance());
-        plugin.getFeatures().forEach(MDFeature::onProjectOpen);
+        plugin.getFeatureRegister().registerDelayedItemsOfFeatures(plugin.initFeatures());
+        plugin.initFeatures().forEach(MDFeature::onProjectOpen);
     }
 
     protected void closeProject() {
@@ -241,8 +196,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
             return;
         ListenerManager.getInstance().removeAllListeners();
         OMFUtils.currentProject = null;
-        unregisterFeatures(delayedFeature);
-        unRegisterAllProjectOptionFeatures(optionProjectFeature);
-        plugin.getFeatures().forEach(MDFeature::onProjectClose);
+        plugin.getFeatureRegister().unregisterDelayedItemsOfFeatures(plugin.initFeatures());
+        plugin.initFeatures().forEach(MDFeature::onProjectClose);
     }
 }

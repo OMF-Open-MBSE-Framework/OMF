@@ -18,7 +18,6 @@ import com.samares.omf.core.feature.registrables.options.option.OptionKind;
 import com.samares.omf.core.utils.OMFUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
     public OptionRegisterer(FeatureRegisterer featureRegisterer) {
@@ -28,25 +27,21 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
     /**
      * Register all the options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param mdFeature
+     * @param options
      */
-    public void register(MDFeature mdFeature) {
-        mdFeature.getOptions().forEach(option -> {
-            option.setFeature(mdFeature);
-            this.registerFeatureItem(option);
-        });
+    public void registerFeatureItems(List<IOption> options) {
+        options.forEach(this::registerFeatureItem);
     }
 
     /**
      * unregister all the options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param mdFeature
+     * @param options
      */
-    public void unregister(MDFeature mdFeature){
-        mdFeature.getOptions().forEach(this::unregisterFeatureItem);
+    public void unregisterFeatureItems(List<IOption> options){
+        options.forEach(this::unregisterFeatureItem);
     }
 
-    @Override
     protected void registerFeatureItem(IOption option) {
         try {
             if (option == null || !option.isActivated()) {
@@ -62,7 +57,6 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
         }
     }
 
-    @Override
     protected void unregisterFeatureItem(IOption option) {
         try {
             if (option == null) {

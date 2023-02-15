@@ -38,9 +38,13 @@ public abstract class AOption implements IOption {
 
     private MDFeature feature;
 
-    private final List<AOptionListener> registeredListener = new ArrayList<>();
+    public void initRegisterableItem(MDFeature feature) {
+        this.feature = feature;
+    }
 
+    private final List<AOptionListener> registeredListener = new ArrayList<>();
     private final List<AOptionListener> listenerToRegister = new ArrayList<>();
+
     public void addListenerToRegister(AOptionListener listener) {
         listenerToRegister.add(listener);
     }
@@ -60,7 +64,6 @@ public abstract class AOption implements IOption {
     public void addEnvironmentListener(EnvironmentOptions.EnvironmentChangeListener listener){
             Application.getInstance().getEnvironmentOptions().addEnvironmentChangeListener(listener);
     }
-
     public void addProjectListener(PropertyChangeListener listener){
             OMFUtils.currentProject.getOptions().addPropertyChangeListener(listener);
     }
@@ -82,6 +85,7 @@ public abstract class AOption implements IOption {
         registeredListener.forEach(this::removeListener);
         registeredListener.clear();
     }
+
     @Override
     public List<AOptionListener> getRegisteredListener(){
         return registeredListener;
@@ -249,9 +253,5 @@ public abstract class AOption implements IOption {
     @Override
     public MDFeature getFeature() {
         return feature;
-    }
-
-    public void setFeature(MDFeature feature) {
-        this.feature = feature;
     }
 }

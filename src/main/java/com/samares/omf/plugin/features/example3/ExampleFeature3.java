@@ -24,8 +24,8 @@ import java.util.List;
 
 public class ExampleFeature3 extends AFeature {
 
-    public ExampleFeature3(APlugin plugin){
-        super(plugin, "ExampleFeature3");
+    public ExampleFeature3(){
+        super("ExampleFeature3");
     }
 
     @Override
@@ -38,12 +38,27 @@ public class ExampleFeature3 extends AFeature {
     }
 
     @Override
+    protected List<IUIAction> initDelayedFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IFeatureRuleEngine> initLiveActions() {
         return Collections.EMPTY_LIST;
     }
 
     @Override
+    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IOption> initOptions() {
         return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    protected List<IOption> initDelayedOptions() {
+        return Collections.emptyList();
     }
 }

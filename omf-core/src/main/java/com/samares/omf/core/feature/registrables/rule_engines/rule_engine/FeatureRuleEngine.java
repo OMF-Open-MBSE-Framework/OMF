@@ -14,34 +14,45 @@ public class FeatureRuleEngine extends RuleEngine implements IFeatureRuleEngine 
     private String category = "";
     private MDFeature feature;
 
-    public FeatureRuleEngine(MDFeature feature, RECategoryEnum category){
-        this(feature, category, -1);
+    public FeatureRuleEngine(RECategoryEnum category){
+        this(category, -1);
     }
 
-    public FeatureRuleEngine(MDFeature feature, RECategoryEnum category, int priority){
-        this(feature, category.toString(), priority);
+    public FeatureRuleEngine(RECategoryEnum category, int priority){
+        this(category.toString(), priority);
     }
 
-    public FeatureRuleEngine(MDFeature feature, String category){
-        this(feature, category, -1);
+    public FeatureRuleEngine(String category){
+        this(category, -1);
     }
 
-    public FeatureRuleEngine(MDFeature feature, String category, int priority){
-        this.feature = feature;
+    public FeatureRuleEngine(String category, int priority){
         this.category = category;
         this.priority = priority;
     }
 
+    @Override
+    public void initRegisterableItem(MDFeature feature) {
+        this.feature = feature;
+        setListenerManager(feature.getPlugin().initListenerManager());
+        getRules().forEach(rule -> rule.setRuleEngine(this));
+    }
+
+    /*
+    Accessors
+     */
+
     public int getPriority() {
         return priority;
     }
+
     public void setPriority(int priority) {
         this.priority = priority;
     }
-
     public String getCategory() {
         return category;
     }
+
     public void setCategory(String category) {
         this.category = category;
     }
@@ -49,12 +60,5 @@ public class FeatureRuleEngine extends RuleEngine implements IFeatureRuleEngine 
     @Override
     public MDFeature getFeature() {
         return feature;
-    }
-
-    @Override
-    public void setFeature(MDFeature feature) {
-        this.feature = feature;
-        setListenerManager(feature.getPlugin().getListenerManager());
-        getRules().forEach(rule -> rule.setRuleEngine(this));
     }
 }

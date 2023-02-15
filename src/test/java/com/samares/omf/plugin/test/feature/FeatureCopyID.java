@@ -23,8 +23,8 @@ import java.util.List;
 
 public class FeatureCopyID extends AFeature {
 
-    public FeatureCopyID(APlugin plugin) {
-        super(plugin,"Copy Element ID");
+    public FeatureCopyID() {
+        super("Copy Element ID");
     }
 
     @Override
@@ -35,12 +35,27 @@ public class FeatureCopyID extends AFeature {
     }
 
     @Override
+    protected List<IUIAction> initDelayedFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IFeatureRuleEngine> initLiveActions() {
         return Collections.EMPTY_LIST;
     }
 
     @Override
+    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IOption> initOptions() {return Collections.EMPTY_LIST;}
+
+    @Override
+    protected List<IOption> initDelayedOptions() {
+        return Collections.emptyList();
+    }
 
 
 }

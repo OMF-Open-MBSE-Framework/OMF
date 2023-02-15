@@ -12,13 +12,12 @@ import com.samares.omf.core.feature.FeatureRegisterer;
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares.omf.core.feature.FeatureItemRegisterer;
-import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.errors.FeatureException;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
-import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.exceptions.GenericException;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
@@ -29,39 +28,36 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
     public MDActionRegisterer(FeatureRegisterer featureRegisterer) {
         super(featureRegisterer);
         this.browserConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getFeatureRegisteringBrowserConfigurator(),
+                featureRegisterer.getPlugin().initFeatureRegisteringBrowserConfigurator(),
                 "NO BROWSER CONFIGURATOR REGISTERED");
         this.diagramConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getFeatureRegisteringDiagramConfigurator(),
+                featureRegisterer.getPlugin().initFeatureRegisteringDiagramConfigurator(),
                 "NO DIAGRAM CONFIGURATOR REGISTERED");
         this.menuConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getFeatureRegisteringMainMenuConfigurator(),
+                featureRegisterer.getPlugin().initFeatureRegisteringMainMenuConfigurator(),
                 "NO MENU CONFIGURATOR REGISTERED");
     }
 
-    public void register(MDFeature mdFeature) {
+    public void registerFeatureItems(List<IUIAction> actions) throws FeatureException {
        try{
-            mdFeature.getUIActions().forEach(action -> {
-                action.setFeature(mdFeature);
-                this.registerFeatureItem(action);
-            });
-            refreshConfigurators();
+           actions.forEach(this::registerFeatureItem);
+           refreshConfigurators();
        } catch (Exception e){
-           OMFErrorHandler.handleException(new FeatureException(
-                   "[Feature Registerer] Unable to register MDAction for feature: " + mdFeature.getName(),
-                   e, GenericException.ECriticality.CRITICAL), false);
+           throw new FeatureException(
+                   "[Feature Registerer] Unable to register MDActions",
+                   e, GenericException.ECriticality.CRITICAL);
        }
     }
 
-    public void unregister(MDFeature mdFeature) {
+    public void unregisterFeatureItems(List<IUIAction> actions) throws FeatureException {
         try {
             resetConfigurators();
-            mdFeature.getUIActions().forEach(this::unregisterFeatureItem);
+            actions.forEach(this::unregisterFeatureItem);
             refreshConfigurators();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException(
-                    "[Feature Registerer] Unable to unregister MDAction for feature: " + mdFeature.getName(),
-                    e, GenericException.ECriticality.CRITICAL), false);
+           throw new FeatureException(
+                    "[Feature Registerer] Unable to unregister MDActions",
+                    e, GenericException.ECriticality.CRITICAL);
         }
     }
 

@@ -28,12 +28,13 @@ import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ExampleFeature1 extends AFeature {
 
-    public ExampleFeature1(APlugin plugin){
-       super(plugin, "ExampleFeature1");
+    public ExampleFeature1(){
+       super("ExampleFeature1");
     }
 
     @Override
@@ -45,10 +46,20 @@ public class ExampleFeature1 extends AFeature {
     }
 
     @Override
+    protected List<IUIAction> initDelayedFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        IFeatureRuleEngine creationRE = newRuleEngine(RECategoryEnum.CREATE);
+        IFeatureRuleEngine creationRE = new FeatureRuleEngine(RECategoryEnum.CREATE);
         creationRE.addRule(new BlockCreation());
         return List.of(creationRE);
+    }
+
+    @Override
+    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -99,6 +110,11 @@ public class ExampleFeature1 extends AFeature {
                 testProjectOption2,
                 testNewCatEnvOption
         );
+    }
+
+    @Override
+    protected List<IOption> initDelayedOptions() {
+        return Collections.emptyList();
     }
 
 
