@@ -50,16 +50,6 @@ public abstract class APlugin extends Plugin {
     private List<MDFeature> features;
     private FeatureRegisterer featureRegisterer;
     private boolean isInitialized = false;
-
-
-    // TODO Remove
-    public static APlugin getInstance(){
-        return (APlugin) Application.getInstance().getPluginManager().B().stream()
-                .filter(APlugin.class::isInstance)
-                .findFirst()
-                .orElseThrow();
-    }
-
     private IListenerManager listenerManager;
     private ProjectListener projectListener;
 

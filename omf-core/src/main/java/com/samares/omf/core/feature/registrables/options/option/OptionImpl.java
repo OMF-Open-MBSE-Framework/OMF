@@ -13,8 +13,6 @@ import com.nomagic.magicdraw.properties.Property;
 import javax.annotation.CheckForNull;
 
 public class OptionImpl extends AOption {
-
-
     public OptionImpl(@CheckForNull Property property, String categoryName, String uri, String groupName, OptionKind kind) {
         this.property = property;
         this.groupName = groupName;
@@ -41,7 +39,4 @@ public class OptionImpl extends AOption {
     public static OptionImpl createProjectOption(@CheckForNull Property property, String groupURI,  String categoryName, String groupName){
         return new OptionImpl(property, categoryName, groupURI, groupName, OptionKind.Project);
     }
-
-
-
 }

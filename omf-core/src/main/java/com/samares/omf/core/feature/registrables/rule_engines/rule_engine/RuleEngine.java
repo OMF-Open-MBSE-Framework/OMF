@@ -7,22 +7,25 @@
 package com.samares.omf.core.feature.registrables.rule_engines.rule_engine;
 
 import com.samares.omf.core.feature.registrables.rule_engines.rule.IRule;
+import com.samares.omf.core.listeners.IListenerManager;
+import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.plugin.APlugin;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-public class RuleEngine implements IRuleEngine {
-    private final APlugin plugin;
-    private List<IRule> rules = new ArrayList<>();
-    private String id = "";
+public abstract class RuleEngine implements IRuleEngine {
+    private IListenerManager listenerManager;
 
-    public RuleEngine(APlugin plugin){
-        this.plugin = plugin;
+    public IListenerManager getListenerManager() {
+        return listenerManager;
     }
 
+    private List<IRule> rules = new ArrayList<>();
+    private String id = "";
     /**
      * Find the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -37,6 +40,7 @@ public class RuleEngine implements IRuleEngine {
                 .filter(rule -> rule.isActivated() && rule.matches(evt))
                 .findFirst();
     }
+
     @Override
     public List<IRule> getAllMatchingRules(PropertyChangeEvent evt){
         if (skipRules(evt))
@@ -57,7 +61,6 @@ public class RuleEngine implements IRuleEngine {
         return rulesToExecute;
 
     }
-
     /**
      * Finds and processes the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -67,11 +70,12 @@ public class RuleEngine implements IRuleEngine {
     public boolean processFirstMatchingRule(PropertyChangeEvent evt) {
         Optional<IRule> matchingRule = getMatchingRule(evt);
         matchingRule.ifPresent(rule ->  {
-            plugin.getListenerManager().deactivateAllListeners();
+            listenerManager.deactivateAllListeners();
             rule.process(evt);
         });
         return matchingRule.isPresent();
     }
+
     /**
      * Finds and processes the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -83,13 +87,12 @@ public class RuleEngine implements IRuleEngine {
         if(matchingRules.isEmpty())
             return false;
 
-        plugin.getListenerManager().deactivateAllListeners();
+        listenerManager.deactivateAllListeners();
         matchingRules.stream()
                 .forEach(rule -> rule.process(evt));
 
         return true;
     }
-
     @Override
     public boolean skipRules(PropertyChangeEvent evt) {
         return false;
@@ -97,8 +100,10 @@ public class RuleEngine implements IRuleEngine {
 
     @Override
     public void addRule(IRule rule){
+        rule.setRuleEngine(this);
         this.rules.add(rule);
     }
+
     @Override
     public void addAllRules(List<IRule> lRules){
         this.rules.addAll(lRules);
@@ -111,7 +116,6 @@ public class RuleEngine implements IRuleEngine {
     public void removeAllRules(List<IRule> lRules){
         this.rules.removeAll(lRules);
     }
-
     @Override
     public void removeAllRules(){
         this.rules.clear();
@@ -120,14 +124,19 @@ public class RuleEngine implements IRuleEngine {
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
-
     public List<IRule> getRules() {
         return rules;
     }
+
     public void setRules(List<IRule> rules) {
         this.rules = rules;
+    }
+
+    public void setListenerManager(IListenerManager listenerManager) {
+        this.listenerManager = listenerManager;
     }
 }

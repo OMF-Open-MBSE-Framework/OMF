@@ -13,6 +13,6 @@ public abstract class FeatureItemRegisterer<I extends RegistrableFeatureItem> {
 
     protected abstract void unregister(MDFeature mdFeature);
 
-    protected abstract void register(I item);
-    protected abstract void unregister(I item);
+    protected abstract void registerFeatureItem(I item);
+    protected abstract void unregisterFeatureItem(I item);
 }

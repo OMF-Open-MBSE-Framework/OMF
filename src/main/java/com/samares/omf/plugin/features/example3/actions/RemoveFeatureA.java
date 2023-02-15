@@ -27,9 +27,7 @@ public class RemoveFeatureA extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null)
-            return false;
-        return true;
+        return OMFUtils.currentProject != null;
     }
 
 
@@ -38,7 +36,7 @@ public class RemoveFeatureA extends AUIAction {
         if(selectedElements == null)
             return;
 
-        FeatureRegisterer featureManager = OpenMBSEFrameworkPlugin.getInstance().getFeatureRegister();
+        FeatureRegisterer featureManager = feature.getPlugin().getFeatureRegister();
         featureManager.getRegisteredFeatures().stream()
                 .filter(ExampleFeature1.class::isInstance)
                 .findFirst()

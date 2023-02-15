@@ -16,6 +16,7 @@ import com.nomagic.magicdraw.core.options.OptionsGroup;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
+import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.core.utils.OMFUtils;
@@ -27,25 +28,23 @@ import java.util.List;
 public abstract class AOption implements IOption {
     String groupName;
     String uriOptions;
-
     String categoryName;
     Property property;
     AbstractPropertyOptionsGroup optionCategory;
     PropertyResourceProvider resourceProvider = (requestedLabel, prop) -> (requestedLabel);
-
     Object defaultValue;
-
     boolean isActivated;
     OptionKind kind;
 
-    
-    private List<AOptionListener> registeredListener = new ArrayList<>();
-    private List<AOptionListener> listenerToRegister = new ArrayList<>();
+    private MDFeature feature;
 
+    private final List<AOptionListener> registeredListener = new ArrayList<>();
 
+    private final List<AOptionListener> listenerToRegister = new ArrayList<>();
     public void addListenerToRegister(AOptionListener listener) {
         listenerToRegister.add(listener);
     }
+
     public Property getRegisteredProperty() {
         return optionCategory.getProperty(property.getID());
     }
@@ -57,9 +56,11 @@ public abstract class AOption implements IOption {
         if(kind == OptionKind.Project)
             addProjectListener(listener);
     }
+
     public void addEnvironmentListener(EnvironmentOptions.EnvironmentChangeListener listener){
             Application.getInstance().getEnvironmentOptions().addEnvironmentChangeListener(listener);
     }
+
     public void addProjectListener(PropertyChangeListener listener){
             OMFUtils.currentProject.getOptions().addPropertyChangeListener(listener);
     }
@@ -76,19 +77,16 @@ public abstract class AOption implements IOption {
     public void removeProjectListener(PropertyChangeListener listener){
         OMFUtils.currentProject.getOptions().removePropertyChangeListener(listener);
     }
-
     @Override
     public void removeAllListeners(){
         registeredListener.forEach(this::removeListener);
         registeredListener.clear();
     }
-
-
     @Override
     public List<AOptionListener> getRegisteredListener(){
         return registeredListener;
     }
-    
+
     @Override
     public PropertyResourceProvider getResourceProvider() {
         return resourceProvider;
@@ -175,13 +173,6 @@ public abstract class AOption implements IOption {
         return category != null? category: createNewEnvOptionCategory(uriOptions, categoryName);
     }
 
-//    private PropertyManager getOrCreateProjectCategory(String uriOptions, String categoryName) {
-//        PropertyManager category = OMFUtils.currentProject.getOptions().getManager(categoryName);
-//
-//        return category != null? category: createNewProjectOptionCategory(uriOptions, categoryName);
-//    }
-
-
     private OMFEnvironmentOptionsGroup createNewEnvOptionCategory(String URI, String categoryName) {
         OMFEnvironmentOptionsGroup envCategory = new OMFEnvironmentOptionsGroup(URI, categoryName);
         Application.getInstance().getEnvironmentOptions()
@@ -196,8 +187,6 @@ public abstract class AOption implements IOption {
         optionCategory.removeProperty(property.getName());
         registeredListener.forEach(this::removeListener);
     }
-
-    
 
     @Override
     public String getGroupName() {
@@ -219,24 +208,20 @@ public abstract class AOption implements IOption {
         this.uriOptions = uriOptions;
     }
 
-
     @Override
     public Property getProperty() {
         return property;
     }
-
 
     @Override
     public void setProperty(Property property) {
         this.property = property;
     }
 
-
     @Override
     public OptionsGroup getOptionCategory() {
         return optionCategory;
     }
-
 
     @Override
     public void setOptionCategory(AbstractPropertyOptionsGroup optionCategory) {
@@ -246,6 +231,7 @@ public abstract class AOption implements IOption {
     public List<AOptionListener> getListenerToRegister() {
         return listenerToRegister;
     }
+
     @Override
     public String getCategoryName() {
         return categoryName;
@@ -256,8 +242,16 @@ public abstract class AOption implements IOption {
         this.categoryName = categoryName;
     }
 
-
     public static AbstractPropertyOptionsGroup getOptionGroupFromURI(String uri){
         return (AbstractPropertyOptionsGroup) Application.getInstance().getEnvironmentOptions().getGroup(uri);
+    }
+
+    @Override
+    public MDFeature getFeature() {
+        return feature;
+    }
+
+    public void setFeature(MDFeature feature) {
+        this.feature = feature;
     }
 }

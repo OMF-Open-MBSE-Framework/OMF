@@ -7,15 +7,14 @@
 
 package com.samares.omf.plugin.features.example2;
 
-import com.samares.omf.core.plugin.APlugin;
-import com.samares.omf.plugin.features.example2.creation.ConcurrentBlockCreation;
-import com.samares.omf.plugin.features.example2.actions.ExampleMDAction2;
-import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
-import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.FeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares.omf.core.plugin.APlugin;
+import com.samares.omf.plugin.features.example2.actions.ExampleMDAction2;
+import com.samares.omf.plugin.features.example2.creation.ConcurrentBlockCreation;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,14 +27,14 @@ public class ExampleFeature2 extends AFeature {
     }
 
     @Override
-    public List<AUIAction> initFeatureActions() {
+    public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
                 new ExampleMDAction2()
         );
     }
     @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        IFeatureRuleEngine creationRE = new FeatureRuleEngine(plugin, RECategoryEnum.CREATE, 0);
+        IFeatureRuleEngine creationRE = newRuleEngine(RECategoryEnum.CREATE, 0);
         creationRE.addRule(new ConcurrentBlockCreation());
 
         return List.of(creationRE);

@@ -7,8 +7,10 @@
 
 package com.samares.omf.plugin.features.dev;
 
+import com.jidesoft.plaf.basic.UIAction;
 import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.plugin.APlugin;
@@ -19,11 +21,11 @@ import java.util.List;
 
 public class Dev extends AFeature {
     public Dev(APlugin plugin) {
-        super(plugin,"Dev");
+        super(plugin, "Dev");
     }
 
     @Override
-    public List<AUIAction> initFeatureActions() {
+    public List<IUIAction> initFeatureActions() {
         return List.of(
              new ResetListeners()
         );

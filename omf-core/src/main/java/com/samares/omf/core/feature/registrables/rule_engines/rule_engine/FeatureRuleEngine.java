@@ -7,26 +7,27 @@
 
 package com.samares.omf.core.feature.registrables.rule_engines.rule_engine;
 
-import com.samares.omf.core.plugin.APlugin;
+import com.samares.omf.core.feature.MDFeature;
 
 public class FeatureRuleEngine extends RuleEngine implements IFeatureRuleEngine {
     private int priority = -1;
     private String category = "";
+    private MDFeature feature;
 
-    public FeatureRuleEngine(APlugin plugin, RECategoryEnum category){
-        this(plugin, category, -1);
+    public FeatureRuleEngine(MDFeature feature, RECategoryEnum category){
+        this(feature, category, -1);
     }
 
-    public FeatureRuleEngine(APlugin plugin, RECategoryEnum category, int priority){
-        this(plugin, category.toString(), priority);
+    public FeatureRuleEngine(MDFeature feature, RECategoryEnum category, int priority){
+        this(feature, category.toString(), priority);
     }
 
-    public FeatureRuleEngine(APlugin plugin, String category){
-        this(plugin, category, -1);
+    public FeatureRuleEngine(MDFeature feature, String category){
+        this(feature, category, -1);
     }
 
-    public FeatureRuleEngine(APlugin plugin, String category, int priority){
-        super(plugin);
+    public FeatureRuleEngine(MDFeature feature, String category, int priority){
+        this.feature = feature;
         this.category = category;
         this.priority = priority;
     }
@@ -43,5 +44,17 @@ public class FeatureRuleEngine extends RuleEngine implements IFeatureRuleEngine 
     }
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public MDFeature getFeature() {
+        return feature;
+    }
+
+    @Override
+    public void setFeature(MDFeature feature) {
+        this.feature = feature;
+        setListenerManager(feature.getPlugin().getListenerManager());
+        getRules().forEach(rule -> rule.setRuleEngine(this));
     }
 }

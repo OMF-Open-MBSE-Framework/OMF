@@ -19,24 +19,32 @@ import com.samares.omf.core.feature.registrables.actions.actions.configurators.O
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.exceptions.GenericException;
 
-import java.util.List;
+import java.util.Objects;
 
 public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
     private final OMFBrowserConfigurator browserConfigurator;
     private final OMFDiagramConfigurator diagramConfigurator;
     private final OMFMainMenuConfigurator menuConfigurator;
 
-
     public MDActionRegisterer(FeatureRegisterer featureRegisterer) {
         super(featureRegisterer);
-        this.browserConfigurator = featureRegisterer.getPlugin().getFeatureRegisteringBrowserConfigurator();
-        this.diagramConfigurator = featureRegisterer.getPlugin().getFeatureRegisteringDiagramConfigurator();
-        this.menuConfigurator = featureRegisterer.getPlugin().getFeatureRegisteringMainMenuConfigurator();
+        this.browserConfigurator = Objects.requireNonNull(
+                featureRegisterer.getPlugin().getFeatureRegisteringBrowserConfigurator(),
+                "NO BROWSER CONFIGURATOR REGISTERED");
+        this.diagramConfigurator = Objects.requireNonNull(
+                featureRegisterer.getPlugin().getFeatureRegisteringDiagramConfigurator(),
+                "NO DIAGRAM CONFIGURATOR REGISTERED");
+        this.menuConfigurator = Objects.requireNonNull(
+                featureRegisterer.getPlugin().getFeatureRegisteringMainMenuConfigurator(),
+                "NO MENU CONFIGURATOR REGISTERED");
     }
 
     public void register(MDFeature mdFeature) {
        try{
-            registerMDAction(mdFeature.getUIActions());
+            mdFeature.getUIActions().forEach(action -> {
+                action.setFeature(mdFeature);
+                this.registerFeatureItem(action);
+            });
             refreshConfigurators();
        } catch (Exception e){
            OMFErrorHandler.handleException(new FeatureException(
@@ -48,7 +56,7 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
     public void unregister(MDFeature mdFeature) {
         try {
             resetConfigurators();
-            unregisterMDAction(mdFeature.getUIActions());
+            mdFeature.getUIActions().forEach(this::unregisterFeatureItem);
             refreshConfigurators();
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException(
@@ -62,7 +70,6 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
             menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
     }
 
-
     private void refreshConfigurators() {
 //        browserConfigurator.configure(ActionsProvider.getInstance().getDiagramContextActions());
 //        diagramConfigurator.configure(ActionsProvider.getInstance().getContainmentBrowserShortcutsActions();
@@ -74,38 +81,25 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
             menuConfigurator.configure(ActionsProvider.getInstance().getMainMenuActions());
     }
     
-    private void registerMDAction(List<IUIAction> actions) {
-        if(browserConfigurator == null)
-            OMFErrorHandler.handleException(new FeatureException("[Feature] NO BROWSER CONFIGURATOR REGISTERED", GenericException.ECriticality.CRITICAL), false);
-        else
-            browserConfigurator.addNewActions(actions);
+    public void registerFeatureItem(IUIAction action) {
+        if(browserConfigurator != null)
+            browserConfigurator.addNewAction(action);
 
-        if(diagramConfigurator == null)
-            OMFErrorHandler.handleException(new FeatureException("[Feature] NO DIAGRAM CONFIGURATOR REGISTERED", GenericException.ECriticality.CRITICAL), false);
-        else
-            diagramConfigurator.addNewActions(actions);
+        if(diagramConfigurator != null)
+            diagramConfigurator.addNewAction(action);
 
-        if(menuConfigurator == null)
-            OMFErrorHandler.handleException(new FeatureException("[Feature] NO MAIN MENU CONFIGURATOR REGISTERED", GenericException.ECriticality.CRITICAL), false);
-        else
-            menuConfigurator.addNewActions(actions);
-
+        if(menuConfigurator != null)
+            menuConfigurator.addNewAction(action);
     }
 
-    private void unregisterMDAction(List<IUIAction> action) {
-        if(browserConfigurator == null)
-            OMFErrorHandler.handleException(new FeatureException("[Feature] NO BROWSER CONFIGURATOR REGISTERED", GenericException.ECriticality.CRITICAL), false);
-        else
-            browserConfigurator.removeActions(action);
+    public void unregisterFeatureItem(IUIAction action) {
+        if(browserConfigurator != null)
+            browserConfigurator.removeAction(action);
 
-        if(diagramConfigurator == null)
-            OMFErrorHandler.handleException(new FeatureException("[Feature] NO DIAGRAM CONFIGURATOR REGISTERED", GenericException.ECriticality.CRITICAL), false);
-        else
-            diagramConfigurator.removeActions(action);
+        if(diagramConfigurator != null)
+            diagramConfigurator.removeAction(action);
 
-        if(menuConfigurator == null)
-            OMFErrorHandler.handleException(new FeatureException("[Feature] NO MAIN MENU CONFIGURATOR REGISTERED", GenericException.ECriticality.CRITICAL), false);
-        else
-            menuConfigurator.removeActions(action);
+        if(menuConfigurator != null)
+            menuConfigurator.removeAction(action);
     }
 }

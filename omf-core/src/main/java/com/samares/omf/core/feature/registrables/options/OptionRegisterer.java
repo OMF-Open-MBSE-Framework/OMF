@@ -31,82 +31,47 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
      * @param mdFeature
      */
     public void register(MDFeature mdFeature) {
-        registerEnvOptions(mdFeature);
-        if(OMFUtils.currentProject != null)
-            registerProjectOptions(mdFeature);
+        mdFeature.getOptions().forEach(option -> {
+            option.setFeature(mdFeature);
+            this.registerFeatureItem(option);
+        });
     }
 
     /**
      * unregister all the options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param feature
-     */
-    public void unregister(MDFeature feature){
-        unregisterEnvOptions(feature);
-        unregisterProjectOptions(feature);
-    }
-
-
-    /**
-     * Register all the Environment mdFeature of the mdFeature.
-     * By default, the registration will be delegated to the IOptions itself.
      * @param mdFeature
      */
-    private void registerEnvOptions(MDFeature mdFeature){
-        try {
-            mdFeature.getOptions().stream()
-                    .filter(IOption::isActivated)
-                    .filter(opt -> opt.getKind() == OptionKind.Environment)
-                    .filter(Objects::nonNull)
-                    .forEach(IOption::register);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register Environment option for mdFeature: " + mdFeature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-        }
+    public void unregister(MDFeature mdFeature){
+        mdFeature.getOptions().forEach(this::unregisterFeatureItem);
     }
-    /**
-     * Unregister all the Environment options of the feature.
-     * By default, the removal will be delegated to the IOptions itself.
-     * @param feature
-     */
-    private void unregisterEnvOptions(MDFeature feature){
+
+    @Override
+    protected void registerFeatureItem(IOption option) {
         try {
-            feature.getOptions().stream()
-                    .filter(opt -> opt.getKind() == OptionKind.Environment)
-                    .filter(Objects::nonNull)
-                    .forEach(IOption::unregister);
+            if (option == null || !option.isActivated()) {
+                return;
+            }
+            if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) {
+                return;
+            }
+            option.register();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not unregister Environment option for feature: " + feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register " + option.getKind().toString()
+                    + " option for mdFeature: " + option.getFeature().getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
-    /**
-     * Register all the Project options of the feature.
-     * By default, the removal will be delegated to the IOptions itself.
-     * @param feature
-     */
-    private void registerProjectOptions(MDFeature feature){
+    @Override
+    protected void unregisterFeatureItem(IOption option) {
         try {
-            feature.getOptions().stream()
-                    .filter(IOption::isActivated)
-                    .filter(opt -> opt.getKind() == OptionKind.Project)
-                    .forEach(IOption::register);
+            if (option == null) {
+                return;
+            }
+            option.unregister();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register Project option for feature: " + feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-        }
-    }
-
-    /**
-     * Unregister all the Project options of the feature.
-     * By default, the removal will be delegated to the IOptions itself.
-     * @param feature
-     */
-    private void unregisterProjectOptions(MDFeature feature){
-        try {
-            feature.getOptions().stream()
-                    .filter(opt -> opt.getKind() == OptionKind.Project)
-                    .forEach(IOption::unregister);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register Project option for feature: " + feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not unregister " + option.getKind().toString()
+                    + " option from mdFeature: " + option.getFeature().getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 }

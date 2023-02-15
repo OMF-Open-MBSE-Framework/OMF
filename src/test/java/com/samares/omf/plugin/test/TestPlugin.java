@@ -61,7 +61,7 @@ public class TestPlugin extends APlugin {
     @Override
     public List<MDFeature> getFeaturesRegisteredOnPluginInit() {
         return List.of(
-                new FeatureCopyID()
+                new FeatureCopyID(this)
         );
     }
 
@@ -97,7 +97,7 @@ public class TestPlugin extends APlugin {
 
     @Override
     public ProjectListener getProjectListener() {
-        return new ProjectListener();
+        return new ProjectListener(this);
     }
 
     @Override

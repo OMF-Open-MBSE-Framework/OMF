@@ -56,11 +56,5 @@ public class SmokeTests extends MagicDrawTestCase {
     public void checkIfPluginIsInstalled() {
         assertNotNull("Plugin is null", plugin);
     }
-
-    @Test
-    public void checkIfPluginIsInitialized() {
-        Assume.assumeTrue(plugin != null);
-        assertTrue("PLUGIN NOT INITIALIZED", OpenMBSEFrameworkPlugin.getInstance().isInitialized());
-    }
 }
 

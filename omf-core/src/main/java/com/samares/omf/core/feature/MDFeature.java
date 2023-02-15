@@ -17,11 +17,10 @@ import java.util.List;
 public interface MDFeature {
     String getName();
 
-    void activate();
-    void deactivate();
-    boolean isActivated();
-    void onActivation();
-    void onDeactivation();
+    void setRegistered(boolean isRegistered);
+    boolean isRegistered();
+    void onRegistering();
+    void onUnregistering();
     void onProjectOpen();
     void onProjectClose();
 

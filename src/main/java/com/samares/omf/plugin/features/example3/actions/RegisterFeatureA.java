@@ -38,8 +38,8 @@ public class RegisterFeatureA extends AUIAction {
         if(selectedElements == null)
             return;
 
-        FeatureRegisterer featureManager = OpenMBSEFrameworkPlugin.getInstance().getFeatureRegister();
-        featureManager.registerFeature(new ExampleFeature1());
+        FeatureRegisterer featureManager = feature.getPlugin().getFeatureRegister();
+        featureManager.registerFeature(new ExampleFeature1(this.getFeature().getPlugin()));
 
     }
 }

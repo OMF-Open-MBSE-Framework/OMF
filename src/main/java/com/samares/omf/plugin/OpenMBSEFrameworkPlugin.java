@@ -35,10 +35,10 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
     public List<MDFeature> getFeaturesRegisteredOnPluginInit() {
         return List.of(
-                new ExampleFeature1(),
-                new Dev(),
-                new ExampleFeature3(),
-                new StereotypesFeature()
+                new ExampleFeature1(this),
+                new Dev(this),
+                new ExampleFeature3(this),
+                new StereotypesFeature(this)
         );
     }
 

@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares.omf.core.feature.registrables.rule_engines.rule;
 
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
 public interface IRule<I, O> {
     boolean matches(I e);
@@ -19,5 +20,6 @@ public interface IRule<I, O> {
     String getId();
 
     boolean isBlocking();
-    
+
+    void setRuleEngine(IRuleEngine ruleEngine);
 }

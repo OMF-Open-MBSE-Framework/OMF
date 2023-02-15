@@ -22,7 +22,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectListener implements ProjectPartLoadedListener, IFeatureRegisterer {
+public class ProjectListener implements ProjectPartLoadedListener {
     public static final String PROFILE_NAME = "";
     private final APlugin plugin;
     private final List<MDFeature> delayedFeature = new ArrayList<>();
@@ -47,32 +47,28 @@ public class ProjectListener implements ProjectPartLoadedListener, IFeatureRegis
         delayedFeature.removeAll(featuresToRemove);
     }
 
-    @Override
     public void registerFeature(MDFeature mdFeature) {
         plugin.getFeatureRegister().registerFeature(mdFeature);
     }
 
-    @Override
     public void unregisterFeature(MDFeature mdFeature) {
         plugin.getFeatureRegister().unregisterFeature(mdFeature);
     }
 
-    @Override
     public void registerFeatures(List<MDFeature> features) {
-        IFeatureRegisterer.super.registerFeatures(features);
+        plugin.getFeatureRegister().registerFeatures(features);
     }
 
-    @Override
     public void unregisterFeatures(List<MDFeature> features) {
-        IFeatureRegisterer.super.unregisterFeatures(features);
+        plugin.getFeatureRegister().unregisterFeatures(features);
     }
 
 
     private void registerAllProjectOptionFeatures(List<MDFeature> optionProjectFeature) {
-        optionProjectFeature.forEach(feature -> plugin.getFeatureRegister().getOptionRegisterer().registerProjectOptions(feature));
+        optionProjectFeature.forEach(feature -> plugin.getFeatureRegister().getOptionRegisterer().register(feature));
     }
     private void unRegisterAllProjectOptionFeatures(List<MDFeature> optionProjectFeature) {
-        optionProjectFeature.forEach(feature -> plugin.getFeatureRegister().getOptionRegisterer().unregisterProjectOptions(feature));
+        optionProjectFeature.forEach(feature -> plugin.getFeatureRegister().getOptionRegisterer().register(feature));
     }
 
     @Override

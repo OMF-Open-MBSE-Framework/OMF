@@ -8,8 +8,9 @@
 package com.samares.omf.core.feature.registrables.rule_engines.rule_engine;
 
 import com.nomagic.magicdraw.utils.PriorityProvider;
+import com.samares.omf.core.feature.RegistrableFeatureItem;
 
-public interface IFeatureRuleEngine extends IRuleEngine, PriorityProvider {
+public interface IFeatureRuleEngine extends IRuleEngine, PriorityProvider, RegistrableFeatureItem {
 
     void setPriority(int priority);
 

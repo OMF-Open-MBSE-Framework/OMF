@@ -145,14 +145,14 @@ public abstract class FeatureActionConfigurator {
     public void addNewAction(IUIAction action){
         genericActions.add(action);
     }
-    public void removeNewAction(IUIAction action){
-        genericActions.remove(action);
-    }
     public void addNewActions(List<IUIAction> actions){
         genericActions.addAll(actions);
     }
     public void removeActions(List<IUIAction> actions){
         genericActions.removeAll(actions);
+    }
+    public void removeAction(IUIAction action){
+        genericActions.remove(action);
     }
 
     public enum ConfiguratorKind{

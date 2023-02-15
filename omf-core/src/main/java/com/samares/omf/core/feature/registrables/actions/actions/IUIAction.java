@@ -2,6 +2,7 @@ package com.samares.omf.core.feature.registrables.actions.actions;
 
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDAction;
+import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.RegistrableFeatureItem;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface IUIAction extends RegistrableFeatureItem {
     NMAction getDiagramAction();
 
     String getCategory();
+
+    void setFeature(MDFeature mdFeature);
 }

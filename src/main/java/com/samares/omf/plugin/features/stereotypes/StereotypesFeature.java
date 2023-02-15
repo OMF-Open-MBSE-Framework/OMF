@@ -7,15 +7,18 @@
 
 package com.samares.omf.plugin.features.stereotypes;
 
+import com.jidesoft.plaf.basic.UIAction;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.options.option.OptionImpl;
 import com.samares.omf.core.feature.registrables.options.option.OptionKind;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.plugin.features.stereotypes.actions.RefreshStereotypesRulesBasedOnConfigFiles;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
@@ -23,12 +26,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StereotypesFeature extends AFeature {
-    public StereotypesFeature() {
-        super("Stereotypes");
+    public StereotypesFeature(APlugin plugin) {
+        super(plugin, "Stereotypes");
     }
 
     @Override
-    public List<AUIAction> initFeatureActions() {
+    public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
                 new RefreshStereotypesRulesBasedOnConfigFiles()
         );

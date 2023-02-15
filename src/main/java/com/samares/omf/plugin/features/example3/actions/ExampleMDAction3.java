@@ -34,7 +34,7 @@ public class ExampleMDAction3 extends AUIAction {
         if(selectedElements == null)
             return;
 
-        FeatureRegisterer featureManager = OpenMBSEFrameworkPlugin.getInstance().getFeatureRegister();
+        FeatureRegisterer featureManager = feature.getPlugin().getFeatureRegister();
 
         featureManager.getRegisteredFeatures().stream()
                 .filter(ExampleFeature2.class::isInstance)

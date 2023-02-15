@@ -29,6 +29,8 @@ public interface IRuleEngine {
 
     void addAllRules(List<IRule> lRules);
 
+    List<IRule> getRules();
+
     void removeRule(IRule rule);
 
     void removeAllRules(List<IRule> lRules);

@@ -8,7 +8,6 @@
 package com.samares.omf.core.feature;
 
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
-import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.FeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
@@ -22,17 +21,19 @@ public abstract class AFeature implements MDFeature{
     protected APlugin plugin;
 
     protected String name;
-    protected boolean isActivated;
+    protected boolean isRegistered;
     private final List<IUIAction> mdActions;
     private final List<IFeatureRuleEngine> liveActions;
     private final List<IOption> options;
 
-    protected AFeature(String name){
+    protected AFeature(APlugin plugin, String name){
+        this.plugin = plugin;
         this.name = name;
         this.options = initOptions();
         this.mdActions = initFeatureActions();
         this.liveActions = initLiveActions();
     }
+
 
     /**
      * Define all the feature action there, it will be automatically registered with the feature.
@@ -62,30 +63,30 @@ public abstract class AFeature implements MDFeature{
     }
 
     protected IFeatureRuleEngine newRuleEngine(RECategoryEnum category) {
-        return new FeatureRuleEngine(plugin, category);
+        return new FeatureRuleEngine(this, category);
     }
 
-    @Override
-    public final void activate() {
-        isActivated = true;
-        onActivation();
+    protected IFeatureRuleEngine newRuleEngine(RECategoryEnum category, int priority) {
+        return new FeatureRuleEngine(this, category, priority);
     }
 
-    @Override
-    public final void deactivate() {
-        isActivated = false;
-        onDeactivation();
+    public final void setRegistered(boolean isRegistered) {
+        this.isRegistered = isRegistered;
+    }
+
+    public final boolean isRegistered() {
+        return isRegistered;
     }
 
     /**
      * Override this to inject code to be run on feature activation
      */
-    public void onActivation() {}
+    public void onRegistering() {}
 
     /**
      * Override this to inject code to be run on feature deactivation
      */
-    public void onDeactivation() {}
+    public void onUnregistering() {}
 
     /**
      * Override this to inject code to be run on project opening
@@ -96,11 +97,6 @@ public abstract class AFeature implements MDFeature{
      * Override this to inject code to be run on project closing
      */
     public void onProjectClose() {}
-
-    @Override
-    public boolean isActivated() {
-        return isActivated;
-    }
 
     @Override
     public List<IFeatureRuleEngine> getRuleEngines() {

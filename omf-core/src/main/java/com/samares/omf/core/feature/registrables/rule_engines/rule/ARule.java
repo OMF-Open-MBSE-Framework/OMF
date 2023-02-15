@@ -6,12 +6,15 @@
  ******************************************************************************/
 package com.samares.omf.core.feature.registrables.rule_engines.rule;
 
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+
 import java.beans.PropertyChangeEvent;
 
 public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChangeEvent> {
-
+    protected IRuleEngine ruleEngine;
     public String id = "";
     public boolean isActivated = true;
+
     public ARule(){};
 
     public ARule(String id){
@@ -40,5 +43,9 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
     @Override
     public String getId() {
         return id;
+    }
+
+    public void setRuleEngine(IRuleEngine ruleEngine) {
+        this.ruleEngine = ruleEngine;
     }
 }

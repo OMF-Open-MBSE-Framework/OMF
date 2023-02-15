@@ -43,20 +43,33 @@ public class FeatureRegisterer {
 
         mdFeature.setPlugin(plugin);
         registeredFeatures.add(mdFeature);
-        mdFeature.activate();
+        mdFeature.setRegistered(true);
+        mdFeature.onRegistering();
         optionRegisterer.register(mdFeature);
         uiActionRegisterer.register(mdFeature);
         ruleEngineRegisterer.register(mdFeature);
+    }
+
+    public void registerFeatures(List<MDFeature> features){
+        features.forEach(feature -> {
+            feature.setPlugin(plugin);
+            this.registerFeature(feature);
+        });
     }
 
     public void unregisterFeature(MDFeature mdFeature){
         boolean isNotRegistered = !registeredFeatures.contains(mdFeature);
         registeredFeatures.remove(mdFeature);
 
-        mdFeature.deactivate();
+        mdFeature.setRegistered(false);
+        mdFeature.onUnregistering();
         uiActionRegisterer.unregister(mdFeature);
         ruleEngineRegisterer.unregister(mdFeature);
         optionRegisterer.unregister(mdFeature);
+    }
+
+    public void unregisterFeatures(List<MDFeature> features){
+        features.forEach(this::unregisterFeature);
     }
 
     private boolean isAlreadyRegistered(MDFeature mdFeature) {

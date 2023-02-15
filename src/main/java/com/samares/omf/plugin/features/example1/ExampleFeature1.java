@@ -12,6 +12,7 @@ import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.AOptionListener;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.options.option.OptionImpl;
@@ -36,7 +37,7 @@ public class ExampleFeature1 extends AFeature {
     }
 
     @Override
-    public List<AUIAction> initFeatureActions() {
+    public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
                 new ExampleMDAction1(),
                 new RemoveProjectOptions()
@@ -45,7 +46,7 @@ public class ExampleFeature1 extends AFeature {
 
     @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        IFeatureRuleEngine creationRE = new FeatureRuleEngine(plugin, RECategoryEnum.CREATE);
+        IFeatureRuleEngine creationRE = newRuleEngine(RECategoryEnum.CREATE);
         creationRE.addRule(new BlockCreation());
         return List.of(creationRE);
     }

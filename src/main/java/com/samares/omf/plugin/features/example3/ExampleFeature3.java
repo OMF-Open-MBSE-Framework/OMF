@@ -7,6 +7,8 @@
 
 package com.samares.omf.plugin.features.example3;
 
+import com.jidesoft.plaf.basic.UIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.plugin.APlugin;
 import com.samares.omf.plugin.features.example3.actions.ExampleMDAction3;
 import com.samares.omf.plugin.features.example3.actions.RegisterFeatureA;
@@ -26,9 +28,8 @@ public class ExampleFeature3 extends AFeature {
         super(plugin, "ExampleFeature3");
     }
 
-
     @Override
-    public List<AUIAction> initFeatureActions() {
+    public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
                 new ExampleMDAction3(),
                 new RegisterFeatureA(),
