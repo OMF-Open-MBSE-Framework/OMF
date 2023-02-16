@@ -38,7 +38,7 @@ public class ExampleFeature3 extends AFeature {
     }
 
     @Override
-    protected List<IUIAction> initDelayedFeatureActions() {
+    protected List<IUIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 
@@ -48,7 +48,7 @@ public class ExampleFeature3 extends AFeature {
     }
 
     @Override
-    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+    protected List<IFeatureRuleEngine> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 
@@ -58,7 +58,7 @@ public class ExampleFeature3 extends AFeature {
     }
 
     @Override
-    protected List<IOption> initDelayedOptions() {
+    protected List<IOption> initProjectOnlyOptions() {
         return Collections.emptyList();
     }
 }

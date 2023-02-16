@@ -35,7 +35,7 @@ public class FeatureCopyID extends AFeature {
     }
 
     @Override
-    protected List<IUIAction> initDelayedFeatureActions() {
+    protected List<IUIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 
@@ -45,7 +45,7 @@ public class FeatureCopyID extends AFeature {
     }
 
     @Override
-    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+    protected List<IFeatureRuleEngine> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 
@@ -53,7 +53,7 @@ public class FeatureCopyID extends AFeature {
     public List<IOption> initOptions() {return Collections.EMPTY_LIST;}
 
     @Override
-    protected List<IOption> initDelayedOptions() {
+    protected List<IOption> initProjectOnlyOptions() {
         return Collections.emptyList();
     }
 

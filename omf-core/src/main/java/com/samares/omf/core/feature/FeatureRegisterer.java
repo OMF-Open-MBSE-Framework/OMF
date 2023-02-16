@@ -24,7 +24,7 @@ public class FeatureRegisterer {
     private OptionRegisterer optionRegisterer;
 
     private List<MDFeature> registeredFeatures = new ArrayList<>();
-    private APlugin plugin;
+    private final APlugin plugin;
 
     //TODO: Create a class regrouping all Configurators
     public FeatureRegisterer(APlugin plugin){
@@ -65,28 +65,28 @@ public class FeatureRegisterer {
     }
 
     /**
-     * Registers feature items that have been flagged as "delayed" until project is opened. This method is then called
+     * Registers feature items that have declared as "project only" until project is opened. This method is then called
      * every time the project opens.
      * On the first registration, the items are also initialised. We wait until the project to be opened to initialise
      * the items in order to avoid instances where the items need the project to be opened to function, for example if
      * you need to set a default value from the Sysml profile in an Option
      * @param feature
      */
-    private void registerDelayedFeatureItems(MDFeature feature) {
-        feature.initDelayedFeatureItems();
+    private void registerProjectOnlyFeatureItems(MDFeature feature) {
+        feature.initProjectOnlyFeatureItems();
 
         try {
-            optionRegisterer.registerFeatureItems(feature.getDelayedOptions());
-            uiActionRegisterer.registerFeatureItems(feature.getDelayedUIActions());
-            ruleEngineRegisterer.registerFeatureItems(feature.getDelayedRuleEngines());
+            optionRegisterer.registerFeatureItems(feature.getProjectOnlyOptions());
+            uiActionRegisterer.registerFeatureItems(feature.getProjectOnlyUIActions());
+            ruleEngineRegisterer.registerFeatureItems(feature.getProjectOnlyRuleEngines());
         } catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while registering delayed items for feature " +
+            OMFErrorHandler.handleException(new FeatureException("Error while registering project only items for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
-    public void registerDelayedItemsOfFeatures(List<MDFeature> features) {
-        features.forEach(this::registerDelayedFeatureItems);
+    public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
+        features.forEach(this::registerProjectOnlyFeatureItems);
     }
 
     public void unregisterFeature(MDFeature feature){
@@ -101,11 +101,11 @@ public class FeatureRegisterer {
 
         try {
             uiActionRegisterer.unregisterFeatureItems(feature.getUIActions());
-            uiActionRegisterer.unregisterFeatureItems(feature.getDelayedUIActions());
+            uiActionRegisterer.unregisterFeatureItems(feature.getProjectOnlyUIActions());
             ruleEngineRegisterer.unregisterFeatureItems(feature.getRuleEngines());
-            ruleEngineRegisterer.unregisterFeatureItems(feature.getDelayedRuleEngines());
+            ruleEngineRegisterer.unregisterFeatureItems(feature.getProjectOnlyRuleEngines());
             optionRegisterer.unregisterFeatureItems(feature.getOptions());
-            optionRegisterer.unregisterFeatureItems(feature.getDelayedOptions());
+            optionRegisterer.unregisterFeatureItems(feature.getProjectOnlyOptions());
         } catch (FeatureException e) {
             OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
@@ -122,11 +122,11 @@ public class FeatureRegisterer {
 
     public void unregisterDelayedItemsOfFeature(MDFeature feature){
         try {
-            uiActionRegisterer.unregisterFeatureItems(feature.getDelayedUIActions());
-            ruleEngineRegisterer.unregisterFeatureItems(feature.getDelayedRuleEngines());
-            optionRegisterer.unregisterFeatureItems(feature.getDelayedOptions());
+            uiActionRegisterer.unregisterFeatureItems(feature.getProjectOnlyUIActions());
+            ruleEngineRegisterer.unregisterFeatureItems(feature.getProjectOnlyRuleEngines());
+            optionRegisterer.unregisterFeatureItems(feature.getProjectOnlyOptions());
         } catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while unregistering delayed items for feature " +
+            OMFErrorHandler.handleException(new FeatureException("Error while unregistering project only items for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }

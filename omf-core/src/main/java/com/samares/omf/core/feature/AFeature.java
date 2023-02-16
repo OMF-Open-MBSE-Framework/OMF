@@ -15,13 +15,12 @@ import com.samares.omf.core.plugin.APlugin;
 import java.util.List;
 
 public abstract class AFeature implements MDFeature{
-
-    protected APlugin plugin;
-    private boolean isFeatureInitialised = false;
-    private boolean delayedItemsInitialised = false;
-
     protected String name;
     protected boolean isRegistered;
+    private boolean isFeatureInitialised = false;
+    private boolean isProjectOnlyItemsInitialised = false;
+
+    protected APlugin plugin;
 
     // Registrable items
     private List<IUIAction> mdActions;
@@ -29,9 +28,9 @@ public abstract class AFeature implements MDFeature{
     private List<IOption> options;
 
     // Delayed registrable items
-    private List<IOption> delayedOptions;
-    private List<IUIAction> delayedMdActions;
-    private List<IFeatureRuleEngine> delayedLiveActions;
+    private List<IOption> projectOnlyOptions;
+    private List<IUIAction> projectOnlyMdActions;
+    private List<IFeatureRuleEngine> projectOnlyLiveActions;
 
     protected AFeature(String name){
         this.name = name;
@@ -59,25 +58,29 @@ public abstract class AFeature implements MDFeature{
 
         this.liveActions = initLiveActions();
         liveActions.forEach(this::initRegistrableItem);
+
+        isFeatureInitialised = true;
     }
 
     /**
      * Instantiates the feature items that depend on project to instantiate correctly
      */
-    public final void initDelayedFeatureItems() {
-        // We only need to initialise delayed items once
-        if (delayedItemsInitialised) {
+    public final void initProjectOnlyFeatureItems() {
+        // We only need to initialise project only items once
+        if (isProjectOnlyItemsInitialised) {
             return;
         }
 
-        this.delayedOptions = initDelayedOptions();
-        delayedOptions.forEach(this::initRegistrableItem);
+        this.projectOnlyOptions = initProjectOnlyOptions();
+        projectOnlyOptions.forEach(this::initRegistrableItem);
 
-        this.delayedMdActions = initDelayedFeatureActions();
-        delayedMdActions.forEach(this::initRegistrableItem);
+        this.projectOnlyMdActions = initProjectOnlyFeatureActions();
+        projectOnlyMdActions.forEach(this::initRegistrableItem);
 
-        this.delayedLiveActions = initDelayedLiveActions();
-        delayedLiveActions.forEach(this::initRegistrableItem);
+        this.projectOnlyLiveActions = initProjectOnlyLiveActions();
+        projectOnlyLiveActions.forEach(this::initRegistrableItem);
+
+        isProjectOnlyItemsInitialised = true;
     }
 
     private void initRegistrableItem(RegistrableFeatureItem item) {
@@ -94,7 +97,7 @@ public abstract class AFeature implements MDFeature{
      * UI Actions that need to wait for a project to be loaded to be instantiated
      * @return
      */
-    protected abstract List<IUIAction> initDelayedFeatureActions();
+    protected abstract List<IUIAction> initProjectOnlyFeatureActions();
 
     /**
      * Define all the feature live actions (RuleEngines) there, it will be automatically registered with the feature.
@@ -102,7 +105,7 @@ public abstract class AFeature implements MDFeature{
      */
     protected abstract List<IFeatureRuleEngine> initLiveActions();
 
-    protected abstract List<IFeatureRuleEngine> initDelayedLiveActions();
+    protected abstract List<IFeatureRuleEngine> initProjectOnlyLiveActions();
 
     /**
      * Define all the feature options (Environment && Project) there, it will be automatically registered with the feature.
@@ -110,7 +113,7 @@ public abstract class AFeature implements MDFeature{
      */
     protected abstract List<IOption> initOptions();
 
-    protected abstract List<IOption> initDelayedOptions();
+    protected abstract List<IOption> initProjectOnlyOptions();
 
     /**
      * Override this to inject code to be run on feature activation
@@ -170,15 +173,15 @@ public abstract class AFeature implements MDFeature{
         return mdActions;
     }
 
-    public List<IOption> getDelayedOptions() {
-        return delayedOptions;
+    public List<IOption> getProjectOnlyOptions() {
+        return projectOnlyOptions;
     }
 
-    public List<IFeatureRuleEngine> getDelayedRuleEngines() {
-        return delayedLiveActions;
+    public List<IFeatureRuleEngine> getProjectOnlyRuleEngines() {
+        return projectOnlyLiveActions;
     }
 
-    public List<IUIAction> getDelayedUIActions() {
-        return delayedMdActions;
+    public List<IUIAction> getProjectOnlyUIActions() {
+        return projectOnlyMdActions;
     }
 }

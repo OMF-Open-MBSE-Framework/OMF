@@ -30,10 +30,10 @@ public interface MDFeature {
     List<IFeatureRuleEngine> getRuleEngines();
     List<IOption> getOptions();
 
-    List<IUIAction> getDelayedUIActions();
-    List<IFeatureRuleEngine> getDelayedRuleEngines();
-    List<IOption> getDelayedOptions();
+    List<IUIAction> getProjectOnlyUIActions();
+    List<IFeatureRuleEngine> getProjectOnlyRuleEngines();
+    List<IOption> getProjectOnlyOptions();
 
     void initFeature(APlugin plugin);
-    void initDelayedFeatureItems();
+    void initProjectOnlyFeatureItems();
 }

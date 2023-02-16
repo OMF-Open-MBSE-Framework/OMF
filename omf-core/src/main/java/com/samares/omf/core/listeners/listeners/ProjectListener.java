@@ -19,8 +19,6 @@ import com.samares.omf.core.utils.profile.Profile;
 import com.samares.omf.core.utils.utils.VersionUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProjectListener implements ProjectPartLoadedListener {
     public static final String PROFILE_NAME = "";
@@ -187,7 +185,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
         Profile.getInstance();
         ListenerManager.getInstance().registerAllListeners();
         ListenerManager.getInstance().activateAllListeners();
-        plugin.getFeatureRegister().registerDelayedItemsOfFeatures(plugin.getFeatures());
+        plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(plugin.getFeatures());
         plugin.getFeatures().forEach(MDFeature::onProjectOpen);
     }
 

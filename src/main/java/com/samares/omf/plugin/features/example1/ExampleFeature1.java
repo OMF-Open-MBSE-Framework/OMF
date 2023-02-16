@@ -48,7 +48,7 @@ public class ExampleFeature1 extends AFeature {
     }
 
     @Override
-    protected List<IUIAction> initDelayedFeatureActions() {
+    protected List<IUIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 
@@ -60,7 +60,7 @@ public class ExampleFeature1 extends AFeature {
     }
 
     @Override
-    protected List<IFeatureRuleEngine> initDelayedLiveActions() {
+    protected List<IFeatureRuleEngine> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 
@@ -98,7 +98,7 @@ public class ExampleFeature1 extends AFeature {
     }
 
     @Override
-    protected List<IOption> initDelayedOptions() {
+    protected List<IOption> initProjectOnlyOptions() {
         OptionImpl testEnvOption = new OptionImpl(
                 new ElementProperty("Test profile property", Profile.getInstance().getSysml().block().getStereotype()),
                 "FEATURE GROUP 1",
