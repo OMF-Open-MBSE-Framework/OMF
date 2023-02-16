@@ -46,7 +46,7 @@ public class FeatureRegisterer {
         }
 
         feature.initFeature(plugin);
-        feature.setRegistered(true);
+        feature.setIsRegistered(true);
 
         registeredFeatures.add(feature);
 
@@ -64,10 +64,14 @@ public class FeatureRegisterer {
         features.forEach(this::registerFeature);
     }
 
-    public void registerDelayedItemsOfFeatures(List<MDFeature> features) {
-        features.forEach(this::registerDelayedFeatureItems);
-    }
-
+    /**
+     * Registers feature items that have been flagged as "delayed" until project is opened. This method is then called
+     * every time the project opens.
+     * On the first registration, the items are also initialised. We wait until the project to be opened to initialise
+     * the items in order to avoid instances where the items need the project to be opened to function, for example if
+     * you need to set a default value from the Sysml profile in an Option
+     * @param feature
+     */
     private void registerDelayedFeatureItems(MDFeature feature) {
         feature.initDelayedFeatureItems();
 
@@ -81,6 +85,10 @@ public class FeatureRegisterer {
         }
     }
 
+    public void registerDelayedItemsOfFeatures(List<MDFeature> features) {
+        features.forEach(this::registerDelayedFeatureItems);
+    }
+
     public void unregisterFeature(MDFeature feature){
         if (!isAlreadyRegistered(feature)) {
             OMFErrorHandler.handleException(new FeatureException("Trying to unregister feature " + feature.getName() +
@@ -89,7 +97,7 @@ public class FeatureRegisterer {
 
         registeredFeatures.remove(feature);
 
-        feature.setRegistered(false);
+        feature.setIsRegistered(false);
 
         try {
             uiActionRegisterer.unregisterFeatureItems(feature.getUIActions());
@@ -108,6 +116,10 @@ public class FeatureRegisterer {
         features.forEach(this::unregisterFeature);
     }
 
+    public void unregisterDelayedItemsOfFeatures(List<MDFeature> features){
+        features.forEach(this::unregisterDelayedItemsOfFeature);
+    }
+
     public void unregisterDelayedItemsOfFeature(MDFeature feature){
         try {
             uiActionRegisterer.unregisterFeatureItems(feature.getDelayedUIActions());
@@ -117,10 +129,6 @@ public class FeatureRegisterer {
             OMFErrorHandler.handleException(new FeatureException("Error while unregistering delayed items for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
-    }
-
-    public void unregisterDelayedItemsOfFeatures(List<MDFeature> features){
-        features.forEach(this::unregisterDelayedItemsOfFeature);
     }
 
     private boolean isAlreadyRegistered(MDFeature mdFeature) {

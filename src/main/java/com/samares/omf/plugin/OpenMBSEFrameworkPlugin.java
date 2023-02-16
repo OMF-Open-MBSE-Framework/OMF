@@ -89,7 +89,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                         .findFirst()
                         .ifPresent(opt -> {
                             if ((boolean) opt.getValue())
-                                getFeatureRegister().registerFeatures(OpenMBSEFrameworkPlugin.this.initFeatures());
+                                getFeatureRegister().registerFeatures(OpenMBSEFrameworkPlugin.this.getFeatures());
                             else
                                 getFeatureRegister().unregisterFeatures(getFeatureRegister().getRegisteredFeatures());
 

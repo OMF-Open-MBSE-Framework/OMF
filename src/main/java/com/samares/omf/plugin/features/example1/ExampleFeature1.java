@@ -8,6 +8,7 @@
 package com.samares.omf.plugin.features.example1;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
+import com.nomagic.magicdraw.properties.ElementProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
@@ -21,6 +22,7 @@ import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.Featur
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares.omf.core.plugin.APlugin;
+import com.samares.omf.core.utils.profile.Profile;
 import com.samares.omf.plugin.features.example1.actions.ExampleMDAction1;
 import com.samares.omf.plugin.features.example1.actions.RemoveProjectOptions;
 import com.samares.omf.plugin.features.example1.rules.creation.BlockCreation;
@@ -77,21 +79,6 @@ public class ExampleFeature1 extends AFeature {
                 OptionKind.Environment
         );
 
-        OptionImpl testProjectOption = new OptionImpl(
-                new StringProperty("OMF STRING PROPERTY 1", "DEFAULT VALUE"),
-                "PROJECT FEATURE GROUP 1",
-                OMFPluginEnvOptionsGroup.getInstance(),
-                OptionKind.Project
-        );
-
-        OptionImpl testProjectOption2 = new OptionImpl(
-                new StringProperty("OMF STRING PROPERTY 2", "DEFAULT VALUE"),
-                "PROJECT FEATURE GROUP 2",
-                OMFPluginEnvOptionsGroup.getInstance(),
-                OptionKind.Project
-        );
-
-
         testEnvOption.addListenerToRegister(new AOptionListener() {
             @Override
             public void updateByEnvironmentProperties(List<Property> list) {
@@ -106,15 +93,39 @@ public class ExampleFeature1 extends AFeature {
 
         return Arrays.asList(
                 testEnvOption,
-                testProjectOption,
-                testProjectOption2,
                 testNewCatEnvOption
         );
     }
 
     @Override
     protected List<IOption> initDelayedOptions() {
-        return Collections.emptyList();
+        OptionImpl testEnvOption = new OptionImpl(
+                new ElementProperty("Test profile property", Profile.getInstance().getSysml().block().getStereotype()),
+                "FEATURE GROUP 1",
+                OMFPluginEnvOptionsGroup.getInstance(),
+                OptionKind.Environment
+        );
+
+        OptionImpl testProjectOption2 = new OptionImpl(
+                new StringProperty("OMF STRING PROPERTY 2", "DEFAULT VALUE"),
+                "PROJECT FEATURE GROUP 2",
+                OMFPluginEnvOptionsGroup.getInstance(),
+                OptionKind.Project
+        );
+
+        OptionImpl testProjectOption = new OptionImpl(
+                new StringProperty("OMF STRING PROPERTY 1", "DEFAULT VALUE"),
+                "PROJECT FEATURE GROUP 1",
+                OMFPluginEnvOptionsGroup.getInstance(),
+                OptionKind.Project
+        );
+
+
+        return Arrays.asList(
+                testEnvOption,
+                testProjectOption,
+                testProjectOption2
+        );
     }
 
 

@@ -140,9 +140,9 @@ public abstract class APlugin extends Plugin {
     }
 
     private void configureFeatures() {
-        List<MDFeature> pluginFeatures = this.initFeatures();
-        features.addAll(pluginFeatures);
+        features.addAll(this.initFeatures());
     }
+
 
 
     /**

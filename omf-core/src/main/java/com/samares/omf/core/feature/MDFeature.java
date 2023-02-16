@@ -17,7 +17,7 @@ import java.util.List;
 public interface MDFeature {
     String getName();
 
-    void setRegistered(boolean isRegistered);
+    void setIsRegistered(boolean isRegistered);
     boolean isRegistered();
     void onRegistering();
     void onUnregistering();

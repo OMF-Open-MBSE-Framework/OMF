@@ -7,15 +7,12 @@
 
 package com.samares.omf.core.feature;
 
-import com.nomagic.ci.persistence.local.a.I;
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.plugin.APlugin;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public abstract class AFeature implements MDFeature{
 
@@ -25,12 +22,14 @@ public abstract class AFeature implements MDFeature{
 
     protected String name;
     protected boolean isRegistered;
+
+    // Registrable items
     private List<IUIAction> mdActions;
     private List<IFeatureRuleEngine> liveActions;
     private List<IOption> options;
 
+    // Delayed registrable items
     private List<IOption> delayedOptions;
-
     private List<IUIAction> delayedMdActions;
     private List<IFeatureRuleEngine> delayedLiveActions;
 
@@ -142,12 +141,7 @@ public abstract class AFeature implements MDFeature{
         return name;
     }
 
-    @Override
-    public List<IUIAction> getUIActions() {
-        return mdActions;
-    }
-
-    public final void setRegistered(boolean isRegistered) {
+    public final void setIsRegistered(boolean isRegistered) {
         this.isRegistered = isRegistered;
         // Call corresponding lifecycle hook (code to be executed on registering/unregistering)
         if (isRegistered) {
@@ -160,29 +154,31 @@ public abstract class AFeature implements MDFeature{
         return isRegistered;
     }
 
-    @Override
-    public List<IFeatureRuleEngine> getRuleEngines() {
-        return liveActions;
+    public APlugin getPlugin() {
+        return plugin;
     }
 
-    @Override
     public List<IOption> getOptions() {
         return options;
     }
 
-    public APlugin getPlugin() {
-        return plugin;
+    public List<IFeatureRuleEngine> getRuleEngines() {
+        return liveActions;
+    }
+
+    public List<IUIAction> getUIActions() {
+        return mdActions;
     }
 
     public List<IOption> getDelayedOptions() {
         return delayedOptions;
     }
 
-    public List<IUIAction> getDelayedUIActions() {
-        return delayedMdActions;
-    }
-
     public List<IFeatureRuleEngine> getDelayedRuleEngines() {
         return delayedLiveActions;
+    }
+
+    public List<IUIAction> getDelayedUIActions() {
+        return delayedMdActions;
     }
 }

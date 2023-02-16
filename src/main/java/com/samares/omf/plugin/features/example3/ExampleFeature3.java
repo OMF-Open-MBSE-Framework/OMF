@@ -44,7 +44,7 @@ public class ExampleFeature3 extends AFeature {
 
     @Override
     public List<IFeatureRuleEngine> initLiveActions() {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ExampleFeature3 extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     @Override

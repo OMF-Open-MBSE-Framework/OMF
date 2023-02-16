@@ -35,7 +35,6 @@ public class FeatureRuleEngine extends RuleEngine implements IFeatureRuleEngine 
     public void initRegisterableItem(MDFeature feature) {
         this.feature = feature;
         setListenerManager(feature.getPlugin().initListenerManager());
-        getRules().forEach(rule -> rule.setRuleEngine(this));
     }
 
     /*
