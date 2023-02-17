@@ -52,66 +52,66 @@ public abstract class APlugin extends Plugin {
     private boolean isInitialized = false;
     private IListenerManager listenerManager;
     private ProjectListener projectListener;
+    private OMFBrowserConfigurator browserConfigurator;
+    private OMFDiagramConfigurator diagramConfigurator;
+    private OMFMainMenuConfigurator menuConfigurator;
 
-    public APlugin(){
+    protected APlugin(){
         features = new ArrayList<>();
     }
 
     //------------------------ ELEMENTS TO REGISTER AT INIT -------------------------------------------//
-
     /**
      * Define all the features registered by default at Plugin initialization.
      * NOTE: Features can be registered later, by code or the project is opened (use instead getOnProjectOpeningFeatureToRegister())
      * @return List of feature to register at plugin initialization
      */
-    public abstract List<MDFeature> initFeatures();
+    protected abstract List<MDFeature> initFeatures();
 
     /**
      * Define the BrowserConfigurator to register at plugin initialization.
      * This Configurator will be used for FeatureRegistering
      * @return BrowserConfigurator to register
      */
-    public abstract OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator();
+    protected abstract OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator();
+
     /**
      * Define the DiagramConfigurator to register at plugin initialization.
      * This Configurator will be used for FeatureRegistering
      * @return DiagramConfigurator to register
      */
-    public abstract OMFDiagramConfigurator initFeatureRegisteringDiagramConfigurator();
+    protected abstract OMFDiagramConfigurator initFeatureRegisteringDiagramConfigurator();
     /**
      * Define the MainMenuConfigurator to register at plugin initialization.
      * This Configurator will be used for FeatureRegistering
      * @return MainMenuConfigurator to register
      */
     public abstract OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator();
-
     /**
      * Define the EnvironmentOptionsGroup to register at plugin Initialization
      * This Configurator will be used for FeatureRegistering
      * @return EnvironmentOptionsGroup to register
      */
-    public abstract OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup();
+    protected abstract OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup();
+
     /**
      * Define the ProjectOptionsGroup to register at plugin Initialization
      * This Configurator will be used for FeatureRegistering
      * @return ProjectOptionsGroup to register
      */
-    public abstract FeatureProjectOptionsConfigurator initFeatureRegisteringProjectOptionGroup();
+    protected abstract FeatureProjectOptionsConfigurator initFeatureRegisteringProjectOptionGroup();
     /**
      * Define the ProjectListener to register at plugin Initialization
      * This Listener will be used for FeatureRegistering at projectOpening and registration of ProjectOptions
      * @return ProjectOptionsGroup to register
      */
-    public abstract ProjectListener initProjectListener();
-
+    protected abstract ProjectListener initProjectListener();
     /**
      * Define the ListenerManager to register at plugin Initialization
      * This ListenerManager will be used for FeatureRegistering with liveActions and all registration of listeners
      * @return ProjectOptionsGroup to register
      */
-    public abstract IListenerManager initListenerManager();
-
-
+    protected abstract IListenerManager initListenerManager();
 
 
     //------------------------ INITIALIZATION PROCESS-------------------------------------------//
@@ -134,7 +134,6 @@ public abstract class APlugin extends Plugin {
 
         isInitialized = true;
     }
-
     private void configureListenerManager() {
         this.listenerManager = initListenerManager();
     }
@@ -159,26 +158,25 @@ public abstract class APlugin extends Plugin {
             Application.getInstance().getProjectsManager().addProjectListener(projectListener);
         else
             ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
-
     }
 
     protected void configureActions() {
         ActionsConfiguratorsManager actionManager = ActionsConfiguratorsManager.getInstance();
 
-        OMFBrowserConfigurator browserConfigurator = initFeatureRegisteringBrowserConfigurator();
+        browserConfigurator = initFeatureRegisteringBrowserConfigurator();
         if (browserConfigurator == null)
             ColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
         else
             actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
 
-        OMFDiagramConfigurator diagramConfigurator = initFeatureRegisteringDiagramConfigurator();
+        diagramConfigurator = initFeatureRegisteringDiagramConfigurator();
         if (diagramConfigurator == null)
             ColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
         else {
             actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM,diagramConfigurator);
         }
 
-        OMFMainMenuConfigurator menuConfigurator = initFeatureRegisteringMainMenuConfigurator();
+        menuConfigurator = initFeatureRegisteringMainMenuConfigurator();
         if (menuConfigurator == null)
             ColorPrinter.warn("[OMF] NO MAIN MENU CONFIGURATOR REGISTERED");
         else
@@ -223,22 +221,22 @@ public abstract class APlugin extends Plugin {
         ProjectOptions.addConfigurator(projectOptionConfigurator);
     }
 
-    //------------------------------------ GETTER SETTER ----------------------------------------------------//
 
+    //------------------------------------ GETTER SETTER ----------------------------------------------------//
     @Override
     public boolean close() {
         return true;
     }
+
     @Override
     public boolean isSupported() {
         return true;
     }
-
     public abstract List<AOptionListener> initEnvironmentOptionsListener();
+
     public List<MDFeature> getFeatures() {
         return features;
     }
-
     public FeatureRegisterer getFeatureRegister() {
         return featureRegisterer;
     }
@@ -247,4 +245,39 @@ public abstract class APlugin extends Plugin {
         return this.isInitialized;
     }
 
+    public List<AOptionListener> getEnvironmentOptionsListener() {
+        return environmentOptionsListener;
+    }
+
+    public FeatureProjectOptionsConfigurator getProjectOptionConfigurator() {
+        return projectOptionConfigurator;
+    }
+
+    public OMFEnvironmentOptionsGroup getEnvironmentOptionConfigurator() {
+        return environmentOptionConfigurator;
+    }
+
+    public FeatureRegisterer getFeatureRegisterer() {
+        return featureRegisterer;
+    }
+
+    public IListenerManager getListenerManager() {
+        return listenerManager;
+    }
+
+    public ProjectListener getProjectListener() {
+        return projectListener;
+    }
+
+    public OMFBrowserConfigurator getBrowserConfigurator() {
+        return browserConfigurator;
+    }
+
+    public OMFDiagramConfigurator getDiagramConfigurator() {
+        return diagramConfigurator;
+    }
+
+    public OMFMainMenuConfigurator getMenuConfigurator() {
+        return menuConfigurator;
+    }
 }

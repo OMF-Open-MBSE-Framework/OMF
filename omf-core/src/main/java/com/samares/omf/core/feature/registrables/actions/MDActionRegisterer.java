@@ -9,6 +9,7 @@ package com.samares.omf.core.feature.registrables.actions;
 
 import com.nomagic.magicdraw.actions.ActionsProvider;
 import com.samares.omf.core.feature.FeatureRegisterer;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares.omf.core.feature.FeatureItemRegisterer;
@@ -28,13 +29,13 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
     public MDActionRegisterer(FeatureRegisterer featureRegisterer) {
         super(featureRegisterer);
         this.browserConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().initFeatureRegisteringBrowserConfigurator(),
+                featureRegisterer.getPlugin().getBrowserConfigurator(),
                 "NO BROWSER CONFIGURATOR REGISTERED");
         this.diagramConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().initFeatureRegisteringDiagramConfigurator(),
+                featureRegisterer.getPlugin().getDiagramConfigurator(),
                 "NO DIAGRAM CONFIGURATOR REGISTERED");
         this.menuConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().initFeatureRegisteringMainMenuConfigurator(),
+                featureRegisterer.getPlugin().getMenuConfigurator(),
                 "NO MENU CONFIGURATOR REGISTERED");
     }
 
@@ -54,14 +55,14 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
             resetConfigurators();
             actions.forEach(this::unregisterFeatureItem);
             refreshConfigurators();
-        }catch (Exception e){
+        } catch (Exception e){
            throw new FeatureException(
                     "[Feature Registerer] Unable to unregister MDActions",
                     e, GenericException.ECriticality.CRITICAL);
         }
     }
 
-    private void resetConfigurators() {
+    private void  resetConfigurators() {
         if(menuConfigurator != null)
             menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
     }
@@ -79,23 +80,23 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
     
     public void registerFeatureItem(IUIAction action) {
         if(browserConfigurator != null)
-            browserConfigurator.addNewAction(action);
+            browserConfigurator.addNewAction((AUIAction) action);
 
         if(diagramConfigurator != null)
-            diagramConfigurator.addNewAction(action);
+            diagramConfigurator.addNewAction((AUIAction) action);
 
         if(menuConfigurator != null)
-            menuConfigurator.addNewAction(action);
+            menuConfigurator.addNewAction((AUIAction) action);
     }
 
     public void unregisterFeatureItem(IUIAction action) {
         if(browserConfigurator != null)
-            browserConfigurator.removeAction(action);
+            browserConfigurator.removeAction((AUIAction) action);
 
         if(diagramConfigurator != null)
-            diagramConfigurator.removeAction(action);
+            diagramConfigurator.removeAction((AUIAction) action);
 
         if(menuConfigurator != null)
-            menuConfigurator.removeAction(action);
+            menuConfigurator.removeAction((AUIAction) action);
     }
 }

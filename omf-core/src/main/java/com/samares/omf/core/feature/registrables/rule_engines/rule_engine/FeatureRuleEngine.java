@@ -34,7 +34,7 @@ public class FeatureRuleEngine extends RuleEngine implements IFeatureRuleEngine 
     @Override
     public void initRegisterableItem(MDFeature feature) {
         this.feature = feature;
-        setListenerManager(feature.getPlugin().initListenerManager());
+        setListenerManager(feature.getPlugin().getListenerManager());
     }
 
     /*

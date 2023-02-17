@@ -21,7 +21,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Register feature B", category = "Feature")
+@MDAction(actionName = "Register feature B", category = "OMF TEST")
 public class ExampleMDAction1 extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

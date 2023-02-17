@@ -31,7 +31,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
 
     public RuleEngineRegisterer(FeatureRegisterer featureRegisterer) {
         super(featureRegisterer);
-        this.listenerManager = featureRegisterer.getPlugin().initListenerManager();
+        this.listenerManager = featureRegisterer.getPlugin().getListenerManager();
     }
 
     /**

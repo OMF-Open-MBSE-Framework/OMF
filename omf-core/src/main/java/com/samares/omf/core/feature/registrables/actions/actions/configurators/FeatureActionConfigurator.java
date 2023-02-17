@@ -14,24 +14,25 @@ import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
 import com.nomagic.magicdraw.actions.DiagramContextAMConfigurator;
 import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
-import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
+import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public abstract class FeatureActionConfigurator {
+public class FeatureActionConfigurator {
 
-    List<IUIAction> genericActions = new ArrayList<>();
+    List<AUIAction> genericActions = new ArrayList<>();
 
 
     protected void configureFeatureActions(ActionsManager actionsManager) {
-        Predicate<? super IUIAction> check = null;
+        Predicate<? super AUIAction> check = null;
 
         resetMDActions(actionsManager);
-        if(this instanceof BrowserContextAMConfigurator) {
-            check = IUIAction::checkBrowserAvailability;
+        if(BrowserContextAMConfigurator.class.isInstance(this)) {
+            check = AUIAction::checkBrowserAvailability;
             genericActions.stream()
                     .filter(check)
                     .forEach(action -> this.registerBrowserAction(actionsManager, findOrCreateCategory(actionsManager, action), action));
@@ -39,8 +40,8 @@ public abstract class FeatureActionConfigurator {
         }
 
 
-        if(this instanceof DiagramContextAMConfigurator) {
-            check = IUIAction::checkDiagramAvailability;
+        if(DiagramContextAMConfigurator.class.isInstance(this)) {
+            check = AUIAction::checkDiagramAvailability;
             genericActions.stream()
                     .filter(check)
                     .forEach(action -> this.registerDiagramAction(actionsManager, findOrCreateCategory(actionsManager, action), action));
@@ -48,9 +49,9 @@ public abstract class FeatureActionConfigurator {
 
 
         // registering MenuActions
-        if(this instanceof OMFMainMenuConfigurator) {
+        if(OMFMainMenuConfigurator.class.isInstance(this)) {
             genericActions.stream()
-                    .filter(IUIAction::isMenuAction)
+                    .filter(AUIAction::isMenuAction)
                     .forEach(action -> this.registerMenuAction(actionsManager, findOrCreateCategory(actionsManager, action), action, action.checkMenuAvailability()));
 //            triggerListener(ConfiguratorKind.MENU);
         }
@@ -58,17 +59,16 @@ public abstract class FeatureActionConfigurator {
 
 
     public void resetMDActions(ActionsManager actionsManager) {
-        List<ActionsCategory> registeredCategories = actionsManager.getCategories();
-
-        genericActions.stream()
-                        .forEach(action -> findCategory(actionsManager, action).ifPresent(category ->
-                            action.getAllActions().forEach(category::removeAction)));
-
+        genericActions.forEach(action ->
+            findCategory(actionsManager, action).ifPresent(category ->
+                action.getAllActions().forEach(category::removeAction)
+            )
+        );
     }
 
 
-    private void registerMenuAction(ActionsManager actionsManager, MDActionsCategory category, IUIAction menuAction,
-                                    boolean test) {
+    private void registerMenuAction(ActionsManager actionsManager, MDActionsCategory category, AUIAction menuAction,
+                                    boolean isEnabled) {
         if(!actionsManager.getCategories().contains(category) ) {
             actionsManager.addCategory(category);
             category.setNested(true);
@@ -78,7 +78,7 @@ public abstract class FeatureActionConfigurator {
         if(!category.getActions().contains(menuAction.getMenuAction()))
             category.addAction(menuAction.getMenuAction());
 
-        action.setEnabled(test);
+        action.setEnabled(isEnabled);
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class FeatureActionConfigurator {
      * @param category
      * @param action
      */
-    protected void registerBrowserAction(ActionsManager actionsManager, MDActionsCategory category, IUIAction action) {
+    protected void registerBrowserAction(ActionsManager actionsManager, MDActionsCategory category, AUIAction action) {
         if(!actionsManager.getCategories().contains(category) ) {
             actionsManager.addCategory(category);
             category.setNested(true);
@@ -103,7 +103,7 @@ public abstract class FeatureActionConfigurator {
      * @param category
      * @param action
      */
-    protected void registerDiagramAction(ActionsManager actionsManager, MDActionsCategory category, IUIAction action) {
+    protected void registerDiagramAction(ActionsManager actionsManager, MDActionsCategory category, AUIAction action) {
         if(!actionsManager.getCategories().contains(category) ) {
             actionsManager.addCategory(category);
             category.setNested(true);
@@ -113,10 +113,10 @@ public abstract class FeatureActionConfigurator {
             category.addAction(action.getDiagramAction());
     }
 
-    protected MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, IUIAction IUIAction) {
-        String categoryName = IUIAction.getCategory();
+    protected MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, AUIAction AUIAction) {
+        String categoryName = AUIAction.getCategory();
 
-        Optional<MDActionsCategory> optCategory = findCategory(actionsManager, IUIAction);
+        Optional<MDActionsCategory> optCategory = findCategory(actionsManager, AUIAction);
         if(optCategory.isPresent())
             return optCategory.get();
 
@@ -126,38 +126,41 @@ public abstract class FeatureActionConfigurator {
 //                super.updateState();
                 //refresh MenuActionState
                 getActions().stream()
-                        .filter(IUIAction.class::isInstance)
-                        .map(IUIAction.class::cast)
+                        .filter(AUIAction.class::isInstance)
+                        .map(AUIAction.class::cast)
                         .forEach( action -> action.getMenuAction().setEnabled(action.checkMenuAvailability()));
                 this.setEnabled(getActions().stream().anyMatch(NMAction::isEnabled));
             }
         };
     }
 
-    private Optional<MDActionsCategory> findCategory(ActionsManager actionsManager, IUIAction IUIAction) {
-        String categoryName = IUIAction.getCategory();
+    private Optional<MDActionsCategory> findCategory(ActionsManager actionsManager, AUIAction AUIAction) {
+        String categoryName = AUIAction.getCategory();
         return actionsManager.getCategories().stream()
                 .filter(MDActionsCategory.class::isInstance)
                 .map(MDActionsCategory.class::cast)
                 .filter(cat -> cat.getName().equals(categoryName)).findAny();
     }
 
-    public void addNewAction(IUIAction action){
+
+    public void addNewAction(AUIAction action){
         genericActions.add(action);
     }
-    public void addNewActions(List<IUIAction> actions){
-        genericActions.addAll(actions);
-    }
-    public void removeActions(List<IUIAction> actions){
-        genericActions.removeAll(actions);
-    }
-    public void removeAction(IUIAction action){
+    public void removeAction(AUIAction action){
         genericActions.remove(action);
     }
+    public void addNewActions(List<AUIAction> actions){
+        genericActions.addAll(actions);
+    }
+    public void removeActions(List<AUIAction> actions){
+        genericActions.removeAll(actions);
+    }
+
 
     public enum ConfiguratorKind{
         BROWSER,
         DIAGRAM,
         MENU
+
     }
 }
