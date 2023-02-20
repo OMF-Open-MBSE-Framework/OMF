@@ -7,8 +7,9 @@
 
 package com.samares.omf.plugin.test.utils;
 
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.OMFException;
 import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
-import com.samares.omf.plugin.features.stereotypes.StereotypesRuleUpdater;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 public class StereotypesTestUtils {
@@ -28,5 +29,17 @@ public class StereotypesTestUtils {
                 OMFPluginEnvOptionsGroup.getTypeConfigFilePathDefaultValue());
         OMFPluginEnvOptionsGroup.getInstance().setOrganizerConfigFilePath(
                 OMFPluginEnvOptionsGroup.getOrganizerConfigFilePathDefaultValue());
+    }
+
+    /**
+     * @return the instance of the stereotypes feature currently loaded in the plugin
+     */
+    public static StereotypesFeature getStereotypesFeature() {
+        try {
+            return (StereotypesFeature) TestUtils.getOpenMBSEFrameworkPlugin().getFeatureByName(StereotypesFeature.FEATURE_NAME);
+        } catch (OMFException e) {
+            OMFErrorHandler.handleException(e, true);
+        }
+        return null;
     }
 }

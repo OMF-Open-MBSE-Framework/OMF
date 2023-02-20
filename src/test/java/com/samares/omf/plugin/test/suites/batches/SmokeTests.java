@@ -8,10 +8,9 @@
 package com.samares.omf.plugin.test.suites.batches;
 
 
-import com.nomagic.magicdraw.plugins.PluginUtils;
 import com.nomagic.magicdraw.tests.MagicDrawTestCase;
 import com.samares.omf.plugin.OpenMBSEFrameworkPlugin;
-import org.junit.Assume;
+import com.samares.omf.test.utils.TestHelper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,8 +19,8 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 public class SmokeTests extends MagicDrawTestCase {
-
     OpenMBSEFrameworkPlugin plugin;
+
     /**
      * Rule to calculate/show time for each testcase
      */
@@ -45,16 +44,12 @@ public class SmokeTests extends MagicDrawTestCase {
     public void setUpTest() throws Exception {
         setSkipMemoryTest(true);
         super.setUpTest();
-
-        PluginUtils.getPlugins().stream()
-                .filter(s -> s instanceof OpenMBSEFrameworkPlugin).findFirst()
-                .ifPresent(p -> plugin = (OpenMBSEFrameworkPlugin) p);
+        plugin = (OpenMBSEFrameworkPlugin) TestHelper.findTestedPluginInstance(OpenMBSEFrameworkPlugin.class);
     }
-
 
     @Test
     public void checkIfPluginIsInstalled() {
-        assertNotNull("Plugin is null", plugin);
+        assertNotNull("Can't find test plugin", plugin);
     }
 }
 

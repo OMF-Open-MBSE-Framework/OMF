@@ -13,6 +13,10 @@ import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
+import com.samares.omf.core.errors.OMFErrorHandler;
+import com.samares.omf.core.errors.exceptions.GenericException;
+import com.samares.omf.core.errors.exceptions.OMFException;
+import com.samares.omf.core.feature.AFeature;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares.omf.core.feature.FeatureRegisterer;
 import com.samares.omf.core.feature.MDFeature;
@@ -28,7 +32,9 @@ import com.samares.omf.core.utils.ColorPrinter;
 import com.samares.omf.core.utils.OMFConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +53,7 @@ public abstract class APlugin extends Plugin {
     private FeatureProjectOptionsConfigurator projectOptionConfigurator;
     private OMFEnvironmentOptionsGroup environmentOptionConfigurator;
 
-    private List<MDFeature> features;
+    private final Map<String, MDFeature> features = new HashMap<>();
     private FeatureRegisterer featureRegisterer;
     private boolean isInitialized = false;
     private IListenerManager listenerManager;
@@ -56,8 +62,7 @@ public abstract class APlugin extends Plugin {
     private OMFDiagramConfigurator diagramConfigurator;
     private OMFMainMenuConfigurator menuConfigurator;
 
-    protected APlugin(){
-        features = new ArrayList<>();
+    public APlugin(){
     }
 
     //------------------------ ELEMENTS TO REGISTER AT INIT -------------------------------------------//
@@ -139,10 +144,16 @@ public abstract class APlugin extends Plugin {
     }
 
     private void configureFeatures() {
-        features.addAll(this.initFeatures());
+        List<MDFeature> featureInstances = this.initFeatures();
+        featureInstances.forEach(f -> {
+            if (features.containsKey(f.getName())) {
+                OMFErrorHandler.handleException(new OMFException("Can't init feature " + f.getName() + " as a feature with the same name has already" +
+                        "been instantiated in the plugin", GenericException.ECriticality.CRITICAL));
+            } else {
+                features.put(f.getName(), f);
+            }
+        });
     }
-
-
 
     /**
      * CONFIGURE DEVELOPMENT/TESTING OPTIONS:
@@ -187,7 +198,7 @@ public abstract class APlugin extends Plugin {
 
 
     protected void registerFeatures() {
-        features.forEach(featureRegisterer::registerFeature);
+        getFeatures().forEach(featureRegisterer::registerFeature);
     }
 
     protected void configureEnvironmentOptions() {
@@ -235,8 +246,17 @@ public abstract class APlugin extends Plugin {
     public abstract List<AOptionListener> initEnvironmentOptionsListener();
 
     public List<MDFeature> getFeatures() {
-        return features;
+        return new ArrayList<>(features.values());
     }
+
+    public MDFeature getFeatureByName(String name) throws OMFException {
+        if (features.containsKey(name)) {
+            return features.get(name);
+        }
+        throw new OMFException("Can't find feature instance with name " + name + " in plugin " +
+                featureRegisterer.getPlugin(), GenericException.ECriticality.CRITICAL);
+    }
+
     public FeatureRegisterer getFeatureRegister() {
         return featureRegisterer;
     }

@@ -11,8 +11,11 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.VisibilityKindEnum;
 import com.samares.omf.core.factory.SysMLFactory;
+import com.samares.omf.plugin.OpenMBSEFrameworkPlugin;
+import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares.omf.plugin.test.utils.StereotypesTestUtils;
+import com.samares.omf.plugin.test.utils.TestUtils;
 import com.samares.omf.test.templates.AModelComparatorTestCase;
 
 /**
@@ -40,6 +43,7 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
         OMFPluginEnvOptionsGroup.getInstance().setInstanceConfigFilePath(instanceConfigFilePath);
         OMFPluginEnvOptionsGroup.getInstance().setInstanceActivated(true);
 
+
         // Set type config csv file
         String typeConfigFilePath = configFolder + "/stereotypes_example_test/type_config.csv";
         OMFPluginEnvOptionsGroup.getInstance().setTypeConfigFilePath(typeConfigFilePath);
@@ -55,8 +59,7 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
     @Override
     public void testAction() {
         // Update stereotype rules (as if we clicked on the "Refresh stereotypes rules" button in cameo)
-        //TODO get feature
-        //feature.getRuleUpdater().updateAllRulesBasedOnConfigFiles();
+        StereotypesTestUtils.getStereotypesFeature().getRuleUpdater().updateAllRulesBasedOnConfigFiles();
 
         // Open IBD
         openDiagram("_2021x_2_1a330482_1675267228353_653606_61");

@@ -25,8 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class StereotypesFeature extends AFeature {
+    public static final String FEATURE_NAME = "Stereotypes";
     public StereotypesFeature() {
-        super( "Stereotypes");
+        super(FEATURE_NAME);
     }
     private final StereotypesRuleUpdater ruleUpdater = new StereotypesRuleUpdater();
 
