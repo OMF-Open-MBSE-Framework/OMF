@@ -18,7 +18,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.ui.actions.browser.debug.DebugCreateElement;
 import com.samares.omf.core.ui.actions.browser.debug.DebugOnOffOptionsBrowser;
 import com.samares.omf.core.builders.BetaFactory;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares.omf.core.errors.OMFErrorHandler;
 
 import java.lang.reflect.Method;
@@ -96,13 +96,13 @@ public class OMFBrowserMenuConfigurator extends FeatureActionConfigurator implem
     }
 
     private void addDebugOptionsAction(MDActionsCategory betaCategory) {
-        for (Method setter : OMFEnvironmentOptionsGroup.class.getDeclaredMethods()) {
+        for (Method setter : OMFPropertyOptionsGroup.class.getDeclaredMethods()) {
             if (setter.getName().startsWith("set")) {
-                Optional<Method> getter = Arrays.stream(OMFEnvironmentOptionsGroup.class.getDeclaredMethods())
+                Optional<Method> getter = Arrays.stream(OMFPropertyOptionsGroup.class.getDeclaredMethods())
                         .filter(method -> method.getName().startsWith("get" + setter.getName().replaceFirst("set", "")))
                         .findFirst();
                 if (getter.isPresent())
-                    betaCategory.addAction(new DebugOnOffOptionsBrowser(setter.getName(), OMFEnvironmentOptionsGroup.getInstance(), setter, getter.get()));
+                    betaCategory.addAction(new DebugOnOffOptionsBrowser(setter.getName(), OMFPropertyOptionsGroup.getInstance(), setter, getter.get()));
             }
         }
 

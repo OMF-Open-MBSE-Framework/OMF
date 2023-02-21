@@ -11,11 +11,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.VisibilityKindEnum;
 import com.samares.omf.core.factory.SysMLFactory;
-import com.samares.omf.plugin.OpenMBSEFrameworkPlugin;
-import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares.omf.plugin.test.utils.StereotypesTestUtils;
-import com.samares.omf.plugin.test.utils.TestUtils;
 import com.samares.omf.test.templates.AModelComparatorTestCase;
 
 /**
@@ -40,19 +37,19 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
 
         // Set instance config csv file
         String instanceConfigFilePath = configFolder + "/stereotypes_example_test/instance_config.csv";
-        OMFPluginEnvOptionsGroup.getInstance().setInstanceConfigFilePath(instanceConfigFilePath);
-        OMFPluginEnvOptionsGroup.getInstance().setInstanceActivated(true);
+        StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setInstanceConfigFilePath(instanceConfigFilePath);
+        StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setInstanceActivated(true);
 
 
         // Set type config csv file
         String typeConfigFilePath = configFolder + "/stereotypes_example_test/type_config.csv";
-        OMFPluginEnvOptionsGroup.getInstance().setTypeConfigFilePath(typeConfigFilePath);
-        OMFPluginEnvOptionsGroup.getInstance().setTypeActivated(false);
+        StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setTypeConfigFilePath(typeConfigFilePath);
+        StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setTypeActivated(false);
 
         // Set organizer config csv file
         String organizerConfigFilePath = configFolder + "/stereotypes_example_test/organizer_config.csv";
-        OMFPluginEnvOptionsGroup.getInstance().setOrganizerConfigFilePath(organizerConfigFilePath);
-        OMFPluginEnvOptionsGroup.getInstance().setOrganizerActivated(false);
+        StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setOrganizerConfigFilePath(organizerConfigFilePath);
+        StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setOrganizerActivated(false);
 
     }
 

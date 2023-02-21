@@ -16,7 +16,7 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.ui.actions.diagram.debug.DebugOnOffOptionsDiagram;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares.omf.core.errors.OMFErrorHandler;
 
 import javax.annotation.CheckForNull;
@@ -93,13 +93,13 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
     }
 
     private void addDebugOptionsAction(MDActionsCategory betaCategory) {
-        for (Method setter : OMFEnvironmentOptionsGroup.class.getDeclaredMethods()) {
+        for (Method setter : OMFPropertyOptionsGroup.class.getDeclaredMethods()) {
             if (setter.getName().startsWith("set")) {
-                Optional<Method> getter = Arrays.stream(OMFEnvironmentOptionsGroup.class.getDeclaredMethods())
+                Optional<Method> getter = Arrays.stream(OMFPropertyOptionsGroup.class.getDeclaredMethods())
                         .filter(method -> method.getName().startsWith("get" + setter.getName().replaceFirst("set", "")))
                         .findFirst();
                 if (getter.isPresent())
-                    betaCategory.addAction(new DebugOnOffOptionsDiagram(setter.getName(), OMFEnvironmentOptionsGroup.getInstance(), setter, getter.get()));
+                    betaCategory.addAction(new DebugOnOffOptionsDiagram(setter.getName(), OMFPropertyOptionsGroup.getInstance(), setter, getter.get()));
             }
         }
 

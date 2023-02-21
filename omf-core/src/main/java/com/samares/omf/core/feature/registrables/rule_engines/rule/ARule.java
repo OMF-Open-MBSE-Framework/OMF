@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares.omf.core.feature.registrables.rule_engines.rule;
 
+import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
 import java.beans.PropertyChangeEvent;
@@ -47,5 +48,9 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
 
     public void setRuleEngine(IRuleEngine ruleEngine) {
         this.ruleEngine = ruleEngine;
+    }
+
+    public MDFeature getFeature() {
+        return ruleEngine.getFeature();
     }
 }

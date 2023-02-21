@@ -13,7 +13,6 @@ import com.samares.omf.core.errors.exceptions.GenericException;
 import com.samares.omf.core.feature.FeatureItemRegisterer;
 import com.samares.omf.core.feature.FeatureRegisterer;
 import com.samares.omf.core.feature.errors.FeatureException;
-import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares.omf.core.listeners.IElementListener;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngine> {
+public class RuleEngineRegisterer extends FeatureItemRegisterer<IRuleEngine> {
     /**
      * Use the IListenerManager to get the different listeners (Analyse, Creation, Update, Delete, AfterAutomation).
      */
@@ -38,7 +37,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
      * Will allow
      * @param ruleEngines
      */
-    public void registerFeatureItems(List<IFeatureRuleEngine> ruleEngines) throws FeatureException {
+    public void registerFeatureItems(List<IRuleEngine> ruleEngines) throws FeatureException {
         try {
             ruleEngines.forEach(this::registerFeatureItem);
         }catch (Exception e){
@@ -48,7 +47,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
         }
     }
 
-    public void unregisterFeatureItems(List<IFeatureRuleEngine> ruleEngines) throws FeatureException {
+    public void unregisterFeatureItems(List<IRuleEngine> ruleEngines) throws FeatureException {
         try {
             ruleEngines.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
@@ -64,7 +63,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
      * @param ruleEngine: The RuleEngine to register
      */
     @Override
-    protected void registerFeatureItem(IFeatureRuleEngine ruleEngine) {
+    protected void registerFeatureItem(IRuleEngine ruleEngine) {
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
         HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
@@ -81,7 +80,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
      * @param ruleEngine: The RuleEngine to remove
      */
     @Override
-    protected void unregisterFeatureItem(IFeatureRuleEngine ruleEngine) {
+    protected void unregisterFeatureItem(IRuleEngine ruleEngine) {
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
         HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
@@ -95,7 +94,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
      * @param ruleEngine: The RuleEngine to register
      * @param featurePriority: will help to order the RuleEngine execution by its priority.
      */
-    private void addRuleEngine(IFeatureRuleEngine ruleEngine, int featurePriority){
+    private void addRuleEngine(IRuleEngine ruleEngine, int featurePriority){
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
         HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
@@ -113,7 +112,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IFeatureRuleEngi
      * @param ruleEngine: The RuleEngine to register
      * @param featurePriority: The new pr.
      */
-    private void moveRuleEngine(IFeatureRuleEngine ruleEngine, int featurePriority){
+    private void moveRuleEngine(IRuleEngine ruleEngine, int featurePriority){
         unregisterFeatureItem(ruleEngine);
         addRuleEngine(ruleEngine, featurePriority);
     }

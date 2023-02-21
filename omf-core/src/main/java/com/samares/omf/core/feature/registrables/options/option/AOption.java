@@ -17,7 +17,7 @@ import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.samares.omf.core.feature.MDFeature;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.core.utils.OMFUtils;
 
@@ -177,8 +177,8 @@ public abstract class AOption implements IOption {
         return category != null? category: createNewEnvOptionCategory(uriOptions, categoryName);
     }
 
-    private OMFEnvironmentOptionsGroup createNewEnvOptionCategory(String URI, String categoryName) {
-        OMFEnvironmentOptionsGroup envCategory = new OMFEnvironmentOptionsGroup(URI, categoryName);
+    private OMFPropertyOptionsGroup createNewEnvOptionCategory(String URI, String categoryName) {
+        OMFPropertyOptionsGroup envCategory = new OMFPropertyOptionsGroup(URI, categoryName);
         Application.getInstance().getEnvironmentOptions()
                         .addGroup(envCategory);
         return envCategory;

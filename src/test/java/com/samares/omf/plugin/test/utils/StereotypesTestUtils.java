@@ -9,7 +9,8 @@ package com.samares.omf.plugin.test.utils;
 
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.exceptions.OMFException;
-import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
+import com.samares.omf.features.stereotypes.StereotypesEnvOptionsHelper;
+import com.samares.omf.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 public class StereotypesTestUtils {
@@ -23,12 +24,12 @@ public class StereotypesTestUtils {
     }
 
     public static void resetStereotypesConfigFilePathEnvOptions() {
-        OMFPluginEnvOptionsGroup.getInstance().setInstanceConfigFilePath(
-                OMFPluginEnvOptionsGroup.getInstanceConfigFilePathDefaultValue());
-        OMFPluginEnvOptionsGroup.getInstance().setTypeConfigFilePath(
-                OMFPluginEnvOptionsGroup.getTypeConfigFilePathDefaultValue());
-        OMFPluginEnvOptionsGroup.getInstance().setOrganizerConfigFilePath(
-                OMFPluginEnvOptionsGroup.getOrganizerConfigFilePathDefaultValue());
+        getStereotypesFeature().getOptionsHelper().setInstanceConfigFilePath(
+                StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
+        getStereotypesFeature().getOptionsHelper().setTypeConfigFilePath(
+                StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
+        getStereotypesFeature().getOptionsHelper().setOrganizerConfigFilePath(
+                StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
     }
 
     /**

@@ -9,7 +9,7 @@ package com.samares.omf.core.feature;
 
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
-import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares.omf.core.plugin.APlugin;
 
 import java.util.List;
@@ -19,19 +19,20 @@ public abstract class AFeature implements MDFeature{
     protected boolean isRegistered;
     private boolean isFeatureInitialised = false;
     private boolean isProjectOnlyItemsInitialised = false;
+    private EnvOptionsHelper envOptionsHelper;
 
     protected APlugin plugin;
 
     // Registrable items
-    private List<IUIAction> mdActions;
-    private List<IFeatureRuleEngine> liveActions;
-    private List<IOption> options;
 
+    private List<IUIAction> mdActions;
+    private List<IRuleEngine> liveActions;
+    private List<IOption> options;
     // Delayed registrable items
+
     private List<IOption> projectOnlyOptions;
     private List<IUIAction> projectOnlyMdActions;
-    private List<IFeatureRuleEngine> projectOnlyLiveActions;
-
+    private List<IRuleEngine> projectOnlyLiveActions;
     protected AFeature(String name){
         this.name = name;
     }
@@ -58,6 +59,8 @@ public abstract class AFeature implements MDFeature{
 
         this.liveActions = initLiveActions();
         liveActions.forEach(this::initRegistrableItem);
+
+        this.envOptionsHelper = initEnvOptionsHelper();
 
         isFeatureInitialised = true;
     }
@@ -88,6 +91,12 @@ public abstract class AFeature implements MDFeature{
     }
 
     /**
+     * Instantiate the environment option helper to be automatically register with the feature
+     * @return the initialised environment options helper for the feature
+     */
+    protected abstract EnvOptionsHelper initEnvOptionsHelper();
+
+    /**
      * Define all the feature action there, it will be automatically registered with the feature.
      * @return list of MDAction to register
      */
@@ -101,11 +110,11 @@ public abstract class AFeature implements MDFeature{
 
     /**
      * Define all the feature live actions (RuleEngines) there, it will be automatically registered with the feature.
-     * @return list of IFeatureRuleEngine to register
+     * @return list of IRuleEngine to register
      */
-    protected abstract List<IFeatureRuleEngine> initLiveActions();
+    protected abstract List<IRuleEngine> initLiveActions();
 
-    protected abstract List<IFeatureRuleEngine> initProjectOnlyLiveActions();
+    protected abstract List<IRuleEngine> initProjectOnlyLiveActions();
 
     /**
      * Define all the feature options (Environment && Project) there, it will be automatically registered with the feature.
@@ -139,11 +148,11 @@ public abstract class AFeature implements MDFeature{
     /*
     Accessors
      */
+
     @Override
     public String getName() {
         return name;
     }
-
     public final void setIsRegistered(boolean isRegistered) {
         this.isRegistered = isRegistered;
         // Call corresponding lifecycle hook (code to be executed on registering/unregistering)
@@ -165,7 +174,7 @@ public abstract class AFeature implements MDFeature{
         return options;
     }
 
-    public List<IFeatureRuleEngine> getRuleEngines() {
+    public List<IRuleEngine> getRuleEngines() {
         return liveActions;
     }
 
@@ -177,11 +186,15 @@ public abstract class AFeature implements MDFeature{
         return projectOnlyOptions;
     }
 
-    public List<IFeatureRuleEngine> getProjectOnlyRuleEngines() {
+    public List<IRuleEngine> getProjectOnlyRuleEngines() {
         return projectOnlyLiveActions;
     }
 
     public List<IUIAction> getProjectOnlyUIActions() {
         return projectOnlyMdActions;
+    }
+
+    public EnvOptionsHelper getEnvOptionsHelper() {
+        return envOptionsHelper;
     }
 }

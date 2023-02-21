@@ -65,6 +65,7 @@ dependencies {
 
     pluginLibrary project('omf-core')
     pluginLibrary project('omf-test')
+    pluginLibrary project('omf-public-features')
 
     unitTests 'junit:junit:4.12'
     unitTests 'ant:ant-junit:1.6.5'
@@ -72,7 +73,7 @@ dependencies {
     unitTests project('omf-test')
     unitTests project('omf-core')
 
-    //zippedMDPlugin "com.nomagic.magicdraw:devtools:2021xR2@zip"
+    zippedMDPlugin "com.nomagic.magicdraw:devtools:2021x_Refresh2@zip"
 }
 
 // Samares gradle plugin configuration

@@ -17,7 +17,7 @@ import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.listeners.listeners.ProjectListener;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.test.BatchLauncher;
 import com.samares.omf.plugin.test.feature.FeatureCopyID;
@@ -81,7 +81,7 @@ public class TestPlugin extends APlugin {
     }
 
     @Override
-    public OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
+    public OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
         return null;
     }
 

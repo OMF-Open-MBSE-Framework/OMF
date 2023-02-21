@@ -7,13 +7,11 @@
 
 package com.samares.omf.plugin.test.feature;
 
-import com.jidesoft.plaf.basic.UIAction;
-import com.samares.omf.core.feature.registrables.actions.actions.AUIAction;
 import com.samares.omf.core.feature.AFeature;
+import com.samares.omf.core.feature.EnvOptionsHelper;
 import com.samares.omf.core.feature.registrables.actions.actions.IUIAction;
 import com.samares.omf.core.feature.registrables.options.option.IOption;
-import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IFeatureRuleEngine;
-import com.samares.omf.core.plugin.APlugin;
+import com.samares.omf.core.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares.omf.plugin.test.feature.mdActions.CopyElementIDAction;
 import com.samares.omf.plugin.test.feature.mdActions.SaveToLocalMDA;
 
@@ -25,6 +23,11 @@ public class FeatureCopyID extends AFeature {
 
     public FeatureCopyID() {
         super("Copy Element ID");
+    }
+
+    @Override
+    protected EnvOptionsHelper initEnvOptionsHelper() {
+        return null;
     }
 
     @Override
@@ -40,12 +43,12 @@ public class FeatureCopyID extends AFeature {
     }
 
     @Override
-    public List<IFeatureRuleEngine> initLiveActions() {
+    public List<IRuleEngine> initLiveActions() {
         return Collections.EMPTY_LIST;
     }
 
     @Override
-    protected List<IFeatureRuleEngine> initProjectOnlyLiveActions() {
+    protected List<IRuleEngine> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 

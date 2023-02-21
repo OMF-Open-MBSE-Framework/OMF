@@ -16,17 +16,15 @@ import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.exceptions.GenericException;
 import com.samares.omf.core.errors.exceptions.OMFException;
-import com.samares.omf.core.feature.AFeature;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares.omf.core.feature.FeatureRegisterer;
 import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.registrables.options.option.AOptionListener;
-import com.samares.omf.core.feature.registrables.options.option.OptionKind;
 import com.samares.omf.core.listeners.IListenerManager;
 import com.samares.omf.core.listeners.listeners.ProjectListener;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares.omf.core.utils.ColorPrinter;
 import com.samares.omf.core.utils.OMFConstants;
@@ -35,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * TEMPLATE of plugin allowing easily feature registering and development.
@@ -51,7 +48,7 @@ public abstract class APlugin extends Plugin {
     private List<AOptionListener> environmentOptionsListener;
 
     private FeatureProjectOptionsConfigurator projectOptionConfigurator;
-    private OMFEnvironmentOptionsGroup environmentOptionConfigurator;
+    private OMFPropertyOptionsGroup environmentOptionsGroup;
 
     private final Map<String, MDFeature> features = new HashMap<>();
     private FeatureRegisterer featureRegisterer;
@@ -97,7 +94,7 @@ public abstract class APlugin extends Plugin {
      * This Configurator will be used for FeatureRegistering
      * @return EnvironmentOptionsGroup to register
      */
-    protected abstract OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup();
+    protected abstract OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup();
 
     /**
      * Define the ProjectOptionsGroup to register at plugin Initialization
@@ -206,14 +203,14 @@ public abstract class APlugin extends Plugin {
         EnvironmentOptions options = application.getEnvironmentOptions();
 
 
-        environmentOptionConfigurator = initFeatureRegisteringEnvironmentOptionGroup();
-        if(environmentOptionConfigurator == null){
+        environmentOptionsGroup = initFeatureRegisteringEnvironmentOptionGroup();
+        if(environmentOptionsGroup == null){
             ColorPrinter.warn("[OMF] NO ENVIRONMENT OPTIONS REGISTERED");
             return;
         }
 
 
-        options.addGroup(environmentOptionConfigurator);
+        options.addGroup(environmentOptionsGroup);
 
         environmentOptionsListener = initEnvironmentOptionsListener();
         if(!environmentOptionsListener.isEmpty())
@@ -273,8 +270,8 @@ public abstract class APlugin extends Plugin {
         return projectOptionConfigurator;
     }
 
-    public OMFEnvironmentOptionsGroup getEnvironmentOptionConfigurator() {
-        return environmentOptionConfigurator;
+    public OMFPropertyOptionsGroup getEnvironmentOptionsGroup() {
+        return environmentOptionsGroup;
     }
 
     public FeatureRegisterer getFeatureRegisterer() {

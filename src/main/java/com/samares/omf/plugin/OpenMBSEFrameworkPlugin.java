@@ -18,12 +18,12 @@ import com.samares.omf.core.listeners.ListenerManager;
 import com.samares.omf.core.listeners.listeners.ProjectListener;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
+import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares.omf.core.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares.omf.plugin.features.dev.Dev;
-import com.samares.omf.plugin.features.example1.ExampleFeature1;
-import com.samares.omf.plugin.features.example3.ExampleFeature3;
-import com.samares.omf.plugin.features.stereotypes.StereotypesFeature;
+import com.samares.omf.features.dev.Dev;
+import com.samares.omf.features.example1.ExampleFeature1;
+import com.samares.omf.features.example3.ExampleFeature3;
+import com.samares.omf.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 
 import java.beans.PropertyChangeEvent;
@@ -58,7 +58,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     }
 
     @Override
-    public OMFEnvironmentOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
+    public OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
         return new OMFPluginEnvOptionsGroup();
     }
 
@@ -85,7 +85,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                 list.stream()
                         .filter(BooleanProperty.class::isInstance)
                         .map(BooleanProperty.class::cast)
-                        .filter(opt -> opt.getName().equals(OMFEnvironmentOptionsGroup.ID_ACTIVATE_AUTOMATION))
+                        .filter(opt -> opt.getName().equals(OMFPropertyOptionsGroup.ID_ACTIVATE_AUTOMATION))
                         .findFirst()
                         .ifPresent(opt -> {
                             if ((boolean) opt.getValue())

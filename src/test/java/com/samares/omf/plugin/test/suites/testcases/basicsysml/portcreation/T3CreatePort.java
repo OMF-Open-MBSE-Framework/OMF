@@ -9,7 +9,6 @@ package com.samares.omf.plugin.test.suites.testcases.basicsysml.portcreation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.factory.SysMLFactory;
-import com.samares.omf.core.ui.environmentoptions.OMFEnvironmentOptionsGroup;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares.omf.test.templates.AModelComparatorTestCase;
 

@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares.omf.core.feature.registrables.rule_engines.rule_engine;
 
+import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.feature.registrables.rule_engines.rule.IRule;
 import com.samares.omf.core.listeners.IListenerManager;
 import com.samares.omf.core.listeners.ListenerManager;
@@ -17,15 +18,37 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public abstract class RuleEngine implements IRuleEngine {
+public class RuleEngine implements IRuleEngine {
     private IListenerManager listenerManager;
-
-    public IListenerManager getListenerManager() {
-        return listenerManager;
-    }
-
     private List<IRule> rules = new ArrayList<>();
     private String id = "";
+    private int priority = -1;
+    private String category = "";
+    private MDFeature feature;
+
+    public RuleEngine(RECategoryEnum category){
+        this(category, -1);
+    }
+
+    public RuleEngine(RECategoryEnum category, int priority){
+        this(category.toString(), priority);
+    }
+
+    public RuleEngine(String category){
+        this(category, -1);
+    }
+
+    public RuleEngine(String category, int priority){
+        this.category = category;
+        this.priority = priority;
+    }
+
+    @Override
+    public void initRegisterableItem(MDFeature feature) {
+        this.feature = feature;
+        setListenerManager(feature.getPlugin().getListenerManager());
+    }
+
     /**
      * Find the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -61,6 +84,7 @@ public abstract class RuleEngine implements IRuleEngine {
         return rulesToExecute;
 
     }
+
     /**
      * Finds and processes the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -75,7 +99,6 @@ public abstract class RuleEngine implements IRuleEngine {
         });
         return matchingRule.isPresent();
     }
-
     /**
      * Finds and processes the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -93,30 +116,46 @@ public abstract class RuleEngine implements IRuleEngine {
 
         return true;
     }
-    @Override
+
+    /*
+    Accessors
+     */
+
+    public int getPriority() {
+        return priority;
+    }
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public MDFeature getFeature() {
+        return feature;
+    }
+
     public boolean skipRules(PropertyChangeEvent evt) {
         return false;
     }
 
-    @Override
-    public void addRule(IRule rule){
+    public void addRule(IRule rule) {
         rule.setRuleEngine(this);
         this.rules.add(rule);
     }
-
-    @Override
     public void addAllRules(List<IRule> lRules){
         this.rules.addAll(lRules);
     }
-    @Override
     public void removeRule(IRule rule){
         this.rules.remove(rule);
     }
-    @Override
-    public void removeAllRules(List<IRule> lRules){
+    public void removeRules(List<IRule> lRules){
         this.rules.removeAll(lRules);
     }
-    @Override
     public void removeAllRules(){
         this.rules.clear();
     }
@@ -124,19 +163,21 @@ public abstract class RuleEngine implements IRuleEngine {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
+
     public List<IRule> getRules() {
         return rules;
     }
-
     public void setRules(List<IRule> rules) {
         this.rules = rules;
     }
 
     public void setListenerManager(IListenerManager listenerManager) {
         this.listenerManager = listenerManager;
+    }
+    public IListenerManager getListenerManager() {
+        return listenerManager;
     }
 }
