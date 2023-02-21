@@ -3,6 +3,7 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
+ *
  ******************************************************************************/
 
 package com.samares.omf.features.example2;

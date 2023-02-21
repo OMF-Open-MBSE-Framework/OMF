@@ -6,7 +6,6 @@
  ******************************************************************************/
 package com.samares.omf.plugin;
 
-
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares.omf.core.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
@@ -29,7 +28,6 @@ import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import java.beans.PropertyChangeEvent;
 import java.util.Collections;
 import java.util.List;
-
 
 public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override

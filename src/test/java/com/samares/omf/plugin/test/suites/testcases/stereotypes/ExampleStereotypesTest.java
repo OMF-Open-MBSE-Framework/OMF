@@ -11,12 +11,12 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.VisibilityKindEnum;
 import com.samares.omf.core.factory.SysMLFactory;
-import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares.omf.plugin.test.utils.StereotypesTestUtils;
+import com.samares.omf.plugin.test.utils.TestUtils;
 import com.samares.omf.test.templates.AModelComparatorTestCase;
 
 /**
- * This example test creates a property part under a block & typed by a block, and then checks ifinstance automations
+ * This example test creates a property part under a block & typed by a block, and then checks if instance automations
  * have automatically added the block stereotype to it as specified in the provided "instance_config.csv" file for this
  * test case
  */
@@ -31,7 +31,7 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
 
     @Override
     public void initEnvOptions() {
-        OMFPluginEnvOptionsGroup.getInstance().setAutomationsActivated(true);
+        TestUtils.getEnvOptions().setAutomationsActivated(true);
 
         String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
 
@@ -50,7 +50,6 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
         String organizerConfigFilePath = configFolder + "/stereotypes_example_test/organizer_config.csv";
         StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setOrganizerConfigFilePath(organizerConfigFilePath);
         StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setOrganizerActivated(false);
-
     }
 
     @Override

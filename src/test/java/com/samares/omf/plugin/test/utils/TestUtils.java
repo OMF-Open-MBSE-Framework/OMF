@@ -24,4 +24,8 @@ public class TestUtils {
         }
         return null;
     }
+
+    public static OMFPluginEnvOptionsGroup getEnvOptions() {
+        return (OMFPluginEnvOptionsGroup) getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup();
+    }
 }

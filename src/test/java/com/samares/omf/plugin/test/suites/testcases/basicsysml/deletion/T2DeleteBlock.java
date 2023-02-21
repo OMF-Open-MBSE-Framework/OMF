@@ -10,6 +10,7 @@ package com.samares.omf.plugin.test.suites.testcases.basicsysml.deletion;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares.omf.core.factory.SysMLFactory;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
+import com.samares.omf.plugin.test.utils.TestUtils;
 import com.samares.omf.test.templates.AModelComparatorTestCase;
 
 public class T2DeleteBlock extends AModelComparatorTestCase {
@@ -23,7 +24,7 @@ public class T2DeleteBlock extends AModelComparatorTestCase {
 
     @Override
     public void initEnvOptions() {
-        OMFPluginEnvOptionsGroup.getInstance().setAutomationsActivated(true);
+        TestUtils.getEnvOptions().setAutomationsActivated(true);
     }
 
     @Override

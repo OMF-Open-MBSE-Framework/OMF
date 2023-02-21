@@ -6,25 +6,13 @@
  ******************************************************************************/
 package com.samares.omf.plugin.options;
 
-import com.nomagic.magicdraw.core.Application;
-import com.nomagic.magicdraw.properties.PropertyResourceProvider;
 import com.samares.omf.core.ui.environmentoptions.OMFEnvOptionResources;
 import com.samares.omf.core.ui.environmentoptions.OMFPropertyOptionsGroup;
-
-import java.util.Objects;
 
 public class OMFPluginEnvOptionsGroup extends OMFPropertyOptionsGroup {
     public static final String ID = "env.options.omf.plugin";
     private static final String OMF_PLUGIN_CATEGORY_NAME = "OMF Plugin";
 
-    @SuppressWarnings("ConstantConditions")
-    public static final PropertyResourceProvider PROPERTY_RESOURCE_PROVIDER = (key, property) -> OMFEnvOptionResources.getString(key);
-
-    public static OMFPluginEnvOptionsGroup getInstance() {
-        return Objects.requireNonNull(
-                (OMFPluginEnvOptionsGroup) Application.getInstance().getEnvironmentOptions().getGroup(OMFPluginEnvOptionsGroup.ID),
-                "Trying to access options group before it has been instantiated");
-    }
     public OMFPluginEnvOptionsGroup() {
         super(ID, OMF_PLUGIN_CATEGORY_NAME);
     }
