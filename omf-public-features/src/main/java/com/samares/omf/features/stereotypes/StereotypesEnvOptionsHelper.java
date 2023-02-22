@@ -6,6 +6,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares.omf.core.feature.EnvOptionsHelper;
 import com.samares.omf.core.feature.MDFeature;
 import com.samares.omf.core.ui.environmentoptions.APropertyOptionsGroup;
+import com.samares.omf.core.utils.OMFUtils;
 
 public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public StereotypesEnvOptionsHelper(StereotypesFeature stereotypesFeature) {
@@ -25,7 +26,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public static final String ORGANIZER_ACTIVATION_ID = "Activate automatic element organization";
 
     public static String getOrganizerConfigFilePathDefaultValue() {
-        return System.getProperty("user.dir") + "/plugins/com.samares.omf.plugin/resources/organizer_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares.omf.plugin/resources/organizer_config.csv";
     }
 
     public String getOrganizerConfigFilePath() {
@@ -68,7 +69,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public static final String INSTANCE_ACTIVATION_ID = "Activate automatic instance stereotype application";
 
     public static String getInstanceConfigFilePathDefaultValue() {
-        return System.getProperty("user.dir") + "/plugins/com.samares.omf.plugin/resources/instance_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares.omf.plugin/resources/instance_config.csv";
     }
 
     public String getInstanceConfigFilePath() {
@@ -97,7 +98,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public static final String TYPE_ACTIVATION_ID = "Activate automatic type creation on instance creation";
 
     public static String getTypeConfigFilePathDefaultValue() {
-        return System.getProperty("user.dir") + "/plugins/com.samares.omf.plugin/resources/type_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares.omf.plugin/resources/type_config.csv";
     }
 
     public boolean isTypeActivated() {

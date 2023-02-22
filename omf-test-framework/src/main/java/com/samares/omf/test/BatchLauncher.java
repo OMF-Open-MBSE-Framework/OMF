@@ -8,6 +8,7 @@
 package com.samares.omf.test;
 
 import com.nomagic.magicdraw.commandline.CommandLineAction;
+import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.test.formatter.JUnitResultFormatterAsRunListener;
 import com.samares.omf.test.formatter.XMLJUnitResultFormatter;
 import com.samares.omf.test.templates.ATestBatch;
@@ -27,7 +28,7 @@ public class BatchLauncher implements CommandLineAction {
 
     public static final SaveTestModel confSaveTestModel = SaveTestModel.ANYWAY;
     public static ATestBatch currentBatch;
-    private static final String REPORT_DIR = System.getProperty("user.dir") + "\\..\\test-reports";
+    private static final String REPORT_DIR = OMFUtils.getUserDir() + "\\..\\test-reports";
     private static final String XML_REPORT_DIR = REPORT_DIR + "\\TEST-XML";
 
     List<Class<? extends ATestBatch>> testBatches;

@@ -126,4 +126,8 @@ public class OMFUtils {
 
         return new ArrayList<>(propertyPath);
     }
+
+    public static String getUserDir() {
+        return System.getProperty("user.dir");
+    }
 }

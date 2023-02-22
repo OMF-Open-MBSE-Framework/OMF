@@ -12,9 +12,9 @@ plugins {
 
 // ============================= GLOBAL VARIABLES DECLARATION =============================
 
-ext.thePluginDeliveryName = pluginPackage + "_" + version
+ext.thePluginDeliveryName = omfPackage + "_" + version
 ext.theTestPluginDeliveryName = testPluginPackage + "_" + version
-ext.srcLocalDestinationDir = localDeliverPath + "/" + pluginPackage + "/" + mdVersionShort + "/" + pluginPackage + "_" + mdVersionShort + "_" + version
+ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" + mdVersionShort + "_" + version
 ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
 ext.timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
 ext.isRelease = !version.endsWith("-SNAPSHOT")
@@ -63,8 +63,8 @@ dependencies {
     cameoDependencies fileTree(dir: 'build/install', include: ['lib/**.jar'])
     cameoDependencies fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 
-    pluginLibrary project(':omf-core-framework')
     pluginLibrary project(':omf-test-framework')
+    pluginLibrary project(':omf-core-framework')
     pluginLibrary project(':omf-public-features')
 
     unitTests 'junit:junit:4.12'
@@ -81,7 +81,7 @@ mdPluginBuild {
     humanVersion = version
     buildTimestamp = timestamp
     myPluginName = pluginName
-    myPackage = pluginPackage
+    myPackage = "${omfPackage}.plugin"
     myPluginId = pluginId
     myPluginMainClass = pluginMainClass
     localDeliveryDirectory = srcLocalDestinationDir
@@ -138,8 +138,8 @@ clean {
 // Previously in custom task clean, it was blocking the "hot debug" mode
 task deletePlugins(type: Delete) {
     group '_dev'
-    delete 'build/install/plugins/' + pluginPackage,
-            'build/tmp', 'build/install/plugins/' + pluginPackage,
+    delete 'build/install/plugins/' + omfPackage,
+            'build/tmp', 'build/install/plugins/' + omfPackage,
             'build/install/plugins/' + testPluginPackage,
             'build/test-reports'
 }
@@ -296,18 +296,42 @@ publishing {
 
     publications {
         // Publish built plugin .zip to Nexus repo
-        builtPlugin(MavenPublication) {
-            groupId = pluginPackage + "." + mdVersionShort
-            artifactId = "omf-example-plugin"
+        examplePluginZip(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = examplePluginArtefactId
             artifact("$buildDir/builtPlugin/$project.version/${thePluginDeliveryName}.zip")
         }
 
-        // Publish plugin .jar to Nexus repo
-        jar(MavenPublication) {
-            groupId = pluginPackage + "." + mdVersionShort
-            artifactId = "omf-fatJar"
-            artifact fatJar
+        coreFrameworkJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = coreFrameworkArtefactId
+            from project(":omf-core-framework").getComponents().findByName("java")
         }
+
+        testFrameworkJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = testFrameworkArtefactId
+            from project(":omf-test-framework").getComponents().findByName("java")
+        }
+
+        testFrameworkJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = publicFeaturesArtefactId
+            from project(":omf-public-features").getComponents().findByName("java")
+        }
+
+        utilsJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = utilsArtefactId
+            from project(":omf-utils").getComponents().findByName("java")
+        }
+
+        // Publish plugin .jar to Nexus repo
+        //jar(MavenPublication) {
+        //    groupId = omfPackage + "." + mdVersionShort
+        //    artifactId = "omf-fatJar"
+        //    artifact fatJar
+        //}
     }
 }
 

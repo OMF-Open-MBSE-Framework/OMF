@@ -34,8 +34,8 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     public List<MDFeature> initFeatures() {
         return List.of(
                 new ExampleFeature1(),
-                new Dev(),
                 new ExampleFeature3(),
+                new Dev(),
                 new StereotypesFeature()
         );
     }

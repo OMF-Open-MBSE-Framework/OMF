@@ -9,6 +9,7 @@ package com.samares.omf.plugin.test.utils;
 
 import com.samares.omf.core.errors.OMFErrorHandler;
 import com.samares.omf.core.errors.exceptions.OMFException;
+import com.samares.omf.core.utils.OMFUtils;
 import com.samares.omf.features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares.omf.features.stereotypes.StereotypesFeature;
 import com.samares.omf.plugin.options.OMFPluginEnvOptionsGroup;
@@ -20,7 +21,7 @@ public class StereotypesTestUtils {
      * Get path of test plugin resources dir
      */
     public static String getStereotypeConfigFolder() {
-        return System.getProperty("user.dir") + "/plugins/com.samares.omf.plugin.test/resources";
+        return OMFUtils.getUserDir() + "/plugins/com.samares.omf.plugin.test/resources";
     }
 
     public static void resetStereotypesConfigFilePathEnvOptions() {
