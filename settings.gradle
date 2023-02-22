@@ -23,8 +23,10 @@ pluginManagement {
 }
 
 rootProject.name = 'OpenMBSEFramework'
-include 'omf-core'
+include 'omf-core-framework'
 include 'omf-utils'
 include 'omf-magicdraw-dependencies'
 include 'omf-public-features'
-include 'omf-test'
+include 'omf-test-framework'
+include 'omf-example-plugin'
+
