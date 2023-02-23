@@ -12,14 +12,14 @@ You can download the jar from the Maven Central Repository at the following adre
 
 ### 2. As a Gradle Project
 1. Clone the project from GitLab
-1. Create a new IntelliJ Project from existing source (*File → New → Project From Existing Sources*)
-1. Select the folder where you downloaded the project from GitLab
-1. You may want to fill the gradle.properties
-1. Complete the gradle.properties.secret if you need to (to avoid sharing credentials & other sensitive properties, we store them outside of the project in the .gradle folder)
-  - Copy the contents of the *gradle.properties.secret* file into *\<User folder\>/.gradle/gradle.properties* (create the file if it does not exist)
-  - Fill properties with the correct values/credentials (ask an other dev for the info if needed)
+2. Create a new IntelliJ Project from existing source (*File → New → Project From Existing Sources*)
+3. Select the folder where you downloaded the project from GitLab
+4. You may want to fill the gradle.properties
+5. Complete the gradle.properties.secret if you need to (to avoid sharing credentials & other sensitive properties, we store them outside of the project in the .gradle folder)
+   - Copy the contents of the *gradle.properties.secret* file into *\<User folder\>/.gradle/gradle.properties* (create the file if it does not exist)
+   - Fill properties with the correct values/credentials (ask an other dev for the info if needed)
 
-### 2. As a Cameo System Modeler Plugin
+### 3. As a Cameo System Modeler Plugin
 
 To install the plugin in *CSM* or *MCSE*, click on Help -> Resource/Plugin Manager -> Import
 
