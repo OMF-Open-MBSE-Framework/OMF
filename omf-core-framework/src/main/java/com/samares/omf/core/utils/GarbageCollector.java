@@ -25,14 +25,14 @@ public class GarbageCollector {
         Collection<Element> toRemove = new ArrayList<>();
 
         AllCreatedElements.allInterfaceBlock.stream()
-                .filter(fiType -> fiType.get_typedElementOfType().size() == 0)
-                .forEach(fiType -> toRemove.add(fiType));
+                .filter(interfaceType -> interfaceType.get_typedElementOfType().size() == 0)
+                .forEach(interfaceType -> toRemove.add(interfaceType));
 
         toRemove.stream()
-                .forEach(fiType -> {
-                    AllCreatedElements.allInterfaceBlock.remove(fiType);
+                .forEach(interfaceType -> {
+                    AllCreatedElements.allInterfaceBlock.remove(interfaceType);
                     try {
-                        ModelElementsManager.getInstance().removeElement(fiType);
+                        ModelElementsManager.getInstance().removeElement(interfaceType);
                     } catch (ReadOnlyElementException e) {
                         OMFErrorHandler.handleException(e, false);
                     }

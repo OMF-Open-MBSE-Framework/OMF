@@ -20,7 +20,7 @@ public class TestAction extends NMAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        // TODO Import/Reimplement this from DDMS Interface Plugin
+        // TODO Import/Reimplement this from the other Interface Plugin
         //We do this to tell Wizards to run without UI
 //        OMFConstants.GUI_REQUIRED = false;
 //        new TestMain(FunctionalBatch.class).execute(new String[0]);

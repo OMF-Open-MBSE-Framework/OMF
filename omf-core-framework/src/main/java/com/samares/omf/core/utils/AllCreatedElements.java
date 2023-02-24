@@ -28,7 +28,7 @@ public class AllCreatedElements {
     public static void registerCreatedElement(Element createdElement) {
         try {
 
-            ColorPrinter.warn("[AllCreatedElements] Unknow case: " + createdElement.getHumanName());
+            ColorPrinter.warn("[AllCreatedElements] Unknown case: " + createdElement.getHumanName());
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, false);
         }

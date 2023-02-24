@@ -91,7 +91,7 @@ public class OMFUtils {
     }
 
     /**
-     * Gets get Part In FA Context.
+     * Gets get Part In Context.
      *
      * @param partType the part type
      * @return the part
@@ -104,7 +104,7 @@ public class OMFUtils {
     }
 
     /**
-     * Gets get Part In FA Context.
+     * Gets get Part In Context.
      *
      * @param partType the part type
      * @return the part
