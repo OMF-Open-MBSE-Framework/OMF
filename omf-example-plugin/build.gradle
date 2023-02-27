@@ -244,6 +244,8 @@ retrieveModel.dependsOn installTestPlugin
 
 tasks.withType(PublishToMavenRepository) { task ->
     dependsOn(zipPluginLocally)
+    dependsOn(javadoc)
+    dependsOn(sourceJar)
 }
 
 tasks.junitHtmlReport.doLast {
@@ -280,9 +282,48 @@ sonarqube {
     }
 }
 
+def setDefaultPomValues(pom) {
+    // Project url
+    pom.url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+    pom.inceptionYear = '2022'
+
+    pom.licenses {
+        owner.license {
+            name = 'Eclipse Public License - v 2.0'
+            url = 'https://www.eclipse.org/legal/epl-2.0/'
+        }
+    }
+
+    pom.developers {
+        owner.developer {
+            id = 'hugostinson'
+            name = 'Hugo Stinson'
+            email = 'hugo.stinson@samares-engineering.com'
+        }
+
+        owner.developer {
+            id = 'clementmezerette'
+            name = 'Clement Mezerette'
+            email = 'clement.mezerette@samares-engineering.com'
+        }
+
+        owner.developer {
+            id = 'quentincespedes'
+            name = 'Quentin Cespedes'
+            email = 'quentin.cespedes@samares-engineering.com'
+        }
+    }
+
+    pom.scm {
+        connection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
+        developerConnection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
+    }
+}
+
 publishing {
     repositories {
         maven {
+            name = "NexusSamares"
             credentials {
                 username nexusUsername
                 password nexusPassword
@@ -292,6 +333,15 @@ publishing {
             url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
             allowInsecureProtocol true
         }
+
+        maven {
+            name = "MavenCentral"
+            setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+            credentials {
+                username = mavenCentralUsername
+                password = mavenCentralPwd
+            }
+        }
     }
 
     publications {
@@ -300,30 +350,59 @@ publishing {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = examplePluginArtefactId
             artifact("$buildDir/builtPlugin/$project.version/${thePluginDeliveryName}.zip")
+
+            setDefaultPomValues(pom)
+            pom {
+                name = "$examplePluginArtefactId:$mavenRepoGroupId"
+                description = "An example plugin demonstrating use of the framework."
+            }
         }
 
         coreFrameworkJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = coreFrameworkArtefactId
             from project(":omf-core-framework").getComponents().findByName("java")
+            setDefaultPomValues(pom)
+            pom {
+                name = "$coreFrameworkArtefactId:$mavenRepoGroupId"
+                description = "A framework for developing MagicDraw plugins."
+            }
+
         }
 
         testFrameworkJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = testFrameworkArtefactId
             from project(":omf-test-framework").getComponents().findByName("java")
+            setDefaultPomValues(pom)
+            pom {
+                name = "$testFrameworkArtefactId:$mavenRepoGroupId"
+                description = "A framework for developing functional tests for MagicDraw plugins."
+            }
         }
 
-        testFrameworkJar(MavenPublication) {
+        publicFeaturesJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = publicFeaturesArtefactId
             from project(":omf-public-features").getComponents().findByName("java")
+            setDefaultPomValues(pom)
+            pom {
+                name = "$publicFeaturesArtefactId:$mavenRepoGroupId"
+                description = "A collection of open source features that can be integrated to third-party plugins."
+            }
         }
 
         utilsJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = utilsArtefactId
             from project(":omf-utils").getComponents().findByName("java")
+            setDefaultPomValues(pom)
+            pom {
+                name = "$utilsArtefactId:$mavenRepoGroupId"
+                description = "A collection of utilities methods used in the framework as well as helpers for the " +
+                        "MagicDraw public api that can be useful for plugin regardless of whether they use the " +
+                        "framework or not."
+            }
         }
 
         // Publish plugin .jar to Nexus repo
