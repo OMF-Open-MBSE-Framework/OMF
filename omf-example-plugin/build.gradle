@@ -381,8 +381,6 @@ publishing {
         testFrameworkJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = testFrameworkArtefactId
-            println "Hello world"
-            println project(":omf-core-framework").tasks
             from project(":omf-test-framework").components.java
             setDefaultPomValues(pom)
             pom {
