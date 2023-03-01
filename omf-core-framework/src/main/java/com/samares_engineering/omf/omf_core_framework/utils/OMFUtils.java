@@ -26,7 +26,7 @@ public class OMFUtils {
      *
      * @param lineToSplit String
      * @param regex       String
-     * @return List<String>
+     * @return List of String
      */
     public static List<String> getValuesWithinLine(String lineToSplit, String regex) {
         assert lineToSplit != null;

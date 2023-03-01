@@ -37,7 +37,6 @@ public class FeatureRegisterer {
     /**
      * Register a feature using delegation to register MDActions and RuleEngines. Return true if the feature is already registered;
      * @param feature
-     * @return
      */
     public void registerFeature(MDFeature feature){
         if(isAlreadyRegistered(feature)) {

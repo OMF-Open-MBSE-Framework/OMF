@@ -125,7 +125,7 @@ public abstract class AFeature implements MDFeature {
     protected abstract List<IRuleEngine> initProjectOnlyLiveActions();
 
     /**
-     * Define all the feature options (Environment && Project) there, it will be automatically registered with the feature.
+     * Define all the feature options (Environment and Project) there, it will be automatically registered with the feature.
      * @return list of IOption to register
      */
     protected abstract List<IOption> initOptions();

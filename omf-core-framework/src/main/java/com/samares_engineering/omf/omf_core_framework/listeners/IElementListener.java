@@ -49,8 +49,5 @@ public interface IElementListener {
      */
     boolean manageDeletion(PropertyChangeEvent event);
 
-    /**
-     * @return true if at least one rule matched
-     */
     void manageAfterAutomation(Collection<PropertyChangeEvent> l_events);
 }
