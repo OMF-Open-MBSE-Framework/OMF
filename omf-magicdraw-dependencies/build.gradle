@@ -20,7 +20,7 @@ configurations {
 
 dependencies {
     // MCSE 2021x Refresh2
-    cameo 'com.nomagic:mcse:2021x_Refresh2_HF2@zip'
+    cameo mdMavenArchive
 
     // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.
     api fileTree(dir: "$project.parent.buildDir/install", include: ['lib/**.jar'])
