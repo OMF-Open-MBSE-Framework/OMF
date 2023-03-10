@@ -15,6 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// TODO Check if this class is still useful
 public class GarbageCollector {
 
     public static void collectGarbage() {

@@ -15,11 +15,13 @@ import com.samares_engineering.omf.omf_core_framework.builders.exceptions.Builde
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
+// TODO Finish or remove this WIP (same for the other builders)
 public abstract class AGenericBuilder<ConcreteBuiltElement extends Element> implements IGenericBuilder, Cloneable, Serializable {
     protected ConcreteBuiltElement elementToBuild;
     protected String name;

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// TODO This should probably be removed as launching actions is now done with a method in AbstractTestCase
 public abstract class MDActionsBrowserMenuTestCase extends AModelComparatorTestCase {
 
     protected String elementToTestID;

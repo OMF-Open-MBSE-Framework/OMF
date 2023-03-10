@@ -10,6 +10,7 @@ package com.samares_engineering.omf.omf_test_framework.utils;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.plugins.PluginUtils;
 import com.nomagic.magicdraw.uml.Finder;
+import com.nomagic.uml2.ext.jmi.helpers.CoreHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
