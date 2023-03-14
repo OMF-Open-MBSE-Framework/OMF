@@ -60,7 +60,9 @@ dependencies {
     cameo mdMavenArchive
 
     // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.
-    cameoDependencies fileTree(dir: 'build/install', include: ['lib/**.jar'])
+
+    cameoDependencies fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
+
     cameoDependencies fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 
     pluginLibrary project(':omf-test-framework')
@@ -102,7 +104,7 @@ mdPluginBuild {
 // Configuration for javaExec Tasks
 tasks.withType(JavaExec) {
     doFirst {
-        classpath fileTree(dir: 'build/install', include: ['lib/**.jar'])
+        classpath fileTree(dir: 'build/install', include: ['lib/*.jar', 'lib/**/*.jar'])
     }
 
     workingDir 'build/install'
