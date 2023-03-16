@@ -18,7 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_test_framework.projectmanager.TestCloseProjects;
-import com.samares_engineering.omf.omf_test_framework.utils.TwcAccessor;
+import com.samares_engineering.omf.omf_core_framework.utils.TwcAccessor;
 
 import java.util.ArrayList;
 import java.util.Collection;

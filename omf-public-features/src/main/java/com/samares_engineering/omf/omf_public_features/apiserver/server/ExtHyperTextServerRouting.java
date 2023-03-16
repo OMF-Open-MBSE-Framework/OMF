@@ -1,0 +1,122 @@
+package com.samares_engineering.omf.omf_public_features.apiserver.server;
+
+import com.google.common.base.Strings;
+import com.nomagic.magicdraw.core.Application;
+import com.nomagic.magicdraw.core.Project;
+import com.nomagic.magicdraw.core.project.ProjectDescriptor;
+import com.nomagic.magicdraw.core.project.ProjectDescriptorsFactory;
+import com.nomagic.magicdraw.core.project.ProjectsManager;
+import com.nomagic.magicdraw.hyperlinks.Hyperlink;
+import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
+import com.nomagic.magicdraw.uml.BaseElement;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
+import com.samares_engineering.omf.omf_public_features.apiserver.OMFProjectManager;
+import com.samares_engineering.omf.omf_public_features.apiserver.RequestHandler;
+import org.eclipse.jetty.server.Request;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+
+public class ExtHyperTextServerRouting {
+    public static RequestHandler refModel(){
+        return new RequestHandler() {
+            @Override
+            public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+
+                String id = request.getParameter("ID");
+                String projectPath = request.getParameter("projectPath");
+
+                if(Strings.isNullOrEmpty(id)){
+                    notFound("[Error] ID is Null", target, baseRequest, request, response);
+                    return;
+                }
+
+                if(!Strings.isNullOrEmpty(projectPath)) handleProjectOpening(projectPath);
+
+                try {
+                    handleOpenElementInBrowser(id);
+                } catch (DevelopmentException e) {
+                    throw new RuntimeException(e);
+                }
+                String answer = "<h1>Element opened successfully!</h1>"
+                        + "\n" + "<p>The element with ID " + id + " has been opened in the browser.</p>";
+                successAnswer(answer, target, baseRequest, request, response);
+
+            }
+        };
+
+
+    }
+
+    private static void handleOpenElementInBrowser(String id) throws DevelopmentException {
+        BaseElement element = OMFUtils.currentProject.getElementByID(id);
+        if(element == null)
+            throw new DevelopmentException("ELEMENT NOT FOUND WITH ID: " + id);
+        Application.getInstance().getMainFrame().getBrowser().getActiveTree().openNode(element);
+    }
+
+    //ROUTING
+    public static RequestHandler openProject() {
+        return new RequestHandler() {
+            @Override
+            public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+                String projectPath = request.getParameter("projectPath");
+
+
+                if (Strings.isNullOrEmpty(projectPath)) {
+                    notFound("[Error] project path is Null", target, baseRequest, request, response);
+                    return;
+                }
+
+                handleProjectOpening(projectPath);
+
+                successAnswer("Project " + OMFUtils.currentProject.getName() + " Opened", target, baseRequest, request, response);
+            }
+        };
+    }
+
+    private static Project handleProjectOpening(String projectPath) {
+        ProjectsManager projectsManager = Application.getInstance().getProjectsManager();
+        File file = new File(projectPath);
+
+        ProjectDescriptor projectDescriptor = ProjectDescriptorsFactory.createProjectDescriptor(file.toURI());
+        projectsManager.loadProject(projectDescriptor, false);
+
+        return OMFUtils.currentProject;
+    }
+
+
+    public static RequestHandler openTWCProject() {
+        return new RequestHandler() {
+            @Override
+            public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+                String projectPath = request.getParameter("projectPath");
+                if (projectPath.isBlank() || projectPath.isEmpty()) {
+                    notFound("[Error] project path is Null", target, baseRequest, request, response);
+                    return;
+                }
+
+                try {
+                    handleTWCProjectOpening(projectPath);
+                } catch (OMFException e) {
+                    throw new RuntimeException(e);
+                }
+                successAnswer("Project " + OMFUtils.currentProject.getName() + " Opened", target, baseRequest, request, response);
+            }
+        };
+    }
+
+    private static Project handleTWCProjectOpening(String projectPath) throws OMFException {
+        return new OMFProjectManager().openTWCProject(projectPath);
+    }
+
+    public void handleElement(String id){
+        BaseElement elem = OMFUtils.currentProject.getElementByID(id);
+        Hyperlink hypertext = HyperlinkUtils.createHyperlink("TEST", elem);
+        Application.getInstance().getMainFrame().getBrowser().getActiveTree().openNode(elem);
+//        hypertext.
+    }
+}

@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_test_framework.utils;
+package com.samares_engineering.omf.omf_core_framework.utils;
 
 import com.nomagic.ci.persistence.PersistenceException;
 import com.nomagic.magicdraw.core.Application;
@@ -16,7 +16,6 @@ import com.nomagic.magicdraw.esi.EsiUtils;
 import com.nomagic.magicdraw.teamwork2.ITeamworkService;
 import com.nomagic.magicdraw.teamwork2.ServerLoginInfo;
 import com.nomagic.task.EmptyProgressStatus;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 

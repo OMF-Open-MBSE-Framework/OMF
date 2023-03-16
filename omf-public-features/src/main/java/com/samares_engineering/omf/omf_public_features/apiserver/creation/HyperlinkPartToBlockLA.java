@@ -1,0 +1,47 @@
+/*******************************************************************************
+ * @copyright Copyright (c) 2022-2023 Samares-Engineering
+ * @Licence: EPL 2.0
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since     0.0.0
+ ******************************************************************************/
+
+package com.samares_engineering.omf.omf_public_features.apiserver.creation;
+
+import com.nomagic.magicdraw.hyperlinks.Hyperlink;
+import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventChecker;
+
+import java.beans.PropertyChangeEvent;
+
+public class HyperlinkPartToBlockLA extends ARule {
+    @Override
+    protected boolean eventMatches(PropertyChangeEvent evt) {
+       return new EventChecker()
+                .isInstanceCreated()
+                .isPart()
+                .test(evt);
+    }
+
+    @Override
+    public void debug(Object o) {
+
+    }
+
+    @Override
+    public PropertyChangeEvent process(PropertyChangeEvent e) {
+        Property part = (Property) e.getSource();
+        Hyperlink hp = HyperlinkUtils.createHyperlink("ToBlock", part.getType());
+        HyperlinkUtils.addHyperlink(part, hp);
+        HyperlinkUtils.makeActive(part, hp);
+
+
+        return e;
+    }
+
+    @Override
+    public boolean isBlocking() {
+        return false;
+    }
+}

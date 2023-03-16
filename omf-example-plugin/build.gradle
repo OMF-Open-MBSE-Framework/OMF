@@ -69,6 +69,10 @@ dependencies {
     pluginLibrary project(':omf-core-framework')
     pluginLibrary project(':omf-public-features')
 
+    //come from OMF Features Library
+    pluginLibrary 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
+    pluginLibrary 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
+
     unitTests 'junit:junit:4.12'
     unitTests 'ant:ant-junit:1.6.5'
     unitTests 'org.apache.ant:ant:1.8.2'
