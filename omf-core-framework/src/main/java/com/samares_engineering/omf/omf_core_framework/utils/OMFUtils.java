@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.utils;
 
+import com.google.common.collect.Lists;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
@@ -13,6 +14,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.*;
@@ -77,13 +80,24 @@ public class OMFUtils {
         return listAllPartInContext;
     }
 
+    /**
+     * return true if all flow properties of the type are OUT;
+     * @param type
+     * @return
+     */
     public static boolean isTypeOut(Type type) {
         return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
     }
 
+    /**
+     * return true if all flow properties of the type are IN;
+     * @param type
+     * @return
+     */
     public static boolean isTypeIn(Type type) {
         return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
     }
+
 
     public static Property getPartFromPropertyPath(Element partType, List<Property> listPropertyPath) {
         Optional<Property> optPart = listPropertyPath.stream().filter(property -> partType.equals((property).getType())).findFirst();
