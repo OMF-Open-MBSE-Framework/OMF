@@ -20,7 +20,7 @@ public class StereotypesTestUtils {
      * Get path of test plugin resources dir
      */
     public static String getStereotypeConfigFolder() {
-        return OMFUtils.getUserDir() + "/plugins/com.samares.omf.plugin.test/resources";
+        return OMFUtils.getUserDir() + "/plugins/com.samares_engineering.omf.omf_example_plugin.test/resources/stereotypes_example_test";
     }
 
     public static void resetStereotypesConfigFilePathEnvOptions() {
