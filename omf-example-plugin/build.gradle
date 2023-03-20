@@ -103,9 +103,7 @@ mdPluginBuild {
 // ======================== JAVA TASKS CONFIG ========================
 // Configuration for javaExec Tasks
 tasks.withType(JavaExec) {
-    doFirst {
-        classpath fileTree(dir: 'build/install', include: ['lib/*.jar', 'lib/**/*.jar'])
-    }
+    classpath = sourceSets.main.runtimeClasspath
 
     workingDir 'build/install'
     ignoreExitValue true
@@ -113,7 +111,7 @@ tasks.withType(JavaExec) {
     standardOutput = System.out
     errorOutput = System.err
 
-    main = 'com.nomagic.magicdraw.Main'
+    mainClass = 'com.nomagic.magicdraw.Main'
 
     args 'TESTER'
 }
