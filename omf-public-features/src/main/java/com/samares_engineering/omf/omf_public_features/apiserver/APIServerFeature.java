@@ -21,6 +21,7 @@ import com.samares_engineering.omf.omf_public_features.apiserver.creation.Hyperl
 import com.samares_engineering.omf.omf_public_features.apiserver.server.ExtHyperTextServerRouting;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class APIServerFeature extends AFeature {
@@ -47,7 +48,7 @@ public class APIServerFeature extends AFeature {
 
     @Override
     protected List<IUIAction> initProjectOnlyFeatureActions() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -59,7 +60,7 @@ public class APIServerFeature extends AFeature {
 
     @Override
     protected List<IRuleEngine> initProjectOnlyLiveActions() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class APIServerFeature extends AFeature {
 
     @Override
     protected List<IOption> initProjectOnlyOptions() {
-        return null;
+        return Collections.emptyList();
     }
 
 

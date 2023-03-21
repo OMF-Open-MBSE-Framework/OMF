@@ -76,6 +76,9 @@ dependencies {
     unitTests 'junit:junit:4.12'
     unitTests 'ant:ant-junit:1.6.5'
     unitTests 'org.apache.ant:ant:1.8.2'
+
+    unitTests 'org.eclipse.jetty:jetty-client:9.4.38.v20210224'
+
     unitTests project(':omf-test-framework')
     unitTests project(':omf-core-framework')
 

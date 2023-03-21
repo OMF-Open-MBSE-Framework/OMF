@@ -21,7 +21,7 @@ public abstract class AModelComparatorTestCase extends AbstractTestCase{
     @Override
     protected void checkPrecondition() {
         assertNotNull("initProject is null", initProject);
-        assertTrue("oracleProject is null", oracleNeeded && oracleProject != null);
+        assertTrue("oracleProject is null", !oracleNeeded || oracleProject != null);
     }
 
     @Override

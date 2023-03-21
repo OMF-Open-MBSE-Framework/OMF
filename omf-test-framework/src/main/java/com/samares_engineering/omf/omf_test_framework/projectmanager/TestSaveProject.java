@@ -19,6 +19,7 @@ public class TestSaveProject extends AbstractTestProject {
         setName("[F] Simple Port Creation");
         testCaseID         = "";
         testPackageName    = "";
+        oracleNeeded = oracleProject != null;
     }
 
     @Override

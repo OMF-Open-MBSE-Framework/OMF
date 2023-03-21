@@ -189,8 +189,9 @@ public abstract class AFeature implements MDFeature {
         // Call corresponding lifecycle hook (code to be executed on registering/unregistering)
         if (isRegistered) {
             onRegistering();
+        } else {
+            onUnregistering();
         }
-        onUnregistering();
     }
 
     public final boolean isRegistered() {

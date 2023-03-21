@@ -1,0 +1,64 @@
+/*******************************************************************************
+ * @copyright Copyright (c) 2022-2023 Samares-Engineering
+ * @Licence: EPL 2.0
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since     0.0.0
+ ******************************************************************************/
+
+package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver;
+
+import com.samares_engineering.omf.omf_example_plugin.test.utils.TestUtils;
+import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
+
+public class T1OpeningProject extends AModelComparatorTestCase {
+
+
+    String projectName;
+    String projectPath;
+
+    @Override
+    public void initVariables() {
+        setName("[B]  Port Deletion");
+        testCaseID = "Delete1";
+        testPackageName = "1 Delete block";
+
+        projectName = "OMF_DEVELOPING.mdzip";
+        projectPath = "C:\\workspace\\DEV\\SAMARES\\OMF\\omf-example-plugin\\src\\main\\resources\\";
+
+        setOracleNeeded(false);
+    }
+
+    @Override
+    public void initEnvOptions() {
+        TestUtils.getEnvOptions().setAutomationsActivated(false);
+    }
+
+    @Override
+    protected void checkPrecondition() {
+    }
+
+    @Override
+    public void testAction() {
+        // Create a GET request to "/openProject" with a "projectPath" query parameter
+        getApiTestComponent().openProjectUsingServerAPI(projectPath+projectName);
+        verifyProjectOpening(projectName);
+        setInitProject(getCurrentProject());
+    }
+
+    @Override
+    public void verifyResults() {
+        //ALREADY DONE IN openProjectUsingServerAPI
+    }
+
+
+
+
+    @Override
+    public void reInitEnvOptions() {
+
+    }
+
+
+
+}
+

@@ -38,6 +38,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 import com.samares_engineering.omf.omf_test_framework.utils.TestLogger;
+import com.samares_engineering.omf.omf_test_framework.utils.omffeaturehelpers.APITestComponent;
 import org.junit.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.rules.TestRule;
@@ -66,6 +67,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     protected boolean oracleNeeded = true;
 
     protected String testPackageName;
+
+    private APITestComponent apiTestComponent;
 
 
     public AbstractTestCase() {
@@ -154,7 +157,10 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     @Test
     public void test() {
         //Action to test
-        executeInsideSession(this::testAction);
+        if(initProject != null)
+            executeInsideSession(this::testAction);
+        else
+            testAction();
 
         //Verify
         verifyResults();
@@ -169,7 +175,6 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     }
 
     public abstract void testAction();
-
 
 
 
@@ -194,7 +199,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
 
 
+    //------------------------                           -----------------------------------------//
     //------------------------ Helper Testing Functions -----------------------------------------//
+    //------------------------                           -----------------------------------------//
 
     /**
      * Search by Name in the model for elements, trigger an assert error if not found
@@ -202,7 +209,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param clazz metaclass of the element
      * @return all element with the given name
      */
-    protected Collection<Element> findTestedElementByName(String elementName, java.lang.Class<Class> clazz) {
+    public Collection<Element> findTestedElementByName(String elementName, java.lang.Class<Class> clazz) {
         com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package testPackage = findTestPackage();
         Collection<Element> foundElement = Finder.byNameAllRecursively().find(testPackage, new java.lang.Class[]{clazz}, elementName);
         assertNotNull("No element was found with the name: " + elementName
@@ -215,7 +222,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param id id of the requested element
      * @return found element. Trigger an assert error if not found
      */
-    protected Element findTestedElementByID(String id) {
+    public Element findTestedElementByID(String id) {
         NamedElement foundElement = (NamedElement) initProject.getElementByID(id);
         assertNotNull(" no element found with ID " + id, foundElement);
 
@@ -231,7 +238,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param id id of the requested element
      * @return found element. Trigger an assert error if not found
      */
-    protected Element findElementByID(String id) {
+    public Element findElementByID(String id) {
         NamedElement foundElement = (NamedElement) initProject.getElementByID(id);
         assertNotNull(" no element found with ID " + id, foundElement);
         return foundElement;
@@ -458,7 +465,22 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     }
 
 
+    public void verifyProjectOpening(String projectName) {
+        String currentProject = Application.getInstance().getProject().getName();
+        // Verify that the project has been opened
+        assertTrue("UNEXPECTED OPENED PROJECT, expected: " + projectName + " but project opened was: " + currentProject,
+                projectName.contains(currentProject));
+    }
+
+    public Project getCurrentProject(){
+        return Application.getInstance().getProject();
+    }
+
+
+
+    //------------------------                -----------------------------------------//
     //------------------- MD ACTION TESTING -------------------------------------------//
+    //------------------------                -----------------------------------------//
 
     /**
      * It will simulate a click on the given element, and then look up for the browser action with the given name and given category then trigger it.
@@ -467,8 +489,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param actionToTestName action name
      */
     public void triggerBrowserAction(Element selectedElement, String mdActionsCategoryName, String actionToTestName) {
-        ActionsManager actionManager = ActionsProvider.getContainmentBrowserContextActions(OMFUtils.currentProject.getBrowser().getContainmentTree());
-        ContainmentTree tree = OMFUtils.currentProject.getBrowser().getContainmentTree();
+        ActionsManager actionManager = ActionsProvider.getContainmentBrowserContextActions(getContainmentTree());
+        ContainmentTree tree = getContainmentTree();
         tree.setSelectedNodes(new Node[]{new Node(selectedElement, ElementIcon.getIcon(selectedElement))});
 
         List<BrowserContextAMConfigurator> browserMenuConfigurators = getBrowserMenus();
@@ -513,8 +535,17 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         this.executeAction(actionToTestName, selectedElement, mdActionsCategory);
     }
 
+    Element getSelectedNodeFromContainmentTree() {
+        Node selectedNode = getContainmentTree().getSelectedNode();
+
+        if (selectedNode == null) Assert.fail("No node has been selected");
+        return (Element) selectedNode.getUserObject();
+    }
 
 
+    public ContainmentTree getContainmentTree() {
+        return Application.getInstance().getMainFrame().getBrowser().getContainmentTree();
+    }
 
     /**
      * from the actionManager will search for all the registered Category. If absent the test will fail.
@@ -613,7 +644,21 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     }
 
+    //------------------------                   -----------------------------------------//
+    //------------------------ API SERVER HELPER -----------------------------------------//
+    //------------------------                   -----------------------------------------//
+    public APITestComponent getApiTestComponent(){
+        if (apiTestComponent == null)
+            apiTestComponent = new APITestComponent(this);
+        return apiTestComponent;
+    }
+
+
+
+
+    //------------------------                 -----------------------------------------//
     //------------------------ GETTERS SETTERS -----------------------------------------//
+    //------------------------                 -----------------------------------------//
 
     public String getTestCaseID() {
         return testCaseID;
@@ -637,6 +682,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     public void setInitProject(Project initProject) {
         this.initProject = initProject;
+        testBatch.setInitProject(initProject);
     }
 
     public Project getOracleProject() {
@@ -645,6 +691,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     public void setOracleProject(Project oracleProject) {
         this.oracleProject = oracleProject;
+        testBatch.setInitProject(oracleProject);
     }
 
     public String getInitZipProject() {

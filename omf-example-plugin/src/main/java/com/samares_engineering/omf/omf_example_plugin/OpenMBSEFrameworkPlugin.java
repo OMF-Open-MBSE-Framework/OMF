@@ -8,22 +8,23 @@ package com.samares_engineering.omf.omf_example_plugin;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_public_features.dev.Dev;
 import com.samares_engineering.omf.omf_example_plugin.features.example1.ExampleFeature1;
 import com.samares_engineering.omf.omf_example_plugin.features.example3.ExampleFeature3;
-import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
+import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
+import com.samares_engineering.omf.omf_public_features.dev.Dev;
+import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collections;
@@ -36,7 +37,8 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                 new ExampleFeature1(),
                 new ExampleFeature3(),
                 new Dev(),
-                new StereotypesFeature()
+                new StereotypesFeature(),
+                new APIServerFeature()
         );
     }
 
