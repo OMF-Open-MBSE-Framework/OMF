@@ -1,0 +1,214 @@
+package com.samares.gradle.plugins.md_plugin_build.tasks
+
+import com.samares.gradle.plugins.md_plugin_build.MDPluginBuildUtils
+import org.gradle.api.DefaultTask
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.bundling.Jar
+
+import java.nio.file.Path
+
+abstract class BuildDist extends DefaultTask {
+    @Input
+    abstract Property<String> getHumanVersion()
+
+    @Input
+    abstract Property<String> getBuildTimestamp()
+
+    @Input
+    abstract Property<String> getMyPluginName()
+
+    @Input
+    abstract Property<String> getMyPackage()
+
+    @Input
+    abstract Property<String> getMyPluginId()
+
+    @Input
+    abstract Property<String> getMyPluginMainClass()
+
+    @Input
+    abstract Property<String> getDistributionFolderName()
+
+    @Input
+    abstract Property<String> getHumanVersionCore()
+
+    @Input
+    abstract Property<String> getPluginDeliveryName()
+
+    @Input
+    abstract Property<String> getDescriptorFile()
+
+    @Input
+    abstract SetProperty<File> getResolvedArtifacts()
+
+    @Input
+    @Optional
+    abstract Property<String> getPluginUnderTestId()
+
+    @Input
+    @Optional
+    abstract Property<String> getPluginUnderTestName()
+
+    @Internal
+    boolean isTestPlugin() {
+        pluginUnderTestId.isPresent() && pluginUnderTestName.isPresent()
+    }
+
+    @Internal
+    String getInternalVersion() {
+        MDPluginBuildUtils.generateInternalAndResourceVersion(humanVersion.get())[0]
+    }
+
+    @Internal
+    String getResourceVersion() {
+        MDPluginBuildUtils.generateInternalAndResourceVersion(humanVersion.get())[1]
+    }
+
+    @Internal
+    String getInternalVersionCore() {
+        MDPluginBuildUtils.generateInternalAndResourceVersion(humanVersionCore.get())[0]
+    }
+
+    @Internal
+    Jar getOutputArtifact() {
+        isTestPlugin() ? project.testJar : project.jar
+    }
+
+    @Internal
+    String getDistFolder() {
+        isTestPlugin() ? 'src/test/resources/dist' : 'src/main/resources/dist'
+    }
+
+    @Internal
+    String getBuildDistFolder() {
+        "$project.buildDir/${distributionFolderName.get()}"
+    }
+
+    @Internal
+    String getBuildDistPluginFolder() {
+        "$buildDistFolder/plugins/${myPackage.get()}"
+    }
+
+    @TaskAction
+    void executeTask() {
+        //TODO Dist folder needs a redesign
+        project.copy {
+            from "$distFolder/template/plugin"
+            into "$buildDistPluginFolder"
+        }
+
+        project.copy {
+            from "$distFolder/template/install"
+            into "$buildDistFolder"
+        }
+
+
+        project.copy {
+            from "LICENSE"
+            into buildDistFolder
+            rename { filename -> filename.replace("LICENSE", "EULA_SAMARES.txt") }
+        }
+
+        project.copy {
+            from outputArtifact
+            into buildDistPluginFolder
+        }
+
+        project.copy {
+            from resolvedArtifacts.get()
+            into "$buildDistPluginFolder/lib"
+        }
+
+        project.fileTree(dir: "$buildDistFolder", include: "**/*${myPackage}*/**").each { file ->
+            file.renameTo(project.file(file.getAbsolutePath().replace("${myPackage}", "${myPackage.get()}")))
+        }
+
+        generatePluginXml()
+        generateDescriptorFile()
+    }
+
+    private void generatePluginXml() {
+        String pluginLibrariesLines = getPluginLibrariesLines()
+
+        project.copy {
+            from "$distFolder/template/descriptors/plugin/plugin.xml"
+            filter { String line ->
+                line.replace('<!-- START AUTO-GENERATED -->', '<!-- START AUTO-GENERATED -->'
+                        + System.lineSeparator() + System.lineSeparator() + pluginLibrariesLines)
+            }
+
+            filter { String line -> line.replace('${plugin.name}', myPluginName.get()) }
+            filter { String line -> line.replace('${human.version}', humanVersion.get()) }
+            filter { String line -> line.replace('${internal.version}', internalVersion) }
+            filter { String line -> line.replace('${plugin.id}', myPluginId.get()) }
+            filter { String line -> line.replace('${plugin.package}', myPackage.get()) }
+            filter { String line -> line.replace('${plugin.main}', myPluginMainClass.get()) }
+            filter { String line -> line.replace('${human.version.core}', humanVersionCore.get()) }
+            filter { String line -> line.replace('${internal.version.core}', internalVersionCore) }
+            if (isTestPlugin()) {
+                filter { String line -> line.replace('${plugin.undertest.id}', pluginUnderTestId.get()) }
+                filter { String line -> line.replace('${plugin.undertest.name}', pluginUnderTestName.get()) }
+            }
+            into buildDistPluginFolder
+        }
+    }
+
+    private String getPluginLibrariesLines() {
+        String pluginLibraries = ''
+        project.fileTree(dir: buildDistPluginFolder, include: '*.jar').each { file ->
+            pluginLibraries += '\t\t<library name=\"' + file.name + '\"/>' + System.lineSeparator()
+        }
+        project.fileTree(dir: buildDistPluginFolder, include: 'lib/*.jar').each { file ->
+            pluginLibraries += '\t\t<library name=\"lib/' + file.name + '\"/>' + System.lineSeparator()
+        }
+        pluginLibraries
+    }
+
+    private void generateDescriptorFile() {
+        String descriptorFileDestinationDir = "$buildDistFolder/data/resourcemanager"
+
+        String autoGeneratedLines = getGeneratedLines(descriptorFileDestinationDir)
+
+        project.copy {
+            from "$distFolder/template/descriptors/resourcemanager/${descriptorFile.get()}"
+            filter { String line ->
+                line.replace('<!-- START AUTO-GENERATED -->', '<!-- START AUTO-GENERATED -->'
+                        + System.lineSeparator() + System.lineSeparator() + autoGeneratedLines)
+            }
+            filter { String line -> line.replace('${human.version}', humanVersion.get()) }
+            filter { String line -> line.replace('${internal.version}', internalVersion) }
+            filter { String line -> line.replace('${resource.version}', resourceVersion) }
+            filter { String line -> line.replace('${plugin.id}', myPluginId.get()) }
+            filter { String line -> line.replace('${build.timestamp}', buildTimestamp.get()) }
+            filter { String line -> line.replace('${plugin.name}', myPluginName.get()) }
+            filter { String line -> line.replace('${plugin.archiveFileName}', pluginDeliveryName.get()) }
+            into descriptorFileDestinationDir
+        }
+    }
+
+    private String getGeneratedLines(String descriptorFileDestinationDir) {
+        String autoGeneratedLines = ''
+        Path rootPath = project.file("$buildDistFolder").toPath()
+        project.fileTree(dir: "$project.buildDir/${distributionFolderName.get()}").each { File file ->
+            autoGeneratedLines += BuildDist.getGeneratedLine(file, rootPath)
+        }
+        def descriptorFileDestination = project.file("$descriptorFileDestinationDir/${descriptorFile.get()}")
+        project.print "Descriptor file dest: $descriptorFileDestination"
+        autoGeneratedLines += getGeneratedLine(descriptorFileDestination, rootPath)
+        autoGeneratedLines
+    }
+
+    private static String getGeneratedLine(File fileToCopy, Path rootPath) {
+        String relativePath = relativizePath(fileToCopy, rootPath)
+        '\t\t<file from=\"' + relativePath + '\" to=\"' + relativePath + '\"/>' + System.lineSeparator()
+    }
+
+    private static String relativizePath(File file, Path rootPath) {
+        rootPath.relativize(file.toPath()).toString()
+    }
+}

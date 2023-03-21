@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
-    id 'com.samares.md_plugin_build' version "0.115.3-SNAPSHOT"
+    id 'com.samares.md_plugin_build' version "0.115.4-SNAPSHOT"
     id 'signing'
 }
 
