@@ -4,7 +4,7 @@ import org.gradle.api.tasks.JavaExec;
 
 class DebugJava extends JavaExec {
     DebugJava() {
-        classpath project.configurations.cameoDependencies
+        classpath project.configurations.mdLibrary
 
         workingDir "$project.buildDir/install"
         setIgnoreExitValue false

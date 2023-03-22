@@ -14,11 +14,12 @@ class OmfGradlePlugin implements Plugin<Project> {
         mdPluginBuild = project.extensions.create('mdPluginBuild', OmfGradlePluginBuildExtension)
 
         project.configurations {
-            cameo.extendsFrom(implementation)
-            testImplementation.extendsFrom(unitTests)
+            mdApplicationArchive.extendsFrom(implementation)
+            testImplementation.extendsFrom(testPluginLibrary)
             implementation.extendsFrom(pluginLibrary)
-            implementation.extendsFrom(cameoDependencies)
+            implementation.extendsFrom(mdLibrary)
             zippedMDPlugin
+            compileOnly.extendsFrom(otherMDPluginLibrary)
         }
 
         project.getPlugins().apply('java')
@@ -90,7 +91,7 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerInstallMagicDrawTask(Project project) {
         project.tasks.register('installMagicDraw') {
             it.group = "_install"
-            def cameoConf = project.configurations.cameo
+            def cameoConf = project.configurations.mdApplicationArchive
             def isAlreadyInstalled = new File("$project.buildDir/install").exists()
             it.doLast {
                 if (cameoConf.isEmpty()) {
@@ -165,7 +166,7 @@ class OmfGradlePlugin implements Plugin<Project> {
             it.myPackage = mdPluginBuild.myTestPackage
             it.myPluginName = mdPluginBuild.myTestPluginName
             it.myPluginId = mdPluginBuild.myTestPluginId
-            it.resolvedArtifacts = project.configurations.unitTests.resolvedConfiguration.resolvedArtifacts.file
+            it.resolvedArtifacts = project.configurations.testPluginLibrary.resolvedConfiguration.resolvedArtifacts.file
 
             it.pluginUnderTestId = mdPluginBuild.myPluginId
             it.pluginUnderTestName = mdPluginBuild.myPluginName
