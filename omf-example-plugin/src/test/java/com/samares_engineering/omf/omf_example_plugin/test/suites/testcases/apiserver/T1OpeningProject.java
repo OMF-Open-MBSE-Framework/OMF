@@ -31,7 +31,7 @@ public class T1OpeningProject extends AModelComparatorTestCase {
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
         TestUtils.getEnvOptions().setAutomationsActivated(false);
     }
 
@@ -42,7 +42,7 @@ public class T1OpeningProject extends AModelComparatorTestCase {
     @Override
     public void testAction() {
         // Create a GET request to "/openProject" with a "projectPath" query parameter
-        String projectName = initZipProject;
+        String projectName = getInitZipProject();
         File projectFile = new File(System.getProperty("tests.resources") + File.separator + projectName);
 
         getApiTestComponent().openProjectUsingServerAPI(projectFile);

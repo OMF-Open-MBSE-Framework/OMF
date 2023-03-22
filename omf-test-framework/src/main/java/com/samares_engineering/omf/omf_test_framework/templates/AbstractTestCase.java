@@ -55,18 +55,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbstractTestCase extends MagicDrawTestCase{
-    protected String testCaseID;
-    protected TestLogger loggerTest;
-    protected Project initProject;
-    protected Project oracleProject;
+    public String testCaseID;
+    private TestLogger loggerTest;
+    private Project initProject;
+    private Project oracleProject;
 
-    protected String initZipProject;
-    protected String oracleZipProject;
+    private String initZipProject;
+    private String oracleZipProject;
 
-    protected ATestBatch testBatch;
-    protected boolean oracleNeeded = true;
+    private ATestBatch testBatch;
+    public boolean oracleNeeded = true;
 
-    protected String testPackageName;
+    public String testPackageName;
 
     private APITestComponent apiTestComponent;
 
@@ -74,13 +74,14 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     public AbstractTestCase() {
         this.loggerTest     = new TestLogger(getLogger());
         this.testBatch      = BatchLauncher.currentBatch;
-        this.initProject    = testBatch.getInitProject();
-        this.oracleProject  = testBatch.getOracleProject();
-        this.initZipProject = testBatch.getInitZipProject();
-        this.oracleZipProject = testBatch.getOracleZipProject();
+        this.initProject    = getTestBatch().getInitProject();
+        this.oracleProject  = getTestBatch().getOracleProject();
+        this.initZipProject = getTestBatch().getInitZipProject();
+        this.oracleZipProject = getTestBatch().getOracleZipProject();
     }
 
     public AbstractTestCase(TestLogger logger) {
+        this();
         this.loggerTest = logger;
     }
 
@@ -94,9 +95,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         protected void starting(Description description) {
             if(Strings.isNullOrEmpty(getName()))
                 setName(description.getMethodName());
-            loggerTest.log("");
-            loggerTest.log("------------------------------------------------");
-            loggerTest.status("- [TEST] - Starting test: " + getName());
+            getLoggerTest().log("");
+            getLoggerTest().log("------------------------------------------------");
+            getLoggerTest().status("- [TEST] - Starting test: " + getName());
             start = Instant.now();
         }
 
@@ -105,15 +106,22 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             Instant end = Instant.now();
             Duration timeElapsed = Duration.between(start, end);
             if(!isFailed())
-                loggerTest.success("- [RESULT] " + getName() + " : " + "PASSED");
+                getLoggerTest().success("- [RESULT] " + getName() + " : " + "PASSED");
             else
-                loggerTest.err("xxx [RESULT] " + getName() + " : " + "FAILED");
-            loggerTest.log("- [TIME] :" + timeElapsed.toMinutesPart() + "min" + timeElapsed.toSecondsPart() + "s");
-            loggerTest.log("------------------------------------------------");
-            loggerTest.log("");
-            loggerTest.showLogs();
+                getLoggerTest().err("xxx [RESULT] " + getName() + " : " + "FAILED");
+            getLoggerTest().log("- [TIME] :" + timeElapsed.toMinutesPart() + "min" + timeElapsed.toSecondsPart() + "s");
+            getLoggerTest().log("------------------------------------------------");
+            getLoggerTest().log("");
+            getLoggerTest().showLogs();
         }
     };
+
+
+
+
+    //------------------------                 -----------------------------------------//
+    //------------------------ TEST PROCESS    -----------------------------------------//
+    //------------------------                 -----------------------------------------//
 
     /**
      * To setUp before the tests execution
@@ -126,19 +134,28 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         setSkipMemoryTest(true);
         super.setUpTest();
         checkPrecondition();
-        initEnvOptions();
+        initOptions();
 
     }
 
+    /**
+     * Checks the precondition to execute the test.
+     * By default, it will check if both project are loaded.
+     */
     protected void checkPrecondition(){
         verifyProjectLoading();
     }
 
-
+    /**
+     * Initialize the variables of the test, as the test package name, the test case ID, etc.
+     */
     public abstract void initVariables();
 
 
-    public abstract void initEnvOptions();
+    /**
+     * Define all the options (Project And EnvironmentOptions) to set before the test execution
+     */
+    public abstract void initOptions();
 
     /**
      * To do after the tests execution
@@ -167,30 +184,29 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         closeSession();
     }
 
+    /**
+     * Check if initProject is loaded, and same goes for oracleProject if it is needed.
+     */
     protected void verifyProjectLoading() {
         assertNotNull("The project's test 'projectInitial' is not loaded.", initProject);
         if (oracleNeeded)
             assertNotNull("The project's test 'projectOracle' is not loaded.", oracleProject);
-        loggerTest.success("- [LOADING] PROJECT LOADED");
+        getLoggerTest().success("- [LOADING] PROJECT LOADED");
     }
 
+    /**
+     * Describe here all the user actions to test.
+     * The Goal is to simulate the user actions, as if he was doing it manually.
+     * Example: open a wizard, creating an element, click on a button, etc.
+     */
     public abstract void testAction();
 
 
-
+    /**
+     * Reinitialize the environment options to the default values after conducting the test.
+     */
     public abstract void reInitEnvOptions();
 
-
-    /**
-     * Save a copy of the init model with the test modification applied. Name will be 'initModelName' _save.mdzip
-     */
-    protected void saveModel() {
-        loggerTest.log("- [SAVING RESULT] Saving test case file: - ");
-        loggerTest.log("* " + initZipProject + "_save.mdzip");
-        File resultTestFile = new File(System.getProperty("tests.resources"), initZipProject + "_save.mdzip");
-        saveProject(initProject, resultTestFile);
-        loggerTest.log("file://"+resultTestFile.getAbsolutePath());
-    }
 
     /**
      * Verifying final result. E.g. with model comparator, or a wizard state.
@@ -198,10 +214,57 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     public abstract void verifyResults();
 
 
+    
+
+
+    //------------------------                           -----------------------------------------//
+    //------------------------ CORE TEST Functions       -----------------------------------------//
+    //------------------------                           -----------------------------------------//
+    /**
+     * Create a session inside MagicDraw to execute the given runnable. It closes the previous one if opened (for test independence, and could prevent next cases to be properly executed)
+     * @param runnable
+     */
+    protected void executeInsideSession(Runnable runnable) {
+        closeSession();
+        //Action to test
+        SessionManager.getInstance().executeInsideSession(initProject,"Executing test case - " + getClass().getSimpleName(),  runnable);
+
+        closeSession();
+    }
+
+    /**
+     * Close the current session if opened
+     */
+    protected void closeSession() {
+        if(SessionManager.getInstance().isSessionCreated(getInitProject()))
+            SessionManager.getInstance().closeSession(getInitProject());
+    }
+
+    /**
+     * Save a copy of the init model with the test modification applied. Name will be 'initModelName' _save.mdzip
+     */
+    public void saveModel() {
+        getLoggerTest().log("- [SAVING RESULT] Saving test case file: - ");
+        getLoggerTest().log("* " + initZipProject + "_save.mdzip");
+        File resultTestFile = new File(System.getProperty("tests.resources"), initZipProject + "_save.mdzip");
+        saveProject(initProject, resultTestFile);
+        getLoggerTest().log("file://"+resultTestFile.getAbsolutePath());
+    }
+
+    public boolean isInitProjectOpened() {
+        return getInitProject() != null;
+    }
+
+    public boolean isOracleProjectOpened() {
+        return getInitProject() != null;
+    }
+
 
     //------------------------                           -----------------------------------------//
     //------------------------ Helper Testing Functions -----------------------------------------//
     //------------------------                           -----------------------------------------//
+
+    //---------------------------- FINDERS ----------------------------//
 
     /**
      * Search by Name in the model for elements, trigger an assert error if not found
@@ -223,7 +286,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @return found element. Trigger an assert error if not found
      */
     public Element findTestedElementByID(String id) {
-        NamedElement foundElement = (NamedElement) initProject.getElementByID(id);
+        NamedElement foundElement = (NamedElement) getInitProject().getElementByID(id);
         assertNotNull(" no element found with ID " + id, foundElement);
 
         Collection<Element> foundElementsWithSameName = findTestedElementByName(foundElement.getName(), foundElement.getClassType());
@@ -239,7 +302,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @return found element. Trigger an assert error if not found
      */
     public Element findElementByID(String id) {
-        NamedElement foundElement = (NamedElement) initProject.getElementByID(id);
+        NamedElement foundElement = (NamedElement) getInitProject().getElementByID(id);
         assertNotNull(" no element found with ID " + id, foundElement);
         return foundElement;
     }
@@ -249,42 +312,26 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @return testedPackage. Trigger an assert error if not found
      *
      */
-    protected com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package findTestPackage() {
+    public com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package findTestPackage() {
         com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package testPackage = Finder.byNameRecursively().find( initProject, new java.lang.Class[]{com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package.class}, testPackageName);
         assertNotNull("Not Found Test package: " + testPackageName, testPackage);
         return testPackage;
     }
+    
 
     /**
      * Will search by ID and then open the given diagram.
      * @param idDiagram
      * @return opened diagram. Trigger an assert error if not found
      */
-    protected Diagram openDiagram(String idDiagram) {
+    public Diagram openDiagram(String idDiagram) {
         Diagram diagram = (Diagram) findTestedElementByID(idDiagram);
-        Objects.requireNonNull(initProject.getDiagram(diagram), "Can't get diagram as test init project is null").open();
+        Objects.requireNonNull(getInitProject().getDiagram(diagram), "Can't get diagram as test init project is null").open();
         return diagram;
     }
-
-    /**
-     * Create a session inside MagicDraw to execute the given runnable. It closes the previous one if opened (for test independence, and could prevent next cases to be properly executed)
-     * @param runnable
-     */
-    protected void executeInsideSession(Runnable runnable) {
-        closeSession();
-        //Action to test
-        SessionManager.getInstance().executeInsideSession(initProject,"Executing test case - " + getClass().getSimpleName(),  runnable);
-
-        closeSession();
-    }
-
-    /**
-     * Close the current session if opened
-     */
-    protected void closeSession() {
-        if(SessionManager.getInstance().isSessionCreated(initProject))
-            SessionManager.getInstance().closeSession(initProject);
-    }
+    
+    
+    //---------------------------- OPTIONS ----------------------------//
 
 
     /**
@@ -293,7 +340,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName name of the option
      * @return Property option
      */
-    protected Property getProjectOptionByCategoryName(String category, String optionName){
+    public Property getProjectOptionByCategoryName(String category, String optionName){
         Property option = getProjectOptionsByCategory(category, optionName, OMFUtils.currentProject);
         if(option == null)
             Assert.fail("The project options: " + optionName + " wasn't found in the category: " + category);
@@ -305,7 +352,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName name of the option
      * @return Property option
      */
-    protected Property getProjectOptionByOptionName(String optionName) {
+    public Property getProjectOptionByOptionName(String optionName) {
         ProjectOptions options = OMFUtils.currentProject.getOptions();
         Optional<Property> optOption;
         optOption = Arrays.stream(ProjectOptions.class.getFields())
@@ -350,7 +397,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName name of the option
      * @return Property option
      */
-    protected Property getEnvironmentOptionByGroupName(String group, String optionName){
+    public Property getEnvironmentOptionByGroupName(String group, String optionName){
         Optional<AbstractPropertyOptionsGroup> optGroup = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
@@ -376,7 +423,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName name of the option
      * @return Property option
      */
-    protected Property getEnvironmentOptionByID(String id, String optionName){
+    public Property getEnvironmentOptionByID(String id, String optionName){
         Optional<PropertyManager> optCategory = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
@@ -403,7 +450,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param value
      * @return
      */
-    protected boolean compareOptionValue(Property option, Object value){
+    public boolean compareOptionValue(Property option, Object value){
         return option.getValue().equals(value);
     }
 
@@ -415,7 +462,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName
      * @param value
      */
-    protected boolean compareOptionValueByCategoryName(String group, String optionName, Object value){
+    public boolean compareOptionValueByCategoryName(String group, String optionName, Object value){
         return getEnvironmentOptionByGroupName(group, optionName).getValue().equals(value);
     }
 
@@ -427,7 +474,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName
      * @param value
      */
-    protected boolean compareOptionValueByGroupID(String group, String optionName, Object value){
+    public boolean compareOptionValueByGroupID(String group, String optionName, Object value){
         return getEnvironmentOptionByGroupName(group, optionName).getValue().equals(value);
     }
 
@@ -436,7 +483,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param option
      * @param value
      */
-    protected void setOptionValue(Property option, Object value){
+    public void setOptionValue(Property option, Object value){
         option.setValue(value);
     }
 
@@ -448,7 +495,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName
      * @param value
      */
-    protected void setEnvironmentOptionValueByGroupName(String groupName, String optionName, Object value){
+    public void setEnvironmentOptionValueByGroupName(String groupName, String optionName, Object value){
         setOptionValue(getEnvironmentOptionByGroupName(groupName, optionName), value);
     }
 
@@ -460,11 +507,12 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param optionName
      * @param value
      */
-    protected void setEnvironmentOptionValueByID(String group, String optionName, Object value){
+    public void setEnvironmentOptionValueByID(String group, String optionName, Object value){
         setOptionValue(getEnvironmentOptionByGroupName(group, optionName), value);
     }
 
 
+    //------------------------ Project Management -----------------------------------------//
     public void verifyProjectOpening(String projectName) {
         String currentProject = Application.getInstance().getProject().getName();
         // Verify that the project has been opened
@@ -478,9 +526,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
 
 
-    //------------------------                -----------------------------------------//
-    //------------------- MD ACTION TESTING -------------------------------------------//
-    //------------------------                -----------------------------------------//
+    //------------------------                   ---------------------------------------//
+    //------------------------ MD ACTION TESTING ---------------------------------------//
+    //------------------------                   --------------------------------------//
 
     /**
      * It will simulate a click on the given element, and then look up for the browser action with the given name and given category then trigger it.
@@ -682,7 +730,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     public void setInitProject(Project initProject) {
         this.initProject = initProject;
-        testBatch.setInitProject(initProject);
+        getTestBatch().setInitProject(getInitProject());
     }
 
     public Project getOracleProject() {
@@ -691,7 +739,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     public void setOracleProject(Project oracleProject) {
         this.oracleProject = oracleProject;
-        testBatch.setInitProject(oracleProject);
+        getTestBatch().setInitProject(getOracleProject());
     }
 
     public String getInitZipProject() {

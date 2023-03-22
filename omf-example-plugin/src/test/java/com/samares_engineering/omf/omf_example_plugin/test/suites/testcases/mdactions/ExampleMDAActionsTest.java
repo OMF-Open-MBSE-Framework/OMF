@@ -24,7 +24,7 @@ public class ExampleMDAActionsTest extends MDActionsBrowserMenuTestCase {
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
 
     }
 

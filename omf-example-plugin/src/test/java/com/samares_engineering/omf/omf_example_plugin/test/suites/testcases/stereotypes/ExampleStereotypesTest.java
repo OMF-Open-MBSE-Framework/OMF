@@ -30,7 +30,7 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
         TestUtils.getEnvOptions().setAutomationsActivated(true);
 
         String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();

@@ -22,24 +22,24 @@ public class TestLoadProject extends AbstractTestProject {
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
 
     }
 
     @Override
     public void testAction() {
-        loggerTest.log("- [START] Loading projects:");
+        getLoggerTest().log("- [START] Loading projects:");
 
-        if(Strings.isNullOrEmpty(initZipProject) || Strings.isNullOrEmpty(oracleZipProject))
+        if(Strings.isNullOrEmpty(getInitZipProject()) || Strings.isNullOrEmpty(getOracleZipProject()))
             Assert.fail("");
 
         loadProjects();
-        testBatch.setInitProject(initProject);
-        testBatch.setOracleProject(oracleProject);
+        getTestBatch().setInitProject(getInitProject());
+        getTestBatch().setOracleProject(getOracleProject());
 
         if(oracleNeeded)
-            loggerTest.log("* " + oracleZipProject);
-        loggerTest.log("* " + initZipProject);
+            getLoggerTest().log("* " + getOracleZipProject());
+        getLoggerTest().log("* " + getInitZipProject());
 
     }
 
@@ -54,22 +54,22 @@ public class TestLoadProject extends AbstractTestProject {
     }
     @Override
     public void verifyResults() {
-        assertTrue(initProject != null && oracleProject != null);
+        assertTrue(!isInitProjectOpened() && isOracleProjectOpened());
     }
 
     public void loadProjects() {
-        if(oracleNeeded && !Strings.isNullOrEmpty(oracleZipProject))
-            oracleProject = loadProject(new File(System.getProperty("tests.resources"), oracleZipProject).getAbsolutePath());
+        if(isOracleNeeded() && !Strings.isNullOrEmpty(getOracleZipProject()))
+            setOracleProject(loadProject(new File(System.getProperty("tests.resources"), getOracleZipProject()).getAbsolutePath()));
 
-        if(!Strings.isNullOrEmpty(initZipProject))
-            initProject = loadProject(new File(System.getProperty("tests.resources"), initZipProject).getAbsolutePath());
+        if(!Strings.isNullOrEmpty(getInitZipProject()))
+            setInitProject(loadProject(new File(System.getProperty("tests.resources"), getInitZipProject()).getAbsolutePath()));
     }
 
     @Override
     public void tearDownTest() throws Exception {
         super.tearDownTest();
-        testBatch.setInitProject(initProject);
-        testBatch.setOracleProject(oracleProject);
+        getTestBatch().setInitProject(getInitProject());
+        getTestBatch().setOracleProject(getOracleProject());
     }
 }
 

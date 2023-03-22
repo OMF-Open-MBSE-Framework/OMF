@@ -16,16 +16,16 @@ public class TestCloseProjects extends AbstractTestProject {
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
 
     }
 
     @Override
     public void testAction() {
-        loggerTest.log("- [START] Loading projects:");
+        getLoggerTest().log("- [START] Loading projects:");
         if(oracleNeeded)
-            loggerTest.log("* " + oracleProject.getName());
-        loggerTest.log("* " + initProject.getName());
+            getLoggerTest().log("* " + getOracleProject().getName());
+        getLoggerTest().log("* " + getInitProject().getName());
         closeProjects();
     }
 
@@ -41,17 +41,20 @@ public class TestCloseProjects extends AbstractTestProject {
     }
     @Override
     public void verifyResults() {
-        assertNull("initProject is not closed", initProject);
-        assertNull("oracleProject is not closed", oracleProject);
+        assertNull("initProject is not closed", getInitProject());
+        assertNull("oracleProject is not closed", getOracleProject());
     }
 
     protected void closeProjects() {
-        loggerTest.log("- [END] closingProjects");
-        if(oracleProject != null)
-            closeProject(oracleProject);
-        if(initProject != null)
-            closeProject(initProject);
+        getLoggerTest().log("- [END] closingProjects");
+        if(isOracleProjectOpened())
+            closeProject(getOracleProject());
+        if(isInitProjectOpened())
+            closeProject(getInitProject());
+
     }
+
+
 
 }
 

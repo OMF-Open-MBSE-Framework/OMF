@@ -23,7 +23,7 @@ public class T2SelectElementInContainmentTree extends AModelComparatorTestCase {
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
         TestUtils.getEnvOptions().setAutomationsActivated(false);
     }
 

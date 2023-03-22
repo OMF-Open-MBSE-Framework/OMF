@@ -59,8 +59,8 @@ public class TestBatchTWC extends ATestBatch {
             twcAccessor.createBranch(projectInitName, branchName, branchDescription);
             twcAccessor.openBranchProject(projectInitName, branchName);
             initProject = Objects.requireNonNull(OMFUtils.currentProject, "Current project is not set");
-            Objects.requireNonNull(LockService.getLockService(initProject), "Can't get lock service")
-                    .lockElements(Collections.singleton(initProject.getPrimaryModel()), true, EmptyProgressStatus.getDefault());
+            Objects.requireNonNull(LockService.getLockService(getInitProject()), "Can't get lock service")
+                    .lockElements(Collections.singleton(getInitProject().getPrimaryModel()), true, EmptyProgressStatus.getDefault());
 
         } catch (OMFException e) {
             OMFErrorHandler.handleException(e, true);
@@ -71,8 +71,8 @@ public class TestBatchTWC extends ATestBatch {
     public void endBatch(boolean shallSaveModel) {
         if(shallSaveModel) {
             commitProject();
-            Objects.requireNonNull(LockService.getLockService(initProject), "Can't get lock service")
-                    .unlockElements(Collections.singleton(initProject.getPrimaryModel()), true, EmptyProgressStatus.getDefault());
+            Objects.requireNonNull(LockService.getLockService(getInitProject()), "Can't get lock service")
+                    .unlockElements(Collections.singleton(getInitProject().getPrimaryModel()), true, EmptyProgressStatus.getDefault());
         }
 
         new TestCloseProjects().testAction();
@@ -85,7 +85,7 @@ public class TestBatchTWC extends ATestBatch {
     }
 
     public void commitProject(){
-        ILockProjectService lockService = EsiUtils.getLockService(initProject);
+        ILockProjectService lockService = EsiUtils.getLockService(getInitProject());
         assert lockService != null;
         Collection<Element> lockedElements = lockService.getLockedByMe();
         Collection<ModuleUsage> lockedModules = lockService.getModulesLockedByMe();

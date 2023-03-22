@@ -8,7 +8,9 @@
 package com.samares_engineering.omf.omf_test_framework.projectmanager;
 
 import com.google.common.base.Strings;
+import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.esi.EsiUtils;
+import com.samares_engineering.omf.omf_test_framework.templates.ATestBatch;
 
 import java.io.File;
 
@@ -19,20 +21,20 @@ public class TestSaveProject extends AbstractTestProject {
         setName("[F] Simple Port Creation");
         testCaseID         = "";
         testPackageName    = "";
-        oracleNeeded = oracleProject != null;
+        oracleNeeded = isOracleProjectOpened();
     }
 
     @Override
-    public void initEnvOptions() {
+    public void initOptions() {
 
     }
 
     @Override
     public void testAction() {
-        loggerTest.log("- [START] Saving projects:");
-        if(oracleNeeded)
-            loggerTest.log("* " + oracleProject.getName());
-        loggerTest.log("* " + initProject.getName());
+        getLoggerTest().log("- [START] Saving projects:");
+        if(isOracleNeeded())
+            getLoggerTest().log("* " + getOracleProject().getName());
+        getLoggerTest().log("* " + getInitProject().getName());
 
         saveModel();
     }
@@ -48,13 +50,14 @@ public class TestSaveProject extends AbstractTestProject {
     }
     @Override
     public void verifyResults() {
-        assertTrue(initProject != null && oracleProject != null);
+        assertTrue(getInitProject() != null && getOracleProject() != null);
     }
-    protected void saveModel() {
-        loggerTest.log("- [SAVING RESULT] Saving test case file: - ");
-        loggerTest.log("* " + initProject.getName() + "_save.mdzip");
+    public void saveModel() {
+        getLoggerTest().log("- [SAVING RESULT] Saving test case file: - ");
+        Project initProject = getInitProject();
+        getLoggerTest().log("* " + initProject.getName() + "_save.mdzip");
         File resultTestFile = new File(System.getProperty("tests.resources"), initProject.getName() + "_save.mdzip");
-        if(!Strings.isNullOrEmpty(initZipProject)){
+        if(!Strings.isNullOrEmpty(getInitZipProject())){
             saveProject(initProject, resultTestFile);
         }else{
             EsiUtils.convertToLocal(initProject, resultTestFile);
@@ -65,8 +68,9 @@ public class TestSaveProject extends AbstractTestProject {
     @Override
     public void tearDownTest() throws Exception {
         super.tearDownTest();
-        testBatch.setInitProject(initProject);
-        testBatch.setOracleProject(oracleProject);
+        ATestBatch testBatch = getTestBatch();
+        getTestBatch().setInitProject(getInitProject());
+        getTestBatch().setOracleProject(getOracleProject());
     }
 
 }
