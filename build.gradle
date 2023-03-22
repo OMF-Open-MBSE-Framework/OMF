@@ -3,6 +3,8 @@ plugins {
     id "org.sonarqube" version "4.0.0.2929"
 }
 
+group omfPackage + '.' + mdVersionShort
+
 // Config for the nexus publish plugin which automates the release of artifacts from the staging repository to the
 // release repository. Doesn't work at the moment.
 //nexusPublishing {

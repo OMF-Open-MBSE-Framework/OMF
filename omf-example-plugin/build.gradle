@@ -6,9 +6,11 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
-    id 'com.samares_engineering.omf_gradle_plugin'
+    id 'com.samares-engineering.omf-gradle-plugin'
     id 'signing'
 }
+
+group omfPackage + '.' + mdVersionShort
 
 // ============================= GLOBAL VARIABLES DECLARATION =============================
 
@@ -64,7 +66,7 @@ dependencies {
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
-    pluginLibrary project(':omf-core-framework')
+    pluginLibrary 'com.samares-engineering.omf.2021x_R2:omf-core-framework:0.0.84-SNAPSHOT'
     pluginLibrary project(':omf-public-features')
 
     testPluginLibrary 'junit:junit:4.12'

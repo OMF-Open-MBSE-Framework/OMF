@@ -2,6 +2,8 @@ plugins {
     id 'java-library'
 }
 
+group omfPackage + '.' + mdVersionShort
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
