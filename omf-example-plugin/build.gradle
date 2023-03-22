@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
-    id 'com.samares.md_plugin_build' version "0.115.2-SNAPSHOT"
+    id 'com.samares_engineering.omf_gradle_plugin'
     id 'signing'
 }
 
@@ -14,7 +14,8 @@ plugins {
 
 ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
 ext.theTestPluginDeliveryName = testPluginPackage + "_" + version
-ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" + mdVersionShort + "_" + version
+ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
+        mdVersionShort + "_" + version
 ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
 ext.timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
 ext.isRelease = !version.endsWith("-SNAPSHOT")
@@ -57,25 +58,23 @@ repositories {
 
 dependencies {
     // Use MCSE 2021x Refresh2
-    cameo mdMavenArchive
+    mdApplicationArchive mdMavenArchive
 
-    // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.
-
-    cameoDependencies fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
-
-    cameoDependencies fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
+    // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.=
+    mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
     pluginLibrary project(':omf-core-framework')
     pluginLibrary project(':omf-public-features')
 
-    unitTests 'junit:junit:4.12'
-    unitTests 'ant:ant-junit:1.6.5'
-    unitTests 'org.apache.ant:ant:1.8.2'
-    unitTests project(':omf-test-framework')
-    unitTests project(':omf-core-framework')
+    testPluginLibrary 'junit:junit:4.12'
+    testPluginLibrary 'ant:ant-junit:1.6.5'
+    testPluginLibrary 'org.apache.ant:ant:1.8.2'
+    testPluginLibrary project(':omf-test-framework')
+    testPluginLibrary project(':omf-core-framework')
 
     zippedMDPlugin "com.nomagic.magicdraw:devtools:2021x_Refresh2@zip"
+    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 }
 
 // Samares gradle plugin configuration
@@ -103,9 +102,7 @@ mdPluginBuild {
 // ======================== JAVA TASKS CONFIG ========================
 // Configuration for javaExec Tasks
 tasks.withType(JavaExec) {
-    doFirst {
-        classpath fileTree(dir: 'build/install', include: ['lib/*.jar', 'lib/**/*.jar'])
-    }
+    classpath = project.configurations.mdLibrary
 
     workingDir 'build/install'
     ignoreExitValue true
@@ -113,7 +110,7 @@ tasks.withType(JavaExec) {
     standardOutput = System.out
     errorOutput = System.err
 
-    main = 'com.nomagic.magicdraw.Main'
+    mainClass = 'com.nomagic.magicdraw.Main'
 
     args 'TESTER'
 }
@@ -435,7 +432,7 @@ deliverLocally.dependsOn zipPluginLocally, zipTestPluginLocally, srcZipDir
 debugJava.dependsOn installPlugin, installTestPlugin
 installPlugin.dependsOn buildDist, deletePlugins
 installTestPlugin.dependsOn installPlugin, buildTestDist
-installMagicDraw.dependsOn configurations.cameo
+installMagicDraw.dependsOn configurations.mdApplicationArchive
 installZippedMDPlugins.dependsOn configurations.zippedMDPlugin
 buildDist.dependsOn jar
 buildTestDist.dependsOn testJar, buildDist

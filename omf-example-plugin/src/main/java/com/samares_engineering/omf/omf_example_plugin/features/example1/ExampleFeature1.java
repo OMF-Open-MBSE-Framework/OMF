@@ -75,6 +75,7 @@ public class ExampleFeature1 extends AFeature {
                 plugin.getEnvironmentOptionsGroup(),
                 OptionKind.Environment
         );
+
         OptionImpl testNewCatEnvOption = new OptionImpl(
                 new BooleanProperty("BooleanField 2", true),
                 "FEATURE GROUP 2",

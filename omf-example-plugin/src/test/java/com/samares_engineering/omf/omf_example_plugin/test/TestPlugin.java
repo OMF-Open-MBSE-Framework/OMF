@@ -42,7 +42,7 @@ public class TestPlugin extends APlugin {
         super.init();
 
         // TODO find a way to get the path to set from gradle properties
-        System.setProperty("tests.resources", "plugins/com.samares.omf.plugin.test/projects");
+        System.setProperty("tests.resources", "plugins/com.samares_engineering.omf.omf_example_plugin.test/projects");
 
         if (Objects.equals(System.getProperty("test"), "true")) {
             CommandLineActionManager.getInstance().addAction(new BatchLauncher(TEST_BATCHES));
