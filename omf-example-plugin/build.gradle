@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
-    id 'com.samares-engineering.omf-gradle-plugin'
+    id 'com.samares-engineering.omf.omf-gradle-plugin'
     id 'signing'
 }
 
