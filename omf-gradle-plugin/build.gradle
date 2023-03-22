@@ -3,7 +3,7 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'maven-publish'
 
 group 'com.samares'
-version '0.115.4-SNAPSHOT'
+version '0.115.5-SNAPSHOT'
 ext.isRelease = !version.endsWith("-SNAPSHOT")
 
 dependencies {
@@ -12,13 +12,9 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        greeting {
-            id = 'com.samares.greeting'
-            implementationClass = 'com.samares.gradle.plugins.GreetingPlugin'
-        }
-        mdPluginBuild {
-            id = 'com.samares.md_plugin_build'
-            implementationClass = 'com.samares.gradle.plugins.md_plugin_build.MDPluginBuild'
+        omfGradlePluin {
+            id = 'com.samares_engineering.omf_gradle_plugin'
+            implementationClass = 'com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePlugin'
         }
     }
 }

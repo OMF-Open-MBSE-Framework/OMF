@@ -1,17 +1,17 @@
-package com.samares.gradle.plugins.md_plugin_build
+package com.samares_engineering.omf.omf_gradle_plugin
 
-import com.samares.gradle.plugins.md_plugin_build.tasks.BuildDist
-import com.samares.gradle.plugins.md_plugin_build.tasks.DebugJava
+import com.samares_engineering.omf.omf_gradle_plugin.tasks.BuildDist
+import com.samares_engineering.omf.omf_gradle_plugin.tasks.DebugJava
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.bundling.Zip
 
-class MDPluginBuild implements Plugin<Project> {
-    MDPluginBuildExtension mdPluginBuild;
+class OmfGradlePlugin implements Plugin<Project> {
+    OmfGradlePluginBuildExtension mdPluginBuild;
 
     void apply(Project project) {
-        mdPluginBuild = project.extensions.create('mdPluginBuild', MDPluginBuildExtension)
+        mdPluginBuild = project.extensions.create('mdPluginBuild', OmfGradlePluginBuildExtension)
 
         project.configurations {
             cameo.extendsFrom(implementation)

@@ -1,6 +1,6 @@
-package com.samares.gradle.plugins.md_plugin_build
+package com.samares_engineering.omf.omf_gradle_plugin
 
-class MDPluginBuildUtils {
+class OmfGradlePluginBuildUtils {
     static generateInternalAndResourceVersion(String humanVersion) {
         int majorInt, minorInt, patchInt
         try {

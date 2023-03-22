@@ -1,4 +1,4 @@
-package com.samares.gradle.plugins.md_plugin_build.tasks;
+package com.samares_engineering.omf.omf_gradle_plugin.tasks;
 
 import org.gradle.api.tasks.JavaExec;
 

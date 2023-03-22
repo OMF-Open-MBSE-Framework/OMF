@@ -1,6 +1,6 @@
-package com.samares.gradle.plugins.md_plugin_build.tasks
+package com.samares_engineering.omf.omf_gradle_plugin.tasks
 
-import com.samares.gradle.plugins.md_plugin_build.MDPluginBuildUtils
+import com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePluginBuildUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -61,17 +61,17 @@ abstract class BuildDist extends DefaultTask {
 
     @Internal
     String getInternalVersion() {
-        MDPluginBuildUtils.generateInternalAndResourceVersion(humanVersion.get())[0]
+        OmfGradlePluginBuildUtils.generateInternalAndResourceVersion(humanVersion.get())[0]
     }
 
     @Internal
     String getResourceVersion() {
-        MDPluginBuildUtils.generateInternalAndResourceVersion(humanVersion.get())[1]
+        OmfGradlePluginBuildUtils.generateInternalAndResourceVersion(humanVersion.get())[1]
     }
 
     @Internal
     String getInternalVersionCore() {
-        MDPluginBuildUtils.generateInternalAndResourceVersion(humanVersionCore.get())[0]
+        OmfGradlePluginBuildUtils.generateInternalAndResourceVersion(humanVersionCore.get())[0]
     }
 
     @Internal

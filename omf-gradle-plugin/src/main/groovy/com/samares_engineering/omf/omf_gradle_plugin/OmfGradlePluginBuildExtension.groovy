@@ -1,8 +1,8 @@
-package com.samares.gradle.plugins.md_plugin_build
+package com.samares_engineering.omf.omf_gradle_plugin
 
 import org.gradle.api.provider.Property
 
-interface MDPluginBuildExtension {
+interface OmfGradlePluginBuildExtension {
     Property<String> getHumanVersion()
 
     Property<String> getBuildTimestamp()
