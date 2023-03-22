@@ -54,7 +54,7 @@ public class ExtHyperTextServerRouting {
     private static void handleOpenElementInBrowser(String id) throws DevelopmentException {
         BaseElement element = OMFUtils.currentProject.getElementByID(id);
         if(element == null)
-            throw new DevelopmentException("ELEMENT NOT FOUND WITH ID: " + id);
+            throw new DevelopmentException("[API SELECT ELEMENT] ELEMENT NOT FOUND WITH ID: " + id);
         Application.getInstance().getMainFrame().getBrowser().getActiveTree().openNode(element);
     }
 

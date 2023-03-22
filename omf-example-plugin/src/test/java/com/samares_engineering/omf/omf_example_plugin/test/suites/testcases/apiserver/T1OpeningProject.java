@@ -10,20 +10,22 @@ package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.api
 import com.samares_engineering.omf.omf_example_plugin.test.utils.TestUtils;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
 
+import java.io.File;
+
 public class T1OpeningProject extends AModelComparatorTestCase {
 
-
-    String projectName;
-    String projectPath;
+//
+//    String projectName;
+//    String projectPath;
 
     @Override
     public void initVariables() {
         setName("[B]  Port Deletion");
         testCaseID = "Delete1";
         testPackageName = "1 Delete block";
-
-        projectName = "OMF_DEVELOPING.mdzip";
-        projectPath = "C:\\workspace\\DEV\\SAMARES\\OMF\\omf-example-plugin\\src\\main\\resources\\";
+//
+//        projectName = "OMF_DEVELOPING.mdzip";
+//        projectPath = "C:\\workspace\\DEV\\SAMARES\\OMF\\omf-example-plugin\\src\\main\\resources\\";
 
         setOracleNeeded(false);
     }
@@ -36,11 +38,14 @@ public class T1OpeningProject extends AModelComparatorTestCase {
     @Override
     protected void checkPrecondition() {
     }
-
+//C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\plugins\com.samares.omf.plugin.test\projects\
     @Override
     public void testAction() {
         // Create a GET request to "/openProject" with a "projectPath" query parameter
-        getApiTestComponent().openProjectUsingServerAPI(projectPath+projectName);
+        String projectName = initZipProject;
+        File projectFile = new File(System.getProperty("tests.resources") + File.separator + projectName);
+
+        getApiTestComponent().openProjectUsingServerAPI(projectFile);
         verifyProjectOpening(projectName);
         setInitProject(getCurrentProject());
     }

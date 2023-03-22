@@ -91,13 +91,12 @@ public class APITestComponent {
     }
 
     public void selectElementInContainmentTree(String elementID) {
-
         Element testedElement = testCase.findTestedElementByID(elementID);
 
         ContainmentTree containmentTree = testCase.getContainmentTree();
         containmentTree.setSelectedNodes(new Node[]{new Node(testedElement, ElementIcon.getIcon(testedElement))});
 
-        String url = replaceBackSlash(serverUrl + "refmodel/?ID==" + elementID);
+        String url = replaceBackSlash(serverUrl + "refmodel/?ID=" + elementID);
         sendGetRequest(httpClient, url);
     }
 
@@ -116,4 +115,7 @@ public class APITestComponent {
     }
 
 
+    public void openProjectUsingServerAPI(File projectFile) {
+        openProjectUsingServerAPI(projectFile.getAbsolutePath());
+    }
 }
