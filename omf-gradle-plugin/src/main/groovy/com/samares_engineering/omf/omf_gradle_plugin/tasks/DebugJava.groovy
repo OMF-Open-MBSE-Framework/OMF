@@ -4,7 +4,7 @@ import org.gradle.api.tasks.JavaExec;
 
 class DebugJava extends JavaExec {
     DebugJava() {
-        classpath project.fileTree(dir: "$project.buildDir/install", include: ['lib/**/*.jar'])
+        classpath project.configurations.cameoDependencies
 
         workingDir "$project.buildDir/install"
         setIgnoreExitValue false
@@ -12,7 +12,7 @@ class DebugJava extends JavaExec {
         standardOutput = System.out
         errorOutput = System.err
 
-        main = 'com.nomagic.magicdraw.Main'
+        mainClass = 'com.nomagic.magicdraw.Main'
 
         args 'DEVELOPER', '-verbose'
         group = "_dev"

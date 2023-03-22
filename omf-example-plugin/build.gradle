@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
-    id 'com.samares_engineering.omf_gradle_plugin' version "0.115.5-SNAPSHOT"
+    id 'com.samares_engineering.omf_gradle_plugin'
     id 'signing'
 }
 
@@ -14,7 +14,8 @@ plugins {
 
 ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
 ext.theTestPluginDeliveryName = testPluginPackage + "_" + version
-ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" + mdVersionShort + "_" + version
+ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
+        mdVersionShort + "_" + version
 ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
 ext.timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
 ext.isRelease = !version.endsWith("-SNAPSHOT")
@@ -103,7 +104,7 @@ mdPluginBuild {
 // ======================== JAVA TASKS CONFIG ========================
 // Configuration for javaExec Tasks
 tasks.withType(JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
+    classpath = project.configurations.cameoDependencies
 
     workingDir 'build/install'
     ignoreExitValue true
