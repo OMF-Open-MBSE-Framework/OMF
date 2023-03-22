@@ -2,6 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'maven-publish'
 
+group 'com.samares-engineering.omf-gradle-plugin'
 version '0.115.5-SNAPSHOT'
 ext.isRelease = !version.endsWith("-SNAPSHOT")
 
@@ -11,8 +12,8 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        omfGradlePluin {
-            id = 'com.samares-engineering.omf-gradle-plugin'
+        omfGradlePlugin {
+            id = group
             implementationClass = 'com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePlugin'
         }
     }
