@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
 
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver.T1OpeningProject;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver.T2SelectElementInContainmentTree;
-import com.samares_engineering.omf.omf_test_framework.templates.ATestBatchLocal;
+import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -17,25 +17,23 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-        //MDActions
-        //ExampleMDAActionsTest.class,
-
         //Creation
         T1OpeningProject.class,
 
         //Deletion
         T2SelectElementInContainmentTree.class,
 })
+public class LocalAPIBatch extends ATestBatch {
 
-public class LocalAPIBatch extends ATestBatchLocal {
     @Override
     public void initVariable() {
-        initZipProject = "init_basicSysML_Test.mdzip";
-        oracleZipProject = "oracle_basicSysML_Test.mdzip";
     }
 
     @Override
     public void startBatch() {
-        //PROJECT OPENED BY THE FIRST TEST
+    }
+
+    @Override
+    public void endBatch(boolean shallSaveModel) {
     }
 }

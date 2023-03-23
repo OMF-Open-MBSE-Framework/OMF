@@ -36,6 +36,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
+import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 import com.samares_engineering.omf.omf_test_framework.utils.TestLogger;
 import com.samares_engineering.omf.omf_test_framework.utils.omffeaturehelpers.APITestComponent;

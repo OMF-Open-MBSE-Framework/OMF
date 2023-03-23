@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.commandline.CommandLineAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.formatter.JUnitResultFormatterAsRunListener;
 import com.samares_engineering.omf.omf_test_framework.formatter.XMLJUnitResultFormatter;
-import com.samares_engineering.omf.omf_test_framework.templates.ATestBatch;
+import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 import org.junit.internal.TextListener;
 import org.junit.runner.Computer;
 import org.junit.runner.Description;
@@ -90,11 +90,11 @@ public class BatchLauncher implements CommandLineAction {
         return 0;
     }
 
-    private void runTestBatch(JUnitCore core, Class<? extends ATestBatch> testBatch) {
+    private static void runTestBatch(JUnitCore core, Class<? extends ATestBatch> testBatch) {
        try {
             currentBatch = testBatch.getDeclaredConstructor().newInstance();
 
-            currentBatch.startBatch(); //if Project bach => will load the project (local or twc)
+            currentBatch.startBatch(); //if Project batch => will load the project (local or twc)
             Result result = core.run(new Computer(), testBatch);
             currentBatch.endBatch(shallSaveModel(result.wasSuccessful())); //if ProjectBatch => will close/commit the project
 

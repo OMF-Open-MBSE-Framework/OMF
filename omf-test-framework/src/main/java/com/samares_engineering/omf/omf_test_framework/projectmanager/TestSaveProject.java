@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_test_framework.projectmanager;
 import com.google.common.base.Strings;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.esi.EsiUtils;
-import com.samares_engineering.omf.omf_test_framework.templates.ATestBatch;
+import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 
 import java.io.File;
 
@@ -32,8 +32,9 @@ public class TestSaveProject extends AbstractTestProject {
     @Override
     public void testAction() {
         getLoggerTest().log("- [START] Saving projects:");
-        if(isOracleNeeded())
+        if(isOracleNeeded()) {
             getLoggerTest().log("* " + getOracleProject().getName());
+        }
         getLoggerTest().log("* " + getInitProject().getName());
 
         saveModel();

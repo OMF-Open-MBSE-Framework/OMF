@@ -5,13 +5,14 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_test_framework.templates;
+package com.samares_engineering.omf.omf_test_framework.templates.batches;
 
 import com.samares_engineering.omf.omf_test_framework.projectmanager.TestCloseProjects;
 import com.samares_engineering.omf.omf_test_framework.projectmanager.TestLoadProject;
 import com.samares_engineering.omf.omf_test_framework.projectmanager.TestSaveProject;
+import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 
-public abstract class ATestBatchLocal extends ATestBatch{
+public abstract class ATestBatchLocal extends ATestBatch {
 
     @Override
     public void startBatch() {

@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_test_framework.templates;
+package com.samares_engineering.omf.omf_test_framework.templates.batches;
 
 import com.nomagic.magicdraw.core.Project;
 
@@ -16,17 +16,14 @@ public abstract class ATestBatch {
     public  Project initProject;
     public  Project oracleProject;
 
-
     public ATestBatch(){
         initVariable();
     }
-
 
     public abstract void initVariable();
 
     public abstract void startBatch();
     public abstract void endBatch(boolean shallSaveModel);
-
 
     public String getInitZipProject() {
         return initZipProject;
@@ -59,7 +56,4 @@ public abstract class ATestBatch {
     public void setOracleProject(Project oracleProject) {
         this.oracleProject = oracleProject;
     }
-
-
-
 }

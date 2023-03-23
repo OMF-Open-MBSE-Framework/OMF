@@ -7,10 +7,11 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
 
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.SmokeTests;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.deletion.T2DeleteBlock;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.stereotypes.ExampleStereotypesTest;
-import com.samares_engineering.omf.omf_test_framework.templates.TestBatchTWC;
+import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatchTWC;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -19,9 +20,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
         SmokeTests.class,
 
-        //MDActions
-        //ExampleMDAActionsTest.class,
-
         //Creation
         T3CreatePort.class,
 
@@ -29,12 +27,9 @@ import org.junit.runners.Suite.SuiteClasses;
         T2DeleteBlock.class,
 
         ExampleStereotypesTest.class
-
 })
 
-public class TWCBatch extends TestBatchTWC {
-
-
+public class TWCBatch extends ATestBatchTWC {
     @Override
     public void initVariable() {
         // Connection to TWC server
@@ -46,5 +41,4 @@ public class TWCBatch extends TestBatchTWC {
 
         super.initVariable();
     }
-
 }

@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_test_framework.templates;
+package com.samares_engineering.omf.omf_test_framework.templates.batches;
 
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.modules.ModuleUsage;
@@ -25,8 +25,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 
-public class TestBatchTWC extends ATestBatch {
-
+public abstract class ATestBatchTWC extends ATestBatch {
     public String serverAddress;
     public String serverUser;
     public String userPassword;
@@ -41,7 +40,6 @@ public class TestBatchTWC extends ATestBatch {
 
     @Override
     public void initVariable() {
-
         twcAccessor = new TwcAccessor(serverAddress, serverUser, userPassword);
 
         // To be sure those variables are not set
@@ -79,12 +77,12 @@ public class TestBatchTWC extends ATestBatch {
     }
 
 
-    public Project getProjectFromTWC(TwcAccessor twcAccessor, String projectName) throws OMFException {
+    private Project getProjectFromTWC(TwcAccessor twcAccessor, String projectName) throws OMFException {
         twcAccessor.openProject(projectName);
         return OMFUtils.currentProject;
     }
 
-    public void commitProject(){
+    private void commitProject(){
         ILockProjectService lockService = EsiUtils.getLockService(getInitProject());
         assert lockService != null;
         Collection<Element> lockedElements = lockService.getLockedByMe();

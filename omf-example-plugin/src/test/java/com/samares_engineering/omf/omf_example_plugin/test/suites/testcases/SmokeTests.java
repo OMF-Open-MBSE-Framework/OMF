@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
+package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases;
 
 
 import com.nomagic.magicdraw.tests.MagicDrawTestCase;
