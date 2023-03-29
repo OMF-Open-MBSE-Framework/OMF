@@ -37,6 +37,7 @@ public class TestPlugin extends APlugin {
             //TWCBatch.class,
             //LocalBatch.class,
             LocalAPIBatch.class
+            //TestGenerationBatch.class
     );
 
     @Override
