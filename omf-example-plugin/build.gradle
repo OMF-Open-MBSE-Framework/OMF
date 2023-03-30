@@ -105,7 +105,7 @@ mdPluginBuild {
 // ======================== JAVA TASKS CONFIG ========================
 // Configuration for javaExec Tasks
 tasks.withType(JavaExec) {
-    classpath = project.configurations.mdLibrary
+    classpath = configurations.mdLibrary
 
     workingDir 'build/install'
     ignoreExitValue true
@@ -255,7 +255,6 @@ tasks.all { task ->
         task.dependsOn ":omf-public-features:jar"
     }
 }
-
 
 tasks.junitHtmlReport.doLast {
     exec {
@@ -435,8 +434,6 @@ deliverLocally.dependsOn zipPluginLocally, zipTestPluginLocally, srcZipDir
 debugJava.dependsOn installPlugin, installTestPlugin
 installPlugin.dependsOn buildDist, deletePlugins
 installTestPlugin.dependsOn installPlugin, buildTestDist
-installMagicDraw.dependsOn configurations.mdApplicationArchive
-installZippedMDPlugins.dependsOn configurations.zippedMDPlugin
 buildDist.dependsOn jar
 buildTestDist.dependsOn testJar, buildDist
 compileJava.dependsOn clean, installMagicDraw, installZippedMDPlugins
