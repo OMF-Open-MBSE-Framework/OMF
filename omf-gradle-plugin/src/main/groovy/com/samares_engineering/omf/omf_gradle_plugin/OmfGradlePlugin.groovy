@@ -1,7 +1,8 @@
 package com.samares_engineering.omf.omf_gradle_plugin
 
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.BuildDist
-import com.samares_engineering.omf.omf_gradle_plugin.tasks.DebugJava
+import com.samares_engineering.omf.omf_gradle_plugin.tasks.RunPlugin
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
@@ -31,7 +32,7 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerInstallZippedMDPluginsTask(project)
         registerInstallPluginTask(project)
         registerInstallTestPluginTask(project)
-        registerDebugJavaTask(project)
+        registerRunPluginTask(project)
         registerBuildDistTask(project)
         registerBuildTestDistTask(project)
         registerInstallMagicDrawTask(project)
@@ -109,8 +110,8 @@ class OmfGradlePlugin implements Plugin<Project> {
         }
     }
 
-    private void registerDebugJavaTask(Project project) {
-        project.tasks.register('debugJava', DebugJava)
+    private void registerRunPluginTask(Project project) {
+        project.tasks.register('runPlugin', RunPlugin)
     }
 
     private void registerInstallTestPluginTask(Project project) {

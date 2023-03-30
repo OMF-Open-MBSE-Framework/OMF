@@ -106,15 +106,7 @@ mdPluginBuild {
 // Configuration for javaExec Tasks
 tasks.withType(JavaExec) {
     classpath = configurations.mdLibrary
-
     workingDir 'build/install'
-    ignoreExitValue true
-
-    standardOutput = System.out
-    errorOutput = System.err
-
-    mainClass = 'com.nomagic.magicdraw.Main'
-
     args 'TESTER'
 }
 
@@ -181,14 +173,6 @@ def testArgs = [
         '-Dtests.resources=' + resourcesDir
 ]
 
-def debugArgs = [
-        '-Xdebug',
-        '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9099',
-        '-Dcom.sun.management.jmxremote.port=1099',
-        '-Dcom.sun.management.jmxremote.authenticate=false',
-        '-Dcom.sun.management.jmxremote.ssl=false'
-]
-
 def twcArgs = [
         "-DserverIp=$ipServer",
         "-DuserName=$twcUsername",
@@ -196,11 +180,10 @@ def twcArgs = [
         "-Dtest=true"
 ]
 
-
 // To launch units tests in CAMEO from IntelliJ
 task runTest(type: JavaExec) {
     group '_dev'
-    main = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
+    mainClass = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
     jvmArgs += testArgs
     jvmArgs += twcArgs
     args += '-verbose'
@@ -209,21 +192,11 @@ runTest.dependsOn installTestPlugin
 
 task runTestNoLog(type: JavaExec) {
     group '_dev'
-    main = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
+    mainClass = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
     jvmArgs += testArgs
     jvmArgs += twcArgs
 }
 runTestNoLog.dependsOn installTestPlugin
-
-task debugTest(type: JavaExec) {
-    group '_dev'
-    main = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
-    jvmArgs += testArgs
-    jvmArgs += debugArgs
-    jvmArgs += twcArgs
-    args += '-verbose'
-}
-debugTest.dependsOn installTestPlugin
 
 def modelSaveArgs = [
         "-Dcom.nomagic.magicdraw.commandline.action=" + testRetriever,
@@ -237,7 +210,6 @@ task retrieveModel(type: JavaExec) {
     group '_dev'
     main = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
     jvmArgs += testArgs
-    jvmArgs += debugArgs
     jvmArgs += twcArgs
     jvmArgs += modelSaveArgs
     args += '-verbose'
@@ -431,7 +403,7 @@ junitHtmlReport {
 zipPluginLocally.dependsOn buildDist
 zipTestPluginLocally.dependsOn buildTestDist
 deliverLocally.dependsOn zipPluginLocally, zipTestPluginLocally, srcZipDir
-debugJava.dependsOn installPlugin, installTestPlugin
+runPlugin.dependsOn installPlugin, installTestPlugin
 installPlugin.dependsOn buildDist, deletePlugins
 installTestPlugin.dependsOn installPlugin, buildTestDist
 buildDist.dependsOn jar
@@ -439,4 +411,3 @@ buildTestDist.dependsOn testJar, buildDist
 compileJava.dependsOn clean, installMagicDraw, installZippedMDPlugins
 runTestNoLog.finalizedBy 'junitHtmlReport'
 runTest.finalizedBy 'junitHtmlReport'
-debugTest.finalizedBy 'junitHtmlReport'
