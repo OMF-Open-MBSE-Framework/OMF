@@ -50,7 +50,7 @@ public class GenerateCreationTest extends AUIAction {
         if(selectedElements == null)
             return;
 
-        this.generationPath = ((TestGeneration) getFeature()).GENERATION_PATH;
+        this.generationPath = ((TestGeneration) getFeature()).GENERATION_TEST_PATH;
 
         selectedElements.stream()
                 .filter(NamedElement.class::isInstance)

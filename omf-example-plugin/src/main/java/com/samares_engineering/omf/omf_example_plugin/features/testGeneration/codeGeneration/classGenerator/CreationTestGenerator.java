@@ -141,7 +141,11 @@ public class CreationTestGenerator {
             Diagram diagram = activeDiagram.getDiagram();
             String diagramID = diagram.getLocalID();
             comment = COMMENT_SNIPPET + diagramID;
-            methodBuilder.addCode("openDiagram(\"" + diagramID + "\");" + comment + "\n");
+            methodBuilder.addCode("$T diagramElement = findTestedElementByID(\"" + diagramID + "\");" + comment + "\n", Element.class)
+                    .beginControlFlow("if (diagramElement != null)")
+                    .addStatement("openDiagram(\"" + diagramID + "\")")
+                    .endControlFlow()
+            ;
         }
         methodBuilder.addCode("\n");
     }

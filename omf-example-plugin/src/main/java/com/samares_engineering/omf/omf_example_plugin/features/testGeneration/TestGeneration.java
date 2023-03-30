@@ -24,12 +24,16 @@ import java.util.List;
 public class TestGeneration extends AFeature {
 
     public static final String SERVER_ADRESS = "http://localhost:9850/refmodel/";
-    public String GENERATION_PATH = getProjectPath();
+    public String GENERATION_PATH = getProjectPath("main");
+    public String GENERATION_TEST_PATH = getProjectPath("test");
 
     // USAGE : Enter here the groups to save ans restore with test and snapshots
-    public List<String> ENV_OPTION_GROUPIDS = Arrays.asList("env.options.omf.plugin"
-            //,"TABLE_OPTIONS_GROUP"
-    );
+    public List<String> ENV_OPTION_GROUPIDS =
+            Arrays.asList(
+//                "env.options.omf.plugin"
+//                ,"TABLE_OPTIONS_GROUP"
+            );
+
 
     public List<String> PROJECT_OPTION_GROUPIDS = Arrays.asList("");
 
@@ -77,10 +81,11 @@ public class TestGeneration extends AFeature {
 
 
     /**
-     * Get the absolute path of the root module of this project
+     * Get the absolute path of the root module of this project, then add /src/[repo]/java
+     * @param repo
      * @return
      */
-    private String getProjectPath(){
+    private String getProjectPath(String repo){
         String filePath = new File("").getAbsolutePath();
         String slash;
         // Linux format
@@ -93,7 +98,7 @@ public class TestGeneration extends AFeature {
 
         filePath = filePath.substring(0, filePath.lastIndexOf(slash));
         filePath = filePath.substring(0, filePath.lastIndexOf(slash));
-        filePath += slash + "src" + slash + "test" + slash + "java";
+        filePath += slash + "src" + slash + repo + slash + "java";
 
         return filePath;
     }

@@ -6,19 +6,18 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.utils.OptionsBaseline;
 import org.junit.Assert;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class ReInitOptionsBaseline {
-    public static Map<String, List<OptionsBaseline>> snapshot() {
-        return Collections.EMPTY_MAP;
-    }
+  public static Map<String, List<OptionsBaseline>> snapshot() {
+    return Map.of(
+    );
+  }
 
-    private static Element findElementByID(String id) {
-        NamedElement foundElement = (NamedElement) OMFUtils.currentProject.getElementByID(id);
-        Assert.assertNotNull(" No element found with ID " + id, foundElement);
-        return foundElement;
-    }
+  private static Element findElementByID(String id) {
+    NamedElement foundElement = (NamedElement) OMFUtils.currentProject.getElementByID(id);
+    Assert.assertNotNull(" No element found with ID " + id, foundElement);
+    return foundElement;
+  }
 }
-

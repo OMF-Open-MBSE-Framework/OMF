@@ -27,7 +27,7 @@ public class OptionsCodeGenerator {
     }
 
     /**
-     * Generate code whitch create for each group's property a
+     * Generate code which create for each group's property a SetupOptionsBaseline, and add it to a provided method builder.
      * @param methodBuilder : method builder to which we want to add the code
      * @param groupsIds : groups of which we want to save the properties
      *
@@ -38,32 +38,38 @@ public class OptionsCodeGenerator {
      *     		 new SetupOptionsBaseline(Element.class, "ElementField", findElementByID("_11_5EAPbeta_be00301_1147424179914_458922_958")) // http://localhost:9850/refmodel/?ID=_11_5EAPbeta_be00301_1147424179914_458922_958
      *     	 ),
      *     	 "groupOptionID2", Arrays.asList(
-     *           new SetupOptionsBaseline(String.class, "StringField", "C:\Users\Calliope\IdeaProjects\samaresmbseframework\omf-example-plugin\build\install/plugins/")
+     *           new SetupOptionsBaseline(String.class, "StringField", "C:\\Users\\Calliope\\IdeaProjects\\samaresmbseframework\\omf-example-plugin\\build\\install/plugins/")
      *       )
      *     );
      */
     public void generateAllOptionsProperties(MethodSpec.Builder methodBuilder, List<String> groupsIds) {
         methodBuilder.addCode("$T.of(", Map.class);
 
-        for (int i = 0; i < groupsIds.size()-1; i++) {
-            String groupId = groupsIds.get(i);
-            List<Property> properties = OptionsUtils.getEnvOptionProperties(groupId);
+        if (groupsIds.size() > 0) {
+            for (int i = 0; i < groupsIds.size() - 1; i++) {
+                String groupId = groupsIds.get(i);
+                List<Property> properties = OptionsUtils.getEnvOptionProperties(groupId);
 
-            if (properties == null)
-                continue;
+                if (properties == null)
+                    continue;
 
-            generateOneOptionGroupProperties(methodBuilder, groupId, properties);
-            methodBuilder.addCode(",");
+                generateOneOptionGroupProperties(methodBuilder, groupId, properties);
+                methodBuilder.addCode(",");
+            }
+            // Last Line shall not contains ','
+            String groupId = groupsIds.get(groupsIds.size() - 1);
+            generateOneOptionGroupProperties(methodBuilder, groupId, OptionsUtils.getEnvOptionProperties(groupId));
         }
-        // Last Line shall not contains ','
-        String groupId = groupsIds.get(groupsIds.size() -1);
-        generateOneOptionGroupProperties(methodBuilder, groupId, OptionsUtils.getEnvOptionProperties(groupId));
 
         methodBuilder.addCode("\n);\n");
     }
 
 
     private void generateOneOptionGroupProperties(MethodSpec.Builder initEnvOptionBuilder, String groupId, List<Property> properties) {
+        if (properties == null) {
+            return;
+        }
+
         initEnvOptionBuilder.addCode("\n\t \"" + groupId + "\", $T.asList(", Arrays.class);
 
         Predicate<Property> isLastElement = property -> properties.indexOf(property) < properties.size() - 1;
