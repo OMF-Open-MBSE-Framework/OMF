@@ -3,9 +3,6 @@ package com.samares_engineering.omf.omf_example_plugin.features.testGeneration.a
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.DeactivateListener;
@@ -40,7 +37,8 @@ public class GenerateCreationTest extends AUIAction {
         if(selectedElements.isEmpty())
             return false;
 
-        return selectedElements.size() == 1 && isInTestPackage(selectedElements.get(0));
+        return selectedElements.size() == 1;
+                //&& isInTestPackage(selectedElements.get(0));
     }
 
 
@@ -102,15 +100,18 @@ public class GenerateCreationTest extends AUIAction {
     private Package getTestPackage(Element e) {
         Element parent = e.getOwner();
 
-        // If parent is a package stereotyped <<TestPackage>>
-        if (TestProfile.getInstanceByProject().testPackage().is(parent)) {
-            return (Package) parent;
-        }
-        // If parent is a package or model
+//        // If parent is a package stereotyped <<TestPackage>>
+//        if (TestProfile.getInstanceByProject().testPackage().is(parent)) {
+//            return (Package) parent;
+//        }
+//        // If parent is a package or model
+//        if (parent instanceof Package) {
+//            OMFErrorHandler.handleException(new OMFException("The selected element must be contained by a package stereotyped <<TestPackage>>.", GenericException.ECriticality.ALERT), true);
+//            //OMFLogger.getInstance().log("A selected element isn't contain by a package stereotyped <<TestPackage>>. Test will not be generated forn this element.", parent, OMFLogLevel.ERROR);
+//            return null;
+//        }
         if (parent instanceof Package) {
-            OMFErrorHandler.handleException(new OMFException("The selected element must be contained by a package stereotyped <<TestPackage>>.", GenericException.ECriticality.ALERT), true);
-            //OMFLogger.getInstance().log("A selected element isn't contain by a package stereotyped <<TestPackage>>. Test will not be generated forn this element.", parent, OMFLogLevel.ERROR);
-            return null;
+            return (Package) parent;
         }
 
         return getTestPackage(parent);

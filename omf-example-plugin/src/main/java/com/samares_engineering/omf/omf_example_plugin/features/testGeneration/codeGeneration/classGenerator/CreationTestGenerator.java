@@ -14,6 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericE
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.TestGeneration;
+import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration.OptionsCodeGenerator;
 import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.utils.OptionsBaseline;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
@@ -70,7 +71,7 @@ public class CreationTestGenerator {
         MethodSpec verifyResults = generateVerifyResults();
 
         // Class builder
-        TypeSpec testClass = TypeSpec.classBuilder(getTestPackageName())
+        TypeSpec testClass = TypeSpec.classBuilder(CodeGenerationUtils.toCamelCase(getTestPackageName()))
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractTestCase.class)
                 .addMethod(initVariables)

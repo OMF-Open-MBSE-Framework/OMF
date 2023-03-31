@@ -35,8 +35,7 @@ public class TestPlugin extends APlugin {
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
             //TWCBatch.class,
-            //LocalBatch.class,
-            //LocalAPIBatch.class
+            //LocalAPIBatch.class,
             TestGenerationBatch.class
     );
 
