@@ -408,6 +408,8 @@ installPlugin.dependsOn buildDist, deletePlugins
 installTestPlugin.dependsOn installPlugin, buildTestDist
 buildDist.dependsOn jar
 buildTestDist.dependsOn testJar, buildDist
+installMagicDraw.dependsOn configurations.mdApplicationArchive
+installZippedMDPlugins.dependsOn configurations.zippedMDPlugin
 compileJava.dependsOn clean, installMagicDraw, installZippedMDPlugins
 runTestNoLog.finalizedBy 'junitHtmlReport'
 runTest.finalizedBy 'junitHtmlReport'
