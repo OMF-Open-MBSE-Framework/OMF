@@ -49,7 +49,7 @@ class MDPluginBuildFunctionalTest extends Specification {
                 .withProjectDir(testProjectDir)
                 .withArguments(
                         'buildDist', //'buildTestDist',
-                        //'debugJava',
+                        //'runPlugin',
                         'installZippedMDPlugins', 'installMagicDraw', 'installPlugin', 'installTestPlugin',
                         'deliverLocally', 'zipPluginLocally', 'srcZipDir'
                 )

@@ -27,12 +27,12 @@ To install the plugin in *CSM* or *MCSE*, click on Help -> Resource/Plugin Manag
 
 - From command line :
 
-> gradle debugJava
+> gradle runPlugin
 
 - From IntelliJ :
 
   - Open project as a gradle project
-  - In the gradle tool window, right-click *Tasks/_dev/debugJava* and select the *debug* option
+  - In the gradle tool window, right-click *Tasks/_dev/runPlugin* and select the *debug* option
 
 # Authors
 
