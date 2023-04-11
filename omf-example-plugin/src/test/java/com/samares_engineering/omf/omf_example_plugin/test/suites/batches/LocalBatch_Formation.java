@@ -7,9 +7,10 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
 
-import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.SmokeTests;
-import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.deletion.T2DeleteBlock;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.Ex_Port_Creation_Solution;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.mdactions.Ex_Reverse_Direction_Solution;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatchLocal;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -21,17 +22,17 @@ import org.junit.runners.Suite.SuiteClasses;
         //SmokeTests.class,
 
         //Creation
-        T3CreatePort.class,
+        Ex_Port_Creation_Solution.class,
 
-        //Deletion
-        T2DeleteBlock.class,
+        //Update
+        Ex_Reverse_Direction_Solution.class,
 })
-public class LocalBatch extends ATestBatchLocal {
+public class LocalBatch_Formation extends ATestBatchLocal {
 
     @Override
     public void initVariable() {
-        initZipProject = "init_basicSysML_Test.mdzip";
-        oracleZipProject = "oracle_basicSysML_Test.mdzip";
+        initZipProject = "Ex_Test_Auto_Init.mdzip";
+        oracleZipProject = "Ex_Test_Auto_Final.mdzip";
     }
 
 }
