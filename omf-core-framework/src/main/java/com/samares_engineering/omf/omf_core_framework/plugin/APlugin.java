@@ -16,18 +16,21 @@ import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureNotFoundException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFPluginRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,19 +140,32 @@ public abstract class APlugin extends Plugin {
         isInitialized = true;
     }
     private void configureListenerManager() {
-        this.listenerManager = initListenerManager();
+        try {
+            this.listenerManager = initListenerManager();
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during ListenerManagerConfiguration", e, this, GenericException.ECriticality.CRITICAL));
+        }
     }
 
     private void configureFeatures() {
-        List<MDFeature> featureInstances = this.initFeatures();
-        featureInstances.forEach(f -> {
-            if (features.containsKey(f.getName())) {
-                OMFErrorHandler.handleException(new OMFException("Can't init feature " + f.getName() + " as a feature with the same name has already" +
-                        "been instantiated in the plugin", GenericException.ECriticality.CRITICAL));
-            } else {
-                features.put(f.getName(), f);
+        try {
+            List<MDFeature> featureInstances = this.initFeatures();
+            if(featureInstances == null){
+                ColorPrinter.warn("No feature to registered in the plugin"); //TODO: Introduce real logging management
+                return;
             }
-        });
+
+            featureInstances.forEach(f -> {
+                if (features.containsKey(f.getName())) {
+                    OMFErrorHandler.handleException(new OMFPluginRegisteringException("Can't init feature " + f.getName() + " as a feature with the same name has already" +
+                            "been instantiated in the plugin", this, GenericException.ECriticality.CRITICAL));
+                } else {
+                    features.put(f.getName(), f);
+                }
+            });
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during FeatureConfiguration", e, this, GenericException.ECriticality.CRITICAL));
+        }
     }
 
     /**
@@ -157,38 +173,59 @@ public abstract class APlugin extends Plugin {
      * - GUI_REQUIRED: to inform custom wizard to not be displayed
      */
     protected void configureConstants() {
-        OMFConstants.GUI_REQUIRED = !Application.runtimeInternal().isTester() || Application.runtimeInternal().isDeveloper();
+        try {
+            OMFConstants.GUI_REQUIRED = !Application.runtimeInternal().isTester() || Application.runtimeInternal().isDeveloper();
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during constant configuration (JVM args, DEV/TESTER, GUI REQUIRED, etc)", e, this, GenericException.ECriticality.CRITICAL));
+        }
     }
 
     protected void configureProjectListener() {
-        projectListener = initProjectListener();
-        if(projectListener != null)
-            Application.getInstance().getProjectsManager().addProjectListener(projectListener);
-        else
-            ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
+        try {
+            projectListener = initProjectListener();
+            if (projectListener != null)
+                Application.getInstance().getProjectsManager().addProjectListener(projectListener);
+            else
+                ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during ProjectListener configuration", e, this, GenericException.ECriticality.CRITICAL));
+        }
     }
 
     protected void configureActions() {
         ActionsConfiguratorsManager actionManager = ActionsConfiguratorsManager.getInstance();
 
-        browserConfigurator = initFeatureRegisteringBrowserConfigurator();
-        if (browserConfigurator == null)
-            ColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
-        else
-            actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
-
-        diagramConfigurator = initFeatureRegisteringDiagramConfigurator();
-        if (diagramConfigurator == null)
-            ColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
-        else {
-            actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM,diagramConfigurator);
+        try {
+            browserConfigurator = initFeatureRegisteringBrowserConfigurator();
+            if (browserConfigurator == null)
+                ColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
+            else
+                actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during BrowserAction Registering", e, this, GenericException.ECriticality.CRITICAL));
         }
 
-        menuConfigurator = initFeatureRegisteringMainMenuConfigurator();
-        if (menuConfigurator == null)
-            ColorPrinter.warn("[OMF] NO MAIN MENU CONFIGURATOR REGISTERED");
-        else
-            actionManager.addMainMenuConfigurator(menuConfigurator);
+
+        try {
+            diagramConfigurator = initFeatureRegisteringDiagramConfigurator();
+            if (diagramConfigurator == null)
+                ColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
+            else {
+                actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM, diagramConfigurator);
+            }
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during DiagramAction Registering", e, this, GenericException.ECriticality.CRITICAL));
+        }
+
+        try{
+            menuConfigurator = initFeatureRegisteringMainMenuConfigurator();
+            if (menuConfigurator == null)
+                ColorPrinter.warn("[OMF] NO MAIN MENU CONFIGURATOR REGISTERED");
+            else
+                actionManager.addMainMenuConfigurator(menuConfigurator);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during MainMenuAction Registering", e, this, GenericException.ECriticality.CRITICAL));
+        }
 
         featureRegisterer = new FeatureRegisterer(this);
     }
@@ -199,34 +236,42 @@ public abstract class APlugin extends Plugin {
     }
 
     protected void configureEnvironmentOptions() {
+
         Application application = Application.getInstance();
         EnvironmentOptions options = application.getEnvironmentOptions();
 
+        try {
+            environmentOptionsGroup = initFeatureRegisteringEnvironmentOptionGroup();
+            if (environmentOptionsGroup == null) {
+                ColorPrinter.warn("[OMFPluginRegistering] NO ENVIRONMENT OPTIONS REGISTERED");
+                return;
+            }
 
-        environmentOptionsGroup = initFeatureRegisteringEnvironmentOptionGroup();
-        if(environmentOptionsGroup == null){
-            ColorPrinter.warn("[OMF] NO ENVIRONMENT OPTIONS REGISTERED");
-            return;
+
+            options.addGroup(environmentOptionsGroup);
+
+            environmentOptionsListener = initEnvironmentOptionsListener();
+            if (CollectionUtils.isNotEmpty(environmentOptionsListener))
+                environmentOptionsListener.forEach(options::addEnvironmentChangeListener);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during EnvironmentOptions Configuration", e, this, GenericException.ECriticality.CRITICAL));
         }
-
-
-        options.addGroup(environmentOptionsGroup);
-
-        environmentOptionsListener = initEnvironmentOptionsListener();
-        if(!environmentOptionsListener.isEmpty())
-            environmentOptionsListener.forEach(options::addEnvironmentChangeListener);
 
     }
 
     private void configureProjectOptions() {
-        projectOptionConfigurator = initFeatureRegisteringProjectOptionGroup();
+        try {
+            projectOptionConfigurator = initFeatureRegisteringProjectOptionGroup();
 
-        if(projectOptionConfigurator == null){
-            ColorPrinter.warn("[OMF] NO PROJECT OPTIONS REGISTERED");
-            return;
+            if (projectOptionConfigurator == null) {
+                ColorPrinter.warn("[OMF] NO PROJECT OPTIONS REGISTERED");
+                return;
+            }
+
+            ProjectOptions.addConfigurator(projectOptionConfigurator);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during ProjectOptions Configuration", e, this, GenericException.ECriticality.CRITICAL));
         }
-
-        ProjectOptions.addConfigurator(projectOptionConfigurator);
     }
 
 
@@ -250,7 +295,7 @@ public abstract class APlugin extends Plugin {
         if (features.containsKey(name)) {
             return features.get(name);
         }
-        throw new OMFException("Can't find feature instance with name " + name + " in plugin " +
+        throw new OMFFeatureNotFoundException("Can't find feature instance with name " + name + " in plugin " +
                 featureRegisterer.getPlugin(), GenericException.ECriticality.CRITICAL);
     }
 

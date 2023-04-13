@@ -14,6 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class RemoveProjectOptions extends AUIAction {
         if(OMFUtils.currentProject == null)
             return false;
 
-        if(selectedElements.isEmpty()) return false;
+        if(CollectionUtils.isEmpty(selectedElements)) return false;
 
         return selectedElements.stream().anyMatch(Class.class::isInstance);
     }

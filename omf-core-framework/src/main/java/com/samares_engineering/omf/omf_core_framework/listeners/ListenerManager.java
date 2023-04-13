@@ -5,11 +5,13 @@
  * @since     0.0.0
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners;
+
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.DeletionPropertyChangeElementListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.LockManagerListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.OrchestratorListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.TransactionElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,7 +100,7 @@ public class ListenerManager implements IListenerManager {
     }
 
     private boolean thereAreDeclaredListeners() {
-        return this.listenerList != null && !this.listenerList.isEmpty();
+        return CollectionUtils.isNotEmpty(this.listenerList);
     }
 
     public boolean isListenersActivated() {
