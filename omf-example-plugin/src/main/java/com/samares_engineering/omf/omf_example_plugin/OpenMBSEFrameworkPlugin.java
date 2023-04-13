@@ -19,8 +19,6 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.example1.ExampleFeature1;
-import com.samares_engineering.omf.omf_example_plugin.features.example3.ExampleFeature3;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.dev.Dev;
@@ -34,8 +32,6 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
-                new ExampleFeature1(),
-                new ExampleFeature3(),
                 new Dev(),
                 new StereotypesFeature(),
                 new APIServerFeature()

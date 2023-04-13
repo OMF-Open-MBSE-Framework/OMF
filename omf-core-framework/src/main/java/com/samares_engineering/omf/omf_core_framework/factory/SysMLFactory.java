@@ -12,6 +12,7 @@ import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activity;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
@@ -35,6 +36,13 @@ public class SysMLFactory extends AMagicDrawFactory {
     public static SysMLFactory getInstance(Project project) {
         SysMLFactory.SysMLFactoryHolder.instance.setProject(project);
         return SysMLFactoryHolder.instance;
+    }
+
+    public Package createPackage( String name, Element owner) {
+        Package mdPackage = getMagicDrawFactory().createPackageInstance();
+        mdPackage.setName(name);
+        mdPackage.setOwner(owner);
+        return mdPackage;
     }
 
     private static class SysMLFactoryHolder {

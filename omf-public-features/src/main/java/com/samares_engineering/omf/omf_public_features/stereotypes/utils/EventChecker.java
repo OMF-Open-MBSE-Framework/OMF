@@ -9,6 +9,8 @@ package com.samares_engineering.omf.omf_public_features.stereotypes.utils;
 
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.uml2.impl.PropertyNames;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.beans.PropertyChangeEvent;
@@ -56,7 +58,13 @@ public class EventChecker {
     }
     public EventChecker isPort() {
         isSourceNotNull();
-        predicates.add(evt -> Profile.getSysmlAdditionalStereotypes().partProperty().is((Element) evt.getSource()));
+        predicates.add(evt -> evt.getSource() instanceof Port);
+        return this;
+    }
+
+    public EventChecker onRenaming() {
+        isSourceNotNull();
+        predicates.add(evt -> evt.getPropertyName().equals(PropertyNames.NAME));
         return this;
     }
 }

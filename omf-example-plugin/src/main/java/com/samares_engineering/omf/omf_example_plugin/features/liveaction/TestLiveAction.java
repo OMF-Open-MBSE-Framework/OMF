@@ -5,25 +5,26 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.example3;
+package com.samares_engineering.omf.omf_example_plugin.features.liveaction;
 
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
-import com.samares_engineering.omf.omf_example_plugin.features.example3.actions.ExampleMDAction3;
-import com.samares_engineering.omf.omf_example_plugin.features.example3.actions.RegisterFeatureA;
-import com.samares_engineering.omf.omf_example_plugin.features.example3.actions.RemoveFeatureA;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
+import com.samares_engineering.omf.omf_example_plugin.features.liveaction.creation.OnBlockCreation;
+import com.samares_engineering.omf.omf_example_plugin.features.liveaction.creation.OnBlockRenaming;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ExampleFeature3 extends AFeature {
+public class TestLiveAction extends AFeature {
 
-    public ExampleFeature3(){
-        super("ExampleFeature3");
+    public TestLiveAction(){
+       super("FEATURE NAME");
     }
 
     @Override
@@ -34,9 +35,6 @@ public class ExampleFeature3 extends AFeature {
     @Override
     public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
-                new ExampleMDAction3(),
-                new RegisterFeatureA(),
-                new RemoveFeatureA()
         );
     }
 
@@ -47,7 +45,13 @@ public class ExampleFeature3 extends AFeature {
 
     @Override
     public List<IRuleEngine> initLiveActions() {
-        return Collections.emptyList();
+        IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
+        creationRE.addRule(new OnBlockCreation());
+
+        IRuleEngine renamingRE = new RuleEngine(RECategoryEnum.UPDATE);
+        renamingRE.addRule(new OnBlockRenaming());
+
+        return List.of(creationRE,renamingRE);
     }
 
     @Override
@@ -64,4 +68,6 @@ public class ExampleFeature3 extends AFeature {
     protected List<IOption> initProjectOnlyOptions() {
         return Collections.emptyList();
     }
+
+
 }

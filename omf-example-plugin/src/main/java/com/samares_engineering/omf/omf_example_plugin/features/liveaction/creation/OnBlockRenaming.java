@@ -5,19 +5,20 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.example2.creation;
+package com.samares_engineering.omf.omf_example_plugin.features.liveaction.creation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 
-public class ConcurrentBlockCreation extends ARule {
+public class OnBlockRenaming extends ARule {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()
-                .isInstanceCreated()
+                .onRenaming()
                 .isBlock()
                 .test(evt);
     }
@@ -30,7 +31,8 @@ public class ConcurrentBlockCreation extends ARule {
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
         Class block = (Class) e.getSource();
-        block.setName("B shall prevail");
+        block.setName("renamed");
+        OMFLogger.getInstance().warn("ON BLOCK RENAMING BLOCK", null);
         return e;
     }
 
