@@ -26,9 +26,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class TemplateFeature extends AFeature {
+public class HyperLinkFeature extends AFeature {
 
-    public TemplateFeature(){
+    public HyperLinkFeature(){
        super("FEATURE NAME");
     }
 
