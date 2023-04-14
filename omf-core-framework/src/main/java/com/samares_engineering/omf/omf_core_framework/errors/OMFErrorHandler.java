@@ -31,22 +31,26 @@ public class OMFErrorHandler {
         handleException(uncaughtException, true);
     }
 
+    public static void handleException(OMFException omfException) {
+        handleException(omfException, true);
+    }
+
     public static void handleException(OMFException exception, boolean cancelSession) {
         boolean isSessionCreated = SessionManager.getInstance().isSessionCreated(OMFUtils.currentProject);
         exception.displayDevMessage();
+        exception.displayUserMessage();
         if (cancelSession && isSessionCreated)
             throw new RuntimeException(exception.getMessage());
 
-        exception.displayUserMessage();
     }
 
     public static void handleException(LayoutException exception, boolean cancelSession) {
         boolean isSessionCreated = SessionManager.getInstance().isSessionCreated(OMFUtils.currentProject);
         exception.displayDevMessage();
+        exception.displayUserMessage();
         if (cancelSession && isSessionCreated)
             throw new RuntimeException(exception.getMessage());
 
-        exception.displayUserMessage();
     }
 
     public static void handleException(Exception uncaughtException, boolean cancelSession) {

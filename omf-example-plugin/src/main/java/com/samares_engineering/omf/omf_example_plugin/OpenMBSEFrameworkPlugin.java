@@ -34,7 +34,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
         return List.of(
                 new Dev(),
                 new StereotypesFeature(),
-                new APIServerFeature()
+                new APIServerFeature("http://localhost", 9850)
         );
     }
 

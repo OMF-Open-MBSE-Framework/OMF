@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_public_features.apiserver.actions;
+package com.samares_engineering.omf.omf_public_features.partblock_hyperttext.action;
 
 import com.nomagic.magicdraw.hyperlinks.Hyperlink;
 import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;

@@ -25,7 +25,7 @@ public abstract class RequestHandler{
     public void successAnswer(String message, String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("text/html;charset=utf-8");
-        PrintWriter out = null;
+        PrintWriter out;
         try {
             out = response.getWriter();
         } catch (IOException e) {

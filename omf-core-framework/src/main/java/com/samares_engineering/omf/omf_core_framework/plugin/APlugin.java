@@ -342,4 +342,8 @@ public abstract class APlugin extends Plugin {
     public OMFMainMenuConfigurator getMenuConfigurator() {
         return menuConfigurator;
     }
+
+    public String getName() {
+        return this.getDescriptor().getName();
+    }
 }

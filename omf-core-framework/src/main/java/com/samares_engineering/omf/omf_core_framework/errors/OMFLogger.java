@@ -17,6 +17,7 @@ public class OMFLogger {
 
     final static String warn = "\"#FF8800\"";
     final static String err = "\"#AA0000\"";
+    final static String info = "\"#0033FF\"";
 
     private Map<String, Runnable> callbacks;
 
@@ -32,41 +33,61 @@ public class OMFLogger {
         this.callbacks.clear();
     }
 
-    public void log(String message, Element elementTolink, OMFLogLevel level) {
+    public void log(String message, Element elementToLink, OMFLogLevel level) {
         String link = "";
-        if (elementTolink != null) {
-            link = "Debug: " + elementTolink.getID();
-            callbacks.put(link, new SelectInBrowserRunnable(elementTolink));
+        if (elementToLink != null) {
+            link = "Debug: " + elementToLink.getID();
+            callbacks.put(link, new SelectInBrowserRunnable(elementToLink));
         }
 
-        if (level.equals(OMFLogLevel.INFO)) {
-            Application.getInstance().getGUILog().log("<font color=\"#0033FF\">[Info] " + message + "</font>");
+        String color;
+        String logCategory;
+
+        switch (level) {
+            case WARNING:
+                color = warn;
+                logCategory = "[Warning] ";
+                break;
+            case ERROR:
+                color = err;
+                logCategory = "[Error] ";
+                break;
+
+            case INFO:
+            default:
+                color = info;
+                logCategory = "[Info] ";
+                break;
         }
-        if (level.equals(OMFLogLevel.WARNING)) {
-            Application.getInstance().getGUILog().addHyperlinkedText("<font color=\"#FF8800\">[Warning] " + message + " - </font> <A>" + link + "</A>", callbacks);
-        }
-        if (level.equals(OMFLogLevel.ERROR)) {
-            Application.getInstance().getGUILog().addHyperlinkedText("<font color=\"#AA0000\">[Error] " + message + " - </font> <A>" + link + "</A>", callbacks);
-        }
+
+        Application.getInstance().getGUILog().addHyperlinkedText(
+                "<font color=" + color + ">" +        //Starting HTML tag and color setting
+                   logCategory + message +              //message
+                    "</font>" + " - " +                //Ending HTML tag and separator
+                   " <A>" + link + "</A>", callbacks); //link to element if any
+
     }
 
+
+    public void info(String message) {
+        log(message, null, OMFLogLevel.INFO);
+    }
+    public void info(String message, Element elementToLink) {
+        log(message, elementToLink, OMFLogLevel.INFO);
+    }
+    public void warn(String message) {
+        log(message, null, OMFLogLevel.WARNING);
+    }
 
     public void warn(String message, Element elementToLink) {
-        String link = "";
-        if (elementToLink != null) {
-            link = "Debug: " + elementToLink.getID();
-            callbacks.put(link, new SelectInBrowserRunnable(elementToLink));
-        }
-        print(warn, "[Warning] " + message + " - </font> <A>" + link + "</A>");
+        log(message, elementToLink, OMFLogLevel.WARNING);
     }
 
-    public void err(String message, Element elementToLink) {
-        String link = "";
-        if (elementToLink != null) {
-            link = "Debug: " + elementToLink.getID();
-            callbacks.put(link, new SelectInBrowserRunnable(elementToLink));
-        }
-        print(warn, "[Error] " + message + " - </font> <A>" + link + "</A>");
+    public void error(String message) {
+        log(message, null, OMFLogLevel.ERROR);
+    }
+    public void error(String message, Element elementToLink) {
+        log(message, elementToLink, OMFLogLevel.ERROR);
     }
 
 
@@ -81,23 +102,33 @@ public class OMFLogger {
                 linkOwnerElement = elementToLink.getOwner().getHumanName();
                 callbacks.put(linkOwnerElement, new SelectInBrowserRunnable(elementToLink.getOwner()));
             }
+        }
+        String color;
+        String logCategory;
 
+        switch (level) {
+            case WARNING:
+                color = warn;
+                logCategory = "[Warning] ";
+                break;
+            case ERROR:
+                color = err;
+                logCategory = "[Error] ";
+                break;
 
+            case INFO:
+            default:
+                color = info;
+                logCategory = "[Info] ";
+                break;
         }
+        Application.getInstance().getGUILog().addHyperlinkedText(
+                "<font color=" + color + ">" +        //Starting HTML tag and color setting
+                        logCategory + message +          //message
+                    "</font>" + " - " +                  //Ending HTML tag
+                    "<A>"+linkOwnerElement+"</A>" + " -> " + //link to owner element
+                    "<A>" + linkElement+"</A>", callbacks); //link to element if any
 
-        if(level.equals(OMFLogLevel.INFO)){
-//			Application.getInstance().getGUILog().log("<font color=\"#0033FF\">[Info] " + message + "</font>");
-            Application.getInstance().getGUILog().addHyperlinkedText("<font color=\"#0033FF\">[Info] " + message + " - </font> " +
-                    "<A>"+linkOwnerElement+"</A>" + " -> <A>"+linkElement+"</A>", callbacks);
-        }
-        if(level.equals(OMFLogLevel.WARNING)){
-            Application.getInstance().getGUILog().addHyperlinkedText("<font color=\"#FF8800\">[Warning] " + message + " - </font> " +
-                    "<A>"+linkOwnerElement+"</A>" + " -> <A>"+linkElement+"</A>", callbacks);
-        }
-        if(level.equals(OMFLogLevel.ERROR)){
-            Application.getInstance().getGUILog().addHyperlinkedText("<font color=\"#AA0000\">[Error] " + message + " - </font> " +
-                    "<A>"+linkOwnerElement+"</A>" + " -> <A>"+linkElement+"</A>", callbacks);
-        }
     }
 
     public void logLn(String message,Element elementToLink, OMFLogLevel level) {
