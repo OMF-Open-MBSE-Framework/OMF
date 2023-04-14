@@ -5,16 +5,16 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.example3.actions;
+package com.samares_engineering.omf.omf_public_features.partblock_hyperttext.action;
 
-
-
+import com.nomagic.magicdraw.hyperlinks.Hyperlink;
+import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_example_plugin.features.example1.ExampleFeature1;
+import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.List;
 
@@ -22,24 +22,28 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Remove FEATURE A", category = "Feature")
-public class RemoveFeatureA extends AUIAction {
+@MDAction(actionName = "Add HyperLink to Block", category = "DEV")
+public class AddHyperlinkToType extends AUIAction {
+
+
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.currentProject != null;
+        if(OMFUtils.currentProject == null) return false;
+        if(selectedElements.size() != 1) return false;
+        if(!selectedElements.stream().allMatch(Profile.getSysmlAdditionalStereotypes().partProperty()::is)) return false;
+        return true;
     }
+
 
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        if(selectedElements == null)
-            return;
-
-        FeatureRegisterer featureManager = feature.getPlugin().getFeatureRegister();
-        featureManager.getRegisteredFeatures().stream()
-                .filter(ExampleFeature1.class::isInstance)
-                .findFirst()
-                .ifPresent(featureManager::unregisterFeature);
+        Property part = (Property) selectedElements.get(0);
+        Hyperlink hp = HyperlinkUtils.createHyperlink("ToBlock", part.getType());
+        HyperlinkUtils.addHyperlink(part, hp);
 
     }
+
+
+
 }

@@ -5,16 +5,13 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_public_features.apiserver.actions;
+package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions;
 
-import com.nomagic.magicdraw.hyperlinks.Hyperlink;
-import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.List;
 
@@ -22,26 +19,22 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Add HyperLink to Block", category = "DEV")
-public class AddHyperlinkToType extends AUIAction {
-
-
+@MDAction(actionName = "ACTION NAME", category = "ACTION CATEGORY NAME")
+public class ExampleMDAction1 extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null) return false;
-        if(selectedElements.size() != 1) return false;
-        if(!selectedElements.stream().allMatch(Profile.getSysmlAdditionalStereotypes().partProperty()::is)) return false;
-        return true;
+        if(OMFUtils.currentProject == null)
+            return false;
+       return true;
     }
-
-
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        Property part = (Property) selectedElements.get(0);
-        Hyperlink hp = HyperlinkUtils.createHyperlink("ToBlock", part.getType());
-        HyperlinkUtils.addHyperlink(part, hp);
-
+        try {
+            // Do something
+        } catch (Exception e) {
+            OMFErrorHandler.handleException(e, true);
+        }
     }
 
 

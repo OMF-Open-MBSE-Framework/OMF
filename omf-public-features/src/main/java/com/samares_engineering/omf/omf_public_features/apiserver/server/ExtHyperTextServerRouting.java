@@ -44,7 +44,6 @@ public class ExtHyperTextServerRouting {
                 String answer = "<h1>Element opened successfully!</h1>"
                         + "\n" + "<p>The element with ID " + id + " has been opened in the browser.</p>";
                 successAnswer(answer, target, baseRequest, request, response);
-
             }
         };
 

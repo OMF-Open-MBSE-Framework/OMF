@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.test.feature.FeatureCopyID;
-import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.TestGenerationBatch;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.TWCBatch;
 import com.samares_engineering.omf.omf_example_plugin.test.ui.TestMainMenuConfigurator;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
@@ -34,9 +34,10 @@ public class TestPlugin extends APlugin {
 
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
-            //TWCBatch.class,
-            //LocalAPIBatch.class,
-            TestGenerationBatch.class
+            TWCBatch.class
+//            LocalBatch.class,
+//            LocalBatch_Formation.class,
+//            LocalAPIBatch.class
     );
 
     @Override

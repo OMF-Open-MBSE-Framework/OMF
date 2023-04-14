@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.example1.rules.creation;
+package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.creation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
@@ -13,7 +13,7 @@ import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventCh
 
 import java.beans.PropertyChangeEvent;
 
-public class BlockCreation extends ARule {
+public class LiveActionExample extends ARule {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()

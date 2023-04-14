@@ -5,24 +5,23 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_public_features.apiserver.creation;
+package com.samares_engineering.omf.omf_example_plugin.features.liveaction.creation;
 
-import com.nomagic.magicdraw.core.options.ProjectOptions;
-import com.nomagic.magicdraw.properties.Property;
-import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 
-public class PortCreation extends ARule {
+public class OnBlockCreation extends ARule {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()
                 .isInstanceCreated()
-                .isPort()
+                .isBlock()
                 .test(evt);
     }
 
@@ -33,12 +32,9 @@ public class PortCreation extends ARule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        Port port = (Port) e.getSource();
-        Property nameProperty = OMFUtils.currentProject.getOptions().
-                getProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, APIServerFeature.HELLO_PORT_ID);
-
-        String name = nameProperty != null? (String) nameProperty.getValue() : "UNDEFINED";
-        port.setName(name);
+        Class block = (Class) e.getSource();
+        Package blockPackage = SysMLFactory.getInstance().createPackage("BlockPackage", block.getOwner());
+        OMFLogger.getInstance().warn("ON CREATE BLOCK", null);
         return e;
     }
 

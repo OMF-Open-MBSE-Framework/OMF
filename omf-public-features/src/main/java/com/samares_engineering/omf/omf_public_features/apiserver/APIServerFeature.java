@@ -7,17 +7,19 @@
 
 package com.samares_engineering.omf.omf_public_features.apiserver;
 
+import com.nomagic.magicdraw.properties.BooleanProperty;
+import com.nomagic.magicdraw.properties.StringProperty;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
-import com.samares_engineering.omf.omf_public_features.apiserver.actions.AddHyperlinkToType;
-import com.samares_engineering.omf.omf_public_features.apiserver.actions.StartHyperTextServer;
-import com.samares_engineering.omf.omf_public_features.apiserver.actions.TestAction;
-import com.samares_engineering.omf.omf_public_features.apiserver.creation.HyperlinkPartToBlockLA;
+import com.samares_engineering.omf.omf_public_features.apiserver.actions.RestartAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.server.ExtHyperTextServerRouting;
 
 import java.util.Arrays;
@@ -25,11 +27,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class APIServerFeature extends AFeature {
+    private final String serverURL;
+    private final int serverPort;
 
-    public static final String HELLO_PORT_ID = "HelloPort";
 
-    public APIServerFeature(){
+    public APIServerFeature(String serverURL, int serverPort){
        super("APIServer Feature");
+       this.serverURL = serverURL;
+       this.serverPort = serverPort;
     }
 
     @Override
@@ -40,9 +45,7 @@ public class APIServerFeature extends AFeature {
     @Override
     public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
-                new StartHyperTextServer(),
-                new AddHyperlinkToType(),
-                new TestAction()
+                new RestartAPIServerAction()
         );
     }
 
@@ -53,9 +56,7 @@ public class APIServerFeature extends AFeature {
 
     @Override
     public List<IRuleEngine> initLiveActions() {
-        IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
-        creationRE.addRule(new HyperlinkPartToBlockLA());
-        return List.of(creationRE);
+        return Collections.emptyList();
     }
 
     @Override
@@ -65,7 +66,29 @@ public class APIServerFeature extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
+
+        OptionImpl serverURLOption = new OptionImpl(
+                new StringProperty(APIEnvOptionsHelper.API_SERVER_URL, serverURL),
+                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
+                plugin.getEnvironmentOptionsGroup(),
+                OptionKind.Environment);
+
+        OptionImpl serverPortOption = new OptionImpl(
+                new StringProperty(APIEnvOptionsHelper.API_SERVER_PORT, ""+serverPort),
+                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
+                plugin.getEnvironmentOptionsGroup(),
+                OptionKind.Environment);
+
+        OptionImpl serverActivationOption = new OptionImpl(
+                new BooleanProperty(APIEnvOptionsHelper.API_SERVER_ACTIVATED, true),
+                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
+                plugin.getEnvironmentOptionsGroup(),
+                OptionKind.Environment);
+
         return Arrays.asList(
+                serverURLOption,
+                serverPortOption,
+                serverActivationOption
         );
     }
 
@@ -83,11 +106,26 @@ public class APIServerFeature extends AFeature {
 
     @Override
     public void onRegistering() {
-        OMFApiServer.getInstance().startServer(9850);
+        try {
+            OMFApiServer.getInstance().startServer(serverPort);
+        } catch (Exception e) {
+            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
+                    "\nPlease try to restart the API Server using OMF Advanced Menu", e, GenericException.ECriticality.CRITICAL));
+            return;
+        }
+
         registerRouting();
+
+
     }
     @Override
     public void onUnregistering() {
-        OMFApiServer.getInstance().stopServer();
+        try {
+            OMFApiServer.getInstance().stopServer();
+        } catch (Exception e) {
+            OMFErrorHandler.handleException(new FeatureException("Error while stopping API server, this will strongly impact features using API Server." +
+                    "\nPlease try to restart the API Server using OMF Advanced Menu", e, GenericException.ECriticality.CRITICAL));
+            return;
+        }
     }
 }

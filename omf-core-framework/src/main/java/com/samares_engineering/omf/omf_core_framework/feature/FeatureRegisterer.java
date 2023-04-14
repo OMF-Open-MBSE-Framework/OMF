@@ -44,16 +44,18 @@ public class FeatureRegisterer {
                     " which is already registered.", GenericException.ECriticality.ALERT), false);
         }
 
-        feature.initFeature(plugin);
-        feature.setIsRegistered(true);
 
-        registeredFeatures.add(feature);
 
         try {
+            feature.initFeature(plugin);
+            feature.setIsRegistered(true);
+
+            registeredFeatures.add(feature);
+
             optionRegisterer.registerFeatureItems(feature.getOptions());
             uiActionRegisterer.registerFeatureItems(feature.getUIActions());
             ruleEngineRegisterer.registerFeatureItems(feature.getRuleEngines());
-        } catch (FeatureException e) {
+        } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
             OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
                     e, GenericException.ECriticality.CRITICAL), false);
         }
