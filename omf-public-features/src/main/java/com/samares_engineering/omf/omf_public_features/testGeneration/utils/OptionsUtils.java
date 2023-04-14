@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.testGeneration.utils;
+package com.samares_engineering.omf.omf_public_features.testGeneration.utils;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;

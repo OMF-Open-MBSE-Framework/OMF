@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration;
+package com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
@@ -9,8 +9,8 @@ import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.utils.OptionsBaseline;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.utils.OptionsUtils;
+import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
+import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsUtils;
 import com.squareup.javapoet.MethodSpec;
 
 import java.util.Arrays;

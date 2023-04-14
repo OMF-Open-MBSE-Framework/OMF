@@ -21,7 +21,7 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.example1.ExampleFeature1;
 import com.samares_engineering.omf.omf_example_plugin.features.example3.ExampleFeature3;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.TestGeneration;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.dev.Dev;

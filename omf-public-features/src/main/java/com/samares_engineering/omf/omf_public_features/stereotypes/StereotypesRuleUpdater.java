@@ -46,7 +46,9 @@ public class StereotypesRuleUpdater {
     public void updateAllRulesBasedOnConfigFiles(){
         organizerEngine.removeAllRules();
         createInstanceRules((feature.getOptionsHelper().getInstanceConfigFilePath()));
-        createTypeRules(feature.getOptionsHelper().getTypeConfigFilePath());
+        //TODO
+        //StereotypesHelper.getAllStereotypes(OMFUtils.currentProject).stream().map(Stereotype::getName).collect(Collectors.toList())
+        //createTypeRules(feature.getOptionsHelper().getTypeConfigFilePath()); //TODO : parameter throw NullPointerException
         createOrganizerRules(feature.getOptionsHelper().getOrganizerConfigFilePath());
     }
 

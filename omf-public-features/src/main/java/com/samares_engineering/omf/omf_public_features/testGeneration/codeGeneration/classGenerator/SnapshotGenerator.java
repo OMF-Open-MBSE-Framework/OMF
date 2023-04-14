@@ -1,11 +1,11 @@
-package com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration.classGenerator;
+package com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.TestGeneration;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration.OptionsCodeGenerator;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.utils.OptionsBaseline;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
+import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;

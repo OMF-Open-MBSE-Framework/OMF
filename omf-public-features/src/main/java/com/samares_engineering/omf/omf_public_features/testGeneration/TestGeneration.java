@@ -6,17 +6,17 @@
  ******************************************************************************/
 
 
-package com.samares_engineering.omf.omf_example_plugin.features.testGeneration;
+package com.samares_engineering.omf.omf_public_features.testGeneration;
 
+import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.actions.GenerateCreationTest;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.actions.GenerateSnapshotTest;
+import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateCreationTest;
+import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateSnapshotTest;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +24,6 @@ import java.util.List;
 public class TestGeneration extends AFeature {
 
     public static final String SERVER_ADRESS = "http://localhost:9850/refmodel/";
-    public String GENERATION_PATH = getProjectPath("main");
-    public String GENERATION_TEST_PATH = getProjectPath("test");
 
     // USAGE : Enter here the groups to save ans restore with test and snapshots
     public List<String> ENV_OPTION_GROUPIDS =
@@ -41,17 +39,25 @@ public class TestGeneration extends AFeature {
         super("[TEST GENERATION]");
     }
 
+
+    /**
+     * @return Feature's env option helper cast to the correct subtype
+     */
+    public TestGenerationEnvOptionsHelper getOptionsHelper() {
+        return (TestGenerationEnvOptionsHelper) getEnvOptionsHelper();
+    }
+
+    @Override
+    protected EnvOptionsHelper initEnvOptionsHelper() {
+        return new TestGenerationEnvOptionsHelper(this);
+    }
+
     @Override
     public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
                 new GenerateCreationTest(),
                 new GenerateSnapshotTest()
         );
-    }
-
-    @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
     }
 
     @Override
@@ -71,7 +77,21 @@ public class TestGeneration extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        return Collections.EMPTY_LIST;
+        // Test Generation Root Path
+        StringProperty testGenRootPathProp = new StringProperty(TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_ID,
+                                                                TestGenerationEnvOptionsHelper.getTestGenerationRootPathDefaultValue());
+        IOption testGenRootPath = createEnvOption(testGenRootPathProp, TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_GRP);
+
+
+        // Test Generation Java Package
+        StringProperty testGenJavaPackageProp = new StringProperty(TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_ID,
+                TestGenerationEnvOptionsHelper.getTestGenerationJavaPackageDefaultValue());
+        IOption testGenJavaPackage = createEnvOption(testGenJavaPackageProp, TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_GRP);
+
+        return Arrays.asList(
+                testGenRootPath,
+                testGenJavaPackage
+        );
     }
 
     @Override
@@ -79,29 +99,4 @@ public class TestGeneration extends AFeature {
         return Collections.EMPTY_LIST;
     }
 
-
-    /**
-     * Get the absolute path of the root module of this project, then add /src/[repo]/java
-     * @param repo
-     * @return
-     */
-    private String getProjectPath(String repo){
-        String filePath = new File("").getAbsolutePath();
-        String slash;
-        // Linux format
-        if (filePath.contains("/")) {
-            slash = "/";
-        }
-        else {
-            slash = "\\";
-        }
-
-        filePath = filePath.substring(0, filePath.lastIndexOf(slash));
-        filePath = filePath.substring(0, filePath.lastIndexOf(slash));
-        filePath += slash + "src" + slash + repo + slash + "java";
-
-        return filePath;
-    }
-
 }
-

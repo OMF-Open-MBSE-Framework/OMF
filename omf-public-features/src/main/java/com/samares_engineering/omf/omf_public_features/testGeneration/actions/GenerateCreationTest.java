@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.testGeneration.actions;
+package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
@@ -9,10 +9,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.TestGeneration;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration.CodeGenerationUtils;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.codeGeneration.classGenerator.CreationTestGenerator;
-import com.samares_engineering.omf.omf_example_plugin.features.testGeneration.profile.TestProfile;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationEnvOptionsHelper;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator.CreationTestGenerator;
+import com.samares_engineering.omf.omf_public_features.testGeneration.profile.TestProfile;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class GenerateCreationTest extends AUIAction {
     public String generationPath;
 
     // Package of the generated class
-    private String CREATIONTEST_CLASS_PACKAGE = "com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.testGeneration";
+    private String CREATIONTEST_CLASS_PACKAGE;
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
@@ -48,7 +49,9 @@ public class GenerateCreationTest extends AUIAction {
         if(selectedElements == null)
             return;
 
-        this.generationPath = ((TestGeneration) getFeature()).GENERATION_TEST_PATH;
+        TestGenerationEnvOptionsHelper optionHelper = ((TestGeneration) getFeature()).getOptionsHelper();
+        this.generationPath = optionHelper.getTestGenerationRootPath();
+        this.CREATIONTEST_CLASS_PACKAGE = optionHelper.getTestGenerationJavaPackage();
 
         selectedElements.stream()
                 .filter(NamedElement.class::isInstance)
