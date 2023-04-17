@@ -114,11 +114,11 @@ public class FeatureRegisterer {
     }
 
     public void unregisterFeatures(List<MDFeature> features){
-        features.forEach(this::unregisterFeature);
+        new ArrayList<>(features).forEach(this::unregisterFeature);
     }
 
     public void unregisterDelayedItemsOfFeatures(List<MDFeature> features){
-        features.forEach(this::unregisterDelayedItemsOfFeature);
+        new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);
     }
 
     public void unregisterDelayedItemsOfFeature(MDFeature feature){
