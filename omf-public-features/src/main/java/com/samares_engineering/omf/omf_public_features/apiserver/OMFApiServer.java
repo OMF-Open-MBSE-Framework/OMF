@@ -79,6 +79,7 @@ public class OMFApiServer extends AbstractHandler {
 
             OMFLogger.getInstance().log("API Server started on port " + port, null, OMFLogLevel.INFO);
             ColorPrinter.status("API Server started on port " + port);
+            getURL();
 
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
@@ -101,20 +102,16 @@ public class OMFApiServer extends AbstractHandler {
     //*******************************************************************************
 
     public int getPort() throws APIServerException {
-        if(server != null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
+        if(server == null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
         return ((ServerConnector) server.getConnectors()[0]).getLocalPort();
     }
 
-    public String getURL(){
-        try {
-            return "http://" + getIPAdress() + getPort();
-        } catch (APIServerException e) {
-            return "http://localhost:0";
-        }
+    public String getURL() throws APIServerException {
+        return "http://" + getIPAdress() + getPort();
     }
 
     public String getIPAdress() throws APIServerException {
-        if(server != null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
+        if(server == null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
         return  ((ServerConnector) server.getConnectors()[0]).getHost();
     }
 
