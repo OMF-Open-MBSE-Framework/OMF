@@ -64,7 +64,7 @@ public class GenerateCreationTest extends AUIAction {
 
     private CreationTestGenerator createCreationTestGenerator(Element testContext) {
         TestGenerationFeature feature = (TestGenerationFeature) getFeature();
-        return new CreationTestGenerator(getTestPackage(testContext), (NamedElement) testContext, feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS, feature.getServerAdress());
+        return new CreationTestGenerator(getTestPackage(testContext), (NamedElement) testContext, feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS, feature.getServerAddress());
     }
 
     private void writeToFile(TypeSpec classBuilder) {

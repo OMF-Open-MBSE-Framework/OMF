@@ -11,14 +11,13 @@ package com.samares_engineering.omf.omf_public_features.testGeneration;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
-import com.samares_engineering.omf.omf_public_features.apiserver.APIEnvOptionsHelper;
+import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
+import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateCreationTest;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateSnapshotTest;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationException;
@@ -45,16 +44,14 @@ public class TestGenerationFeature extends AFeature {
         super("[TEST GENERATION]");
     }
 
-    public String getServerAdress() {
+    public String getServerAddress() {
         try {
-            MDFeature server_feature = getPlugin().getFeatureByName(SERVER_FEATURE_NAME);
-            APIEnvOptionsHelper serverEnvOptions = APIEnvOptionsHelper.getInstance(server_feature);
-            return serverEnvOptions.getServerURL() + ":" + serverEnvOptions.getServerPort();
+            return OMFApiServer.getInstance().getURI().toString();
         }
-        catch (OMFException e) {
-            OMFErrorHandler.handleException(new CodeGenerationException("The provided Server API Feature Name is incorrect.", e, GenericException.ECriticality.ALERT), false );
+        catch (APIServerException e) {
+            OMFErrorHandler.handleException(new CodeGenerationException("API Server is not started", e, GenericException.ECriticality.ALERT), false);
+            return "SERVER_NOT_STARTED";
         }
-        return "SERVER_NOT_FOUND";
     }
 
 

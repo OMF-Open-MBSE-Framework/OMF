@@ -32,7 +32,7 @@ public class GenerateSnapshotTest extends AUIAction {
         String generationPath = getSnapshotPathDefaultValue();
 
         TestGenerationFeature feature = (TestGenerationFeature) getFeature();
-        SnapshotGenerator snapshotGenerator = new SnapshotGenerator(feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS, feature.getServerAdress());
+        SnapshotGenerator snapshotGenerator = new SnapshotGenerator(feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS, feature.getServerAddress());
         TypeSpec classBuilder = snapshotGenerator.generateTest();
         CodeGenerationUtils.writeToFile(classBuilder, generationPath, SNAPSHOT_CLASS_PACKAGE);
     }
