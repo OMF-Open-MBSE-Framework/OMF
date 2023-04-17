@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +80,7 @@ public class OMFApiServer extends AbstractHandler {
 
             OMFLogger.getInstance().log("API Server started on port " + port, null, OMFLogLevel.INFO);
             ColorPrinter.status("API Server started on port " + port);
-            getURL();
+            getURI();
 
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
@@ -106,13 +107,14 @@ public class OMFApiServer extends AbstractHandler {
         return ((ServerConnector) server.getConnectors()[0]).getLocalPort();
     }
 
-    public String getURL() throws APIServerException {
-        return "http://" + getIPAdress() + getPort();
+    public URI getURI() throws APIServerException {
+        if(server == null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
+        return server.getURI();
     }
 
-    public String getIPAdress() throws APIServerException {
+    public String getIPAddress() throws APIServerException {
         if(server == null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
-        return  ((ServerConnector) server.getConnectors()[0]).getHost();
+        return server.getURI().getHost();
     }
 
 
