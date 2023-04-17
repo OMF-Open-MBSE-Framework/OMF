@@ -35,6 +35,11 @@ public class EventChecker {
         predicates.add(evt -> evt.getPropertyName().equals(UML2MetamodelConstants.INSTANCE_CREATED));
         return this;
     }
+    public EventChecker isElementCreated(){
+        isInstanceCreated();
+        predicates.add(evt -> evt.getSource() instanceof Element && !(((Element) evt.getSource()).getOwner() != null) );
+        return this;
+    }
     public EventChecker isInstanceDeleted(){
         predicates.add(
                 evt ->  evt.getPropertyName().equals(UML2MetamodelConstants.BEFORE_DELETE)

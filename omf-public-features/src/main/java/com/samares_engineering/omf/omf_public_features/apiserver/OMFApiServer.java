@@ -3,9 +3,13 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
+import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.ServletException;
@@ -45,22 +49,28 @@ public class OMFApiServer extends AbstractHandler {
     }
 
 
+
+    //*******************************************************************************
+    //************************** ROOTING MANAGEMENT *********************************
+    //*******************************************************************************
+
     public void addRoute(String path, RequestHandler handler){
         route.put(path, handler);
-        ColorPrinter.status("[APISERVER] '" + path + "' route has been registered");
+        ColorPrinter.status("[API_SERVER] '" + path + "' route has been registered");
     }
 
     public void removeRoute(String path){
         route.remove(path);
-        ColorPrinter.status("[APISERVER] '" + path + "' route has been removed");
+        ColorPrinter.status("[APIS_ERVER] '" + path + "' route has been removed");
     }
 
 
 
 
 
-
-    //SERVER MANAGEMENT
+    //*******************************************************************************
+    //*************************** SERVER MANAGEMENT *********************************
+    //*******************************************************************************
     public void startServer(int port) {
         try {
             this.server = new Server(port);
@@ -71,7 +81,8 @@ public class OMFApiServer extends AbstractHandler {
             ColorPrinter.status("API Server started on port " + port);
 
         }catch (Exception e){
-            OMFErrorHandler.handleException(e, false);
+            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
+                    "\nPlease contact the plugin: " + " provider", e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
@@ -79,13 +90,33 @@ public class OMFApiServer extends AbstractHandler {
         try {
             server.stop();
         } catch (Exception e) {
-            OMFErrorHandler.handleException(e, false);
+            OMFErrorHandler.handleException(new FeatureException("Error while stopping API server, this will strongly impact features using API Server." +
+                    "\nPlease try to use the dedicated Action in OMF Advanced Menu, and contact the plugin: " + " provider", e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
 
+    //*******************************************************************************
+    //**************************** GETTER/SETTER ***********************************
+    //*******************************************************************************
 
+    public int getPort() throws APIServerException {
+        if(server != null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
+        return ((ServerConnector) server.getConnectors()[0]).getLocalPort();
+    }
 
+    public String getURL(){
+        try {
+            return "http://" + getIPAdress() + getPort();
+        } catch (APIServerException e) {
+            return "http://localhost:0";
+        }
+    }
+
+    public String getIPAdress() throws APIServerException {
+        if(server != null || !server.isStarted()) throw new APIServerException("API Server is not started", GenericException.ECriticality.ALERT);
+        return  ((ServerConnector) server.getConnectors()[0]).getHost();
+    }
 
 
 }

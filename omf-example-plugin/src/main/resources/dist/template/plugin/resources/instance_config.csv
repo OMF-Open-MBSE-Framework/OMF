@@ -1,2 +1,1 @@
-TypeListener;TypeStereotype;InstanceStereotype;InstanceOwnerStereotype;Trigger;RuleId;Activated
-Class2Property;Block;Block;Block;onInstance;class2Property_1;x
+TypeListener;TypeStereotype;InstanceStereotypeToApply;InstanceOwnerStereotype;Trigger;RuleId;Activated

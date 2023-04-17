@@ -20,6 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.RestartAPIServerAction;
+import com.samares_engineering.omf.omf_public_features.apiserver.actions.StopAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.server.ExtHyperTextServerRouting;
 
 import java.util.Arrays;
@@ -45,7 +46,8 @@ public class APIServerFeature extends AFeature {
     @Override
     public List<IUIAction> initFeatureActions() {
         return Arrays.asList(
-                new RestartAPIServerAction()
+                new RestartAPIServerAction(),
+                new StopAPIServerAction()
         );
     }
 
