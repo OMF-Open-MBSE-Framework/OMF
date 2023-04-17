@@ -24,6 +24,7 @@ import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeatur
 import com.samares_engineering.omf.omf_public_features.dev.Dev;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                 new HyperLinkFeature(),
                 new StereotypesFeature(),
                 new APIServerFeature("http://localhost", 9850),
-                new TestGeneration()
+                new TestGenerationFeature()
         );
     }
 

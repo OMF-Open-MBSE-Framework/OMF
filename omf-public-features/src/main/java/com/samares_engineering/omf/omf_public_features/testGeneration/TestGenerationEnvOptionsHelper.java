@@ -6,12 +6,12 @@ import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class TestGenerationEnvOptionsHelper extends EnvOptionsHelper {
-    public TestGenerationEnvOptionsHelper(TestGeneration testGeneration) {
+    public TestGenerationEnvOptionsHelper(TestGenerationFeature testGeneration) {
         super(testGeneration);
     }
 
     public static TestGenerationEnvOptionsHelper getInstance(MDFeature feature) {
-        return ((TestGeneration) feature).getOptionsHelper();
+        return ((TestGenerationFeature) feature).getOptionsHelper();
     }
 
     /*

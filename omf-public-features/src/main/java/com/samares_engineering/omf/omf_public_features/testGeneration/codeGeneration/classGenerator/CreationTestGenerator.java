@@ -13,7 +13,6 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
 import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 public class CreationTestGenerator {
 
     // Server adress
-    private final String COMMENT_SNIPPET = " // " + TestGeneration.SERVER_ADRESS + "?ID=";
+    private String COMMENT_SNIPPET;
 
     // METHODS NAMES
     private String INIT_VARIABLES = "initVariables";
@@ -54,11 +53,12 @@ public class CreationTestGenerator {
     private List<String> projectOptionGroupId;
 
 
-    public CreationTestGenerator(Package pack, NamedElement selectedElement, List<String> envOptionGroupId, List<String> projectOptionGroupId) {
+    public CreationTestGenerator(Package pack, NamedElement selectedElement, List<String> envOptionGroupId, List<String> projectOptionGroupId, String serverAdress) {
         this.testPackage = pack;
         this.testedElement = selectedElement;
         this.envOptionGroupId = envOptionGroupId;
         this.projectOptionGroupId = projectOptionGroupId;
+        this.COMMENT_SNIPPET = " // " + serverAdress + "?ID=";
     }
 
     ////////// METHODS GENERATION //////////

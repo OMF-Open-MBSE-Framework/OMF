@@ -9,21 +9,27 @@
 package com.samares_engineering.omf.omf_public_features.testGeneration;
 
 import com.nomagic.magicdraw.properties.StringProperty;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_public_features.apiserver.APIEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateCreationTest;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateSnapshotTest;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationException;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class TestGeneration extends AFeature {
+public class TestGenerationFeature extends AFeature {
 
-    public static final String SERVER_ADRESS = "http://localhost:9850/refmodel/";
+    private final String SERVER_FEATURE_NAME = "APIServer Feature";
 
     // USAGE : Enter here the groups to save ans restore with test and snapshots
     public List<String> ENV_OPTION_GROUPIDS =
@@ -35,8 +41,20 @@ public class TestGeneration extends AFeature {
 
     public List<String> PROJECT_OPTION_GROUPIDS = Arrays.asList("");
 
-    public TestGeneration(){
+    public TestGenerationFeature(){
         super("[TEST GENERATION]");
+    }
+
+    public String getServerAdress() {
+        try {
+            MDFeature server_feature = getPlugin().getFeatureByName(SERVER_FEATURE_NAME);
+            APIEnvOptionsHelper serverEnvOptions = APIEnvOptionsHelper.getInstance(server_feature);
+            return serverEnvOptions.getServerURL() + ":" + serverEnvOptions.getServerPort();
+        }
+        catch (OMFException e) {
+            OMFErrorHandler.handleException(new CodeGenerationException("The provided Server API Feature Name is incorrect.", e, GenericException.ECriticality.ALERT), false );
+        }
+        return "SERVER_NOT_FOUND";
     }
 
 

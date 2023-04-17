@@ -3,7 +3,6 @@ package com.samares_engineering.omf.omf_public_features.testGeneration.codeGener
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
 import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
 import com.squareup.javapoet.ClassName;
@@ -19,7 +18,7 @@ import java.util.Map;
 public class SnapshotGenerator {
 
     // Server adress
-    private final String COMMENT_SNIPPET = " // " + TestGeneration.SERVER_ADRESS + "?ID=";// Server adress
+    private String COMMENT_SNIPPET;// Server adress
 
     // METHODS NAMES
     private String SNAPSHOT = "snapshot";
@@ -31,9 +30,10 @@ public class SnapshotGenerator {
     private List<String> envOptionGroupId;
     private List<String> projectOptionGroupId;
 
-    public SnapshotGenerator(List<String> envOptionGroupId, List<String> projectOptionGroupId) {
+    public SnapshotGenerator(List<String> envOptionGroupId, List<String> projectOptionGroupId, String serverAdress) {
         this.envOptionGroupId = envOptionGroupId;
         this.projectOptionGroupId = projectOptionGroupId;
+        this.COMMENT_SNIPPET = " // " + serverAdress + "?ID=";
     }
 
     public TypeSpec generateTest() {

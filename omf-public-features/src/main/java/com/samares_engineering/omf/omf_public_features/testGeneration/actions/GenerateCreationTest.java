@@ -9,7 +9,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator.CreationTestGenerator;
@@ -49,7 +49,7 @@ public class GenerateCreationTest extends AUIAction {
         if(selectedElements == null)
             return;
 
-        TestGenerationEnvOptionsHelper optionHelper = ((TestGeneration) getFeature()).getOptionsHelper();
+        TestGenerationEnvOptionsHelper optionHelper = ((TestGenerationFeature) getFeature()).getOptionsHelper();
         this.generationPath = optionHelper.getTestGenerationRootPath();
         this.CREATIONTEST_CLASS_PACKAGE = optionHelper.getTestGenerationJavaPackage();
 
@@ -63,8 +63,8 @@ public class GenerateCreationTest extends AUIAction {
 
 
     private CreationTestGenerator createCreationTestGenerator(Element testContext) {
-        TestGeneration feature = (TestGeneration) getFeature();
-        return new CreationTestGenerator(getTestPackage(testContext), (NamedElement) testContext, feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS);
+        TestGenerationFeature feature = (TestGenerationFeature) getFeature();
+        return new CreationTestGenerator(getTestPackage(testContext), (NamedElement) testContext, feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS, feature.getServerAdress());
     }
 
     private void writeToFile(TypeSpec classBuilder) {

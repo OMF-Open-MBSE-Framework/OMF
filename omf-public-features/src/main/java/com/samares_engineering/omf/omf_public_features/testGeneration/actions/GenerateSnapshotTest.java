@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MenuAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGeneration;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator.SnapshotGenerator;
 import com.squareup.javapoet.TypeSpec;
@@ -17,9 +17,6 @@ import java.util.List;
 @DeactivateListener
 @MDAction(actionName = "Snapshot", category = "[TEST GENERATION]")
 public class GenerateSnapshotTest extends AUIAction {
-
-    // Server adress
-    private final String COMMENT_SNIPPET = " // " + TestGeneration.SERVER_ADRESS + "?ID=";
 
     // Package of the generated class
     private String SNAPSHOT_CLASS_PACKAGE = getCurrentPackageRoot() + ".generatedCode";
@@ -34,8 +31,8 @@ public class GenerateSnapshotTest extends AUIAction {
         //String generationPath = ((TestGeneration) getFeature()).getOptionsHelper().getTestGenerationRootPath();
         String generationPath = getSnapshotPathDefaultValue();
 
-        TestGeneration feature = (TestGeneration) getFeature();
-        SnapshotGenerator snapshotGenerator = new SnapshotGenerator(feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS);
+        TestGenerationFeature feature = (TestGenerationFeature) getFeature();
+        SnapshotGenerator snapshotGenerator = new SnapshotGenerator(feature.ENV_OPTION_GROUPIDS, feature.PROJECT_OPTION_GROUPIDS, feature.getServerAdress());
         TypeSpec classBuilder = snapshotGenerator.generateTest();
         CodeGenerationUtils.writeToFile(classBuilder, generationPath, SNAPSHOT_CLASS_PACKAGE);
     }
