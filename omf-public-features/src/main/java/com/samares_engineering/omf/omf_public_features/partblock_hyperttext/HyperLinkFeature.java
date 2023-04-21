@@ -50,7 +50,7 @@ public class HyperLinkFeature extends AFeature {
 
     @Override
     public List<IRuleEngine> initLiveActions() {
-        IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
+        IRuleEngine creationRE = new RuleEngine(RECategoryEnum.AFTER_AUTOMATION);
         creationRE.addRule(new HyperlinkPartToBlockLA());
         return List.of(creationRE);
     }

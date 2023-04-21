@@ -19,7 +19,7 @@ public class HyperlinkPartToBlockLA extends ARule {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()
-                .isInstanceCreated()
+                .isElementCreated()
                 .isPart()
                 .test(evt);
     }

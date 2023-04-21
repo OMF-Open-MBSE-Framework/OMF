@@ -17,7 +17,7 @@ public class LiveActionExample extends ARule {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()
-                .isInstanceCreated()
+                .isElementCreated()
                 .isBlock()
                 .test(evt);
     }
