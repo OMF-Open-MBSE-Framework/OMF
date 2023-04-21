@@ -29,7 +29,7 @@ import java.util.List;
 public class HyperLinkFeature extends AFeature {
 
     public HyperLinkFeature(){
-       super("FEATURE NAME");
+       super("HYPERLINK FEATURE");
     }
 
     @Override
