@@ -7,32 +7,22 @@ This project contains a framework for the development of Magicdraw plugins. As s
 - The plugin can be installed on Cameo System Modeler - *CSM* - and Magic Cyber System Engineer - *MCSE* - for the versions higher than 2019.
 
 ## Installation
-### 1. As a Java archive (JAR)
-You can download the jar from the Maven Central Repository at the following adress (TBD)
+TODO
 
-### 2. As a Gradle Project
-1. Clone the project from GitLab
-2. Create a new IntelliJ Project from existing source (*File → New → Project From Existing Sources*)
-3. Select the folder where you downloaded the project from GitLab
-4. You may want to fill the gradle.properties
-5. Complete the gradle.properties.secret if you need to (to avoid sharing credentials & other sensitive properties, we store them outside of the project in the .gradle folder)
-   - Copy the contents of the *gradle.properties.secret* file into *\<User folder\>/.gradle/gradle.properties* (create the file if it does not exist)
-   - Fill properties with the correct values/credentials (ask an other dev for the info if needed)
-
-### 3. As a Cameo System Modeler Plugin
-
-To install the plugin in *CSM* or *MCSE*, click on Help -> Resource/Plugin Manager -> Import
-
-### Running the project
-
-- From command line :
-
-> gradle runPlugin
-
-- From IntelliJ :
-
-  - Open project as a gradle project
-  - In the gradle tool window, right-click *Tasks/_dev/runPlugin* and select the *debug* option
+# Release process (for maintainers)
+- Update release notes in `CHANGELOG.md` (see [Keep a Changelog](https://keepachangelog.com/en/1.0.0/))
+- Commit changes
+- Create a new branch from `0-DEV` with the name `RELEASE/<version>`
+- On the release branch, change the version in `gradle.properties` (remove SNAPSHOT suffix)
+- Commit and push. The CI/CD will build the plugin and publish it to Nexus & Maven Central staging
+- If there are validation problems:
+  - Fix them on the release branch
+  - Commit and push
+  - Cherry-pick the fix(es) on `0-DEV`
+- Finalise the deployment to Maven Central by doing a manual release. [Our guide on how to release to maven central](https://samaresengineering.atlassian.net/wiki/spaces/ST/pages/2514026503/Publish+to+Maven+Central)
+- Update the OMF public repo
+- Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch
+- Commit and push
 
 # Authors
 
