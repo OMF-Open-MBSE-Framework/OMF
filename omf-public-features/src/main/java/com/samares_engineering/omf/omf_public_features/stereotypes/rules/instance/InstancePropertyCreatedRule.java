@@ -44,12 +44,10 @@ public class InstancePropertyCreatedRule extends ARule {
        if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isInstanceActivated()) {
             return false;
         }
-        if (evt.getSource() == null) {
-            return false;
-        }
-        if(!classOfInstance.isInstance(evt.getSource())) {
-            return false;
-        }
+        if (evt.getSource() == null) return false;
+
+        if(!classOfInstance.isInstance(evt.getSource())) return false;
+
         Element srcElement = (Element) evt.getSource();
         boolean isTypeInstantiationPatternSatisfied = StereotypesRuleUtils.isTypeInstantiationPatternSatisfied(
                 srcElement, classOfInstance, this.stereoOfType, this.classOfType);

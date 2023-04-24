@@ -5,29 +5,32 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
 
 import com.nomagic.magicdraw.actions.ActionsProvider;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 
 import java.util.List;
 import java.util.Objects;
 
-public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
-    private final OMFBrowserConfigurator browserConfigurator;
-    private final OMFDiagramConfigurator diagramConfigurator;
-    private final OMFMainMenuConfigurator menuConfigurator;
+public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
+    private OMFBrowserConfigurator browserConfigurator;
+    private OMFDiagramConfigurator diagramConfigurator;
+    private OMFMainMenuConfigurator menuConfigurator;
+    private FeatureRegisterer featureRegisterer;
 
-    public MDActionRegisterer(FeatureRegisterer featureRegisterer) {
-        super(featureRegisterer);
+
+    @Override
+    public void init(FeatureRegisterer featureRegisterer) {
         this.browserConfigurator = Objects.requireNonNull(
                 featureRegisterer.getPlugin().getBrowserConfigurator(),
                 "NO BROWSER CONFIGURATOR REGISTERED");
@@ -98,5 +101,26 @@ public class MDActionRegisterer extends FeatureItemRegisterer<IUIAction> {
 
         if(menuConfigurator != null)
             menuConfigurator.removeAction((AUIAction) action);
+    }
+
+    @Override
+    public void registerFeature(MDFeature feature) throws FeatureException {
+        registerFeatureItems(feature.getUIActions());
+    }
+
+    @Override
+    public void unregisterFeature(MDFeature feature) throws FeatureException {
+        unregisterFeatureItems(feature.getUIActions());
+    }
+
+
+    @Override
+    public FeatureRegisterer getFeatureRegisterer() {
+        return featureRegisterer;
+    }
+
+    @Override
+    public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
+        this.featureRegisterer = featureRegisterer;
     }
 }

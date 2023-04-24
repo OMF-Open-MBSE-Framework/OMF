@@ -99,7 +99,7 @@ public abstract class AUIAction implements IUIAction {
             @Override
             public void updateState() {
                 super.updateState();
-                setEnabled(checkBrowserAvailability());
+                setEnabled(checkMenuAvailability());
             }
         };
 

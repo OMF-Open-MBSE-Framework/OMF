@@ -54,9 +54,7 @@ public abstract class AFeature implements MDFeature {
      */
     public final void initFeature(APlugin plugin) {
         // We only need to initialise feature once
-        if (isFeatureInitialised) {
-            return;
-        }
+        if (isFeatureInitialised) return;
         this.plugin = plugin;
 
         this.options = initOptions();
@@ -78,9 +76,7 @@ public abstract class AFeature implements MDFeature {
      */
     public final void initProjectOnlyFeatureItems() {
         // We only need to initialise project only items once
-        if (isProjectOnlyItemsInitialised) {
-            return;
-        }
+        if (isProjectOnlyItemsInitialised) return;
 
         this.projectOnlyOptions = initProjectOnlyOptions();
         projectOnlyOptions.forEach(this::initRegistrableItem);
