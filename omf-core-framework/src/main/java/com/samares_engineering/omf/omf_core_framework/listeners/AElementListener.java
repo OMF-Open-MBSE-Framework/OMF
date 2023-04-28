@@ -74,8 +74,7 @@ public abstract class AElementListener implements IElementListener {
      * @return true if at least one rule matched
      */
     private boolean processAllMatchingRules(List<IRuleEngine> ruleEngines, PropertyChangeEvent event) {
-        if(ruleEngines == null)
-            return false;
+        if(ruleEngines == null) return false;
         return ruleEngines.stream()
                 .map(ruleEngine -> ruleEngine.processAllMatchingRule(event))
                 .collect(Collectors.toList())

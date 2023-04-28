@@ -18,6 +18,7 @@ import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
@@ -125,7 +126,13 @@ public abstract class AUIAction implements IUIAction {
     protected void executeDiagramAction(List<Element> selectedElements) {
         if(deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
-        SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+        try {
+            SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+        }catch (OMFRollBackException rollbackException){
+            OMFErrorHandler.handleException(rollbackException);
+        }catch (Exception uncaughtException){
+            OMFErrorHandler.handleException(uncaughtException, false);
+        }
     }
 
     /**
@@ -136,7 +143,13 @@ public abstract class AUIAction implements IUIAction {
     protected void executeBrowserAction(List<Element> selectedElements){
         if(deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
-        SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+        try {
+            SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+        }catch (OMFRollBackException rollbackException){
+            OMFErrorHandler.handleException(rollbackException);
+        }catch (Exception uncaughtException){
+            OMFErrorHandler.handleException(uncaughtException, false);
+        }
     }
 
     /**
@@ -147,7 +160,13 @@ public abstract class AUIAction implements IUIAction {
     protected void executeMenuAction(List<Element> selectedElements){
         if(deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
-        SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+        try {
+            SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+        }catch (OMFRollBackException rollbackException){
+            OMFErrorHandler.handleException(rollbackException);
+        }catch (Exception uncaughtException){
+            OMFErrorHandler.handleException(uncaughtException, false);
+        }
     }
     /**
      * Executed action behavior, listener will be deactivated during the action, and it will be executed inside a session.

@@ -9,6 +9,9 @@ package com.samares_engineering.omf.omf_core_framework.listeners.listeners;
 import com.nomagic.magicdraw.copypaste.CopyPasteManager;
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -28,20 +31,27 @@ public class TransactionElementListener extends AElementListener implements Tran
     }
 
     private void runnable() {
-        if (!isActivated() || CopyPasteManager.isPasting()) return;
+        try {
+            if (!isActivated() || CopyPasteManager.isPasting()) return;
 
-        stopHandlingThisBatch = false;
+            stopHandlingThisBatch = false;
 
-        allTriggeredEventsInThisBatch.forEach(this::manageAnalysis);
+            allTriggeredEventsInThisBatch.forEach(this::manageAnalysis);
 
-        for (PropertyChangeEvent evt : allTriggeredEventsInThisBatch) {
-            if (isInstanceCreated(evt)) {
-                stopHandlingThisBatch = manageCreation(evt);
+            for (PropertyChangeEvent evt : allTriggeredEventsInThisBatch) {
+                if (isInstanceCreated(evt)) {
+                    stopHandlingThisBatch = manageCreation(evt);
+                } else {
+                    stopHandlingThisBatch = manageUpdate(evt);
+                }
+                if (stopHandlingThisBatch) return;
             }
-            else {
-                stopHandlingThisBatch = manageUpdate(evt);
-            }
-            if (stopHandlingThisBatch) return;
+        }
+        catch (OMFRollBackException rollBackException){
+            UndoManager.getInstance().requestHardUndo();
+        }
+        catch (Exception e){
+            OMFErrorHandler.handleException(e, false);
         }
     }
 

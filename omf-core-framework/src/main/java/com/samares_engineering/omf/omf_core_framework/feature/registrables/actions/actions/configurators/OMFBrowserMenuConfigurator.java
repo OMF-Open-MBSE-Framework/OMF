@@ -8,24 +8,14 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
-import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.core.Application;
-import com.nomagic.magicdraw.ui.browser.Node;
 import com.nomagic.magicdraw.ui.browser.Tree;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.ui.actions.browser.debug.DebugCreateElement;
-import com.samares_engineering.omf.omf_core_framework.ui.actions.browser.debug.DebugOnOffOptionsBrowser;
-import com.samares_engineering.omf.omf_core_framework.builders.BetaFactory;
-import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * BrowserConfigurator: In charge of registering MDActions(right click menu) for browser.
@@ -33,14 +23,7 @@ import java.util.Optional;
  * To add an Action to the List call 'addNewAction'.
  */
 public class OMFBrowserMenuConfigurator extends FeatureActionConfigurator implements BrowserContextAMConfigurator, AMConfigurator {
-
-    private MDActionsCategory GenericCategory = null;
-    private MDActionsCategory devCategory = null;
-
-    /** BETA    **/
-    private MDActionsCategory betaCategory = null;
-
-    @Override
+        @Override
     public void configure(ActionsManager actionsManager) {
     }
 
@@ -52,60 +35,19 @@ public class OMFBrowserMenuConfigurator extends FeatureActionConfigurator implem
     public void configure(ActionsManager actionsManager, Tree tree) {
         try {
             final boolean isPreconditionOk = (tree.getSelectedNode() == null) || Application.getInstance().getProject() == null;
-            if (isPreconditionOk)
-                return;
+            if (isPreconditionOk) return;
             ArrayList<MDActionsCategory> mdActionsCategories = new ArrayList();
-
-
-            betaCategory = new MDActionsCategory("[Beta] beta features", "[Beta] beta features");
-            betaCategory.setNested(true);
-            mdActionsCategories.add(betaCategory);
-
-            devCategory = new MDActionsCategory("Dev", "Dev");
-            devCategory.setNested(true);
-
-            Node[] selectedNodes = tree.getSelectedNodes();
-            final boolean selectedItemsAreElement = Arrays.stream(selectedNodes).map(Node::getUserObject).allMatch(Element.class::isInstance);
-
-            //ACTIVATE BETA FEATURES
-//            final boolean betaFeaturesActivated = OMFEnvironmentOptionsGroup_beta.getInstance().isBetaFeatureActivated();
-//
-//            if (betaFeaturesActivated)
-//                addDebugAction(betaCategory, selectedNodes);
-
             configureFeatureActions(actionsManager);
 
-            mdActionsCategories.stream().filter(cat -> !cat.isEmpty()).forEach(cat -> actionsManager.addCategory(cat));
+            mdActionsCategories.stream().filter(cat -> !cat.isEmpty()).forEach(actionsManager::addCategory);
+        } catch (OMFRollBackException rollBackException) {
+            OMFErrorHandler.handleException(rollBackException);
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, false);
         }
 
     }
 
-    private List<NMAction> addDebugAction(MDActionsCategory betaCategory, Node[] selectedNodes) {
-
-        final boolean selectedItemsAreElement = Arrays.stream(selectedNodes).map(Node::getUserObject).allMatch(Element.class::isInstance);
-
-        if (selectedItemsAreElement)
-            Arrays.stream(BetaFactory.class.getDeclaredMethods())
-                    .filter(method -> method.getName().startsWith("Test_"))
-                    .forEach(method -> betaCategory.addAction(new DebugCreateElement(method.getName(), method)));
 
 
-        return null;
-    }
-
-    private void addDebugOptionsAction(MDActionsCategory betaCategory) {
-        for (Method setter : OMFPropertyOptionsGroup.class.getDeclaredMethods()) {
-            if (setter.getName().startsWith("set")) {
-                Optional<Method> getter = Arrays.stream(OMFPropertyOptionsGroup.class.getDeclaredMethods())
-                        .filter(method -> method.getName().startsWith("get" + setter.getName().replaceFirst("set", "")))
-                        .findFirst();
-                if (getter.isPresent())
-                    betaCategory.addAction(new DebugOnOffOptionsBrowser(setter.getName(), OMFPropertyOptionsGroup.getInstance(), setter, getter.get()));
-            }
-        }
-
-
-    }
 }

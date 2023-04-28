@@ -20,7 +20,6 @@ public class OMFException extends GenericException {
         this(debugMessage, userMessage, null, criticality);
     }
 
-
     public OMFException(String debugMessage, String userMessage, Exception exception, ECriticality criticality) {
         super(debugMessage, userMessage, exception, criticality);
     }

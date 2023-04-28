@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions;
+package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
@@ -21,7 +21,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "ACTION NAME", category = "ACTION CATEGORY NAME")
-public class ExampleMDAction1 extends AUIAction {
+public class UIActionErrorExample extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(OMFUtils.currentProject == null)
@@ -34,6 +34,7 @@ public class ExampleMDAction1 extends AUIAction {
         try {
             // Do something
             SysMLFactory.getInstance().createBlock(selectedElements.get(0));
+            throw new RuntimeException("TESTING Framework ERROR");
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, true);
         }
