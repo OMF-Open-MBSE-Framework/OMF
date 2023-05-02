@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [RELEASE]
+## [1.0.0] - 2023-05-02
+
+### Added
+- Error Management handling inside OMF Core, allowing rollback in case of errors.
+  - OMFError Handler throws a OMFRollbackException to trigger the rollback inside OMF Core.
+  - Rollback can be triggered from LiveAction or UIActions.
+
+### Fixed
+- UIAction Menu could some time not be available in the menu bar.
+
+### Changed
+- FeatureRegisterer now uses a list of FeatureItemRegisterer allowing developer to customize how features registering are handling. 
+ It also allows developer to add their own featureItems. 
+
+### Known Limitations
+- Documentation is not up-to-date with the latest changes.
+- OMFExample is not published yet.
+
 ## [Unreleased]
 
 ## [0.0.92] - 2023-04-2
