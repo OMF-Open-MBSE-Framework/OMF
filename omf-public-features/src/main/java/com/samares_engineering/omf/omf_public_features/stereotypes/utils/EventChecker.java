@@ -64,7 +64,7 @@ public class EventChecker {
     }
     public EventChecker isPart() {
         isSourceNotNull();
-        predicates.add(evt -> Profile.getSysmlAdditionalStereotypes().partProperty().is((Element) evt.getSource()));
+        predicates.add(evt -> Profile._getSysmlAdditionalStereotypes().partProperty().is((Element) evt.getSource()));
         return this;
     }
     public EventChecker isPort() {

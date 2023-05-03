@@ -70,6 +70,25 @@ public class Profile {
          return null;
     }
 
+
+    public MDCustomizationForSysMLProfile getSysmlAdditionalStereotypes() {
+         try{return MDCustomizationForSysMLProfile.getInstanceByProject(project);}
+         catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysMLCustomization profile not found", e, GenericException.ECriticality.CRITICAL));}
+         return null;
+    }
+
+    public static SysMLProfile _getSysml() {return getInstance().getSysml();}
+
+    public static MDCustomizationForSysMLProfile _getMDCustomSysml(Project project) {return getInstance().getMDCustomSysml();}
+
+    public static MDCustomizationForSysMLProfile _getSysmlAdditionalStereotypes() {return getInstance().getSysmlAdditionalStereotypes();}
+
+    public static MagicDrawProfile _getMagicDraw() {return getInstance().getMagicDraw();}
+
+    public static StandardProfile _getStandard() {return getInstance().getStandard();}
+
+
+
     public Project getProject() {
         return project;
     }

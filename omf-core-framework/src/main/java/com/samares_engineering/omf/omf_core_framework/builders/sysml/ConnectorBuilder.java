@@ -293,13 +293,13 @@ public class ConnectorBuilder extends NamedElementBuilder {
             try {
                 OMFFactory.getInstance().setConnectorEnd(srcCE, srcPart, (Port) src,
                         srcPropertyPath.stream()
-                                .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
+                                .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
                                 .map(Property.class::cast)
                                 .collect(Collectors.toList()));
 
                 OMFFactory.getInstance().setConnectorEnd(dstCE, dstPart, (Port) dst,
                         dstPropertyPath.stream()
-                                .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
+                                .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
                                 .map(Property.class::cast)
                                 .collect(Collectors.toList()));
             } catch (Exception e) {
