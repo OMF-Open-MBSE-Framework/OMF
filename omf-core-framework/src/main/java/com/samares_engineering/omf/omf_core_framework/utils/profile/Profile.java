@@ -79,7 +79,7 @@ public class Profile {
 
     public static SysMLProfile _getSysml() {return getInstance().getSysml();}
 
-    public static MDCustomizationForSysMLProfile _getMDCustomSysml(Project project) {return getInstance().getMDCustomSysml();}
+    public static MDCustomizationForSysMLProfile _getMDCustomSysml() {return getInstance().getMDCustomSysml();}
 
     public static MDCustomizationForSysMLProfile _getSysmlAdditionalStereotypes() {return getInstance().getSysmlAdditionalStereotypes();}
 
