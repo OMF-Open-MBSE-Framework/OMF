@@ -43,9 +43,6 @@ public class LockSafeFeature extends AFeature {
         try {
             super.onRegistering();
             getPlugin().getListenerManager().addCoreListener(restrictedElementListener);
-//            LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
-//            restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
-//            restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());
             Application.getInstance().insertActivityAfterStartup(() -> {
                 try {
                     LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
@@ -64,6 +61,20 @@ public class LockSafeFeature extends AFeature {
         super.onUnregistering();
         getPlugin().getListenerManager().removeCoreListener(restrictedElementListener);
     }
+// TODO: 2022-02-01  uncomment this when the featureRegisterer is ready
+//    @Override
+//    public void onProjectOpen() {
+//        super.onProjectOpen();
+//        getPlugin().getListenerManager().addCoreListener(restrictedElementListener);
+//    }
+//
+//
+//    @Override
+//    public void onProjectClose() {
+//        super.onUnregistering();
+//        getPlugin().getListenerManager().removeCoreListener(restrictedElementListener);
+//    }
+
 
     @Override
     protected EnvOptionsHelper initEnvOptionsHelper() {

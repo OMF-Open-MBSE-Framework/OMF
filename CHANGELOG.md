@@ -6,10 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-## [1.0.1] - 2023-05-02
+## [1.0.3] - 2023-05-02
 
 ### Added
-- EventChecker adding hasStereotype clause
+- Utils: EventChecker adding hasStereotype clause
+- FeatureLibrary: SafeLock is now a Configurable Feature
+- Core: Listeners Interface has been refactor to improve their activation and deactivation
+- Core: Core listeners can be now registered independently from FeatureListeners
+- Core: ErrorHandling is now displaying a popup when an error occurs
+- Core: More ErrorHandling has been added
 
 ### Fixed
 
@@ -19,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Known Limitations
 - Documentation is not up-to-date with the latest changes.
 - OMFExample is not published yet.
+- Popup Error needs to be improved, to be able to display more information (Exception tags, etc.)
+- Exception tags are not yet implemented
+
 
 ## [RELEASE]
 ## [1.0.0] - 2023-05-02
