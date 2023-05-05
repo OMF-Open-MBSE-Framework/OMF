@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 public abstract class AElementListener implements IElementListener {
     private boolean activated;
+    private boolean isRegistered;
 
     private HashMap<String, List<IRuleEngine>> rulesEngines = new HashMap<>();
 
@@ -75,10 +77,12 @@ public abstract class AElementListener implements IElementListener {
      */
     private boolean processAllMatchingRules(List<IRuleEngine> ruleEngines, PropertyChangeEvent event) {
         if(ruleEngines == null) return false;
-        return ruleEngines.stream()
+        boolean hasRulesBeenTriggered = ruleEngines.stream()
                 .map(ruleEngine -> ruleEngine.processAllMatchingRule(event))
                 .collect(Collectors.toList())
                 .contains(true);
+        if(hasRulesBeenTriggered) OMFAutomationManager.getInstance().automationTriggered();
+        return hasRulesBeenTriggered;
     }
 
     public void setActivated(boolean activated) {
@@ -91,5 +95,19 @@ public abstract class AElementListener implements IElementListener {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+    @Override
+    public boolean isNotRegistered(){
+        return !isRegistered;
+    }
+
+    @Override
+    public void setIsRegistered(boolean isRegistered) {
+        this.isRegistered = isRegistered;
     }
 }

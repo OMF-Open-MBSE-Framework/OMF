@@ -48,13 +48,13 @@ public class FeatureRegisterer {
 
         try {
             feature.initFeature(plugin);
-            feature.setIsRegistered(true);
 
             registeredFeatures.add(feature);
 
             optionRegisterer.registerFeatureItems(feature.getOptions());
             uiActionRegisterer.registerFeatureItems(feature.getUIActions());
             ruleEngineRegisterer.registerFeatureItems(feature.getRuleEngines());
+            feature.setIsRegistered(true);
         } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
             OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
                     e, GenericException.ECriticality.CRITICAL), false);
@@ -127,7 +127,7 @@ public class FeatureRegisterer {
             ruleEngineRegisterer.unregisterFeatureItems(feature.getProjectOnlyRuleEngines());
             optionRegisterer.unregisterFeatureItems(feature.getProjectOnlyOptions());
         } catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while unregistering project only items for feature " +
+            OMFErrorHandler.handleException(new FeatureException("Error while unregistering \'project only items\' for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }

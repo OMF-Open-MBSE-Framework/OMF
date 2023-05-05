@@ -38,7 +38,7 @@ public abstract class AOption implements IOption {
 
     private MDFeature feature;
 
-    public void initRegisterableItem(MDFeature feature) {
+    public void initRegistrableItem(MDFeature feature) {
         this.feature = feature;
     }
 

@@ -52,8 +52,7 @@ public class OMFPropertyOptionsGroup extends APropertyOptionsGroup {
 
     public void setGroup1_defaultValue() {
         //DEACTIVATE AUTOMATION
-        BooleanProperty propertyAA = new BooleanProperty(ID_ACTIVATE_AUTOMATION, false);
-        propertyAA.setValue(false);
+        BooleanProperty propertyAA = new BooleanProperty(ID_ACTIVATE_AUTOMATION, true);
         propertyAA.setResourceProvider(PROPERTY_RESOURCE_PROVIDER);
         propertyAA.setGroup(GR_1_AUTOMATION_MNGT);
         addProperty(propertyAA, true);

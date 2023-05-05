@@ -1,6 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
 public abstract class EnvOptionsHelper {
@@ -17,7 +20,12 @@ public abstract class EnvOptionsHelper {
     }
 
     public final Property getPropertyByName(String name) {
-        return optionsGroup.getPropertyByName(name);
+         try {
+             return optionsGroup.getPropertyByName(name);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFFrameworkException("Could not find property with name: " + name, e, GenericException.ECriticality.ALERT), false);
+        }
+         return null;
     }
 
     public MDFeature getFeature() {

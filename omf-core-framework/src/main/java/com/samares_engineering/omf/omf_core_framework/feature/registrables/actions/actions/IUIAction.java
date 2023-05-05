@@ -30,5 +30,5 @@ public interface IUIAction extends RegistrableFeatureItem {
 
     String getCategory();
 
-    void initRegisterableItem(MDFeature mdFeature);
+    void initRegistrableItem(MDFeature mdFeature);
 }

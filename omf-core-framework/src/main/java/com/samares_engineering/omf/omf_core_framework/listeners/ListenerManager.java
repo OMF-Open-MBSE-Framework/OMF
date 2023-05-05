@@ -7,7 +7,6 @@
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.DeletionPropertyChangeElementListener;
-import com.samares_engineering.omf.omf_core_framework.listeners.listeners.LockManagerListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.OrchestratorListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.TransactionElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
@@ -21,9 +20,9 @@ import java.util.Objects;
 public class ListenerManager implements IListenerManager {
     private boolean listenersActivated = false;
     private IElementListener orchestratorListener = new OrchestratorListener();
-    private IElementListener lockManagerListener = new LockManagerListener();
     // TODO Once the listeners have been migrated to OMF, instantiate them here and make the field private
-    public List<IElementListener> listenerList;
+    public List<IElementListener> featureListeners;
+    public List<IElementListener> coreListeners;
     public IElementListener deletionListener = new DeletionPropertyChangeElementListener();
     public IElementListener transactionElementListener = new TransactionElementListener();
 
@@ -32,7 +31,8 @@ public class ListenerManager implements IListenerManager {
     }
 
     private ListenerManager() {
-        this.listenerList = new ArrayList<>(Arrays.asList(
+        this.coreListeners = new ArrayList<>(Arrays.asList(orchestratorListener));
+        this.featureListeners = new ArrayList<>(Arrays.asList(
                 deletionListener,
                 transactionElementListener
         ));
@@ -42,11 +42,63 @@ public class ListenerManager implements IListenerManager {
         return ListenerManagerHolder.instance;
     }
 
+    @Override
+    public void addListener(IElementListener listener) {
+        if (listener == null) return;
+        this.featureListeners.add(listener);
+        listener.register();
+    }
+
+    @Override
+    public void addListeners(List<IElementListener> listeners) {
+        if (CollectionUtils.isEmpty(listeners)) return;
+        listeners.forEach(this::addListener);
+    }
+
+    @Override
+    public void removeListener(IElementListener listener) {
+        if (listener == null) return;
+        this.featureListeners.remove(listener);
+        listener.unregister();
+    }
+
+    @Override
+    public void removeListeners(List<IElementListener> listeners) {
+        if (CollectionUtils.isEmpty(listeners)) return;
+        listeners.forEach(this::removeListener);
+    }
+
+    @Override
+    public void addCoreListener(IElementListener listener) {
+        if (listener == null) return;
+        this.coreListeners.add(listener);
+        listener.register();
+    }
+
+    @Override
+    public void addCoreListeners(List<IElementListener> listeners) {
+        if (CollectionUtils.isEmpty(listeners)) return;
+        listeners.forEach(this::addCoreListener);
+    }
+
+    @Override
+    public void removeCoreListener(IElementListener listener) {
+        if (listener == null) return;
+        this.coreListeners.remove(listener);
+        listener.unregister();
+    }
+
+    @Override
+    public void removeCoreListeners(List<IElementListener> listeners) {
+        if (CollectionUtils.isEmpty(listeners)) return;
+        listeners.forEach(this::removeCoreListener);
+    }
+
     public void activateAllListeners() {
-        if (listenersActivated || this.listenerList == null) {
+        if (listenersActivated || this.featureListeners == null) {
             return;
         }
-        this.listenerList.forEach(IElementListener::activate);
+        this.featureListeners.forEach(IElementListener::activate);
         listenersActivated = true;
         ColorPrinter.status("Listeners Activated");
     }
@@ -55,22 +107,34 @@ public class ListenerManager implements IListenerManager {
         if (!listenersActivated || !thereAreDeclaredListeners()) {
             return;
         }
-        this.listenerList.forEach(IElementListener::deactivate);
+        this.featureListeners.forEach(IElementListener::deactivate);
         ColorPrinter.status("Listeners Deactivated");
         listenersActivated = false;
     }
 
     public void registerAllListeners() {
-        this.orchestratorListener.addListener();
-        this.lockManagerListener.addListener();
-        this.listenerList.stream().filter(Objects::nonNull).forEach(IElementListener::addListener);
+        this.coreListeners.stream()
+                .filter(Objects::nonNull)
+                .filter(IElementListener::isNotRegistered)
+                .forEach(IElementListener::register);
+        this.featureListeners.stream()
+                .filter(Objects::nonNull)
+                .filter(IElementListener::isNotRegistered)
+                .forEach(IElementListener::register);
         ColorPrinter.status("Listeners Registered");
     }
 
     public void removeAllListeners() {
-        this.orchestratorListener.removeListener();
-        this.lockManagerListener.removeListener();
-        this.listenerList.forEach(IElementListener::removeListener);
+       this.coreListeners
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(IElementListener::isRegistered)
+                .forEach(IElementListener::unregister);
+        this.featureListeners
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(IElementListener::isRegistered)
+                .forEach(IElementListener::unregister);
         ColorPrinter.status("Listeners Removed");
     }
 
@@ -100,7 +164,7 @@ public class ListenerManager implements IListenerManager {
     }
 
     private boolean thereAreDeclaredListeners() {
-        return CollectionUtils.isNotEmpty(this.listenerList);
+        return CollectionUtils.isNotEmpty(this.featureListeners);
     }
 
     public boolean isListenersActivated() {

@@ -78,4 +78,10 @@ public class EventChecker {
         predicates.add(evt -> evt.getPropertyName().equals(PropertyNames.NAME));
         return this;
     }
+
+    public EventChecker isElementRenamed() {
+        isSourceNotNull();
+        predicates.add(evt -> evt.getPropertyName().equals(PropertyNames.NAME) && evt.getOldValue() != null);
+        return this;
+    }
 }

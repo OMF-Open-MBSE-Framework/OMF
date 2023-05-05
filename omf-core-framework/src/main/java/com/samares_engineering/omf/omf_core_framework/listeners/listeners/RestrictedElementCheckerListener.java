@@ -13,10 +13,6 @@ import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
 import com.nomagic.uml2.transaction.TransactionManager;
-import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
-import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
-import com.samares_engineering.omf.omf_core_framework.utils.LockerManager;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
@@ -24,6 +20,10 @@ import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoM
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFLockException;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
+import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
+import com.samares_engineering.omf.omf_core_framework.utils.LockerManager;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.annotation.CheckForNull;
@@ -31,8 +31,10 @@ import java.beans.PropertyChangeEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class LockManagerListener extends AElementListener implements TransactionCommitListener {
-    public LockManagerListener() {
+public class RestrictedElementCheckerListener extends AElementListener implements TransactionCommitListener {
+    private boolean rollbackEnabled = true;
+
+    public RestrictedElementCheckerListener() {
         super();
         lockExceptions = new ArrayList<>();
     }
@@ -42,15 +44,21 @@ public class LockManagerListener extends AElementListener implements Transaction
     @CheckForNull
     @Override
     public Runnable transactionCommited(Collection<PropertyChangeEvent> collection) {
+        return () -> analyseBatchForRestrictedElementModification(collection);
+    }
+
+    private void analyseBatchForRestrictedElementModification(Collection<PropertyChangeEvent> collection) {
         try {
             //if listeners is activated then no automation has been triggered
-            if (ListenerManager.getInstance().isListenersActivated())
-                return null;
+    //            if (ListenerManager.getInstance().isListenersActivated()) return null;
+            if(!isActivated()) return;
+            if (OMFAutomationManager.getInstance().noAutomationTriggered()) return;
+
 
             Set<Element> checkedElements = new HashSet<>();
 
             Map<EVT_TYPE, List<PropertyChangeEvent>> groups = collection.stream()
-                    .collect(Collectors.groupingBy(pce -> this.getGroup(pce)));
+                    .collect(Collectors.groupingBy(this::getGroup));
 
             boolean hasDeletedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.DELETE));
             boolean hasUpdatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.CREATION));
@@ -73,12 +81,9 @@ public class LockManagerListener extends AElementListener implements Transaction
             lockExceptions.addAll(creations);
             lockExceptions.addAll(updates);
 
-
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, false);
         }
-
-        return null;
     }
 
     private EVT_TYPE getGroup(PropertyChangeEvent pce) {
@@ -100,10 +105,9 @@ public class LockManagerListener extends AElementListener implements Transaction
     public void allTransactionsCommitted() {
         try {
 
-            boolean isThereLockExceptionTriggered = !lockExceptions.isEmpty();
+            boolean noLockExceptionTriggered = lockExceptions.isEmpty();
 
-            if (!isThereLockExceptionTriggered)
-                return;
+            if (noLockExceptionTriggered) return;
 
             OMFLogger.getInstance().log("[LOCK ERROR] Errors happened during the transaction," +
                     " some element are locked by other, are not locked," +
@@ -120,6 +124,8 @@ public class LockManagerListener extends AElementListener implements Transaction
             lockExceptions.stream()
                     .forEach(OMFErrorHandler::handleException);
             lockExceptions.clear();
+
+            if(!isRollbackEnabled()) return;
             UndoManager.getInstance().requestHardUndo();
 
         } catch (Exception e) {
@@ -127,14 +133,16 @@ public class LockManagerListener extends AElementListener implements Transaction
         }
     }
 
+
+
     @Override
-    public void addListener() {
+    public void addingListener() {
         TransactionManager transactionManager = OMFUtils.currentProject.getRepository().getTransactionManager();
         transactionManager.addTransactionCommitListenerForExecute(this);
     }
 
     @Override
-    public void removeListener() {
+    public void removingListener() {
         final boolean isListenerRemovable = (null != OMFUtils.currentProject);
         if (isListenerRemovable) {
             try {
@@ -147,8 +155,15 @@ public class LockManagerListener extends AElementListener implements Transaction
     }
 
     @Override
-    public void manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
+    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
+        return false;
+    }
 
+    public void setRollBackEnabling(Boolean value) {
+        this.rollbackEnabled = value;
+    }
+    private boolean isRollbackEnabled() {
+        return rollbackEnabled;
     }
 
     public enum EVT_TYPE {

@@ -64,17 +64,17 @@ public class TransactionElementListener extends AElementListener implements Tran
     }
 
     @Override
-    public void addListener() {
+    public void addingListener() {
         OMFUtils.currentProject.getRepository().getTransactionManager().addTransactionCommitListener(this);
     }
 
     @Override
-    public void removeListener() {
+    public void removingListener() {
         OMFUtils.currentProject.getRepository().getTransactionManager().removeTransactionCommitListener(this);
     }
 
     @Override
-    public void manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
-
+    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
+        return false;
     }
 }

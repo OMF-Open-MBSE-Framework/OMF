@@ -12,7 +12,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
-import com.samares_engineering.omf.omf_public_features.dev.actions.ResetListeners;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
+import com.samares_engineering.omf.omf_public_features.dev.actions.DebugAction;
+import com.samares_engineering.omf.omf_public_features.dev.actions.live.creation.OnCreateDebug;
+import com.samares_engineering.omf.omf_public_features.dev.actions.live.creation.OnPartRenaming;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +34,8 @@ public class Dev extends AFeature {
     @Override
     public List<IUIAction> initFeatureActions() {
         return List.of(
-             new ResetListeners()
+//             new ResetListeners()
+            new DebugAction()
         );
     }
 
@@ -41,7 +46,16 @@ public class Dev extends AFeature {
 
     @Override
     public List<IRuleEngine> initLiveActions() {
-        return Collections.emptyList();
+        RuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
+        creationRE.addRule(new OnCreateDebug());
+
+        RuleEngine updateRE = new RuleEngine(RECategoryEnum.UPDATE);
+        updateRE.addRule(new OnPartRenaming());
+
+        return List.of(
+            creationRE,
+            updateRE
+        );
     }
 
     @Override

@@ -5,5 +5,5 @@ package com.samares_engineering.omf.omf_core_framework.feature;
  */
 public interface RegistrableFeatureItem {
     MDFeature getFeature();
-    void initRegisterableItem(MDFeature feature);
+    void initRegistrableItem(MDFeature feature);
 }
