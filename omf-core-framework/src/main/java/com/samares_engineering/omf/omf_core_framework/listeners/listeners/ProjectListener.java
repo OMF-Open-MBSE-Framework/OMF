@@ -185,8 +185,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
         Profile.getInstance();
         ListenerManager.getInstance().registerAllListeners();
         ListenerManager.getInstance().activateAllListeners();
-        plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(plugin.getFeatures());
-        plugin.getFeatures().forEach(MDFeature::onProjectOpen);
+        plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(plugin.getFeatureRegisterer().getRegisteredFeatures());
+        plugin.getFeatureRegisterer().getRegisteredFeatures().forEach(MDFeature::onProjectOpen);
     }
 
     protected void closeProject() {
@@ -194,7 +194,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
             return;
         ListenerManager.getInstance().removeAllListeners();
         OMFUtils.currentProject = null;
-        plugin.getFeatureRegister().unregisterDelayedItemsOfFeatures(plugin.getFeatures());
-        plugin.getFeatures().forEach(MDFeature::onProjectClose);
+        plugin.getFeatureRegister().unregisterDelayedItemsOfFeatures(plugin.getFeatureRegisterer().getRegisteredFeatures());
+        plugin.getFeatureRegisterer().getRegisteredFeatures().forEach(MDFeature::onProjectClose);
     }
 }

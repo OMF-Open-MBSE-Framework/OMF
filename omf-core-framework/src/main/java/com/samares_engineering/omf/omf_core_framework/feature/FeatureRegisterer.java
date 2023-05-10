@@ -10,18 +10,18 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.MDActionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.OptionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.RuleEngineRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureRegisterer {
-    private MDActionRegisterer uiActionRegisterer;
-    private RuleEngineRegisterer ruleEngineRegisterer;
-    private OptionRegisterer optionRegisterer;
+
+
+    private List<IFeatureItemRegisterer> featureItemRegisters;
+    private List<IProjectOnlyFeatureItemRegisterer> projectOnlyFeatureItemRegisters;
 
     private List<MDFeature> registeredFeatures = new ArrayList<>();
     private final APlugin plugin;
@@ -29,32 +29,33 @@ public class FeatureRegisterer {
     //TODO: Create a class regrouping all Configurators
     public FeatureRegisterer(APlugin plugin){
         this.plugin = plugin;
-        this.uiActionRegisterer = new MDActionRegisterer(this);
-        this.ruleEngineRegisterer = new RuleEngineRegisterer(this);
-        this.optionRegisterer = new OptionRegisterer(this);
-    }
+        this.featureItemRegisters = new ArrayList<>();
+        this.projectOnlyFeatureItemRegisters = new ArrayList<>();
+
+   }
 
     /**
      * Register a feature using delegation to register MDActions and RuleEngines. Return true if the feature is already registered;
      * @param feature
      */
-    public void registerFeature(MDFeature feature){
-        if(isAlreadyRegistered(feature)) {
-            OMFErrorHandler.handleException(new FeatureException("Trying to register feature " + feature.getName() +
-                    " which is already registered.", GenericException.ECriticality.ALERT), false);
-        }
-
-
-
+    public void registerFeature(MDFeature feature) {
         try {
+            if(isAlreadyRegistered(feature)) {
+                throw new FeatureException("Trying to register feature " + feature.getName() +
+                        " which is already registered.", GenericException.ECriticality.ALERT);
+            }
+
             feature.initFeature(plugin);
+            feature.setIsRegistered(true);
 
             registeredFeatures.add(feature);
 
-            optionRegisterer.registerFeatureItems(feature.getOptions());
-            uiActionRegisterer.registerFeatureItems(feature.getUIActions());
-            ruleEngineRegisterer.registerFeatureItems(feature.getRuleEngines());
-            feature.setIsRegistered(true);
+            for (IFeatureItemRegisterer registerer : featureItemRegisters) {
+                registerer.registerFeature(feature);
+                if (OMFUtils.currentProject != null) {
+                    registerProjectOnlyFeatureItems(feature);
+                }
+            }
         } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
             OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
                     e, GenericException.ECriticality.CRITICAL), false);
@@ -76,14 +77,15 @@ public class FeatureRegisterer {
     private void registerProjectOnlyFeatureItems(MDFeature feature) {
         feature.initProjectOnlyFeatureItems();
 
-        try {
-            optionRegisterer.registerFeatureItems(feature.getProjectOnlyOptions());
-            uiActionRegisterer.registerFeatureItems(feature.getProjectOnlyUIActions());
-            ruleEngineRegisterer.registerFeatureItems(feature.getProjectOnlyRuleEngines());
-        } catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while registering project only items for feature " +
-                    feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-        }
+        projectOnlyFeatureItemRegisters.forEach(registerer -> {
+            try {
+                registerer.registerFeature(feature);
+            }catch (FeatureException e) {
+                OMFErrorHandler.handleException(new FeatureException("Error while registering project only items for feature " +
+                        feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+            }
+        });
+
     }
 
     public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
@@ -91,70 +93,94 @@ public class FeatureRegisterer {
     }
 
     public void unregisterFeature(MDFeature feature){
-        if (!isAlreadyRegistered(feature)) {
-            OMFErrorHandler.handleException(new FeatureException("Trying to unregister feature " + feature.getName() +
-                    " which is not registered.", GenericException.ECriticality.ALERT), false);
-        }
-
-        registeredFeatures.remove(feature);
-
-        feature.setIsRegistered(false);
-
         try {
-            uiActionRegisterer.unregisterFeatureItems(feature.getUIActions());
-            uiActionRegisterer.unregisterFeatureItems(feature.getProjectOnlyUIActions());
-            ruleEngineRegisterer.unregisterFeatureItems(feature.getRuleEngines());
-            ruleEngineRegisterer.unregisterFeatureItems(feature.getProjectOnlyRuleEngines());
-            optionRegisterer.unregisterFeatureItems(feature.getOptions());
-            optionRegisterer.unregisterFeatureItems(feature.getProjectOnlyOptions());
-        } catch (FeatureException e) {
+            if (!isAlreadyRegistered(feature)) {
+                throw new FeatureException("Trying to unregister feature " + feature.getName() +
+                        " which is not registered.", GenericException.ECriticality.ALERT);
+            }
+
+            registeredFeatures.remove(feature);
+            for (IFeatureItemRegisterer registerer : featureItemRegisters) {
+               try {
+                   registerer.unregisterFeature(feature);
+               }catch (FeatureException e) {
+                   OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
+                           feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+               }
+            }
+            feature.setIsRegistered(false);
+
+        }catch (FeatureException e) {
             OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
     public void unregisterFeatures(List<MDFeature> features){
-        new ArrayList<>(features).forEach(this::unregisterFeature);
+        new ArrayList<>(features).forEach(this::unregisterFeature); //New Arraylist to manage List modifications while iterating
     }
 
     public void unregisterDelayedItemsOfFeatures(List<MDFeature> features){
-        new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);
+        new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);//New Arraylist to manage List modifications while iterating
     }
 
     public void unregisterDelayedItemsOfFeature(MDFeature feature){
-        try {
-            uiActionRegisterer.unregisterFeatureItems(feature.getProjectOnlyUIActions());
-            ruleEngineRegisterer.unregisterFeatureItems(feature.getProjectOnlyRuleEngines());
-            optionRegisterer.unregisterFeatureItems(feature.getProjectOnlyOptions());
-        } catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while unregistering \'project only items\' for feature " +
+        projectOnlyFeatureItemRegisters.forEach(registerer -> {
+            try {
+                registerer.unregisterFeature(feature);
+            }catch (FeatureException e) {
+            OMFErrorHandler.handleException(new FeatureException("Error while unregistering project only items for feature " +
                     feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-        }
+        }});
     }
 
-    private boolean isAlreadyRegistered(MDFeature mdFeature) {
+    public boolean isAlreadyRegistered(MDFeature mdFeature) {
         return registeredFeatures.stream().anyMatch(mdFeature.getClass()::isInstance);
     }
 
+    public void addIFeatureItemRegisterer(IFeatureItemRegisterer featureItemRegisterer){
+       try {
+           this.featureItemRegisters.add(featureItemRegisterer);
+           featureItemRegisterer.init(this);
+       }catch (FeatureException e) {
+           OMFErrorHandler.handleException(new FeatureException("Error while adding feature item registerer " +
+                   featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
+       }
+    }
+    public void addAllIFeatureItemRegisterer(List<? extends IFeatureItemRegisterer> featureItemRegisterers){
+        featureItemRegisterers.forEach(this::addIFeatureItemRegisterer);
+    }
+
+    public void removeIFeatureItemRegisterer(IFeatureItemRegisterer featureItemRegisterer){
+        this.featureItemRegisters.remove(featureItemRegisterer);
+    }
+    public void removeAllIFeatureItemRegisterer(List<? extends IFeatureItemRegisterer> featureItemRegisterers){
+        featureItemRegisterers.forEach(this::removeIFeatureItemRegisterer);
+    }
+
+
+    public void addProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer featureItemRegisterer){
+        try{
+            this.projectOnlyFeatureItemRegisters.add(featureItemRegisterer);
+            featureItemRegisterer.init(this);
+        }catch (FeatureException e) {
+            OMFErrorHandler.handleException(new FeatureException("Error while adding project only feature item registerer " +
+                    featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
+        }
+    }
+    public void addAllProjectOnlyFeatureItemRegisterer(List<? extends IProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
+        featureItemRegisterers.forEach(this::addProjectOnlyFeatureItemRegisterer);
+    }
+
+    public void removeProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer featureItemRegisterer){
+        this.projectOnlyFeatureItemRegisters.remove(featureItemRegisterer);
+    }
+    public void removeAllProjectOnlyFeatureItemRegisterer(List<? extends IProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
+        featureItemRegisterers.forEach(this::removeProjectOnlyFeatureItemRegisterer);
+    }
+
     //-------------------------------- GETTER / SETTER --------------------------------------------
-    public RuleEngineRegisterer getRuleEngineRegisterer() {
-        return ruleEngineRegisterer;
-    }
-    public void setRuleEngineRegisterer(RuleEngineRegisterer ruleEngineRegisterer) {
-        this.ruleEngineRegisterer = ruleEngineRegisterer;
-    }
-    public MDActionRegisterer getUiActionRegisterer() {
-        return uiActionRegisterer;
-    }
-    public void setUiActionRegisterer(MDActionRegisterer uiActionRegisterer) {
-        this.uiActionRegisterer = uiActionRegisterer;
-    }
-    public OptionRegisterer getOptionRegisterer() {
-        return optionRegisterer;
-    }
-    public void setOptionRegisterer(OptionRegisterer optionRegisterer) {
-        this.optionRegisterer = optionRegisterer;
-    }
+
     public List<MDFeature> getRegisteredFeatures() {
         return registeredFeatures;
     }

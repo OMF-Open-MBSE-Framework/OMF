@@ -73,4 +73,28 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     public IListenerManager initListenerManager() {
         return ListenerManager.getInstance();
     }
+
+    @Override
+    public List<AOptionListener> initEnvironmentOptionsListener() {
+        var optionListener = new AOptionListener() {
+            @Override
+            public void updateByEnvironmentProperties(List<Property> list) {
+                list.stream()
+                        .filter(BooleanProperty.class::isInstance)
+                        .map(BooleanProperty.class::cast)
+                        .filter(opt -> opt.getName().equals(OMFPropertyOptionsGroup.ID_ACTIVATE_AUTOMATION))
+                        .findFirst()
+                        .ifPresent(opt -> {
+                            if ((boolean) opt.getValue())
+                                registerAllFeatures();
+                            else
+                                unregisterAllFeatures();
+                        });
+            }
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+
+            }
+        };        return Collections.singletonList(optionListener);
     }

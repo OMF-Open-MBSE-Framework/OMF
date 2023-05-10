@@ -30,7 +30,7 @@ public class FeatureActionConfigurator {
         Predicate<? super AUIAction> check = null;
 
         resetMDActions(actionsManager);
-        if(BrowserContextAMConfigurator.class.isInstance(this)) {
+        if(this instanceof BrowserContextAMConfigurator) {
             check = AUIAction::checkBrowserAvailability;
             genericActions.stream()
                     .filter(check)
@@ -39,7 +39,7 @@ public class FeatureActionConfigurator {
         }
 
 
-        if(DiagramContextAMConfigurator.class.isInstance(this)) {
+        if(this instanceof DiagramContextAMConfigurator) {
             check = AUIAction::checkDiagramAvailability;
             genericActions.stream()
                     .filter(check)
@@ -48,7 +48,7 @@ public class FeatureActionConfigurator {
 
 
         // registering MenuActions
-        if(OMFMainMenuConfigurator.class.isInstance(this)) {
+        if(this instanceof OMFMainMenuConfigurator) {
             genericActions.stream()
                     .filter(AUIAction::isMenuAction)
                     .forEach(action -> this.registerMenuAction(actionsManager, findOrCreateCategory(actionsManager, action), action, action.checkMenuAvailability()));
@@ -124,11 +124,9 @@ public class FeatureActionConfigurator {
             public void updateState() {
 //                super.updateState();
                 //refresh MenuActionState
-                getActions().stream()
-                        .filter(AUIAction.class::isInstance)
-                        .map(AUIAction.class::cast)
-                        .forEach( action -> action.getMenuAction().setEnabled(action.checkMenuAvailability()));
-                this.setEnabled(getActions().stream().anyMatch(NMAction::isEnabled));
+                boolean shallBeEnabled = getActions().stream().anyMatch(NMAction::isEnabled);
+                if(isEnabled() && shallBeEnabled) setEnabled(false); //force refresh when value
+                this.setEnabled(shallBeEnabled);
             }
         };
     }
