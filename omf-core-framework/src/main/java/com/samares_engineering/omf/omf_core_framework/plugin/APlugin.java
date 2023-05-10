@@ -164,7 +164,7 @@ public abstract class APlugin extends Plugin {
         configureConstants();
         configureFeatureRegisterer();
         configureFeatures();
-        registerFeatures();
+        registerAllFeatures();;
 
         isInitialized = true;
     }

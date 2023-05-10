@@ -15,7 +15,6 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FeatureRegisterer {
@@ -51,18 +50,16 @@ public class FeatureRegisterer {
 
             registeredFeatures.add(feature);
 
-            featureItemRegisters.forEach(registerer -> {
-                try {
-                    registerer.registerFeature(feature);
-                    if (OMFUtils.currentProject != null) {
-                        registerProjectOnlyFeatureItems(feature);
-                    }
-                } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
-                    OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
-                            e, GenericException.ECriticality.CRITICAL), false);
+            for (IFeatureItemRegisterer registerer : featureItemRegisters) {
+                registerer.registerFeature(feature);
+                if (OMFUtils.currentProject != null) {
+                    registerProjectOnlyFeatureItems(feature);
                 }
-            });
-
+            }
+        } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
+            OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
+                    e, GenericException.ECriticality.CRITICAL), false);
+        }
     }
 
     public void registerFeatures(List<MDFeature> features){
@@ -96,22 +93,27 @@ public class FeatureRegisterer {
     }
 
     public void unregisterFeature(MDFeature feature){
-        if (!isAlreadyRegistered(feature)) {
-            throw new FeatureException("Trying to unregister feature " + feature.getName() +
-                    " which is not registered.", GenericException.ECriticality.ALERT), false);
-        }
-
-        registeredFeatures.remove(feature);
-
-        feature.setIsRegistered(false);
-        featureItemRegisters.forEach(registerer -> {
-            try {
-                registerer.unregisterFeature(feature);
-            }catch (FeatureException e) {
-                OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
-                        feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+        try {
+            if (!isAlreadyRegistered(feature)) {
+                throw new FeatureException("Trying to unregister feature " + feature.getName() +
+                        " which is not registered.", GenericException.ECriticality.ALERT);
             }
-        });
+
+            registeredFeatures.remove(feature);
+            for (IFeatureItemRegisterer registerer : featureItemRegisters) {
+               try {
+                   registerer.unregisterFeature(feature);
+               }catch (FeatureException e) {
+                   OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
+                           feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+               }
+            }
+            feature.setIsRegistered(false);
+
+        }catch (FeatureException e) {
+            OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
+                    feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+        }
     }
 
     public void unregisterFeatures(List<MDFeature> features){

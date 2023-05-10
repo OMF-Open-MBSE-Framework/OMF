@@ -95,15 +95,15 @@ public class ListenerManager implements IListenerManager {
     }
 
     public void activateAllListeners() {
-        if (listenersActivated || this.listenerList == null) return;
-        this.listenerList.forEach(IElementListener::activate);
+        if (listenersActivated || this.featureListeners == null) return;
+        this.featureListeners.forEach(IElementListener::activate);
         listenersActivated = true;
         ColorPrinter.status("Listeners Activated");
     }
 
     public void deactivateAllListeners() {
         if (!listenersActivated || !thereAreDeclaredListeners()) return;
-        this.listenerList.forEach(IElementListener::deactivate);
+        this.featureListeners.forEach(IElementListener::deactivate);
         ColorPrinter.status("Listeners Deactivated");
         listenersActivated = false;
     }
