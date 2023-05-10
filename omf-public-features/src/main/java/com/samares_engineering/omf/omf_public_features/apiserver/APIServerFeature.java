@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_public_features.apiserver;
@@ -32,10 +32,10 @@ public class APIServerFeature extends AFeature {
     private final int serverPort;
 
 
-    public APIServerFeature(String serverURL, int serverPort){
-       super("APIServer Feature");
-       this.serverURL = serverURL;
-       this.serverPort = serverPort;
+    public APIServerFeature(String serverURL, int serverPort) {
+        super("APIServer Feature");
+        this.serverURL = serverURL;
+        this.serverPort = serverPort;
     }
 
     @Override
@@ -68,7 +68,6 @@ public class APIServerFeature extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-
         OptionImpl serverURLOption = new OptionImpl(
                 new StringProperty(APIEnvOptionsHelper.API_SERVER_URL, serverURL),
                 APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
@@ -76,7 +75,7 @@ public class APIServerFeature extends AFeature {
                 OptionKind.Environment);
 
         OptionImpl serverPortOption = new OptionImpl(
-                new StringProperty(APIEnvOptionsHelper.API_SERVER_PORT, ""+serverPort),
+                new StringProperty(APIEnvOptionsHelper.API_SERVER_PORT, "" + serverPort),
                 APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
                 plugin.getEnvironmentOptionsGroup(),
                 OptionKind.Environment);
@@ -96,9 +95,9 @@ public class APIServerFeature extends AFeature {
 
     @Override
     protected List<IOption> initProjectOnlyOptions() {
+
         return Collections.emptyList();
     }
-
 
     private void registerRouting() {
         OMFApiServer.getInstance().addRoute("openProject", ExtHyperTextServerRouting.openProject());
@@ -120,6 +119,7 @@ public class APIServerFeature extends AFeature {
 
 
     }
+
     @Override
     public void onUnregistering() {
         try {

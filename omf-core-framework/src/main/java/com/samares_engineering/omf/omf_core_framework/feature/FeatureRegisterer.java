@@ -14,8 +14,10 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.OptionRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.RuleEngineRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FeatureRegisterer {
@@ -38,15 +40,13 @@ public class FeatureRegisterer {
      * Register a feature using delegation to register MDActions and RuleEngines. Return true if the feature is already registered;
      * @param feature
      */
-    public void registerFeature(MDFeature feature){
-        if(isAlreadyRegistered(feature)) {
-            OMFErrorHandler.handleException(new FeatureException("Trying to register feature " + feature.getName() +
-                    " which is already registered.", GenericException.ECriticality.ALERT), false);
-        }
-
-
-
+    public void registerFeature(MDFeature feature) {
         try {
+            if(isAlreadyRegistered(feature)) {
+                throw new FeatureException("Trying to register feature " + feature.getName() +
+                        " which is already registered.", GenericException.ECriticality.ALERT);
+            }
+
             feature.initFeature(plugin);
 
             registeredFeatures.add(feature);
@@ -54,6 +54,11 @@ public class FeatureRegisterer {
             optionRegisterer.registerFeatureItems(feature.getOptions());
             uiActionRegisterer.registerFeatureItems(feature.getUIActions());
             ruleEngineRegisterer.registerFeatureItems(feature.getRuleEngines());
+
+            if (OMFUtils.currentProject != null) {
+                registerProjectOnlyFeatureItems(feature);
+            }
+
             feature.setIsRegistered(true);
         } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
             OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
@@ -91,16 +96,13 @@ public class FeatureRegisterer {
     }
 
     public void unregisterFeature(MDFeature feature){
-        if (!isAlreadyRegistered(feature)) {
-            OMFErrorHandler.handleException(new FeatureException("Trying to unregister feature " + feature.getName() +
-                    " which is not registered.", GenericException.ECriticality.ALERT), false);
-        }
-
-        registeredFeatures.remove(feature);
-
-        feature.setIsRegistered(false);
-
         try {
+            if (!isAlreadyRegistered(feature)) {
+                throw new FeatureException("Trying to unregister feature " + feature.getName() +
+                        " which is not registered.", GenericException.ECriticality.ALERT);
+            }
+            registeredFeatures.remove(feature);
+            feature.setIsRegistered(false);
             uiActionRegisterer.unregisterFeatureItems(feature.getUIActions());
             uiActionRegisterer.unregisterFeatureItems(feature.getProjectOnlyUIActions());
             ruleEngineRegisterer.unregisterFeatureItems(feature.getRuleEngines());
@@ -114,11 +116,11 @@ public class FeatureRegisterer {
     }
 
     public void unregisterFeatures(List<MDFeature> features){
-        new ArrayList<>(features).forEach(this::unregisterFeature);
+        features.forEach(this::unregisterFeature);
     }
 
     public void unregisterDelayedItemsOfFeatures(List<MDFeature> features){
-        new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);
+        features.forEach(this::unregisterDelayedItemsOfFeature);
     }
 
     public void unregisterDelayedItemsOfFeature(MDFeature feature){
