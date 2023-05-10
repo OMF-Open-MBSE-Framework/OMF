@@ -30,7 +30,6 @@ public class FeaturesDeactivationFeature extends AFeature {
 
     public FeaturesDeactivationFeature(){
        super("FEATURE ACTIVATION MANAGEMENT");
-        featureDeactivationOptionHelper = new FeatureDeactivationOptionHelper(this);
     }
 
     @Override
@@ -60,6 +59,7 @@ public class FeaturesDeactivationFeature extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
+        featureDeactivationOptionHelper = new FeatureDeactivationOptionHelper(this);
         FeatureDeactivationOptionHelper envOptionsHelper = (FeatureDeactivationOptionHelper) getEnvOptionsHelper();
         AOption activationDeactivationOption = envOptionsHelper.getActivationFeatureOption();
         activationDeactivationOption.addListenerToRegister(new AOptionListener() {
@@ -79,7 +79,7 @@ public class FeaturesDeactivationFeature extends AFeature {
         list.stream()
                 .filter(BooleanProperty.class::isInstance)
                 .map(BooleanProperty.class::cast)
-                .filter(opt -> opt.getName().equals(getEnvOptionsHelper().getOptionGroup().getID()))
+                .filter(opt -> opt.getID().equals(((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).getID_ACTIVATE_AUTOMATION()))
                 .findFirst()
                 .ifPresent(opt -> {
                     Predicate<MDFeature> exceptThisFeature = feature -> !(deactivationFeature.equals(feature));

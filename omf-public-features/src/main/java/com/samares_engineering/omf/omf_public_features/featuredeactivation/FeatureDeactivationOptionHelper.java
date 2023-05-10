@@ -18,8 +18,8 @@ public class FeatureDeactivationOptionHelper extends EnvOptionsHelper {
     protected FeatureDeactivationOptionHelper(MDFeature feature) {
         super(feature);
         APlugin plugin = feature.getPlugin();
-        ID_ACTIVATE_AUTOMATION = "is Activate " + plugin.getName() + " Features:";
-        GROUP_NAME = plugin.getName() + " Features";
+        ID_ACTIVATE_AUTOMATION = "activate automations " + plugin.getName() + " :";
+        GROUP_NAME = plugin.getName() + "Features Configurations";
     }
 
     public OptionImpl getActivationFeatureOption() {
@@ -46,4 +46,13 @@ public class FeatureDeactivationOptionHelper extends EnvOptionsHelper {
     public void setDeactivateAutomationValue(boolean shallWizardBeTriggered) {
         getPropertyByName(ID_ACTIVATE_AUTOMATION).setValue(shallWizardBeTriggered);
     }
+
+    public String getGROUP_NAME() {
+        return GROUP_NAME;
+    }
+
+    public String getID_ACTIVATE_AUTOMATION() {
+        return ID_ACTIVATE_AUTOMATION;
+    }
 }
+
