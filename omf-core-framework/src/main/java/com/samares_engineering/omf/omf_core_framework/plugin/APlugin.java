@@ -19,10 +19,18 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFExcep
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureNotFoundException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFPluginRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.MDActionRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.OptionRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.RuleEngineRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyMDActionRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyOptionRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
@@ -43,7 +51,7 @@ import java.util.Map;
  * - Configurators (Browser, Diagram, Menu)
  * - Options (Environment, and Project (NOT IMPLEMENTED YET)
  * - Features registering (Listeners, RuleEngines, Options, MDActions)
- * <p>
+ *
  * For quick plugin registering use OMFxxx as default classes (OMFBrowserConfigurator, OMFEnvironmentOptions, ...)
  */
 public abstract class APlugin extends Plugin {
@@ -55,6 +63,12 @@ public abstract class APlugin extends Plugin {
 
     private final Map<String, MDFeature> features = new HashMap<>();
     private FeatureRegisterer featureRegisterer;
+    private MDActionRegisterer uiActionRegisterer;
+    private RuleEngineRegisterer ruleEngineRegisterer;
+    private OptionRegisterer optionRegisterer;
+    private ProjectOnlyMDActionRegisterer projectOnlyUiActionRegisterer;
+    private ProjectOnlyRuleEngineRegisterer projectOnlyRuleEngineRegisterer;
+    private IProjectOnlyOptionRegisterer projectOnlyOptionRegisterer;
     private boolean isInitialized = false;
     private IListenerManager listenerManager;
     private ProjectListener projectListener;
@@ -148,15 +162,35 @@ public abstract class APlugin extends Plugin {
         configureEnvironmentOptions();
         configureProjectOptions();
         configureConstants();
+        configureFeatureRegisterer();
         configureFeatures();
-        // We register the features after the startup of the application so that cached environment options are loaded
-        Application.getInstance().insertActivityAfterStartup(() -> {
-            if (getEnvironmentOptionsGroup().isActivateAutomationValue()) {
-                registerAllFeatures();
-            }
-        });
+        registerFeatures();
 
         isInitialized = true;
+    }
+
+    private void configureFeatureRegisterer() {
+        try {
+            this.featureRegisterer = new FeatureRegisterer(this);
+            this.uiActionRegisterer = new MDActionRegisterer();
+            this.ruleEngineRegisterer = new RuleEngineRegisterer();
+            this.optionRegisterer = new OptionRegisterer();
+            this.projectOnlyUiActionRegisterer = new ProjectOnlyMDActionRegisterer();
+            this.projectOnlyRuleEngineRegisterer = new ProjectOnlyRuleEngineRegisterer();
+            this.projectOnlyOptionRegisterer = new IProjectOnlyOptionRegisterer();
+
+            List<IFeatureItemRegisterer> defaultFeatureRegisterer = List.of(uiActionRegisterer,
+                    ruleEngineRegisterer,
+                    optionRegisterer);
+
+            List<IProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
+                    projectOnlyRuleEngineRegisterer,
+                    projectOnlyOptionRegisterer);
+            featureRegisterer.addAllIFeatureItemRegisterer(defaultFeatureRegisterer);
+            featureRegisterer.addAllProjectOnlyFeatureItemRegisterer(defaultProjectOnlyFeatureRegisterer);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during FeatureRegistererConfiguration", e, this, GenericException.ECriticality.CRITICAL));
+        }
     }
 
     private void configureListenerManager() {
@@ -224,8 +258,9 @@ public abstract class APlugin extends Plugin {
             browserConfigurator = initFeatureRegisteringBrowserConfigurator();
             if (browserConfigurator == null)
                 ColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
-            else
+            else {
                 actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
+            }
         } catch (Exception e) {
             OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during BrowserAction Registering",
                     e, this, GenericException.ECriticality.CRITICAL));
@@ -254,8 +289,6 @@ public abstract class APlugin extends Plugin {
             OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during MainMenuAction Registering",
                     e, this, GenericException.ECriticality.CRITICAL));
         }
-
-        featureRegisterer = new FeatureRegisterer(this);
     }
 
 
@@ -310,6 +343,24 @@ public abstract class APlugin extends Plugin {
 
 
     //------------------------------------ GETTER SETTER ----------------------------------------------------//
+    public RuleEngineRegisterer getRuleEngineRegisterer() {
+        return ruleEngineRegisterer;
+    }
+    public void setRuleEngineRegisterer(RuleEngineRegisterer ruleEngineRegisterer) {
+        this.ruleEngineRegisterer = ruleEngineRegisterer;
+    }
+    public MDActionRegisterer getUiActionRegisterer() {
+        return uiActionRegisterer;
+    }
+    public void setUiActionRegisterer(MDActionRegisterer uiActionRegisterer) {
+        this.uiActionRegisterer = uiActionRegisterer;
+    }
+    public OptionRegisterer getOptionRegisterer() {
+        return optionRegisterer;
+    }
+    public void setOptionRegisterer(OptionRegisterer optionRegisterer) {
+        this.optionRegisterer = optionRegisterer;
+    }
     @Override
     public boolean close() {
         return true;

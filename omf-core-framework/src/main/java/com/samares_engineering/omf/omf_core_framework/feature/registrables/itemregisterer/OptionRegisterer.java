@@ -5,12 +5,13 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.options;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
@@ -18,9 +19,10 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
-public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
-    public OptionRegisterer(FeatureRegisterer featureRegisterer) {
-        super(featureRegisterer);
+public class OptionRegisterer implements IFeatureItemRegisterer<IOption> {
+    FeatureRegisterer featureRegisterer;
+    public void init(FeatureRegisterer featureRegisterer) {
+        setFeatureRegisterer(featureRegisterer);
     }
 
     /**
@@ -41,14 +43,11 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
         options.forEach(this::unregisterFeatureItem);
     }
 
-    protected void registerFeatureItem(IOption option) {
+    public void registerFeatureItem(IOption option) {
         try {
-            if (option == null || !option.isActivated()) {
-                return;
-            }
-            if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) {
-                return;
-            }
+            if (option == null || !option.isActivated()) return;
+            if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) return;
+
             option.register();
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register " + option.getKind().toString()
@@ -56,15 +55,33 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
         }
     }
 
-    protected void unregisterFeatureItem(IOption option) {
+    public void unregisterFeatureItem(IOption option) {
         try {
-            if (option == null) {
-                return;
-            }
+            if (option == null) return;
             option.unregister();
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("[Feature] Could not unregister " + option.getKind().toString()
                     + " option from mdFeature: " + option.getFeature().getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
+    }
+
+    @Override
+    public void registerFeature(MDFeature feature) throws FeatureException {
+        registerFeatureItems(feature.getOptions());
+    }
+
+    @Override
+    public void unregisterFeature(MDFeature feature) throws FeatureException {
+        unregisterFeatureItems(feature.getOptions());
+    }
+
+    @Override
+    public FeatureRegisterer getFeatureRegisterer() {
+        return featureRegisterer;
+    }
+
+    @Override
+    public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
+        this.featureRegisterer = featureRegisterer;
     }
 }
