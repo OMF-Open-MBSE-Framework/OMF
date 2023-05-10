@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HyperText feature
 
 ### Fixed
-- Activate all features environment option which wasn't working at all
+- Activate OMF automations environment option which wasn't working at all
 
 ### Changed
 - Rename debugJava task to 'runPlugin'
