@@ -29,7 +29,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemr
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.RuleEngineRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyMDActionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyOptionRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
@@ -65,7 +65,7 @@ public abstract class APlugin extends Plugin {
     private OptionRegisterer optionRegisterer;
     private ProjectOnlyMDActionRegisterer projectOnlyUiActionRegisterer;
     private ProjectOnlyRuleEngineRegisterer projectOnlyRuleEngineRegisterer;
-    private IProjectOnlyOptionRegisterer projectOnlyOptionRegisterer;
+    private ProjectOnlyOptionRegisterer projectOnlyOptionRegisterer;
     private boolean isInitialized = false;
     private IListenerManager listenerManager;
     private ProjectListener projectListener;
@@ -162,7 +162,7 @@ public abstract class APlugin extends Plugin {
             this.optionRegisterer = new OptionRegisterer();
             this.projectOnlyUiActionRegisterer = new ProjectOnlyMDActionRegisterer();
             this.projectOnlyRuleEngineRegisterer = new ProjectOnlyRuleEngineRegisterer();
-            this.projectOnlyOptionRegisterer = new IProjectOnlyOptionRegisterer();
+            this.projectOnlyOptionRegisterer = new ProjectOnlyOptionRegisterer();
 
             List<IFeatureItemRegisterer> defaultFeatureRegisterer = List.of(uiActionRegisterer,
                     ruleEngineRegisterer,

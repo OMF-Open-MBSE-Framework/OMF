@@ -7,6 +7,7 @@
 
 package com.samares_engineering.omf.omf_public_features.featuredeactivation;
 
+import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
@@ -30,6 +31,17 @@ public class FeaturesDeactivationFeature extends AFeature {
 
     public FeaturesDeactivationFeature(){
        super("FEATURE ACTIVATION MANAGEMENT");
+    }
+
+    @Override
+    public void onRegistering() {
+        super.onRegistering();
+        Application.getInstance().insertActivityAfterStartup(() -> {
+            boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();
+            if(!featureShallBeRegistered)
+                activateDeactivateAllFeatures(false);
+
+        });
     }
 
     @Override
@@ -65,7 +77,12 @@ public class FeaturesDeactivationFeature extends AFeature {
         activationDeactivationOption.addListenerToRegister(new AOptionListener() {
             @Override
             public void updateByEnvironmentProperties(List<Property> list) {
-               activateDeactivateAllFeatures(list);
+                list.stream()
+                        .filter(BooleanProperty.class::isInstance)
+                        .map(BooleanProperty.class::cast)
+                        .filter(opt -> opt.getID().equals(((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).getID_ACTIVATE_AUTOMATION()))
+                        .findFirst()
+                        .ifPresent(opt -> activateDeactivateAllFeatures((Boolean) opt.getValue()));
             }
         });
 
@@ -74,28 +91,20 @@ public class FeaturesDeactivationFeature extends AFeature {
         );
     }
 
-    private void activateDeactivateAllFeatures(List<Property> list) {
+    private void activateDeactivateAllFeatures(boolean featureShallBeRegistered) {
         AFeature deactivationFeature = this;
-        list.stream()
-                .filter(BooleanProperty.class::isInstance)
-                .map(BooleanProperty.class::cast)
-                .filter(opt -> opt.getID().equals(((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).getID_ACTIVATE_AUTOMATION()))
-                .findFirst()
-                .ifPresent(opt -> {
-                    Predicate<MDFeature> exceptThisFeature = feature -> !(deactivationFeature.equals(feature));
-                    if ((boolean) opt.getValue()) {
-                        List<MDFeature> features = getPlugin().getFeatures().stream()
-                                .filter(exceptThisFeature) // get all feature except this one
-                                .collect(Collectors.toList());
-                        getPlugin().getFeatureRegister().registerFeatures(features);
-                    } else {
-                        List<MDFeature> unregisteredFeatures = getPlugin().getFeatureRegister().getRegisteredFeatures().stream()
-                                .filter(exceptThisFeature)
-                                .collect(Collectors.toList());
-                        getPlugin().getFeatureRegister().unregisterFeatures(unregisteredFeatures);
-                    }
-
-                });
+        Predicate<MDFeature> exceptThisFeature = feature -> !(deactivationFeature.equals(feature));
+        if (featureShallBeRegistered) {
+            List<MDFeature> features = getPlugin().getFeatures().stream()
+                    .filter(exceptThisFeature) // get all feature except this one
+                    .collect(Collectors.toList());
+            getPlugin().getFeatureRegister().registerFeatures(features);
+        } else {
+            List<MDFeature> unregisteredFeatures = getPlugin().getFeatureRegister().getRegisteredFeatures().stream()
+                    .filter(exceptThisFeature)
+                    .collect(Collectors.toList());
+            getPlugin().getFeatureRegister().unregisterFeatures(unregisteredFeatures);
+        }
     }
 
     @Override

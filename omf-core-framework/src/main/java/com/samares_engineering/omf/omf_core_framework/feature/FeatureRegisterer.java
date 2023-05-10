@@ -108,6 +108,16 @@ public class FeatureRegisterer {
                            feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
                }
             }
+
+            for (IFeatureItemRegisterer registerer : projectOnlyFeatureItemRegisters) {
+               try {
+                   registerer.unregisterFeature(feature);
+               }catch (FeatureException e) {
+                   OMFErrorHandler.handleException(new FeatureException("Error while unregistering Project only items for feature " +
+                           feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+               }
+            }
+
             feature.setIsRegistered(false);
 
         }catch (FeatureException e) {
@@ -120,7 +130,7 @@ public class FeatureRegisterer {
         new ArrayList<>(features).forEach(this::unregisterFeature); //New Arraylist to manage List modifications while iterating
     }
 
-    public void unregisterDelayedItemsOfFeatures(List<MDFeature> features){
+    public void unregisterProjectOnlyItemsOfFeatures(List<MDFeature> features){
         new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);//New Arraylist to manage List modifications while iterating
     }
 

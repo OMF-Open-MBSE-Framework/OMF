@@ -18,7 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
-public class IProjectOnlyOptionRegisterer implements IProjectOnlyFeatureItemRegisterer<IOption> {
+public class ProjectOnlyOptionRegisterer implements IProjectOnlyFeatureItemRegisterer<IOption> {
     private FeatureRegisterer featureRegister;
 
     public void init(FeatureRegisterer featureRegisterer) {

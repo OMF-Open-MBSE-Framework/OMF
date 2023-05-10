@@ -194,7 +194,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
             return;
         ListenerManager.getInstance().removeAllListeners();
         OMFUtils.currentProject = null;
-        plugin.getFeatureRegister().unregisterDelayedItemsOfFeatures(plugin.getFeatureRegisterer().getRegisteredFeatures());
+        plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(plugin.getFeatureRegisterer().getRegisteredFeatures());
         plugin.getFeatureRegisterer().getRegisteredFeatures().forEach(MDFeature::onProjectClose);
     }
 }
