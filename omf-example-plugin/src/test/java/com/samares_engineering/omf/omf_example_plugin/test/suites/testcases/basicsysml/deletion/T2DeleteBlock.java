@@ -23,7 +23,6 @@ public class T2DeleteBlock extends AModelComparatorTestCase {
 
     @Override
     public void initOptions() {
-        TestUtils.getEnvOptions().setAutomationsActivated(true);
     }
 
     @Override

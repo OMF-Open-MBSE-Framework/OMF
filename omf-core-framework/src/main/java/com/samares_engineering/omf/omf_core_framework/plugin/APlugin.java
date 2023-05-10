@@ -32,10 +32,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TEMPLATE of plugin allowing easily feature registering and development.
@@ -250,7 +247,8 @@ public abstract class APlugin extends Plugin {
 
             options.addGroup(environmentOptionsGroup);
 
-            environmentOptionsListener = initEnvironmentOptionsListener();
+            environmentOptionsListener = new ArrayList<>();
+            environmentOptionsListener.addAll(initEnvironmentOptionsListener());
             if (CollectionUtils.isNotEmpty(environmentOptionsListener))
                 environmentOptionsListener.forEach(options::addEnvironmentChangeListener);
         }catch (Exception e){
@@ -285,7 +283,9 @@ public abstract class APlugin extends Plugin {
     public boolean isSupported() {
         return true;
     }
-    public abstract List<AOptionListener> initEnvironmentOptionsListener();
+    public List<AOptionListener> initEnvironmentOptionsListener(){
+        return Collections.emptyList();
+    }
 
     public List<MDFeature> getFeatures() {
         return new ArrayList<>(features.values());
