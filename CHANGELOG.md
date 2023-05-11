@@ -5,16 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-## [1.0.3] - 2023-05-02
+## [UNRELEASED]
+
+## [1.0.0]
 
 ### Added
 - Utils: EventChecker adding hasStereotype clause
 - FeatureLibrary: SafeLock is now a Configurable Feature
+- FeatureLibrary: FeatureActivationDeactivation is now a Configurable Feature
 - Core: Listeners Interface has been refactor to improve their activation and deactivation
 - Core: Core listeners can be now registered independently from FeatureListeners
 - Core: ErrorHandling is now displaying a popup when an error occurs
 - Core: More ErrorHandling has been added
+- Core: Error Management handling inside OMF Core, allowing rollback in case of errors.
+  - OMFError Handler throws a OMFRollbackException to trigger the rollback inside OMF Core.
+  - Rollback can be triggered from LiveAction or UIActions.
+- Core: FeatureRegisterer now uses a list of FeatureItemRegisterer allowing developer to customize how features registering are handling. 
+ It also allows developer to add their own featureItems.
+
 
 ### Fixed
 
@@ -26,10 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OMFExample is not published yet.
 - Popup Error needs to be improved, to be able to display more information (Exception tags, etc.)
 - Exception tags are not yet implemented
+- MainMenuAction: provided selectedElements come from both diagram and browser. Documentation need to be clarified on this point. 
 
 
-## [RELEASE]
-## [1.0.0] - 2023-05-02
 
 ### Added
 - Error Management handling inside OMF Core, allowing rollback in case of errors.
@@ -47,7 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation is not up-to-date with the latest changes.
 - OMFExample is not published yet.
 
-## [Unreleased]
 
 ## [0.0.92] - 2023-04-2
 
