@@ -5,13 +5,14 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
@@ -22,14 +23,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RuleEngineRegisterer extends FeatureItemRegisterer<IRuleEngine> {
+public class RuleEngineRegisterer implements IFeatureItemRegisterer<IRuleEngine> {
     /**
      * Use the IListenerManager to get the different listeners (Analyse, Creation, Update, Delete, AfterAutomation).
      */
-    private final IListenerManager listenerManager;
+    private IListenerManager listenerManager;
+    private FeatureRegisterer featureRegisterer;
 
-    public RuleEngineRegisterer(FeatureRegisterer featureRegisterer) {
-        super(featureRegisterer);
+    @Override
+    public void init(FeatureRegisterer featureRegisterer) {
+        this.featureRegisterer = featureRegisterer;
         this.listenerManager = featureRegisterer.getPlugin().getListenerManager();
     }
 
@@ -63,7 +66,7 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IRuleEngine> {
      * @param ruleEngine: The RuleEngine to register
      */
     @Override
-    protected void registerFeatureItem(IRuleEngine ruleEngine) {
+    public void registerFeatureItem(IRuleEngine ruleEngine) {
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
         HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
@@ -80,13 +83,15 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IRuleEngine> {
      * @param ruleEngine: The RuleEngine to remove
      */
     @Override
-    protected void unregisterFeatureItem(IRuleEngine ruleEngine) {
+    public void unregisterFeatureItem(IRuleEngine ruleEngine) {
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
         HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
         if (ruleEngineMap.containsKey(category))
             ruleEngineMap.get(category).remove(ruleEngine);
     }
+
+
 
     /**
      * Allow RuleEngine registration in the listener with a specific Priority. Depending on the Category the RuleEngine will be triggered and Rules will be evaluated.
@@ -138,5 +143,25 @@ public class RuleEngineRegisterer extends FeatureItemRegisterer<IRuleEngine> {
                 OMFErrorHandler.handleException(new DevelopmentException("No Listener found for this category"));
                 return null;
         }
+    }
+
+    @Override
+    public void registerFeature(MDFeature feature) throws FeatureException {
+        registerFeatureItems(feature.getRuleEngines());
+    }
+
+    @Override
+    public void unregisterFeature(MDFeature feature) throws FeatureException {
+        unregisterFeatureItems(feature.getRuleEngines());
+    }
+
+    @Override
+    public FeatureRegisterer getFeatureRegisterer() {
+        return featureRegisterer;
+    }
+
+    @Override
+    public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
+        this.featureRegisterer = featureRegisterer;
     }
 }

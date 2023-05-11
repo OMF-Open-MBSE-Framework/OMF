@@ -6,20 +6,17 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_example_plugin.options;
 
-import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFEnvOptionResources;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
 public class OMFPluginEnvOptionsGroup extends OMFPropertyOptionsGroup {
-    public static final String ID = "env.options.omf.plugin";
 
-    private static final String OMF_PLUGIN_CATEGORY_NAME = "OMF Plugin";
+    private static final String DEFAULT_OMF_PLUGIN_CATEGORY_NAME = "OMF Plugin";
 
     public OMFPluginEnvOptionsGroup() {
-        super(ID, OMF_PLUGIN_CATEGORY_NAME);
+        this(DEFAULT_ID, DEFAULT_OMF_PLUGIN_CATEGORY_NAME);
+    }
+    public OMFPluginEnvOptionsGroup(String id, String omfPluginCategoryName) {
+        super(id, omfPluginCategoryName);
     }
 
-    @Override
-    public String getName() {
-        return OMFEnvOptionResources.getString(OMF_PLUGIN_CATEGORY_NAME);
-    }
 }

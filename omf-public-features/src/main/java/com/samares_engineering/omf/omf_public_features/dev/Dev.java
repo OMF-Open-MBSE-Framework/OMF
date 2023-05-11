@@ -7,10 +7,13 @@
 
 package com.samares_engineering.omf.omf_public_features.dev;
 
+import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
@@ -18,6 +21,7 @@ import com.samares_engineering.omf.omf_public_features.dev.actions.DebugAction;
 import com.samares_engineering.omf.omf_public_features.dev.actions.live.creation.OnCreateDebug;
 import com.samares_engineering.omf.omf_public_features.dev.actions.live.creation.OnPartRenaming;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,6 +74,14 @@ public class Dev extends AFeature {
 
     @Override
     protected List<IOption> initProjectOnlyOptions() {
-        return Collections.emptyList();
+        StringProperty projectOpt = new StringProperty("PROJECT PROPERTY ONLY",
+                "---");
+        var test = new OptionImpl(
+                projectOpt,
+                "TEST GROUP",
+                plugin.getEnvironmentOptionsGroup(),
+                OptionKind.Environment);
+
+        return Arrays.asList(test);
     }
 }

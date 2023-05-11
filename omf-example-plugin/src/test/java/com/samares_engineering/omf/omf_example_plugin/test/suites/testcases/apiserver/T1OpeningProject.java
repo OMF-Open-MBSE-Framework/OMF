@@ -7,7 +7,6 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver;
 
-import com.samares_engineering.omf.omf_example_plugin.test.utils.TestUtils;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
 
 import java.io.File;
@@ -32,7 +31,7 @@ public class T1OpeningProject extends AModelComparatorTestCase {
 
     @Override
     public void initOptions() {
-        TestUtils.getEnvOptions().setAutomationsActivated(false);
+
     }
 
     @Override
