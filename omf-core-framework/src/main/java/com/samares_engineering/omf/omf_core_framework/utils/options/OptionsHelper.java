@@ -166,7 +166,7 @@ public class OptionsHelper {
     }
 
     /**
-     * Search for the envvironment option and will set the given value.
+     * Search for the environment option and will set the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
      * @param category

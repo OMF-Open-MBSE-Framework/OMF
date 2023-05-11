@@ -21,12 +21,29 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class is used to register and unregister UIActions from MDFeatures.
+ * It is used by the {@link MDFeature} class.
+ * It is used to register MDActions that are only available in the context of a project.
+ * It is used to register MDActions that are available in the context of a project and a diagram.
+ * It is used to register MDActions that are available in the context of a project and a browser.
+ * It is used to register MDActions that are available in the context of a project and a menu.
+ */
 public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemRegisterer<IUIAction> {
     private OMFBrowserConfigurator browserConfigurator;
     private OMFDiagramConfigurator diagramConfigurator;
     private OMFMainMenuConfigurator menuConfigurator;
     private FeatureRegisterer featureRegister;
 
+    /**
+     * Initialize the registerer with the feature registerer.
+     * This method is called by the {@link FeatureRegisterer} class.
+     * It requires Configurators to be registered in the plugin:
+     * a {@link OMFBrowserConfigurator},
+     * a {@link OMFDiagramConfigurator}
+     * and a {@link OMFMainMenuConfigurator}.
+     * @param featureRegisterer
+     */
     public void init(FeatureRegisterer featureRegisterer) {
         this.featureRegister = featureRegisterer;
         this.browserConfigurator = Objects.requireNonNull(
@@ -39,7 +56,11 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
                 featureRegisterer.getPlugin().getMenuConfigurator(),
                 "NO MENU CONFIGURATOR REGISTERED");
     }
-
+    /**
+     * Register a list of UIActions and refresh the configurators.
+     * @param actions
+     * @throws FeatureException
+     */
     public void registerFeatureItems(List<IUIAction> actions) throws FeatureException {
        try{
            actions.forEach(this::registerFeatureItem);
@@ -51,6 +72,11 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
        }
     }
 
+    /**
+     * Unregister a list of UIActions and refresh the configurators.
+     * @param actions
+     * @throws FeatureException
+     */
     public void unregisterFeatureItems(List<IUIAction> actions) throws FeatureException {
         try {
             resetConfigurators();
@@ -63,22 +89,33 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
         }
     }
 
-    private void  resetConfigurators() {
+    /**
+     * Reset the configurators to their initial state.
+     */
+    private void resetConfigurators() {
         if(menuConfigurator != null)
             menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
     }
-
+    /**
+     * Refresh the configurators with the new actions.
+     */
     private void refreshConfigurators() {
 //        browserConfigurator.configure(ActionsProvider.getInstance().getDiagramContextActions());
 //        diagramConfigurator.configure(ActionsProvider.getInstance().getContainmentBrowserShortcutsActions();
         refreshMainMenuConfigurator();
     }
-
+    /**
+     * Refresh the main menu configurator with the new actions.
+     */
     private void refreshMainMenuConfigurator(){
         if(menuConfigurator != null)
             menuConfigurator.configure(ActionsProvider.getInstance().getMainMenuActions());
     }
-    
+
+    /**
+     * Register a UIAction in the configurators.
+     * @param action
+     */
     public void registerFeatureItem(IUIAction action) {
         if(browserConfigurator != null)
             browserConfigurator.addNewAction((AUIAction) action);
@@ -90,6 +127,10 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
             menuConfigurator.addNewAction((AUIAction) action);
     }
 
+    /**
+     * Unregister a UIAction in the configurators.
+     * @param action
+     */
     public void unregisterFeatureItem(IUIAction action) {
         if(browserConfigurator != null)
             browserConfigurator.removeAction((AUIAction) action);

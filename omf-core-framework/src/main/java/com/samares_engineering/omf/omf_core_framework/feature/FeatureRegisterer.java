@@ -35,7 +35,8 @@ public class FeatureRegisterer {
    }
 
     /**
-     * Register a feature using delegation to register MDActions and RuleEngines. Return true if the feature is already registered;
+     * Register a feature using delegation to register all its items using the according item registerer
+     * ProjectOnly items are registered only if the project is opened
      * @param feature
      */
     public void registerFeature(MDFeature feature) {
@@ -62,12 +63,16 @@ public class FeatureRegisterer {
         }
     }
 
+    /**
+     * Registers a list of features, see {@link FeatureRegisterer#registerFeature(MDFeature)}
+     * @param features
+     */
     public void registerFeatures(List<MDFeature> features){
         features.forEach(this::registerFeature);
     }
 
     /**
-     * Registers feature items that have declared as "project only" until project is opened. This method is then called
+     * Registers feature items that are declared as "project only" until project is opened. This method is then called
      * every time the project opens.
      * On the first registration, the items are also initialised. We wait until the project to be opened to initialise
      * the items in order to avoid instances where the items need the project to be opened to function, for example if
@@ -88,10 +93,19 @@ public class FeatureRegisterer {
 
     }
 
+    /**
+     * Registers project only items of a list of features, see {@link FeatureRegisterer#registerProjectOnlyFeatureItems(MDFeature)}
+     * @param features
+     */
     public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
         features.forEach(this::registerProjectOnlyFeatureItems);
     }
 
+    /**
+     * Unregisters a feature using delegation to unregister all its items using the according item registerer
+     * On Failure it will continue to unregister the feature items and then throw an exception for each item that failed
+     * @param feature
+     */
     public void unregisterFeature(MDFeature feature){
         try {
             if (!isAlreadyRegistered(feature)) {
@@ -126,14 +140,26 @@ public class FeatureRegisterer {
         }
     }
 
+    /**
+     * Unregisters a list of features, see {@link FeatureRegisterer#unregisterFeature(MDFeature)}
+     * @param features
+     */
     public void unregisterFeatures(List<MDFeature> features){
         new ArrayList<>(features).forEach(this::unregisterFeature); //New Arraylist to manage List modifications while iterating
     }
 
+    /**
+     * Unregisters project only items of a list of features, see {@link FeatureRegisterer#unregisterDelayedItemsOfFeature(MDFeature)}
+     * @param features
+     */
     public void unregisterProjectOnlyItemsOfFeatures(List<MDFeature> features){
         new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);//New Arraylist to manage List modifications while iterating
     }
 
+    /**
+     * Unregisters project only items of a feature using delegation to unregister all its items using the according item registerer
+     * @param feature
+     */
     public void unregisterDelayedItemsOfFeature(MDFeature feature){
         projectOnlyFeatureItemRegisters.forEach(registerer -> {
             try {
@@ -144,10 +170,21 @@ public class FeatureRegisterer {
         }});
     }
 
+    /** Checks if a feature is already registered
+     * @param mdFeature
+     * @return
+     */
     public boolean isAlreadyRegistered(MDFeature mdFeature) {
         return registeredFeatures.stream().anyMatch(mdFeature.getClass()::isInstance);
     }
 
+    /**
+     * Adds a feature item registerer to the list of item registerers.
+     * The registerer is initialised with the current instance of the FeatureRegisterer
+     * FeatureItemRegisterer are used to register/unregister feature items of a feature
+     * and will be called when a feature is registered/unregistered
+     * @param featureItemRegisterer
+     */
     public void addIFeatureItemRegisterer(IFeatureItemRegisterer featureItemRegisterer){
        try {
            this.featureItemRegisters.add(featureItemRegisterer);
@@ -157,18 +194,42 @@ public class FeatureRegisterer {
                    featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
        }
     }
+
+    /**
+     * Adds a list of feature item registerers to the list of item registerers,
+     * see {@link FeatureRegisterer#addIFeatureItemRegisterer(IFeatureItemRegisterer)}
+     * @param featureItemRegisterers
+     */
     public void addAllIFeatureItemRegisterer(List<? extends IFeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::addIFeatureItemRegisterer);
     }
 
+    /**
+     * Removes a feature item registerer from the list of item registerers.
+     * The registerer is initialised with the current instance of the FeatureRegisterer
+     * FeatureItemRegisterer are used to register/unregister feature items of a feature
+     * and will be called when a feature is registered/unregistered
+     * @param featureItemRegisterer
+     */
     public void removeIFeatureItemRegisterer(IFeatureItemRegisterer featureItemRegisterer){
         this.featureItemRegisters.remove(featureItemRegisterer);
     }
+    /**
+     * Removes a list of feature item registerers from the list of item registerers,
+     * see {@link FeatureRegisterer#removeIFeatureItemRegisterer(IFeatureItemRegisterer)}
+     * @param featureItemRegisterers
+     */
     public void removeAllIFeatureItemRegisterer(List<? extends IFeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::removeIFeatureItemRegisterer);
     }
 
-
+    /**
+     * Adds a project only feature item registerer to the list of item registerers.
+     * The registerer is initialised with the current instance of the FeatureRegisterer
+     * ProjectOnlyFeatureItemRegisterer are used to register/unregister project only feature items of a feature
+     * and will be called when a feature is registered/unregistered
+     * @param featureItemRegisterer
+     */
     public void addProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer featureItemRegisterer){
         try{
             this.projectOnlyFeatureItemRegisters.add(featureItemRegisterer);
@@ -178,19 +239,38 @@ public class FeatureRegisterer {
                     featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }
+    /**
+     * Adds a list of project only feature item registerers to the list of item registerers,
+     * see {@link FeatureRegisterer#addProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer)}
+     * @param featureItemRegisterers
+     */
     public void addAllProjectOnlyFeatureItemRegisterer(List<? extends IProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::addProjectOnlyFeatureItemRegisterer);
     }
-
+    /**
+     * Removes a project only feature item registerer from the list of item registerers.
+     * The registerer is initialised with the current instance of the FeatureRegisterer
+     * ProjectOnlyFeatureItemRegisterer are used to register/unregister project only feature items of a feature
+     * and will be called when a feature is registered/unregistered
+     * @param featureItemRegisterer
+     */
     public void removeProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer featureItemRegisterer){
         this.projectOnlyFeatureItemRegisters.remove(featureItemRegisterer);
     }
+    /**
+     * Removes a list of project only feature item registerers from the list of item registerers,
+     * see {@link FeatureRegisterer#removeProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer)}
+     * @param featureItemRegisterers
+     */
     public void removeAllProjectOnlyFeatureItemRegisterer(List<? extends IProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::removeProjectOnlyFeatureItemRegisterer);
     }
 
     //-------------------------------- GETTER / SETTER --------------------------------------------
-
+    /**
+     * Returns all registered features
+     * @return
+     */
     public List<MDFeature> getRegisteredFeatures() {
         return registeredFeatures;
     }
@@ -198,6 +278,10 @@ public class FeatureRegisterer {
         this.registeredFeatures = registeredFeatures;
     }
 
+    /**
+     * Get the plugin instance
+     * @return
+     */
     public APlugin getPlugin() {
         return plugin;
     }

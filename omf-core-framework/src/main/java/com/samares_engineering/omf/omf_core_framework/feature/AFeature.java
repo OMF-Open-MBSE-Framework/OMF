@@ -19,6 +19,20 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AFeature is the base class for all features. It provides the basic implementation of the MDFeature interface.
+ * Features are the main way to extend MagicDraw with OMF. They are composed of:
+ * - Options: Options are used to store data in the project or in the environment.
+ * - UI Actions: UI Actions are actions that can be triggered by the user from the UI (browser, menu, diagram, etc.).
+ * - Live Actions: Live Actions are actions that are triggered by the system on Model changes (e.g. element creation).
+ * Feature are registered in the OMFPlugin class, and are initialised when the plugin is loaded.
+ * Features can be registered as project only, meaning that they will only be available in the current project.
+ * see {@link com.samares_engineering.omf.omf_core_framework.plugin.APlugin}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine}
+ */
 public abstract class AFeature implements MDFeature {
     protected String name;
     protected boolean isRegistered;
@@ -44,7 +58,7 @@ public abstract class AFeature implements MDFeature {
 
     /*
     Instantiation methods
-     */
+    */
 
     /**
      * Instantiates the features items (options, ui actions, live actions).

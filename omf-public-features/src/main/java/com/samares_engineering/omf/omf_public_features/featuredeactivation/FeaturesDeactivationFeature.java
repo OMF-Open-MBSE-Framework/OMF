@@ -25,6 +25,12 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * This feature allows to deactivate all the features registered in OMF.
+ * It registers an option in the environment options to activate or deactivate all the features.
+ * By default, the feature List is all the registered features in the plugin.
+ * It is possible to override this list by overriding the method getAllFeaturesToRegister() and getAllFeaturesToUnregistered().
+ */
 public class FeaturesDeactivationFeature extends AFeature {
 
     private FeatureDeactivationOptionHelper featureDeactivationOptionHelper;
@@ -70,6 +76,9 @@ public class FeaturesDeactivationFeature extends AFeature {
     }
 
     @Override
+    /**
+     * Registering the option and its listener to activate or deactivate all the features.
+     */
     public List<IOption> initOptions() {
         featureDeactivationOptionHelper = new FeatureDeactivationOptionHelper(this);
         FeatureDeactivationOptionHelper envOptionsHelper = (FeatureDeactivationOptionHelper) getEnvOptionsHelper();
@@ -91,20 +100,40 @@ public class FeaturesDeactivationFeature extends AFeature {
         );
     }
 
+    /**
+     * Activate or deactivate all the features registered except this one.
+     * @param featureShallBeRegistered
+     */
     private void activateDeactivateAllFeatures(boolean featureShallBeRegistered) {
         AFeature deactivationFeature = this;
         Predicate<MDFeature> exceptThisFeature = feature -> !(deactivationFeature.equals(feature));
         if (featureShallBeRegistered) {
-            List<MDFeature> features = getPlugin().getFeatures().stream()
+            List<MDFeature> features = getAllFeaturesToRegister().stream()
                     .filter(exceptThisFeature) // get all feature except this one
                     .collect(Collectors.toList());
             getPlugin().getFeatureRegister().registerFeatures(features);
         } else {
-            List<MDFeature> unregisteredFeatures = getPlugin().getFeatureRegister().getRegisteredFeatures().stream()
+            List<MDFeature> unregisteredFeatures = getAllFeaturesToUnregistered().stream()
                     .filter(exceptThisFeature)
                     .collect(Collectors.toList());
             getPlugin().getFeatureRegister().unregisterFeatures(unregisteredFeatures);
         }
+    }
+
+    /**
+     * Override this method to change the list of features to unregister when the option is deactivated.
+     * @return the list of features to unregister when the option is deactivated.
+     */
+    private List<MDFeature> getAllFeaturesToUnregistered() {
+        return getPlugin().getFeatureRegister().getRegisteredFeatures();
+    }
+
+    /**
+     * Override this method to change the list of features to register when the option is activated.
+     * @return the list of features to register when the option is activated.
+     */
+    private List<MDFeature> getAllFeaturesToRegister() {
+        return getPlugin().getFeatures();
     }
 
     @Override

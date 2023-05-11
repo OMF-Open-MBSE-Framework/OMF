@@ -22,6 +22,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class is used to register RuleEngines (LiveActions) in the ListenerManager.
+ * It will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+ * see {@link IListenerManager}
+ * see {@link IElementListener}
+ * see {@link IRuleEngine}
+ */
 public class ProjectOnlyRuleEngineRegisterer implements IProjectOnlyFeatureItemRegisterer<IRuleEngine> {
     /**
      * Use the IListenerManager to get the different listeners (Analyse, Creation, Update, Delete, AfterAutomation).
@@ -35,7 +42,8 @@ public class ProjectOnlyRuleEngineRegisterer implements IProjectOnlyFeatureItemR
     }
 
     /**
-     * Will allow
+     * Register all RuleEngines in the ListenerManager
+     * see  {@link #registerFeatureItem(IRuleEngine)}
      * @param ruleEngines
      */
     public void registerFeatureItems(List<IRuleEngine> ruleEngines) throws FeatureException {
@@ -48,6 +56,12 @@ public class ProjectOnlyRuleEngineRegisterer implements IProjectOnlyFeatureItemR
         }
     }
 
+    /**
+     * Unregister all RuleEngines in the ListenerManager
+     * see {@link #unregisterFeatureItem(IRuleEngine)}
+     * @param ruleEngines
+     * @throws FeatureException
+     */
     public void unregisterFeatureItems(List<IRuleEngine> ruleEngines) throws FeatureException {
         try {
             ruleEngines.forEach(this::unregisterFeatureItem);

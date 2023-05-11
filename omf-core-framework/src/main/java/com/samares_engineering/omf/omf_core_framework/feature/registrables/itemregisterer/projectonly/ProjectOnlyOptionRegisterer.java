@@ -18,6 +18,11 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
+/**
+ * Registerer/Unregister the 'ProjectOnly' Options of a feature.
+ * All ProjectOnly Options will be configured when the project is opened, and removed when the project is closed.
+ * @see IOption
+ */
 public class ProjectOnlyOptionRegisterer implements IProjectOnlyFeatureItemRegisterer<IOption> {
     private FeatureRegisterer featureRegister;
 

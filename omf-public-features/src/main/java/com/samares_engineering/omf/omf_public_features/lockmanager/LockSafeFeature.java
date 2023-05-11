@@ -100,9 +100,9 @@ public class LockSafeFeature extends AFeature {
     @Override
     public List<IOption> initOptions() {
         LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
-        OptionImpl twctwcSafeModeOption = envOptionsHelper.twcSafeModeOption(restrictedElementListener);
+        OptionImpl twcSafeModeOption = envOptionsHelper.twcSafeModeOption(restrictedElementListener);
         OptionImpl rollbackOption = envOptionsHelper.rollbackOption(restrictedElementListener);
-        return Arrays.asList(twctwcSafeModeOption, rollbackOption);
+        return Arrays.asList(twcSafeModeOption, rollbackOption);
     }
 
     @Override

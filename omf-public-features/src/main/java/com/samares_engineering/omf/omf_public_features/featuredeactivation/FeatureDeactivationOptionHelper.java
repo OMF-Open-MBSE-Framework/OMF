@@ -9,7 +9,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.Objects;
 
-public class FeatureDeactivationOptionHelper extends EnvOptionsHelper {
+public class FeatureDeactivationOptionHelper extends EnvOptionsHelper{
 
 
     private final String GROUP_NAME;
@@ -33,7 +33,10 @@ public class FeatureDeactivationOptionHelper extends EnvOptionsHelper {
         );
     }
 
-
+    /**
+     * return true if the automations shall be activated, false otherwise
+     * @return
+     */
     public boolean isActivateAutomationValue() {
         BooleanProperty p = (BooleanProperty) Objects.requireNonNull(getPropertyByName(ID_ACTIVATE_AUTOMATION), "");
         return p.getBoolean();
