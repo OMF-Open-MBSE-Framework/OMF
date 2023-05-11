@@ -8,8 +8,10 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.utils;
 
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
+import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.impl.PropertyNames;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -40,6 +42,10 @@ public class EventChecker {
         predicates.add(evt -> evt.getSource() instanceof Element && ((Element) evt.getSource()).getOwner() != null);
         return this;
     }
+    public EventChecker hasStereotype(Stereotype stereotype){
+        predicates.add(evt -> evt.getSource() instanceof Element && StereotypesHelper.hasStereotype((Element) evt.getSource(), stereotype));
+        return this;
+    }
     public EventChecker isInstanceDeleted(){
         predicates.add(
                 evt ->  evt.getPropertyName().equals(UML2MetamodelConstants.BEFORE_DELETE)
@@ -58,7 +64,7 @@ public class EventChecker {
     }
     public EventChecker isPart() {
         isSourceNotNull();
-        predicates.add(evt -> Profile.getSysmlAdditionalStereotypes().partProperty().is((Element) evt.getSource()));
+        predicates.add(evt -> Profile._getSysmlAdditionalStereotypes().partProperty().is((Element) evt.getSource()));
         return this;
     }
     public EventChecker isPort() {
@@ -70,6 +76,12 @@ public class EventChecker {
     public EventChecker onRenaming() {
         isSourceNotNull();
         predicates.add(evt -> evt.getPropertyName().equals(PropertyNames.NAME));
+        return this;
+    }
+
+    public EventChecker isElementRenamed() {
+        isSourceNotNull();
+        predicates.add(evt -> evt.getPropertyName().equals(PropertyNames.NAME) && evt.getOldValue() != null);
         return this;
     }
 }

@@ -46,4 +46,8 @@ public abstract class APropertyOptionsGroup extends AbstractPropertyOptionsGroup
     public Property getPropertyByName(String name) {
         return Objects.requireNonNull(getProperty(name), "Can't find environment property " + name);
     }
+
+    public String getID() {
+        return ID;
+    }
 }

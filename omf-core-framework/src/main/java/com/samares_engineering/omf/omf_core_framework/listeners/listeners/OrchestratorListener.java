@@ -7,6 +7,7 @@
 package com.samares_engineering.omf.omf_core_framework.listeners.listeners;
 
 import com.nomagic.uml2.transaction.TransactionCommitListener;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.AllCreatedElements;
@@ -30,20 +31,20 @@ public class OrchestratorListener extends AElementListener implements Transactio
     public void allTransactionsCommitted() {
         GarbageCollector.collectGarbage();
         AllCreatedElements.emptyAll();
-
+        OMFAutomationManager.getInstance().resetAutomationTriggered();
         hasSessionBeenCanceled = false;
 
         ListenerManager.getInstance().activateAllListeners();
     }
 
     @Override
-    public void addListener() {
+    public void addingListener() {
         OMFUtils.currentProject.getRepository().getTransactionManager()
                 .addTransactionCommitListener(this);
     }
 
     @Override
-    public void removeListener() {
+    public void removingListener() {
         final boolean isListenerRemovable = (null != OMFUtils.currentProject);
         if (isListenerRemovable) {
             try {
@@ -55,7 +56,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
     }
 
     @Override
-    public void manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
-
+    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
+        return false;
     }
 }

@@ -6,8 +6,6 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_example_plugin;
 
-import com.nomagic.magicdraw.properties.BooleanProperty;
-import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
@@ -19,14 +17,14 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.dev.Dev;
+import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
+import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,8 +33,9 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     public List<MDFeature> initFeatures() {
         return List.of(
                 new Dev(),
-                new TemplateFeature(),
+                new FeaturesDeactivationFeature(),
                 new HyperLinkFeature(),
+                new LockSafeFeature(),
                 new StereotypesFeature(),
                 new APIServerFeature("http://localhost", 9850)
         );
@@ -79,28 +78,6 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
 
     @Override
     public List<AOptionListener> initEnvironmentOptionsListener() {
-        var optionListener = new AOptionListener() {
-            @Override
-            public void updateByEnvironmentProperties(List<Property> list) {
-                list.stream()
-                        .filter(BooleanProperty.class::isInstance)
-                        .map(BooleanProperty.class::cast)
-                        .filter(opt -> opt.getName().equals(OMFPropertyOptionsGroup.ID_ACTIVATE_AUTOMATION))
-                        .findFirst()
-                        .ifPresent(opt -> {
-                            if ((boolean) opt.getValue())
-                                getFeatureRegister().registerFeatures(OpenMBSEFrameworkPlugin.this.getFeatures());
-                            else
-                                getFeatureRegister().unregisterFeatures(getFeatureRegister().getRegisteredFeatures());
-
-                        });
-            }
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-
-            }
-        };
-        return Collections.singletonList(optionListener);
+       return Collections.emptyList();
     }
 }

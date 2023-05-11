@@ -6,7 +6,6 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.utils;
 
-import com.google.common.collect.Lists;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
@@ -14,8 +13,6 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.*;
@@ -67,7 +64,7 @@ public class OMFUtils {
             listAllPartInContext = new ArrayList();
 
         List<Property> properties = currentElement.getOwnedAttribute().stream()
-                .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
+                .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
                 .filter(property -> Objects.nonNull(property.getType()))
                 .filter(property -> Profile.getInstance().getSysml().block().is(property.getType()))
                 .collect(Collectors.toList());
@@ -144,4 +141,6 @@ public class OMFUtils {
     public static String getUserDir() {
         return System.getProperty("user.dir");
     }
+
+
 }

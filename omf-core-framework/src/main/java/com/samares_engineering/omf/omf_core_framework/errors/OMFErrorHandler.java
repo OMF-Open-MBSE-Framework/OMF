@@ -9,6 +9,9 @@ package com.samares_engineering.omf.omf_core_framework.errors;
 
 import com.nomagic.esi.api.messages.exceptions.LockException;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
+import com.nomagic.magicdraw.ui.notification.Notification;
+import com.nomagic.magicdraw.ui.notification.NotificationManager;
+import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.LayoutException;
@@ -56,6 +59,12 @@ public class OMFErrorHandler {
     private static void defaultOMFExceptionHandling(GenericException exception, boolean cancelSession) {
         exception.displayDevMessage();
         exception.displayUserMessage();
+        NotificationManager.getInstance().showNotification(new Notification(
+                "[Plugin Error]", //TODO REPLACE WITH GENERIC EXCEPTION TAG
+                "[Plugin Error]",
+                "[Plugin Error] " + exception.getUserMessage(),
+                NotificationSeverity.ERROR));
+
         handleRollBack(exception, cancelSession);
     }
 

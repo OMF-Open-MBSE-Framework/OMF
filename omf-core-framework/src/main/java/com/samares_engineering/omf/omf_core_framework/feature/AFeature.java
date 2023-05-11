@@ -8,6 +8,7 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
@@ -15,8 +16,23 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AFeature is the base class for all features. It provides the basic implementation of the MDFeature interface.
+ * Features are the main way to extend MagicDraw with OMF. They are composed of:
+ * - Options: Options are used to store data in the project or in the environment.
+ * - UI Actions: UI Actions are actions that can be triggered by the user from the UI (browser, menu, diagram, etc.).
+ * - Live Actions: Live Actions are actions that are triggered by the system on Model changes (e.g. element creation).
+ * Feature are registered in the OMFPlugin class, and are initialised when the plugin is loaded.
+ * Features can be registered as project only, meaning that they will only be available in the current project.
+ * see {@link com.samares_engineering.omf.omf_core_framework.plugin.APlugin}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
+ * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine}
+ */
 public abstract class AFeature implements MDFeature {
     protected String name;
     protected boolean isRegistered;
@@ -27,23 +43,22 @@ public abstract class AFeature implements MDFeature {
     protected APlugin plugin;
 
     // Registrable items
-
-    private List<IUIAction> mdActions;
-    private List<IRuleEngine> liveActions;
-    private List<IOption> options;
+    private final List<IUIAction> mdActions = new ArrayList<>();
+    private final List<IRuleEngine> liveActions = new ArrayList<>();
+    private final List<IOption> options = new ArrayList<>();
 
     // Delayed registrable items
+    private final List<IOption> projectOnlyOptions = new ArrayList<>();
+    private final List<IUIAction> projectOnlyMdActions = new ArrayList<>();
+    private final List<IRuleEngine> projectOnlyLiveActions =  new ArrayList<>();
 
-    private List<IOption> projectOnlyOptions;
-    private List<IUIAction> projectOnlyMdActions;
-    private List<IRuleEngine> projectOnlyLiveActions;
     protected AFeature(String name){
         this.name = name;
     }
 
     /*
     Instantiation methods
-     */
+    */
 
     /**
      * Instantiates the features items (options, ui actions, live actions).
@@ -54,21 +69,33 @@ public abstract class AFeature implements MDFeature {
      */
     public final void initFeature(APlugin plugin) {
         // We only need to initialise feature once
-        if (isFeatureInitialised) {
-            return;
-        }
+        if (isFeatureInitialised) return;
         this.plugin = plugin;
+        try {
+            this.envOptionsHelper = initEnvOptionsHelper();
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
 
-        this.options = initOptions();
-        options.forEach(this::initRegistrableItem);
+        try {
+            this.options.addAll(initOptions());
+            options.forEach(this::initRegistrableItem);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
 
-        this.mdActions = initFeatureActions();
-        mdActions.forEach(this::initRegistrableItem);
-
-        this.liveActions = initLiveActions();
-        liveActions.forEach(this::initRegistrableItem);
-
-        this.envOptionsHelper = initEnvOptionsHelper();
+        try {
+            this.mdActions.addAll(initFeatureActions());
+            mdActions.forEach(this::initRegistrableItem);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
+        try {
+            this.liveActions.addAll(initLiveActions());
+            liveActions.forEach(this::initRegistrableItem);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
 
         isFeatureInitialised = true;
     }
@@ -78,24 +105,34 @@ public abstract class AFeature implements MDFeature {
      */
     public final void initProjectOnlyFeatureItems() {
         // We only need to initialise project only items once
-        if (isProjectOnlyItemsInitialised) {
-            return;
+        if (isProjectOnlyItemsInitialised) return;
+
+        try {
+            this.projectOnlyOptions.addAll(initProjectOnlyOptions());
+            projectOnlyOptions.forEach(this::initRegistrableItem);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
         }
 
-        this.projectOnlyOptions = initProjectOnlyOptions();
-        projectOnlyOptions.forEach(this::initRegistrableItem);
+        try {
+            this.projectOnlyMdActions.addAll(initProjectOnlyFeatureActions());
+            projectOnlyMdActions.forEach(this::initRegistrableItem);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
 
-        this.projectOnlyMdActions = initProjectOnlyFeatureActions();
-        projectOnlyMdActions.forEach(this::initRegistrableItem);
-
-        this.projectOnlyLiveActions = initProjectOnlyLiveActions();
-        projectOnlyLiveActions.forEach(this::initRegistrableItem);
+        try {
+            this.projectOnlyLiveActions.addAll(initProjectOnlyLiveActions());
+            projectOnlyLiveActions.forEach(this::initRegistrableItem);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
 
         isProjectOnlyItemsInitialised = true;
     }
 
     private void initRegistrableItem(RegistrableFeatureItem item) {
-        item.initRegisterableItem(this);
+        item.initRegistrableItem(this);
     }
 
     /**
@@ -168,8 +205,6 @@ public abstract class AFeature implements MDFeature {
             OptionKind.Environment
         );
     }
-
-    
 
     /*
     Accessors

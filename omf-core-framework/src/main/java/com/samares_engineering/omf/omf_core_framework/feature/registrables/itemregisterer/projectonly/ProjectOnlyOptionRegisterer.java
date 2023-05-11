@@ -5,12 +5,12 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.options;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
@@ -18,13 +18,20 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
-public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
-    public OptionRegisterer(FeatureRegisterer featureRegisterer) {
-        super(featureRegisterer);
+/**
+ * Registerer/Unregister the 'ProjectOnly' Options of a feature.
+ * All ProjectOnly Options will be configured when the project is opened, and removed when the project is closed.
+ * @see IOption
+ */
+public class ProjectOnlyOptionRegisterer implements IProjectOnlyFeatureItemRegisterer<IOption> {
+    private FeatureRegisterer featureRegister;
+
+    public void init(FeatureRegisterer featureRegisterer) {
+        setFeatureRegisterer(featureRegisterer);
     }
 
     /**
-     * Register all the options of the feature depending on its kind.
+     * Register  all the 'ProjectOnly' Options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
      * @param options
      */
@@ -33,7 +40,7 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
     }
 
     /**
-     * unregister all the options of the feature depending on its kind.
+     * unregister all the 'ProjectOnly' options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
      * @param options
      */
@@ -41,14 +48,10 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
         options.forEach(this::unregisterFeatureItem);
     }
 
-    protected void registerFeatureItem(IOption option) {
+    public void registerFeatureItem(IOption option) {
         try {
-            if (option == null || !option.isActivated()) {
-                return;
-            }
-            if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) {
-                return;
-            }
+            if (option == null || !option.isActivated()) return;
+            if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) return;
             option.register();
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register " + option.getKind().toString()
@@ -56,15 +59,33 @@ public class OptionRegisterer extends FeatureItemRegisterer<IOption> {
         }
     }
 
-    protected void unregisterFeatureItem(IOption option) {
+    public void unregisterFeatureItem(IOption option) {
         try {
-            if (option == null) {
-                return;
-            }
+            if (option == null) return;
             option.unregister();
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("[Feature] Could not unregister " + option.getKind().toString()
                     + " option from mdFeature: " + option.getFeature().getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
+    }
+
+    @Override
+    public void registerFeature(MDFeature feature) throws FeatureException {
+        registerFeatureItems(feature.getProjectOnlyOptions());
+    }
+
+    @Override
+    public void unregisterFeature(MDFeature feature) throws FeatureException {
+        unregisterFeatureItems(feature.getProjectOnlyOptions());
+    }
+
+    @Override
+    public FeatureRegisterer getFeatureRegisterer() {
+        return featureRegister;
+    }
+
+    @Override
+    public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
+        this.featureRegister = featureRegisterer;
     }
 }

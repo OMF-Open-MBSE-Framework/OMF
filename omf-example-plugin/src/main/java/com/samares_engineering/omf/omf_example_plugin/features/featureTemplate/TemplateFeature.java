@@ -66,7 +66,7 @@ public class TemplateFeature extends AFeature {
     public List<IOption> initOptions() {
         OptionImpl testEnvOption = new OptionImpl(
                 new BooleanProperty("Activate Live Action:", true),
-                "OMF Example",
+                "OMF Features",
                 plugin.getEnvironmentOptionsGroup(),
                 OptionKind.Environment
         );

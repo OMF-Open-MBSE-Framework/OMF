@@ -14,7 +14,6 @@ import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkExc
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 
 public class TestUtils {
-    private TestUtils() {}
 
     public static OpenMBSEFrameworkPlugin getOpenMBSEFrameworkPlugin() {
         try {
@@ -28,4 +27,5 @@ public class TestUtils {
     public static OMFPluginEnvOptionsGroup getEnvOptions() {
         return (OMFPluginEnvOptionsGroup) getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup();
     }
+
 }

@@ -12,7 +12,6 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.VisibilityKindEnum;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_example_plugin.test.utils.StereotypesTestUtils;
-import com.samares_engineering.omf.omf_example_plugin.test.utils.TestUtils;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
 
 /**
@@ -31,8 +30,6 @@ public class ExampleStereotypesTest extends AModelComparatorTestCase {
 
     @Override
     public void initOptions() {
-        TestUtils.getEnvOptions().setAutomationsActivated(true);
-
         String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
 
         // Set instance config csv file

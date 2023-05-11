@@ -23,7 +23,7 @@ public class T3CreatePort extends AModelComparatorTestCase {
 
     @Override
     public void initOptions() {
-        TestUtils.getEnvOptions().setAutomationsActivated(true);
+
     }
 
     @Override

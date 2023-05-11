@@ -237,7 +237,7 @@ public class ConnectionDirector implements IGenericBuilder {
 
     public ConnectionDirector connectConnectionFromSonToMother(Property src, ConnectorBuilder templateConnectorBuilder, Property dst, List<Element> sonPropertyPaths) throws BuilderException {
         List<Element> partList = sonPropertyPaths.stream()
-                .filter(Profile.getSysmlAdditionalStereotypes().partProperty()::is)
+                .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
                 .collect(Collectors.toList());
         partList.add(0, src);
         partList.add(dst);

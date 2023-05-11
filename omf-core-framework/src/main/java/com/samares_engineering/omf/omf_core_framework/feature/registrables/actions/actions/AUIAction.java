@@ -20,6 +20,7 @@ import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -70,6 +71,7 @@ public abstract class AUIAction implements IUIAction {
                 super.actionPerformed(actionEvent);
                 init();
                 executeBrowserAction(browserSelectedElements);
+                OMFAutomationManager.getInstance().automationTriggered();
             }
             @Override
             public void updateState() {
@@ -83,6 +85,7 @@ public abstract class AUIAction implements IUIAction {
                 super.actionPerformed(actionEvent);
                 init();
                 executeDiagramAction(diagramSelectedElements);
+                OMFAutomationManager.getInstance().automationTriggered();
             }
             @Override
             public void updateState() {
@@ -95,12 +98,13 @@ public abstract class AUIAction implements IUIAction {
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
                 executeMenuAction(browserSelectedElements);
+                OMFAutomationManager.getInstance().automationTriggered();
             }
 
             @Override
             public void updateState() {
                 super.updateState();
-                setEnabled(checkBrowserAvailability());
+                setEnabled(checkMenuAvailability());
             }
         };
 
@@ -137,7 +141,7 @@ public abstract class AUIAction implements IUIAction {
 
     /**
      * Execute the behavior defined for BrowserAction, listener will be deactivated during the action, and it will be executed inside a session.
-     * By default the actionToPerfom() method. Override it if there is a need to distinguish BrowserAction of the other
+     * By default the actionToPerform() method. Override it if there is a need to distinguish BrowserAction of the other
      * @param selectedElements
      */
     protected void executeBrowserAction(List<Element> selectedElements){
@@ -154,7 +158,7 @@ public abstract class AUIAction implements IUIAction {
 
     /**
      * Execute the behavior defined for Menu Action, listener will be deactivated during the action, and it will be executed inside a session.
-     * By default the actionToPerfom() method. Override it if there is a need to distinguish Menu Action of the other
+     * By default the actionToPerform() method. Override it if there is a need to distinguish Menu Action of the other
      * @param selectedElements
      */
     protected void executeMenuAction(List<Element> selectedElements){
@@ -364,7 +368,7 @@ public abstract class AUIAction implements IUIAction {
     }
 
     @Override
-    public void initRegisterableItem(MDFeature feature) {
+    public void initRegistrableItem(MDFeature feature) {
         this.feature = feature;
     }
 }

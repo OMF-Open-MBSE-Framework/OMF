@@ -12,17 +12,14 @@ import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.magicdraw.sysml.util.MDCustomizationForSysMLProfile;
 import com.nomagic.uml2.MagicDrawProfile;
 import com.nomagic.uml2.StandardProfile;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class Profile {
-    private MagicDrawProfile magicDrawProfile = null;
-    private StandardProfile standardProfile = null;
-    private SysMLProfile sysmlProfile = null;
-    private MDCustomizationForSysMLProfile mdCustomSysMLProfile = null;
-
     private Project project;
-
     private static Profile instance = null;
 
     public Profile(Project project){
@@ -46,36 +43,56 @@ public class Profile {
 
     public void init(Project project){
         this.project = project;
-        this.standardProfile = StandardProfile.getInstanceByProject(project);
-        this.sysmlProfile = SysMLProfile.getInstanceByProject(project);
-        this.mdCustomSysMLProfile = MDCustomizationForSysMLProfile.getInstanceByProject(project);
-        this.magicDrawProfile = MagicDrawProfile.getInstanceByProject(project);
-
         OMFConstants.reinitConstants();
     }
 
     public MagicDrawProfile getMagicDraw() {
-        return magicDrawProfile;
+        try{return MagicDrawProfile.getInstanceByProject(project);}
+        catch (Exception e){OMFErrorHandler.handleException(new OMFException("MagicDraw profile not found", e, GenericException.ECriticality.CRITICAL));}
+        return null;
     }
 
     public StandardProfile getStandard() {
-        return standardProfile;
+        try{return StandardProfile.getInstanceByProject(project);}
+        catch (Exception e){OMFErrorHandler.handleException(new OMFException("Standard profile not found", e, GenericException.ECriticality.CRITICAL));}
+        return null;
     }
 
     public SysMLProfile getSysml() {
-        return sysmlProfile;
+        try{ return SysMLProfile.getInstanceByProject(project);}
+        catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysML profile not found", e, GenericException.ECriticality.CRITICAL));}
+        return null;
     }
 
     public MDCustomizationForSysMLProfile getMDCustomSysml() {
-        return mdCustomSysMLProfile;
+         try{return MDCustomizationForSysMLProfile.getInstanceByProject(project);}
+         catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysMLCustomization profile not found", e, GenericException.ECriticality.CRITICAL));}
+         return null;
     }
+
+
+    public MDCustomizationForSysMLProfile getSysmlAdditionalStereotypes() {
+         try{return MDCustomizationForSysMLProfile.getInstanceByProject(project);}
+         catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysMLCustomization profile not found", e, GenericException.ECriticality.CRITICAL));}
+         return null;
+    }
+
+    public static SysMLProfile _getSysml() {return getInstance().getSysml();}
+
+    public static MDCustomizationForSysMLProfile _getMDCustomSysml() {return getInstance().getMDCustomSysml();}
+
+    public static MDCustomizationForSysMLProfile _getSysmlAdditionalStereotypes() {return getInstance().getSysmlAdditionalStereotypes();}
+
+    public static MagicDrawProfile _getMagicDraw() {return getInstance().getMagicDraw();}
+
+    public static StandardProfile _getStandard() {return getInstance().getStandard();}
+
+
 
     public Project getProject() {
         return project;
     }
 
-    public static MDCustomizationForSysMLProfile getSysmlAdditionalStereotypes() {
-        return getInstance().getMDCustomSysml();
-    }
+
 
 }

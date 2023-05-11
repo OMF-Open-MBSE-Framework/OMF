@@ -7,6 +7,9 @@
 
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
 import java.beans.PropertyChangeEvent;
@@ -15,18 +18,58 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface IElementListener {
-    void addListener();
 
-    void removeListener();
+    /**
+     * Declare how the listener should be registered.
+     * Prefer using register() method instead of the addListener() method to register the listener,
+     * as it encapsulates the addListener() method and boilerplate code.
+     */
+    void addingListener();
+
+    /**
+     * Declare how the listener should be unregistered.
+     * Prefer using unregister() method instead of the removeListener() method to unregister the listener,
+     * as it encapsulates the removeListener() method and boilerplate code.
+     */
+    void removingListener();
 
     boolean isActivated();
-
+    /**
+     * Setting the activated attribute to true, activation will not register the listener.
+     * This help to activate/deactivate the listener without registering it.
+     */
     void activate();
 
-    void deactivate();
+    /**
+     * Setting the activated attribute to false, deactivation will not unregister the listener.
+     * This help to activate/deactivate the listener without unregistering it.
+     */
 
+    void deactivate();
+    /**
+     * @return true if the listener is registered
+     */
+
+    boolean isRegistered();
+
+    /**
+     * @return true if the listener is not registered
+     */
+    boolean isNotRegistered();
+    /**
+     * Setting the isRegistered attribute
+     */
+
+    void setIsRegistered(boolean isRegistered);
+
+    /**
+     * @return the RuleEngine map
+     */
     HashMap<String, List<IRuleEngine>> getRuleEngineMap();
 
+    /**
+     * Setting the RuleEngine map
+     */
     void setRuleEngineMap(HashMap<String, List<IRuleEngine>> rulesEngines);
 
     /**
@@ -48,6 +91,39 @@ public interface IElementListener {
      * @return true if at least one rule matched
      */
     boolean manageDeletion(PropertyChangeEvent event);
+    /**
+     * @return trigger
+     */
 
-    void manageAfterAutomation(Collection<PropertyChangeEvent> l_events);
+    boolean manageAfterAutomation(Collection<PropertyChangeEvent> l_events);
+
+    /**
+     * Registering the listener, triggering the addListener() method and setting the isRegistered attribute to true
+     * Prefer using register() method instead of the addListener() method
+     */
+    default void register() {
+        if (isRegistered()) return;
+        try {
+            addingListener();
+            setIsRegistered(true);
+        }catch (Exception e){
+            deactivate();
+            OMFErrorHandler.handleException(new OMFFrameworkException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
+        }
+    }
+
+    /**
+     * Unregistering the listener, triggering the removeListener() method and setting the isRegistered attribute to false
+     * Prefer using unregister() method instead of the removeListener() method
+     */
+    default void unregister(){
+        if (!isRegistered()) return;
+        try {
+            removingListener();
+            setIsRegistered(false);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new OMFFrameworkException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
+        }
+    }
+
 }
