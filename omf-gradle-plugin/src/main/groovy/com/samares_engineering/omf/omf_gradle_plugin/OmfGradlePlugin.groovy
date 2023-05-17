@@ -160,7 +160,6 @@ class OmfGradlePlugin implements Plugin<Project> {
             it.buildTimestamp = mdPluginBuild.buildTimestamp
             it.humanVersionCore = mdPluginBuild.humanVersionCore
             it.pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
-            it.descriptorFile = mdPluginBuild.testDescriptorFile
 
             it.distributionFolderName = mdPluginBuild.testDistributionFolderName
             it.myPluginMainClass = mdPluginBuild.myTestPluginMainClass
@@ -181,7 +180,6 @@ class OmfGradlePlugin implements Plugin<Project> {
             it.buildTimestamp = mdPluginBuild.buildTimestamp
             it.humanVersionCore = mdPluginBuild.humanVersionCore
             it.pluginDeliveryName = mdPluginBuild.pluginDeliveryName
-            it.descriptorFile = mdPluginBuild.descriptorFile
 
             it.distributionFolderName = mdPluginBuild.distributionFolderName
             it.myPluginMainClass = mdPluginBuild.myPluginMainClass

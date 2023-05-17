@@ -23,10 +23,6 @@ interface OmfGradlePluginBuildExtension {
 
     Property<String> getTestPluginDeliveryName()
 
-    Property<String> getDescriptorFile()
-
-    Property<String> getTestDescriptorFile()
-
     Property<String> getTestDistributionFolderName()
 
     Property<String> getMyTestPluginMainClass()

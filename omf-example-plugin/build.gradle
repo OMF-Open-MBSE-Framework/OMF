@@ -90,10 +90,8 @@ mdPluginBuild {
     myPluginMainClass = pluginMainClass
     localDeliveryDirectory = srcLocalDestinationDir
     distributionFolderName = generatedDistFolderName
-    descriptorFile = descriptorFileName
     pluginDeliveryName = thePluginDeliveryName
     humanVersionCore = "0.0.0"
-    testDescriptorFile = testDescriptorFileName
     testPluginDeliveryName = theTestPluginDeliveryName
     myTestPluginId = testPluginId
     myTestPluginName = testPluginName
