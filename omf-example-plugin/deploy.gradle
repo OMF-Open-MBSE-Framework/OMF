@@ -18,7 +18,7 @@ task zipDir(type: Zip) {
  */
 task parseXml () {
     def resourceWebDescriptors= (new XmlParser()).parse(serverDescriptorPath)
-    def pluginDescriptor = (new XmlParser()).parse("build/generated-dist/data/resourcemanager/" + descriptorFile)
+    //def pluginDescriptor = (new XmlParser()).parse("build/generated-dist/data/resourcemanager/" + generatedDescriptorFile)
 
     //Remove descriptor with same Id if any
     def resourceWebDescriptorSameID = resourceWebDescriptors.resourceWebDescriptor.find{it.resourceDescriptor.'@id'.text() == pluginId}
