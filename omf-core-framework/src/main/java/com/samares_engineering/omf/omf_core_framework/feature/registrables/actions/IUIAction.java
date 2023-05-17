@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions;
 
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDAction;

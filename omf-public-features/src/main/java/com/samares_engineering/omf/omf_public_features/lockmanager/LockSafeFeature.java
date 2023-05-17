@@ -13,7 +13,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericE
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;

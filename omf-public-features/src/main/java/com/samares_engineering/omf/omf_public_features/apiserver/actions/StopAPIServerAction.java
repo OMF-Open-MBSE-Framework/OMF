@@ -12,10 +12,10 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.DeactivateListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MDAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MenuAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
 

@@ -4,7 +4,7 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
 
 
 import com.nomagic.actions.AMConfigurator;
@@ -14,7 +14,7 @@ import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 
 import javax.annotation.CheckForNull;
 import java.util.ArrayList;

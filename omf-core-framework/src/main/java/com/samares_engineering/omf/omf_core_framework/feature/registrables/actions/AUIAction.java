@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions;
 
 
 import com.google.common.base.Strings;
@@ -18,14 +18,14 @@ import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
 
 import javax.annotation.CheckForNull;
 import javax.swing.*;

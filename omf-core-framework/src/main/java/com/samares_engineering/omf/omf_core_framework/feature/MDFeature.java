@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;

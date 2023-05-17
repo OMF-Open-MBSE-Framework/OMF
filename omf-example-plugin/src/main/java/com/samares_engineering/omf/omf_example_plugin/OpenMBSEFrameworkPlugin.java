@@ -7,9 +7,9 @@
 package com.samares_engineering.omf.omf_example_plugin;
 
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFBrowserConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFDiagramConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
@@ -17,6 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.dev.Dev;
@@ -34,6 +35,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
         return List.of(
                 new Dev(),
                 new FeaturesDeactivationFeature(),
+                new ErrorManagementFeatureExample(),
                 new HyperLinkFeature(),
                 new LockSafeFeature(),
                 new StereotypesFeature(),

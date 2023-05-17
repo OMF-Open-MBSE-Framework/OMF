@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.configurators;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
 
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.actions.NMAction;
@@ -13,7 +13,7 @@ import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
 import com.nomagic.magicdraw.actions.DiagramContextAMConfigurator;
 import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 
 
 import java.util.ArrayList;

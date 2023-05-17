@@ -50,7 +50,7 @@ public class GenericException extends Exception implements IException {
     public GenericException(String debugMessage, String userMessage, Exception exception, ECriticality criticality) {
         this.debugMessage   = debugMessage;
         this.userMessage    = userMessage;
-        this.criticality      = criticality;
+        this.criticality    = criticality;
         this.exception      = exception;
     }
 

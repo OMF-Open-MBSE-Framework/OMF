@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions;
 
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 

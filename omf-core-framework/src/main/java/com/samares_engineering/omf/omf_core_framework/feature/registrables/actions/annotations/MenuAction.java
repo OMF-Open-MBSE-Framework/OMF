@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = {ElementType.TYPE})
-public @interface DiagramAction {
+public @interface MenuAction {
     String actionName() default "";
     String category() default "";
     String[] keyStroke() default {};

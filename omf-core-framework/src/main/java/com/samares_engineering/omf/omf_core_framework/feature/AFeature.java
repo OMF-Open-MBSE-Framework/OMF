@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
@@ -29,7 +29,7 @@ import java.util.List;
  * Features can be registered as project only, meaning that they will only be available in the current project.
  * see {@link com.samares_engineering.omf.omf_core_framework.plugin.APlugin}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
- * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.IUIAction}
+ * see {@link IUIAction}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine}
  */

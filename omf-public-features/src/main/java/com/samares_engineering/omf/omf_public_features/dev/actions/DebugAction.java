@@ -10,9 +10,9 @@ package com.samares_engineering.omf.omf_public_features.dev.actions;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.BrowserAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MDAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 
 import java.util.List;
 
