@@ -146,6 +146,24 @@ public class SysMLFactory extends AMagicDrawFactory {
         return partProperty;
     }
 
+    public Property createValueProperty() {
+        Property valueProperty = createProperty();
+        Profile._getSysmlAdditionalStereotypes().valueProperty().apply(valueProperty);
+        return valueProperty;
+    }
+
+    public Property createValueProperty(Element owner) {
+        Property valueProperty = createValueProperty();
+        valueProperty.setOwner(owner);
+        return valueProperty;
+    }
+
+    public Property createValueProperty(Element owner, Type type) {
+        Property valueProperty = createValueProperty(owner);
+        valueProperty.setType(type);
+        return valueProperty;
+    }
+
     /*
     Signal
      */

@@ -30,7 +30,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @return Property option
      */
-    protected Optional<Property> getProjectOptionByCategoryName(String category, String optionName){
+    public static Optional<Property> getProjectOptionByCategoryName(String category, String optionName){
         Optional<Property> option = getProjectOptionsByCategory(category, optionName, OMFUtils.currentProject);
         return option;
     }
@@ -41,7 +41,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @return Property option
      */
-    protected Optional<Property> getProjectOptionByOptionName(String optionName) {
+    public static Optional<Property> getProjectOptionByOptionName(String optionName) {
         ProjectOptions options = OMFUtils.currentProject.getOptions();
         Optional<Property> optOption;
         optOption = Arrays.stream(ProjectOptions.class.getFields())
@@ -71,7 +71,7 @@ public class OptionsHelper {
      * @param project project containing the options
      * @return Property option
      */
-    private Optional<Property> getProjectOptionsByCategory(String category, String optionName, Project project){
+    private static Optional<Property> getProjectOptionsByCategory(String category, String optionName, Project project){
         try {
             return Optional.ofNullable(project.getOptions().getProperty(category, optionName));
         }catch (Exception e){
@@ -86,7 +86,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @return Property option
      */
-    protected Optional<Property> getEnvironmentOptionByCategoryName(String category, String optionName){
+    public static Optional<Property> getEnvironmentOptionByCategoryName(String category, String optionName){
         Optional<AbstractPropertyOptionsGroup> optCategory = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
@@ -112,7 +112,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @return Property option
      */
-    protected Optional<Property> getEnvironmentOptionByID(String id, String optionName){
+    public static Optional<Property> getEnvironmentOptionByID(String id, String optionName){
         Optional<PropertyManager> optCategory = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
@@ -137,7 +137,7 @@ public class OptionsHelper {
      * @param value
      * @return
      */
-    protected boolean compareOptionValue(Property option, Object value){
+    protected static boolean compareOptionValue(Property option, Object value){
         return option.getValue().equals(value);
     }
 
@@ -149,7 +149,7 @@ public class OptionsHelper {
      * @param optionName
      * @param value
      */
-    protected boolean compareOptionValueByCategoryName(String category, String optionName, Object value) throws OMFException {
+    protected static boolean compareOptionValueByCategoryName(String category, String optionName, Object value) throws OMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);
         if(optOption.isEmpty())
             throw new OMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
@@ -161,7 +161,7 @@ public class OptionsHelper {
      * @param option
      * @param value
      */
-    protected void setOptionValue(Property option, Object value){
+    protected static void setOptionValue(Property option, Object value){
         option.setValue(value);
     }
 
@@ -173,7 +173,7 @@ public class OptionsHelper {
      * @param optionName
      * @param value
      */
-    protected void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value) throws OMFException {
+    public static void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value) throws OMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);
         if(optOption.isEmpty())
             throw new OMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);

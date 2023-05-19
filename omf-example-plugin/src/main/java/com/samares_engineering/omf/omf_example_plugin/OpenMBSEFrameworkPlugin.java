@@ -18,6 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
+import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.dev.Dev;
@@ -39,7 +40,8 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                 new HyperLinkFeature(),
                 new LockSafeFeature(),
                 new StereotypesFeature(),
-                new APIServerFeature("http://localhost", 9850)
+                new APIServerFeature("http://localhost", 9850),
+                new SysmlGptExploFeature()
         );
     }
 
