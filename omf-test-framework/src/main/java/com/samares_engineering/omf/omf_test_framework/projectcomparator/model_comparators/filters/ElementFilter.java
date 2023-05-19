@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_test_framework.projectcomparator;
+package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.filters;
 
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparatorFilter;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;

@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_test_framework.projectcomparator;
+package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators;
 
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparator;
@@ -34,56 +34,51 @@ import java.util.stream.Collectors;
 
 public class ElementModelComparator implements ModelComparator {
     //For Logging
-    private final Set<Entry> added = new HashSet();
-    private final Set<Entry> removed = new HashSet();
-    private final Map<Element, Diff> changed = new HashMap();
+    private final Set<Entry> added = new HashSet<>();
+    private final Set<Entry> removed = new HashSet<>();
+    private final Map<Element, Diff> changed = new HashMap<>();
 
-    private final Collection<ModelComparatorFilter> filters = new ArrayList();
+    private final Collection<ModelComparatorFilter> filters = new ArrayList<>();
     private boolean loggingEnabled = true;
 
-    public ElementModelComparator() {
-    }
-
+    @Override
     public boolean compareModels(Project project1, Project project2) {
         List<Package> model1 = project1.getModels();
         List<Package> model2 = project2.getModels();
-        return compareModels(model1, model2);
+        return comparePackages(model1, model2);
     }
 
-    public boolean compareModels(Package subModelRoot1, Package subModelRoot2) {
-        return compareModels(Collections.singleton(subModelRoot1), Collections.singleton(subModelRoot2));
+    public boolean comparePackages(Package subModelRoot1, Package subModelRoot2) {
+        return comparePackages(Collections.singleton(subModelRoot1), Collections.singleton(subModelRoot2));
     }
 
-    public boolean compareModels(Collection<Package> model1Packages, Collection<Package> model2Packages) {
+    public boolean comparePackages(Collection<Package> model1Packages, Collection<Package> model2Packages) {
         //TODO: areSizeEquals => size of comparable elements (filter(noNeedToCompare))
-        boolean areSizeEquals = model1Packages.size() == model2Packages.size();
-        if (areSizeEquals) {
-            for (Package package1 : model1Packages) {
-                boolean findAnySimilarPackage = model2Packages.stream().anyMatch(package2 -> areElementsEqual(package1, package2));
-                if (!findAnySimilarPackage)
-                    return false;
-            }
+        if (model1Packages.size() != model2Packages.size()) {
+            return false;
         }
 
-        return areSizeEquals && noChangesFound();
+        for (Package package1 : model1Packages) {
+            boolean findAnySimilarPackage = model2Packages.stream().anyMatch(package2 -> compareElements(package1, package2));
+            if (!findAnySimilarPackage)
+                return false;
+        }
+
+        return noChangesFound();
     }
 
-    public boolean areElementsEqual(Element elem1, Element elem2) {
-        boolean areEquals = true;
+    public boolean compareElements(Element elem1, Element elem2) {
         //TODO: noNeedToCompare(elem2) shall return false, to continue iteration and comparing the next one.
         if (noNeedToCompare(elem1) || noNeedToCompare(elem2))
             return true;
 
-        AbstractRefObject abstractRefObject1 = (AbstractRefObject)elem1;
-        AbstractRefObject abstractRefObject2 = (AbstractRefObject)elem2;
+        boolean attributesAreEqual = areAttributesEqual(elem1, elem2);
 
-        if (!areAttributesEqual(elem1, elem2))
-            areEquals = false;
-
+        AbstractRefObject abstractRefObject1 = (AbstractRefObject) elem1;
+        AbstractRefObject abstractRefObject2 = (AbstractRefObject) elem2;
         List<Reference> references = ModelReflection.getReferences((Class) abstractRefObject1.refClass().refMetaObject());
-        if(!areReferencesEqual(references, abstractRefObject1, abstractRefObject2))
-            areEquals = false;
-        return areEquals;
+        boolean refsAreEqual = areReferencesEqual(references, abstractRefObject1, abstractRefObject2);
+        return attributesAreEqual && refsAreEqual;
     }
 
     private boolean noNeedToCompare(Element elem) {
@@ -325,12 +320,11 @@ public class ElementModelComparator implements ModelComparator {
             for(int i = 0; i < newArraylist.size(); i += 2) {
                 elem1 = (Element)newArraylist.get(i);
                 bestMatch = (Element)newArraylist.get(i + 1);
-                areElementsEqual(elem1, bestMatch);
+                compareElements(elem1, bestMatch);
             }
         }
 
         return noChangesFound;
-//        return noChangesFound();
     }
 
     private Element findBestMatchingElement(Element element, List<Element> elemsToMatch) {
@@ -377,7 +371,6 @@ public class ElementModelComparator implements ModelComparator {
     private boolean noChangesFound() {
         return added.isEmpty() && removed.isEmpty() && changed.isEmpty();
     }
-
 
     protected boolean areSameObjects(@CheckForNull Element elem1, @CheckForNull Element elem2) {
 
@@ -488,66 +481,65 @@ public class ElementModelComparator implements ModelComparator {
             Element ownerE2 = elem2.getOwner();
             return areSameObjects(ownerE1, ownerE2);
         }
-
     }
-
 
     protected boolean existsInSameProject(BaseElement var1, BaseElement var2) {
         return Project.getProject(var2).getElementByID(var1.getID()) != null;
     }
 
+    @Override
     public String getDiffInfo() {
         StringBuilder sBuilder = new StringBuilder();
         Entry entry;
         if (!getAdded().isEmpty()) {
-            sBuilder.append("NEW: MetaClass Name - src|dst owner:\n");
+            sBuilder.append("New elements:\n");
 
             for (Entry value : getAdded()) {
                 entry = value;
-                sBuilder.append("\t*");
+                sBuilder.append("\t");
                 toFullName(entry.getElement(), sBuilder);
-                sBuilder.append(" - ");
+                sBuilder.append("\n\t\t");
+                sBuilder.append(" property=");
+                sBuilder.append(entry.getProperty());
+                sBuilder.append("\n\t\t");
+                sBuilder.append(" owner in source 1=");
                 toFullName(entry.getOwner1(), sBuilder);
-                sBuilder.append(" | ");
+                sBuilder.append("\n\t\t");
+                sBuilder.append(" owner in source 2=");
                 toFullName(entry.getOwner2(), sBuilder);
-                sBuilder.append(" [").append(entry.getProperty()).append("]");
                 sBuilder.append("\n");
             }
         }
 
         if (!getRemoved().isEmpty()) {
-            sBuilder.append("REMOVED: MetaClass Name - src|dst owner:\n");
-
+            sBuilder.append("Removed elements:\n");
 
             for (Entry value : getRemoved()) {
                 entry = value;
-                sBuilder.append("\t*");
+                sBuilder.append("\t");
                 toFullName(entry.getElement(), sBuilder);
-                sBuilder.append(" - ");
-                toFullName(entry.getOwner1(), sBuilder);
-                sBuilder.append(" | ");
-                toFullName(entry.getOwner2(), sBuilder);
-                sBuilder.append("\n\t\t");
-                sBuilder.append(" modified property: ");
+                sBuilder.append(" ||| property=");
                 sBuilder.append(entry.getProperty());
+                sBuilder.append(" owner in source 1=");
+                toFullName(entry.getOwner1(), sBuilder);
+                sBuilder.append(" owner in source 2=");
+                toFullName(entry.getOwner2(), sBuilder);
+                sBuilder.append("|||");
                 sBuilder.append("\n");
             }
         }
 
         if (!getChanged().isEmpty()) {
-            sBuilder.append("MODIFIED: MetaClass Name - src|dst owner:\n");
+            sBuilder.append("Changed elements:\n");
 
             for (Map.Entry<Element, Diff> elementDiffEntry : getChanged().entrySet()) {
-                Map.Entry map = (Map.Entry) elementDiffEntry;
-                sBuilder.append("\t*");
-                toFullName((Element) map.getKey(), sBuilder);
+                sBuilder.append("\t");
+                toFullName(elementDiffEntry.getKey(), sBuilder);
                 sBuilder.append("\n");
-                Diff diff = (Diff) map.getValue();
-                Iterator itDiff = diff.getChanges().iterator();
+                Diff diff = elementDiffEntry.getValue();
 
-                while (itDiff.hasNext()) {
-                    String var6 = (String) itDiff.next();
-                    sBuilder.append("\t\t").append(var6).append("\n");
+                for (String change : diff.getChanges()) {
+                    sBuilder.append("\t\t").append(change).append("\n");
                 }
             }
         }
@@ -555,21 +547,31 @@ public class ElementModelComparator implements ModelComparator {
         return sBuilder.toString();
     }
 
+    private static void toFullName(Element element, StringBuilder sBuilder) {
+        sBuilder.append(element.getClassType().getSimpleName())
+                .append(" ")
+                .append(element instanceof NamedElement? ((NamedElement) element).getName(): "")
+                .append("\n\t");
+        toQualifiedName(element, sBuilder);
+    }
+
+    private static void toQualifiedName(Element element, StringBuilder stringBuilder) {
+        for(int size = stringBuilder.length(); element != null; element = element.getOwner()) {
+            if (stringBuilder.length() > size) {
+                stringBuilder.insert(size, "::");
+            }
+
+            String res = "";
+            res += element instanceof NamedElement && ((NamedElement)element).getName().length() > 0
+                    ? ((NamedElement)element).getName().replace("\n", "E") : "$" + element.getClassType().getSimpleName();
+            stringBuilder.insert(size, res);
+        }
+
+    }
+
     public void addFilter(ModelComparatorFilter var1) {
         filters.add(var1);
     }
-
-    private void toFullName(Element element, StringBuilder sBuilder) {
-        String eDescription = element == null? "" : element.getClassType().getSimpleName();
-        String name = element instanceof NamedElement? "\"\"" + ((NamedElement) element).getName(): "";
-        String typeName = (element instanceof TypedElement)&& (((TypedElement) element).getType() != null)? ":" + getFullName(((TypedElement) element).getType()): "";
-
-        sBuilder.append(eDescription)
-                .append(" ")
-                .append(name)
-                .append(typeName);
-    }
-
 
     private String getFullName(Element elem) {
         StringBuilder var1 = new StringBuilder();
@@ -577,21 +579,10 @@ public class ElementModelComparator implements ModelComparator {
         return var1.toString();
     }
 
-    private void toQualifiedName(Element element, StringBuilder stringBuilder) {
-        for(int size = stringBuilder.length(); element != null; element = element.getOwner()) {
-            if (stringBuilder.length() > size) {
-                stringBuilder.insert(size, "::");
-            }
-
-            String res = "";
-            res += element instanceof NamedElement && ((NamedElement)element).getName().length() > 0 ? ((NamedElement)element).getName().replace("\n", "E") : "$" + element.getClassType().getSimpleName();
-            stringBuilder.insert(size, res);
-        }
-
-    }
     private void addChange(Element ref1, Element ref2, String diffResult) {
         addChange(ref1.getOwner(), ref2.getOwner(), ref1, ref2, diffResult);
     }
+
     protected void addChange(Element owner1, Element owner2, Element elem1, Element elem2, String changeDesc) {
         if (isLoggingEnabled()) {
             Diff var4 = changed.computeIfAbsent(elem1, elem1x -> new Diff(elem2));
@@ -627,32 +618,12 @@ public class ElementModelComparator implements ModelComparator {
 
     }
 
-    private boolean isLoggingEnabled() {
-        return loggingEnabled;
-    }
-
-    protected void setLoggingEnabled(boolean var1) {
-        loggingEnabled = var1;
-    }
-
-    public Set<Entry> getAdded() {
-        return added;
-    }
-
-    public Set<Entry> getRemoved() {
-        return removed;
-    }
-
-    public Map<Element, Diff> getChanged() {
-        return changed;
-    }
-
     public static final class Entry {
+
         private final Element element;
         private final String property;
         private final Element owner1;
         private final Element owner2;
-
         private Entry(Element modifiedElement, String changeDesc, Element owner1, Element owner2) {
             this.element = modifiedElement;
             this.property = changeDesc;
@@ -675,12 +646,13 @@ public class ElementModelComparator implements ModelComparator {
         public Element getOwner2() {
             return owner2;
         }
+
     }
 
     public static class Diff {
-        private final Element changed;
-        private final List<String> changes = new ArrayList();
 
+        private final Element changed;
+        private final List<String> changes = new ArrayList<>();
         public Diff(Element var1) {
             changed = var1;
         }
@@ -696,5 +668,30 @@ public class ElementModelComparator implements ModelComparator {
         public Element getChangedElement() {
             return changed;
         }
+
+    }
+
+    /*
+    Getters/Setters
+     */
+
+    private boolean isLoggingEnabled() {
+        return loggingEnabled;
+    }
+
+    protected void setLoggingEnabled(boolean var1) {
+        loggingEnabled = var1;
+    }
+
+    public Set<Entry> getAdded() {
+        return added;
+    }
+
+    public Set<Entry> getRemoved() {
+        return removed;
+    }
+
+    public Map<Element, Diff> getChanged() {
+        return changed;
     }
 }
