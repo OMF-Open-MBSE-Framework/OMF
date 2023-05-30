@@ -1,0 +1,5 @@
+baseURL = 'https://samaresengineeringpublic.gitlab.io/samaresmbseframework'
+languageCode = 'en-us'
+title = 'Open MBSE Framework'
+theme = 'ananke'
+contentdir = "content"
