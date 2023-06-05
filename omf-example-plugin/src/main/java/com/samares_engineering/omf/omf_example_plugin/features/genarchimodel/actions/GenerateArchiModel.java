@@ -15,8 +15,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.io.File;
@@ -120,7 +120,8 @@ public class GenerateArchiModel extends AUIAction {
                 ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
                 java.lang.reflect.Type[] typeArguments = parameterizedType.getActualTypeArguments();
                 String keyTypeName = ((java.lang.Class<?>) typeArguments[0]).getSimpleName();
-                String valueTypeName = ((java.lang.Class<?>) typeArguments[1]).getSimpleName();
+                java.lang.reflect.Type typeArgument = typeArguments[1];
+                String valueTypeName = ((java.lang.Class<?>) typeArgument).getSimpleName();
                 fieldType = valueTypeName;
                 multiplicity = Multiplicity.ZERO_OR_MORE;
             }
