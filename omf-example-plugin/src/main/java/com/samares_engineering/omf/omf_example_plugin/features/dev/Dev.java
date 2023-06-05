@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_public_features.dev;
+package com.samares_engineering.omf.omf_example_plugin.features.dev;
 
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
@@ -17,9 +17,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
-import com.samares_engineering.omf.omf_public_features.dev.actions.DebugAction;
-import com.samares_engineering.omf.omf_public_features.dev.actions.live.creation.OnCreateDebug;
-import com.samares_engineering.omf.omf_public_features.dev.actions.live.creation.OnPartRenaming;
+import com.samares_engineering.omf.omf_example_plugin.features.dev.actions.live.creation.OnCreateDebug;
+import com.samares_engineering.omf.omf_example_plugin.features.dev.actions.live.creation.OnPartRenaming;
+import com.samares_engineering.omf.omf_example_plugin.features.dev.actions.DebugAction;
 
 import java.util.Arrays;
 import java.util.Collections;

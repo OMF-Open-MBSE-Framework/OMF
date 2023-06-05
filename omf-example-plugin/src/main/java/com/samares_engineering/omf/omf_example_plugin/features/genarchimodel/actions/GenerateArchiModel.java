@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.WildcardType;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -110,6 +111,9 @@ public class GenerateArchiModel extends AUIAction {
             if (Collection.class.isAssignableFrom(field.getType())) {
                 ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
                 java.lang.reflect.Type[] typeArguments = parameterizedType.getActualTypeArguments();
+                if (typeArguments[0] instanceof ParameterizedType)
+                    typeArguments = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
+                if (typeArguments[0] instanceof WildcardType) continue;
                 String targetTypeName = ((java.lang.Class<?>) typeArguments[0]).getSimpleName();
                 fieldType = targetTypeName;
                 multiplicity = Multiplicity.ZERO_OR_MORE;
@@ -117,10 +121,17 @@ public class GenerateArchiModel extends AUIAction {
 
             // Check if the field is a Map
             if (Map.class.isAssignableFrom(field.getType())) {
+                if(!(field.getGenericType() instanceof ParameterizedType))
+                    continue; //TODO take into account HashMaps
                 ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
                 java.lang.reflect.Type[] typeArguments = parameterizedType.getActualTypeArguments();
                 String keyTypeName = ((java.lang.Class<?>) typeArguments[0]).getSimpleName();
                 java.lang.reflect.Type typeArgument = typeArguments[1];
+                if(typeArgument instanceof ParameterizedType)
+                    typeArgument = ((ParameterizedType) typeArgument).getRawType();
+                if(typeArgument instanceof java.lang.reflect.TypeVariable)
+                    typeArgument = ((java.lang.reflect.TypeVariable) typeArgument).getBounds()[0];
+                if (typeArgument instanceof WildcardType) continue;
                 String valueTypeName = ((java.lang.Class<?>) typeArgument).getSimpleName();
                 fieldType = valueTypeName;
                 multiplicity = Multiplicity.ZERO_OR_MORE;

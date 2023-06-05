@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_public_features.dev.actions.live.creation;
+package com.samares_engineering.omf.omf_example_plugin.features.dev.actions.live.creation;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
