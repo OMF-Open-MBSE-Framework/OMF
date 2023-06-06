@@ -108,7 +108,7 @@ public class APIServerFeature extends AFeature {
     @Override
     public void onRegistering() {
         try {
-            OMFApiServer.getInstance().startServer(serverPort);
+            OMFApiServer.getInstance(getPlugin()).startServer(serverPort);
         } catch (Exception e) {
             OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
                     "\nPlease try to restart the API Server using OMF Advanced Menu", e, GenericException.ECriticality.CRITICAL));
@@ -123,7 +123,7 @@ public class APIServerFeature extends AFeature {
     @Override
     public void onUnregistering() {
         try {
-            OMFApiServer.getInstance().stopServer();
+            OMFApiServer.getInstance(getPlugin()).stopServer();
         } catch (Exception e) {
             OMFErrorHandler.handleException(new FeatureException("Error while stopping API server, this will strongly impact features using API Server." +
                     "\nPlease try to restart the API Server using OMF Advanced Menu", e, GenericException.ECriticality.CRITICAL));

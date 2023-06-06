@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_public_features.apiserver;
 
+import com.nomagic.magicdraw.plugins.Plugin;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,16 +26,23 @@ import java.util.Map;
 public class OMFApiServer extends AbstractHandler {
 
     static OMFApiServer instance;
+    private final Plugin plugin;
     private Map<String, RequestHandler> route;
     private Server server;
 
-    private OMFApiServer(){
+    private OMFApiServer(Plugin plugin){
         route = new HashMap<>();
+        this.plugin = plugin;
     }
 
+    public static OMFApiServer getInstance(Plugin plugin){
+        if(instance == null)
+            instance = new OMFApiServer(plugin);
+        return instance;
+    }
     public static OMFApiServer getInstance(){
         if(instance == null)
-            instance = new OMFApiServer();
+            instance = new OMFApiServer(null);
         return instance;
     }
 
@@ -81,10 +90,13 @@ public class OMFApiServer extends AbstractHandler {
             OMFLogger.getInstance().log("API Server started on port " + port, null, OMFLogLevel.INFO);
             ColorPrinter.status("API Server started on port " + port);
             getURI();
-
+        }catch (BindException portAlreadyUsedException){
+            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, the port " + port + " is already used." +
+                    "You can change the port in the OMF Environment options then restart the server using Advanced Menu -> Restart API Server." +
+                    "\nPlease contact the plugin: " + getPluginName() + " provider", portAlreadyUsedException, GenericException.ECriticality.CRITICAL), false);
         }catch (Exception e){
             OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
-                    "\nPlease contact the plugin: " + " provider", e, GenericException.ECriticality.CRITICAL), false);
+                    "\nPlease contact the plugin: " + getPluginName() + " provider", e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
@@ -93,7 +105,7 @@ public class OMFApiServer extends AbstractHandler {
             server.stop();
         } catch (Exception e) {
             OMFErrorHandler.handleException(new FeatureException("Error while stopping API server, this will strongly impact features using API Server." +
-                    "\nPlease try to use the dedicated Action in OMF Advanced Menu, and contact the plugin: " + " provider", e, GenericException.ECriticality.CRITICAL), false);
+                    "\nPlease try to use the dedicated Action in OMF Advanced Menu, and contact the plugin: " + getPluginName() + " provider", e, GenericException.ECriticality.CRITICAL), false);
         }
     }
 
@@ -117,5 +129,8 @@ public class OMFApiServer extends AbstractHandler {
         return server.getURI().getHost();
     }
 
+    public String getPluginName() {
+        return plugin == null? "" : plugin.getDescriptor().getName();
+    }
 
 }
