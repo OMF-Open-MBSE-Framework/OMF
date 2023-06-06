@@ -190,6 +190,13 @@ task runTest(type: JavaExec) {
 }
 runTest.dependsOn installTestPlugin
 
+task copyTestProjectResult(type: JavaExec) {
+//    group '_dev'
+    //copy the result of the test project in the test project folder 'testResultFolder'
+
+}
+runTest.dependsOn installTestPlugin
+
 task runTestNoLog(type: JavaExec) {
     group '_dev'
     mainClass = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'

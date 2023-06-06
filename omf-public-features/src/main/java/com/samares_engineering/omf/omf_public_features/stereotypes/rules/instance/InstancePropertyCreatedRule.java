@@ -7,15 +7,17 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
+import org.apache.logging.log4j.util.Strings;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InstancePropertyCreatedRule extends ARule {
     public final Class classOfType;
@@ -26,7 +28,10 @@ public class InstancePropertyCreatedRule extends ARule {
 
     public InstancePropertyCreatedRule(String id, Class classOfType, String stereoOfType, Class classOfInstance,
                                        String stereoOfInstance, String ownerValidStereotypes){
-        this(id, classOfType, stereoOfType, classOfInstance, stereoOfInstance, Arrays.asList(ownerValidStereotypes.split("/")));
+        this(id, classOfType, stereoOfType, classOfInstance, stereoOfInstance,
+                Arrays.stream(ownerValidStereotypes.split("/"))
+                        .filter(Strings::isNotEmpty)
+                        .collect(Collectors.toList()));
     }
 
     public InstancePropertyCreatedRule(String id, Class classOfType, String stereoOfType, Class classOfInstance,
@@ -41,15 +46,10 @@ public class InstancePropertyCreatedRule extends ARule {
 
     @Override
     public boolean eventMatches(PropertyChangeEvent evt) {
-       if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isInstanceActivated()) {
-            return false;
-        }
-        if (evt.getSource() == null) {
-            return false;
-        }
-        if(!classOfInstance.isInstance(evt.getSource())) {
-            return false;
-        }
+       if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isInstanceActivated()) return false;
+       if (evt.getSource() == null) return false;
+       if(!classOfInstance.isInstance(evt.getSource())) return false;
+
         Element srcElement = (Element) evt.getSource();
         boolean isTypeInstantiationPatternSatisfied = StereotypesRuleUtils.isTypeInstantiationPatternSatisfied(
                 srcElement, classOfInstance, this.stereoOfType, this.classOfType);
