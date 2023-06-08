@@ -154,11 +154,6 @@ public class RestrictedElementCheckerListener extends AElementListener implement
         }
     }
 
-    @Override
-    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
-        return false;
-    }
-
     public void setRollBackEnabling(Boolean value) {
         this.rollbackEnabled = value;
     }

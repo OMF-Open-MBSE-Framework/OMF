@@ -12,7 +12,6 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collection;
 
 public class DeletionPropertyChangeElementListener extends AElementListener implements PropertyChangeListener {
     public DeletionPropertyChangeElementListener() {
@@ -41,9 +40,4 @@ public class DeletionPropertyChangeElementListener extends AElementListener impl
                 UML2MetamodelConstants.BEFORE_DELETE);
     }
 
-
-    @Override
-    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
-        return false;
-    }
 }
