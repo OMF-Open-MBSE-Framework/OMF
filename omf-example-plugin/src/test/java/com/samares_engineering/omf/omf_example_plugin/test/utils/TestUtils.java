@@ -11,6 +11,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_example_plugin.OpenMBSEFrameworkPlugin;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
+import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 
 public class TestUtils {
@@ -28,4 +29,8 @@ public class TestUtils {
         return (OMFPluginEnvOptionsGroup) getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup();
     }
 
+    //OMF Activation feature
+    public static void setAutomationsActivated(AbstractTestCase testcase, String pluginName, boolean b) {
+        testcase.getEnvironmentOptionByID("activate automations " + pluginName + " :", pluginName + "Features Configurations");
+    }
 }
