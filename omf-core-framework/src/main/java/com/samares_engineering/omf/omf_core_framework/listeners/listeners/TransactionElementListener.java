@@ -72,9 +72,4 @@ public class TransactionElementListener extends AElementListener implements Tran
     public void removingListener() {
         OMFUtils.currentProject.getRepository().getTransactionManager().removeTransactionCommitListener(this);
     }
-
-    @Override
-    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> collection) {
-        return false;
     }
-}

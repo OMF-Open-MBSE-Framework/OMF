@@ -11,6 +11,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,6 +71,12 @@ public abstract class AElementListener implements IElementListener {
     public boolean manageDeletion(PropertyChangeEvent event) {
         List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.DELETE.toString());
         return processAllMatchingRules(ruleEngines, event);
+    }
+
+    @Override
+    public boolean manageAfterAutomation(Collection<PropertyChangeEvent> l_events) {
+        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.AFTER_AUTOMATION.toString());
+        return l_events.stream().map(event -> processAllMatchingRules(ruleEngines, event)).anyMatch(b -> b);
     }
 
     /**
