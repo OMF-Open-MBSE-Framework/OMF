@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Added
+- "generate model architecture" feature which generates a UML model of the OMF project in Magicdraw
+- 
+### Fixed
+- Error messages relating to the API server feature
+
+### Changed
+- Maven repo gradle system properties have been changed to be more general
 
 ## [1.0.0]
 
@@ -24,10 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  It also allows developer to add their own featureItems.
 
 
-### Fixed
 
-
-### Changed
 
 ### Known Limitations
 - Documentation is not up-to-date with the latest changes.
