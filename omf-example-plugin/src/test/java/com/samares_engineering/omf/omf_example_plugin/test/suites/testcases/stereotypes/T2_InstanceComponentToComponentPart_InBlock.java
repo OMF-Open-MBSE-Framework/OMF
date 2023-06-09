@@ -13,8 +13,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.VisibilityKindEnum;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_example_plugin.test.utils.StereotypesTestUtils;
-import com.samares_engineering.omf.omf_example_plugin.test.utils.TestUtils;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
+
+import java.util.List;
 
 public class T2_InstanceComponentToComponentPart_InBlock extends AModelComparatorTestCase {
 
@@ -27,11 +28,8 @@ public class T2_InstanceComponentToComponentPart_InBlock extends AModelComparato
 
     @Override
     public void initOptions() {
-        TestUtils.getEnvOptions().setAutomationsActivated(true);
-        //Will be uncommented after it works in simple test
-        String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
-
         // Set instance config csv file
+        String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
         String instanceConfigFilePath = configFolder + "/instance_config.csv";
         StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setInstanceConfigFilePath(instanceConfigFilePath);
         StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setInstanceActivated(true);
@@ -39,7 +37,22 @@ public class T2_InstanceComponentToComponentPart_InBlock extends AModelComparato
 
     @Override
     public void testAction() {
+    }
+
+    public List<Runnable> testActions() {
+        List<Runnable> userActions = List.of(
+                this::triggerRefreshStereotypesRulesBasedOnConfigFiles,
+                this::createPart
+        );
+
+        return userActions;
+    }
+
+    private void triggerRefreshStereotypesRulesBasedOnConfigFiles() {
         triggerBrowserAction(OMFUtils.currentProject.getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
+    }
+
+    private void createPart() {
         openDiagram("_2021x_2_da1032a_1685091528326_259783_5355"); // IBD genericOwner
         Class component = (Class) findTestedElementByID("_2021x_2_da1032a_1685091589633_736155_5676");
         Class genericOwner = (Class) findTestedElementByID("_2021x_2_da1032a_1685091528325_862491_5351");

@@ -13,38 +13,50 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.VisibilityKindEnum;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_example_plugin.test.utils.StereotypesTestUtils;
-import com.samares_engineering.omf.omf_example_plugin.test.utils.TestUtils;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
 
-public class T4_InstanceHWComponantToHWComponentPart_InBlock extends AModelComparatorTestCase {
+import java.util.List;
+
+public class T4_InstanceMetamorphtToComponentPart_InComponent extends AModelComparatorTestCase {
 
     @Override
     public void initVariables() {
-        setName("5.Instance HWComponent instantiation in Block");
-        testCaseID = "instanceHWComponant_To_HWComponentPart_InBlock ";
-        testPackageName = "5.Instance HWComponent instantiation in Block";
+        setName("4.Instance Metamorph instantiation in Component");
+        testCaseID = "instanceMetamorpht_To_ComponentPart_InComponent";
+        testPackageName = "4.Instance Metamorph instantiation in Component";
     }
 
     @Override
     public void initOptions() {
-        TestUtils.getEnvOptions().setAutomationsActivated(true);
-        //Will be uncommented after it works in simple test
-        String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
-
         // Set instance config csv file
+        String configFolder = StereotypesTestUtils.getStereotypeConfigFolder();
         String instanceConfigFilePath = configFolder + "/instance_config.csv";
         StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setInstanceConfigFilePath(instanceConfigFilePath);
         StereotypesTestUtils.getStereotypesFeature().getOptionsHelper().setInstanceActivated(true);
     }
 
     @Override
-    public void testAction() {
+    public void testAction() {}
+
+    public List<Runnable> testActions() {
+        List<Runnable> userActions = List.of(
+                this::triggerRefreshStereotypesRulesBasedOnConfigFiles,
+                this::createPart
+        );
+
+        return userActions;
+    }
+
+    private void triggerRefreshStereotypesRulesBasedOnConfigFiles() {
         triggerBrowserAction(OMFUtils.currentProject.getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
-        openDiagram("_2021x_2_da1032a_1685091944491_146235_3162"); // IBD functionalPart
-        Class metamorph = (Class) findTestedElementByID("_2021x_2_da1032a_1685091944372_437736_2886");
-        Class component = (Class) findTestedElementByID("_2021x_2_da1032a_1685091944372_112571_2887");
-        Property functionalPart = SysMLFactory.getInstance().createPartProperty(component, metamorph);
-        functionalPart.setVisibility(VisibilityKindEnum.PUBLIC);
+    }
+
+    private void createPart() {
+        openDiagram("_2021x_2_da1032a_1685091593484_828619_5741"); // IBD component
+        Class metamorph = (Class) findTestedElementByID("_2021x_2_da1032a_1685091552161_865123_5554");
+        Class component = (Class) findTestedElementByID("_2021x_2_da1032a_1685091593483_450702_5740");
+        Property componentPart = SysMLFactory.getInstance().createPartProperty(component, metamorph);
+        componentPart.setVisibility(VisibilityKindEnum.PUBLIC);
     }
 
 

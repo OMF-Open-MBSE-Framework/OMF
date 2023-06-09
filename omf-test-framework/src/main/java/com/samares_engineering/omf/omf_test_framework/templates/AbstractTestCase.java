@@ -38,7 +38,6 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
-import com.samares_engineering.omf.omf_test_framework.calliope.StoredElements;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 import com.samares_engineering.omf.omf_test_framework.utils.TestLogger;
@@ -74,7 +73,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     private APITestComponent apiTestComponent;
 
-    public StoredElements storedElements;
+    public ElementsStoredInTestCase elementsStoredInTestCase;
 
 
     public AbstractTestCase() {
@@ -84,7 +83,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         this.oracleProject  = getTestBatch().getOracleProject();
         this.initZipProject = getTestBatch().getInitZipProject();
         this.oracleZipProject = getTestBatch().getOracleZipProject();
-        this.storedElements = new StoredElements();
+        this.elementsStoredInTestCase = new ElementsStoredInTestCase();
     }
 
     public AbstractTestCase(TestLogger logger) {

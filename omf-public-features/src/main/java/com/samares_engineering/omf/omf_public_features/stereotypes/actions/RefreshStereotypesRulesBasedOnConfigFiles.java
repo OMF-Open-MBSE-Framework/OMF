@@ -10,8 +10,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.*;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
