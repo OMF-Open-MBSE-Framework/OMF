@@ -13,8 +13,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
@@ -91,19 +89,10 @@ public class StereotypesFeature extends AFeature {
         // Instance to type
         StringProperty typeConfigFilePathProp = new StringProperty(StereotypesEnvOptionsHelper.TYPE_CONFIG_FILE_PATH_ID,
                 StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
-        var typeConfigFilePath = new OptionImpl(
-                typeConfigFilePathProp,
-                StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP,
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment
-        );
+        options.add(createEnvOption(typeConfigFilePathProp, StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP));
 
-        var typeActivation = new OptionImpl(
-                new BooleanProperty(StereotypesEnvOptionsHelper.TYPE_ACTIVATION_ID, true),
-                StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP,
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment
-        );
+        options.add(createEnvOption(new BooleanProperty(StereotypesEnvOptionsHelper.TYPE_ACTIVATION_ID, true),
+                StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP));
 
         return options;
     }
