@@ -4,6 +4,7 @@ apply plugin: 'maven-publish'
 
 group 'com.samares-engineering.omf.omf-gradle-plugin'
 version '0.115.7-SNAPSHOT'
+ext.mainClass = 'com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePlugin'
 ext.isRelease = !version.endsWith("-SNAPSHOT")
 
 dependencies {
@@ -14,7 +15,7 @@ gradlePlugin {
     plugins {
         omfGradlePlugin {
             id = group
-            implementationClass = 'com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePlugin'
+            implementationClass = mainClass
         }
     }
 }
@@ -24,11 +25,11 @@ publishing {
         maven {
             allowInsecureProtocol true
             credentials {
-                username nexusUsername
-                password nexusPassword
+                username mavenRepoUsername
+                password mavenRepoPassword
             }
-            def releasesRepoUrl = "$nexusUrl/maven-releases"
-            def snapshotsRepoUrl = "$nexusUrl/maven-snapshots"
+            def releasesRepoUrl = mavenRepoUrl
+            def snapshotsRepoUrl = mavenSnapshotRepoUrl
             url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
         }
     }
@@ -47,4 +48,12 @@ java {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
 
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.group,
+                'Implementation-Version': project.version,
+                'Main-Class': mainClass
+    }
 }

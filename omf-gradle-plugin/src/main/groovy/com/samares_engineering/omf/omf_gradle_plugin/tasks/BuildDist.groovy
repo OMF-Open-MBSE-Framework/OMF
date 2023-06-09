@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_gradle_plugin.tasks
 
 import com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePluginBuildUtils
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
@@ -166,8 +167,8 @@ abstract class BuildDist extends DefaultTask {
 
     private void generateDescriptorFile() {
         def descriptorFileDestinationDir = "$buildDistFolder/data/resourcemanager"
-        def templateDescriptor = project.fileTree("$distFolder/template/descriptors/resourcemanager").first()
-        def generatedInstallLines = generateDescriptorInstallLines(descriptorFileDestinationDir + "\\" + 'blibli.xml')
+        def templateDescriptor = findResourceDescriptor()
+        def generatedInstallLines = generateDescriptorInstallLines(descriptorFileDestinationDir + templateDescriptor.name)
         project.copy {
             from templateDescriptor
             filter { it.replace(
@@ -184,6 +185,18 @@ abstract class BuildDist extends DefaultTask {
             filter { it.replace('${plugin.archiveFileName}', pluginDeliveryName.get()) }
             into descriptorFileDestinationDir
         }
+    }
+
+    private File findResourceDescriptor() {
+        def resourceManagerFolder = "$distFolder/template/descriptors/resourcemanager"
+        def descriptorCandidates = project.fileTree(resourceManagerFolder)
+        if (descriptorCandidates.isEmpty()) {
+            throw new GradleException("No resource descriptor file found in $resourceManagerFolder")
+        }
+        if (descriptorCandidates.size() > 1) {
+            print("Multiple resource descriptor files found in $resourceManagerFolder. Using the first one.")
+        }
+        return descriptorCandidates.first()
     }
 
     private String generateDescriptorInstallLines(String generatedDescriptorFilePath) {
