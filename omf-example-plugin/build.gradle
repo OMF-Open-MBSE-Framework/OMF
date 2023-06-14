@@ -2,8 +2,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 plugins {
-    id 'idea'
-    id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
     id 'com.samares-engineering.omf.omf-gradle-plugin'
@@ -106,11 +104,6 @@ tasks.withType(JavaExec) {
     classpath = configurations.mdLibrary
     workingDir 'build/install'
     args 'TESTER'
-}
-
-//TODO is this necessary ?
-tasks.withType(Tar) {
-    enabled = false
 }
 
 // ======================== GRADLE TASKS DEFINITION ========================
@@ -235,16 +228,6 @@ tasks.junitHtmlReport.doLast {
 }
 
 // ============================= TASK CONFIGURATION =============================
-javadoc {
-    enabled false
-}
-
-// Mandatory to CI/CD process
-test {
-    // Fail the build if units tests are failed ; true to ignore
-    ignoreFailures = true
-}
-
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
@@ -398,16 +381,7 @@ junitHtmlReport {
     testReportsDir = "test-reports/TEST-HTML"
 }
 
-zipPluginLocally.dependsOn buildDist
-zipTestPluginLocally.dependsOn buildTestDist
-deliverLocally.dependsOn zipPluginLocally, zipTestPluginLocally, srcZipDir
-runPlugin.dependsOn installPlugin, installTestPlugin
-installPlugin.dependsOn buildDist, deletePlugins
-installTestPlugin.dependsOn installPlugin, buildTestDist
-buildDist.dependsOn jar
-buildTestDist.dependsOn testJar, buildDist
-installMagicDraw.dependsOn configurations.mdApplicationArchive
-installZippedMDPlugins.dependsOn configurations.zippedMDPlugin
-compileJava.dependsOn clean, installMagicDraw, installZippedMDPlugins
+installPlugin.dependsOn deletePlugins
+compileJava.dependsOn clean
 runTestNoLog.finalizedBy 'junitHtmlReport'
 runTest.finalizedBy 'junitHtmlReport'

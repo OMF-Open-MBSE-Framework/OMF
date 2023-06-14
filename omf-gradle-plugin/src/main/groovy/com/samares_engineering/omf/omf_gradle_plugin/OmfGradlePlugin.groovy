@@ -26,6 +26,8 @@ class OmfGradlePlugin implements Plugin<Project> {
         project.getPlugins().apply('java')
 
         registerTasks(project)
+
+        project.tasks.compileJava.dependsOn 'installMagicDraw', 'installZippedMDPlugins'
     }
 
     private void registerTasks(Project project) {
@@ -44,7 +46,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerDeliverLocallyTask(Project project) {
         project.tasks.register('deliverLocally', Copy) {
-            it.group = "_dev"
+            group = "_dev"
+            dependsOn 'zipPluginLocally', 'zipTestPluginLocally', 'scrZipDir'
 
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.pluginDeliveryName.get()}.zip"
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.testPluginDeliveryName.get()}.zip"
@@ -58,7 +61,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerZipPluginLocallyTask(Project project) {
         project.tasks.register('zipPluginLocally', Zip) {
-            it.group = "_delivery"
+            group = "_delivery"
+            dependsOn 'buildDist'
 
             from "$project.buildDir/${mdPluginBuild.distributionFolderName.get()}"
 
@@ -69,7 +73,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerZipTestPluginLocallyTask(Project project) {
         project.tasks.register('zipTestPluginLocally', Zip) {
-            it.group = "_delivery"
+            group = "_delivery"
+            dependsOn 'buildTestDist'
 
             from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
 
@@ -80,7 +85,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerSrcZipDirTask(Project project) {
         project.tasks.register('srcZipDir', Zip) {
-            it.group = "_delivery"
+            group = "_delivery"
 
             from "src"
 
@@ -91,7 +96,9 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerInstallMagicDrawTask(Project project) {
         project.tasks.register('installMagicDraw') {
-            it.group = "_install"
+            group = "_install"
+            dependsOn project.configurations.mdApplicationArchive
+
             def cameoConf = project.configurations.mdApplicationArchive
             def isAlreadyInstalled = new File("$project.buildDir/install").exists()
             it.doLast {
@@ -111,13 +118,18 @@ class OmfGradlePlugin implements Plugin<Project> {
     }
 
     private void registerRunPluginTask(Project project) {
-        project.tasks.register('runPlugin', RunPlugin)
+        project.tasks.register('runPlugin', RunPlugin) {
+            group = "_dev"
+            dependsOn 'installPlugin', 'installTestPlugin'
+        }
     }
 
     private void registerInstallTestPluginTask(Project project) {
         project.tasks.register('installTestPlugin') {
-            it.group = "_install"
-            it.doLast {
+            group = "_install"
+            dependsOn 'installPlugin', 'buildTestDist'
+
+            doLast {
                 project.copy {
                     setFileMode(0755)
                     from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
@@ -129,8 +141,10 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerInstallPluginTask(Project project) {
         project.tasks.register('installPlugin') {
-            it.group = "_install"
-            it.doLast {
+            group = "_install"
+            dependsOn 'buildDist'
+
+            doLast {
                 project.copy {
                     setFileMode(0755)
                     from "build/${mdPluginBuild.distributionFolderName.get()}"
@@ -142,7 +156,9 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerInstallZippedMDPluginsTask(Project project) {
         project.tasks.register('installZippedMDPlugins') {
-            it.group = "_install"
+            group = "_install"
+            dependsOn project.configurations.zippedMDPlugin
+
             doLast {
                 project.copy {
                     setFileMode(0755)
@@ -155,7 +171,9 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerBuildTestDistTask(Project project) {
         project.tasks.register('buildTestDist', BuildDist) {
-            it.group = "_install"
+            group = "_install"
+            dependsOn 'testJar', 'buildDist'
+
             it.humanVersion = mdPluginBuild.humanVersion
             it.buildTimestamp = mdPluginBuild.buildTimestamp
             it.humanVersionCore = mdPluginBuild.humanVersionCore
@@ -175,7 +193,9 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerBuildDistTask(Project project) {
         project.tasks.register('buildDist', BuildDist) {
-            it.group = "_install"
+            group = "_install"
+            dependsOn 'jar'
+
             it.humanVersion = mdPluginBuild.humanVersion
             it.buildTimestamp = mdPluginBuild.buildTimestamp
             it.humanVersionCore = mdPluginBuild.humanVersionCore
