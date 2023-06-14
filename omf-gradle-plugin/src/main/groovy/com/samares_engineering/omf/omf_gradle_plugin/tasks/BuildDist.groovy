@@ -36,9 +36,6 @@ abstract class BuildDist extends DefaultTask {
     abstract Property<String> getDistributionFolderName()
 
     @Input
-    abstract Property<String> getHumanVersionCore()
-
-    @Input
     abstract Property<String> getPluginDeliveryName()
 
     @Input
@@ -65,11 +62,6 @@ abstract class BuildDist extends DefaultTask {
     @Internal
     String getResourceVersion() {
         OmfGradleUtils.generateInternalAndResourceVersion(humanVersion.get())[1]
-    }
-
-    @Internal
-    String getInternalVersionCore() {
-        OmfGradleUtils.generateInternalAndResourceVersion(humanVersionCore.get())[0]
     }
 
     @Internal
@@ -144,8 +136,6 @@ abstract class BuildDist extends DefaultTask {
             filter { it.replace('${plugin.id}', myPluginId.get()) }
             filter { it.replace('${plugin.package}', myPackage.get()) }
             filter { it.replace('${plugin.main}', myPluginMainClass.get()) }
-            filter { it.replace('${human.version.core}', humanVersionCore.get()) }
-            filter { it.replace('${internal.version.core}', internalVersionCore) }
             if (isTestPlugin()) {
                 filter { it.replace('${plugin.undertest.id}', pluginUnderTestId.get()) }
                 filter { it.replace('${plugin.undertest.name}', pluginUnderTestName.get()) }

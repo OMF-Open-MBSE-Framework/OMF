@@ -29,7 +29,6 @@ class MDPluginBuildFunctionalTest extends Specification {
                 myPackage                   = "pluginPackage"
                 myPluginMainClass           = "pluginMainClass"
                 distributionFolderName      = "generatedDistFolderName"
-                humanVersionCore            = "coreVersion"
                 pluginDeliveryName = "pluginDeliveryName"
                 myTestPluginId          = "testPluginId"
                 myTestPluginName        = "pluginTestName"

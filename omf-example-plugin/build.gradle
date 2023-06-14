@@ -89,7 +89,6 @@ mdPluginBuild {
     localDeliveryDirectory = srcLocalDestinationDir
     distributionFolderName = generatedDistFolderName
     pluginDeliveryName = thePluginDeliveryName
-    humanVersionCore = "0.0.0"
     testPluginDeliveryName = theTestPluginDeliveryName
     myTestPluginId = testPluginId
     myTestPluginName = testPluginName

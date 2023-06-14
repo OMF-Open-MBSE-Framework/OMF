@@ -212,7 +212,6 @@ class OmfGradlePlugin implements Plugin<Project> {
 
             humanVersion = mdPluginBuild.humanVersion
             buildTimestamp = mdPluginBuild.buildTimestamp
-            humanVersionCore = mdPluginBuild.humanVersionCore
             pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
 
             distributionFolderName = mdPluginBuild.testDistributionFolderName
@@ -234,7 +233,6 @@ class OmfGradlePlugin implements Plugin<Project> {
 
             humanVersion = mdPluginBuild.humanVersion
             buildTimestamp = mdPluginBuild.buildTimestamp
-            humanVersionCore = mdPluginBuild.humanVersionCore
             pluginDeliveryName = mdPluginBuild.pluginDeliveryName
 
             distributionFolderName = mdPluginBuild.distributionFolderName
