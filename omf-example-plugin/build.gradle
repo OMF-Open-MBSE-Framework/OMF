@@ -49,11 +49,21 @@ repositories {
     mavenCentral()
 }
 
+/*
+ Use the following dependency configurations :
+    - mdApplicationArchive: declares the MagicDraw zip archive, should only be used once
+    - mdLibrary: declares dependencies that are added to the classpath when we launch MagicDraw. Only the libraries
+    in the magicdraw /lib folder should be added here.
+    - pluginLibrary: for dependencies that are required by the plugin at runtime
+    - testPluginLibrary: for dependencies that are required by the test plugin at runtime
+    - zippedMDPlugin: declares a plugin zip archive to be automatically installed in MagicDraw when we launch it.
+    - otherMDPluginLibrary: declares dependencies of a plugin that is marked as <required-plugin> in the plugin.xml.
+    In such cases MagicDraw will add the plugin to the classpath at runtime automatically but we need to add the jars
+    of the plugin in Gradle to be able to compile the code.
+ */
 dependencies {
-    // Use MCSE 2021x Refresh2
     mdApplicationArchive mdMavenArchive
 
-    // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.=
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
