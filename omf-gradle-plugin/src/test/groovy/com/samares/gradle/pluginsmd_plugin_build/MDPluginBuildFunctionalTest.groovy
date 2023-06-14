@@ -23,7 +23,6 @@ class MDPluginBuildFunctionalTest extends Specification {
         buildFile << """
             mdPluginBuild {
                 humanVersion                = "version"
-                buildTimestamp              = "timestamp"
                 myPluginName                = "pluginName"
                 myPluginId                  = "pluginId"
                 myPackage                   = "pluginPackage"

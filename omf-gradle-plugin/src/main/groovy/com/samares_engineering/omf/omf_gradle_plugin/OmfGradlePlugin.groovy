@@ -2,18 +2,29 @@ package com.samares_engineering.omf.omf_gradle_plugin
 
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.BuildDist
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.RunPlugin
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Zip
+import org.gradle.api.tasks.compile.JavaCompile
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class OmfGradlePlugin implements Plugin<Project> {
     OmfGradlePluginBuildExtension mdPluginBuild;
 
     void apply(Project project) {
         mdPluginBuild = project.extensions.create('mdPluginBuild', OmfGradlePluginBuildExtension)
+
+        /*
+          Declare project properties
+         */
+        project.ext.isRelease = !project.version.endsWith("-SNAPSHOT")
+        project.ext.buildTimestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
+        project.ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
 
         /*
          Declare dependency configurations. Configurations are dependency 'categories' that are used to separate
@@ -51,6 +62,11 @@ class OmfGradlePlugin implements Plugin<Project> {
             args 'TESTER'
         }
 
+        // TODO: Check if needed (might be default)
+        project.tasks.withType(JavaCompile).configureEach {
+            options.encoding = 'UTF-8'
+        }
+
         /*
         Add dependencies to third party tasks
          */
@@ -68,6 +84,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerTasks(Project project) {
         registerInstallZippedMDPluginsTask(project)
+        registerDeletePluginsTask(project)
         registerInstallPluginTask(project)
         registerInstallTestPluginTask(project)
         registerRunPluginTask(project)
@@ -178,7 +195,7 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerInstallPluginTask(Project project) {
         project.tasks.register('installPlugin') {
             group = "_install"
-            dependsOn 'buildDist'
+            dependsOn 'buildDist', 'deletePlugins'
 
             doLast {
                 project.copy {
@@ -211,7 +228,6 @@ class OmfGradlePlugin implements Plugin<Project> {
             dependsOn 'testJar', 'buildDist'
 
             humanVersion = mdPluginBuild.humanVersion
-            buildTimestamp = mdPluginBuild.buildTimestamp
             pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
 
             distributionFolderName = mdPluginBuild.testDistributionFolderName
@@ -232,7 +248,6 @@ class OmfGradlePlugin implements Plugin<Project> {
             dependsOn 'jar'
 
             humanVersion = mdPluginBuild.humanVersion
-            buildTimestamp = mdPluginBuild.buildTimestamp
             pluginDeliveryName = mdPluginBuild.pluginDeliveryName
 
             distributionFolderName = mdPluginBuild.distributionFolderName
@@ -241,6 +256,18 @@ class OmfGradlePlugin implements Plugin<Project> {
             myPluginName = mdPluginBuild.myPluginName
             myPluginId = mdPluginBuild.myPluginId
             resolvedArtifacts = project.configurations.pluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+        }
+    }
+
+    // Task to delete plugins created before a new build.
+    // Previously in custom task clean, it was blocking the "hot debug" mode
+    private void registerDeletePluginsTask(Project project) {
+        project.tasks.register('deletePlugins', Delete) {
+            group = "_dev"
+
+            // TODO : Would be nice to also delete any "zippedMdPlugin" installed as well
+            delete 'build/install/plugins/' + mdPluginBuild.myPackage.get(),
+                    'build/install/plugins/' + mdPluginBuild.myTestPackage.get()
         }
     }
 }

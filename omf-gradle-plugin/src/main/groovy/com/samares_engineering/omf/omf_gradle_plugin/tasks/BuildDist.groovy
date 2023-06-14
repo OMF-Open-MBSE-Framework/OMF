@@ -12,13 +12,12 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.bundling.Jar
 
 import java.nio.file.Path
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 abstract class BuildDist extends DefaultTask {
     @Input
     abstract Property<String> getHumanVersion()
-
-    @Input
-    abstract Property<String> getBuildTimestamp()
 
     @Input
     abstract Property<String> getMyPluginName()
@@ -170,7 +169,7 @@ abstract class BuildDist extends DefaultTask {
             filter { it.replace('${internal.version}', internalVersion) }
             filter { it.replace('${resource.version}', resourceVersion) }
             filter { it.replace('${plugin.id}', myPluginId.get()) }
-            filter { it.replace('${build.timestamp}', buildTimestamp.get()) }
+            filter { it.replace('${build.timestamp}', project.buildTimestamp) }
             filter { it.replace('${plugin.name}', myPluginName.get()) }
             filter { it.replace('${plugin.archiveFileName}', pluginDeliveryName.get()) }
             into descriptorFileDestinationDir

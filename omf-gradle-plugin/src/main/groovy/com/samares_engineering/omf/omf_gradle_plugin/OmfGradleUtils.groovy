@@ -1,5 +1,10 @@
 package com.samares_engineering.omf.omf_gradle_plugin
 
+import org.gradle.api.Project
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 class OmfGradleUtils {
     static generateInternalAndResourceVersion(String humanVersion) {
         int majorInt, minorInt, patchInt

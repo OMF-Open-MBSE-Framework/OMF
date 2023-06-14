@@ -1,6 +1,3 @@
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 plugins {
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
@@ -16,12 +13,7 @@ ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
 ext.theTestPluginDeliveryName = testPluginPackage + "_" + version
 ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
         mdVersionShort + "_" + version
-ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
-ext.timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
-ext.isRelease = !version.endsWith("-SNAPSHOT")
-var userDirName = System.getProperty("user.dir")
-var projectsResources = "\\..\\..\\src\\test\\resources\\projects"
-var resourcesDir = userDirName + projectsResources
+var resourcesDir = "${System.getProperty("user.dir")}\\..\\..\\src\\test\\resources\\projects"
 
 // ============================= REPOSITORY DECLARATION & DEPENDENCIES =============================
 
@@ -81,7 +73,6 @@ dependencies {
 // Samares gradle plugin configuration
 mdPluginBuild {
     humanVersion = version
-    buildTimestamp = timestamp
     myPluginName = pluginName
     myPackage = "${omfPackage}.plugin"
     myPluginId = pluginId
@@ -107,22 +98,7 @@ clean {
     delete 'build/classes', 'build/distributions', 'build/generated',
             "build/$generatedDistFolderName", 'build/libs', 'build/plugin',
             'build/reports', "build/$testDistFolderName",
-            'build/tmp'
-}
-
-// Task to delete plugins created before a new build.
-// Previously in custom task clean, it was blocking the "hot debug" mode
-task deletePlugins(type: Delete) {
-    group '_dev'
-    delete 'build/install/plugins/' + omfPackage,
-            'build/tmp', 'build/install/plugins/' + omfPackage,
-            'build/install/plugins/' + testPluginPackage,
-            'build/test-reports'
-}
-
-// Encoding option for all javaCompile tasks
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
+            'build/tmp', 'build/test-reports'
 }
 
 // Source definition for jar building
@@ -210,6 +186,11 @@ tasks.junitHtmlReport.doLast {
 }
 
 // ============================= TASK CONFIGURATION =============================
+junitHtmlReport {
+    testResultsDir = "test-reports/TEST-XML"
+    testReportsDir = "test-reports/TEST-HTML"
+}
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
@@ -349,11 +330,6 @@ publishing {
             }
         }
     }
-}
-
-junitHtmlReport {
-    testResultsDir = "test-reports/TEST-XML"
-    testReportsDir = "test-reports/TEST-HTML"
 }
 
 installPlugin.dependsOn deletePlugins

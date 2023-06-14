@@ -5,8 +5,6 @@ import org.gradle.api.provider.Property
 interface OmfGradlePluginBuildExtension {
     Property<String> getHumanVersion()
 
-    Property<String> getBuildTimestamp()
-
     Property<String> getMyPluginName()
 
     Property<String> getMyPackage()
