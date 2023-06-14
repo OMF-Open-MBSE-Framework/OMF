@@ -6,6 +6,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Zip
 
 class OmfGradlePlugin implements Plugin<Project> {
@@ -13,6 +14,11 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     void apply(Project project) {
         mdPluginBuild = project.extensions.create('mdPluginBuild', OmfGradlePluginBuildExtension)
+
+        /*
+         Declare dependency configurations. Configurations are dependency 'categories' that are used to separate
+         dependencies that are used for different purposes
+         */
 
         project.configurations {
             mdApplicationArchive.extendsFrom(implementation)
@@ -23,11 +29,41 @@ class OmfGradlePlugin implements Plugin<Project> {
             compileOnly.extendsFrom(otherMDPluginLibrary)
         }
 
+        /*
+         Declare plugin usage
+         */
+
         project.getPlugins().apply('java')
+
+        /*
+        Register tasks
+         */
 
         registerTasks(project)
 
+        /*
+        Configure (mainly third party) tasks
+         */
+
+        project.tasks.withType(JavaExec).configureEach {
+            classpath = project.configurations.mdLibrary
+            workingDir 'build/install'
+            args 'TESTER'
+        }
+
+        /*
+        Add dependencies to third party tasks
+         */
+
         project.tasks.compileJava.dependsOn 'installMagicDraw', 'installZippedMDPlugins'
+
+        // Publish tasks are generated with custom names starting with "publish" by the maven-publish plugin
+        project.tasks.configureEach {
+            if (name.startsWith('publish')) {
+                dependsOn 'zipPluginLocally'
+            }
+        }
+
     }
 
     private void registerTasks(Project project) {
@@ -66,8 +102,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
             from "$project.buildDir/${mdPluginBuild.distributionFolderName.get()}"
 
-            it.archiveFileName = "${mdPluginBuild.pluginDeliveryName.get()}.zip"
-            it.destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
+            archiveFileName = "${mdPluginBuild.pluginDeliveryName.get()}.zip"
+            destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
         }
     }
 
@@ -78,8 +114,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
             from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
 
-            it.archiveFileName = "${mdPluginBuild.testPluginDeliveryName.get()}.zip"
-            it.destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
+            archiveFileName = "${mdPluginBuild.testPluginDeliveryName.get()}.zip"
+            destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
         }
     }
 
@@ -89,8 +125,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
             from "src"
 
-            it.archiveFileName = "SRC_${mdPluginBuild.pluginDeliveryName.get()}.zip"
-            it.destinationDirectory = project.file(mdPluginBuild.localDeliveryDirectory.get())
+            archiveFileName = "SRC_${mdPluginBuild.pluginDeliveryName.get()}.zip"
+            destinationDirectory = project.file(mdPluginBuild.localDeliveryDirectory.get())
         }
     }
 
@@ -101,7 +137,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
             def cameoConf = project.configurations.mdApplicationArchive
             def isAlreadyInstalled = new File("$project.buildDir/install").exists()
-            it.doLast {
+            doLast {
                 if (cameoConf.isEmpty()) {
                     //throw new GradleException("Can't install Magicdraw as magicdraw dependency has not been configured")
                 } else if (isAlreadyInstalled) {
@@ -174,20 +210,20 @@ class OmfGradlePlugin implements Plugin<Project> {
             group = "_install"
             dependsOn 'testJar', 'buildDist'
 
-            it.humanVersion = mdPluginBuild.humanVersion
-            it.buildTimestamp = mdPluginBuild.buildTimestamp
-            it.humanVersionCore = mdPluginBuild.humanVersionCore
-            it.pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
+            humanVersion = mdPluginBuild.humanVersion
+            buildTimestamp = mdPluginBuild.buildTimestamp
+            humanVersionCore = mdPluginBuild.humanVersionCore
+            pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
 
-            it.distributionFolderName = mdPluginBuild.testDistributionFolderName
-            it.myPluginMainClass = mdPluginBuild.myTestPluginMainClass
-            it.myPackage = mdPluginBuild.myTestPackage
-            it.myPluginName = mdPluginBuild.myTestPluginName
-            it.myPluginId = mdPluginBuild.myTestPluginId
-            it.resolvedArtifacts = project.configurations.testPluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+            distributionFolderName = mdPluginBuild.testDistributionFolderName
+            myPluginMainClass = mdPluginBuild.myTestPluginMainClass
+            myPackage = mdPluginBuild.myTestPackage
+            myPluginName = mdPluginBuild.myTestPluginName
+            myPluginId = mdPluginBuild.myTestPluginId
+            resolvedArtifacts = project.configurations.testPluginLibrary.resolvedConfiguration.resolvedArtifacts.file
 
-            it.pluginUnderTestId = mdPluginBuild.myPluginId
-            it.pluginUnderTestName = mdPluginBuild.myPluginName
+            pluginUnderTestId = mdPluginBuild.myPluginId
+            pluginUnderTestName = mdPluginBuild.myPluginName
         }
     }
 
@@ -196,17 +232,17 @@ class OmfGradlePlugin implements Plugin<Project> {
             group = "_install"
             dependsOn 'jar'
 
-            it.humanVersion = mdPluginBuild.humanVersion
-            it.buildTimestamp = mdPluginBuild.buildTimestamp
-            it.humanVersionCore = mdPluginBuild.humanVersionCore
-            it.pluginDeliveryName = mdPluginBuild.pluginDeliveryName
+            humanVersion = mdPluginBuild.humanVersion
+            buildTimestamp = mdPluginBuild.buildTimestamp
+            humanVersionCore = mdPluginBuild.humanVersionCore
+            pluginDeliveryName = mdPluginBuild.pluginDeliveryName
 
-            it.distributionFolderName = mdPluginBuild.distributionFolderName
-            it.myPluginMainClass = mdPluginBuild.myPluginMainClass
-            it.myPackage = mdPluginBuild.myPackage
-            it.myPluginName = mdPluginBuild.myPluginName
-            it.myPluginId = mdPluginBuild.myPluginId
-            it.resolvedArtifacts = project.configurations.pluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+            distributionFolderName = mdPluginBuild.distributionFolderName
+            myPluginMainClass = mdPluginBuild.myPluginMainClass
+            myPackage = mdPluginBuild.myPackage
+            myPluginName = mdPluginBuild.myPluginName
+            myPluginId = mdPluginBuild.myPluginId
+            resolvedArtifacts = project.configurations.pluginLibrary.resolvedConfiguration.resolvedArtifacts.file
         }
     }
 }

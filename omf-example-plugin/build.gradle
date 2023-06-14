@@ -98,14 +98,6 @@ mdPluginBuild {
     testDistributionFolderName = testDistFolderName
 }
 
-// ======================== JAVA TASKS CONFIG ========================
-// Configuration for javaExec Tasks
-tasks.withType(JavaExec) {
-    classpath = configurations.mdLibrary
-    workingDir 'build/install'
-    args 'TESTER'
-}
-
 // ======================== GRADLE TASKS DEFINITION ========================
 // Customize clean task to not remove all the files from build dir
 clean {
@@ -127,14 +119,6 @@ task deletePlugins(type: Delete) {
             'build/tmp', 'build/install/plugins/' + omfPackage,
             'build/install/plugins/' + testPluginPackage,
             'build/test-reports'
-}
-
-task fatJar(type: Jar) {
-    baseName = 'omf-fatjar'
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from sourceSets.main.allSource
-    from { configurations.pluginLibrary.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
 }
 
 // Encoding option for all javaCompile tasks
@@ -209,7 +193,6 @@ retrieveModel.dependsOn installTestPlugin
 
 tasks.all { task ->
     if (task.name.startsWith('publish')) {
-        task.dependsOn zipPluginLocally
         task.dependsOn javadoc
         task.dependsOn sourceJar
         task.dependsOn ":omf-test-framework:jar"
@@ -366,13 +349,6 @@ publishing {
                         "framework or not."
             }
         }
-
-        // Publish plugin .jar to Nexus repo
-        //jar(MavenPublication) {
-        //    groupId = omfPackage + "." + mdVersionShort
-        //    artifactId = "omf-fatJar"
-        //    artifact fatJar
-        //}
     }
 }
 
