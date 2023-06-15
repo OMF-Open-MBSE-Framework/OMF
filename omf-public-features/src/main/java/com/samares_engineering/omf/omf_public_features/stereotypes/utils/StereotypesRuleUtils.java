@@ -219,14 +219,20 @@ public class StereotypesRuleUtils {
         Optional<Stereotype> optStereotype = profileList.stream()
                 .map(getAllStereotypes)
                 .flatMap(Collection::stream)
-                .filter(Stereotype -> Stereotype.getName().equalsIgnoreCase(str)).findFirst();
-        if(optStereotype.isPresent()){
-            return optStereotype.get();
+                .filter(Stereotype -> Stereotype.getName().equalsIgnoreCase(str))
+                .findFirst();
+
+        Stereotype foundStereotype = optStereotype.isPresent() ?
+                optStereotype.get()
+                : StereotypesHelper.getStereotype(OMFUtils.currentProject, str); //Not optimal but cover stereotype declared inside directly the project
+
+        if(foundStereotype != null){
+            return foundStereotype;
         }else{
             OMFErrorHandler.handleException(new OMFException("[InstanceCreator] " +
                     "\n It seems that no profile owns the stereotype of the name \"" + str, OMFException.ECriticality.CRITICAL), false);
         }
-        return null;
+        return null; // Will not goes that far, an exception will thrown
     }
 
     /**
