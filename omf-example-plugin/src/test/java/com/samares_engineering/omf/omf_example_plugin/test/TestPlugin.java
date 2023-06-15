@@ -24,6 +24,7 @@ import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.LocalA
 import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.LocalBatch;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.TWCBatch;
 import com.samares_engineering.omf.omf_example_plugin.test.ui.TestMainMenuConfigurator;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 
@@ -65,7 +66,8 @@ public class TestPlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
-                new FeatureCopyID()
+                new FeatureCopyID(),
+                new TestGenerationFeature()
         );
     }
 

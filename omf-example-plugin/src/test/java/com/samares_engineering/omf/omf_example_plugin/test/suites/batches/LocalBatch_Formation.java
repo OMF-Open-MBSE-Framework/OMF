@@ -7,9 +7,7 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
 
-import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.deletion.T2DeleteBlock;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.Ex_Port_Creation_Solution;
-import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.mdactions.Ex_Reverse_Direction_Solution;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatchLocal;
 import org.junit.runner.RunWith;

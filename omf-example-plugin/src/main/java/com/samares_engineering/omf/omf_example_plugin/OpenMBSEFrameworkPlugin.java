@@ -27,7 +27,6 @@ import com.samares_engineering.omf.omf_public_features.featuredeactivation.Featu
 import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,8 +43,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
                 new StereotypesFeature(),
                 new APIServerFeature("http://localhost", 9850),
                 new GeneratePluginModelArchi(),
-                new SysmlGptExploFeature(),
-                new TestGenerationFeature()
+                new SysmlGptExploFeature()
         );
     }
 

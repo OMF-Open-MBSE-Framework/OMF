@@ -3,14 +3,15 @@ package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.BrowserAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.DeactivateListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.DiagramAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.actions.annotations.MDAction;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationEnvOptionsHelper;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator.CreationTestGenerator;
 import com.samares_engineering.omf.omf_public_features.testGeneration.profile.TestProfile;
@@ -46,18 +47,22 @@ public class GenerateCreationTest extends AUIAction {
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        if(selectedElements == null)
-            return;
+        try {
+            if (selectedElements == null)
+                return;
 
-        TestGenerationEnvOptionsHelper optionHelper = ((TestGenerationFeature) getFeature()).getOptionsHelper();
-        this.generationPath = optionHelper.getTestGenerationRootPath();
-        this.CREATIONTEST_CLASS_PACKAGE = optionHelper.getTestGenerationJavaPackage();
+            TestGenerationEnvOptionsHelper optionHelper = ((TestGenerationFeature) getFeature()).getOptionsHelper();
+            this.generationPath = optionHelper.getTestGenerationRootPath();
+            this.CREATIONTEST_CLASS_PACKAGE = optionHelper.getTestGenerationJavaPackage();
 
-        selectedElements.stream()
-                .filter(NamedElement.class::isInstance)
-                .map(this::createCreationTestGenerator)
-                .map(CreationTestGenerator::generateTest)
-                .forEach(this::writeToFile);
+            selectedElements.stream()
+                    .filter(NamedElement.class::isInstance)
+                    .map(this::createCreationTestGenerator)
+                    .map(CreationTestGenerator::generateTest)
+                    .forEach(this::writeToFile);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(e);
+        }
     }
 
 

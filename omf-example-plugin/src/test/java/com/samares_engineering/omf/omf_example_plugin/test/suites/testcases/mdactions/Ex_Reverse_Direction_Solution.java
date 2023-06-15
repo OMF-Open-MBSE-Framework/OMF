@@ -18,7 +18,7 @@ public class Ex_Reverse_Direction_Solution extends AModelComparatorTestCase {
 
     @Override
     public void testAction() {
-        Element elementToTest = findTestedElementByID("_2021x_2_1dd704ae_1681205377498_546375_2818");//http://localhost:8080/refmodel/?ID=_2021x_2_1dd704ae_1681205377498_546375_2818
+        Element elementToTest = findTestedElementByID("_2021x_2_1dd704ae_1681205377498_546375_2818");//http://localhost:9850/refmodel/?ID=_2021x_2_1dd704ae_1681205377498_546375_2818
         triggerBrowserAction(elementToTest, "Reverse Direction", "Test Action");
 
     }
