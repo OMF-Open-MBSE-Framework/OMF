@@ -27,7 +27,7 @@ public class T2DeleteBlock extends AModelComparatorTestCase {
     @Override
     public void testAction() {
         // Action to test
-        Class port = (Class) findTestedElementByID("_2021x_2_302b0611_1670957740478_263727_3439");//http://localhost:8080/refmodel/?ID=_2021x_2_302b0611_1670957740478_263727_3439
+        Class port = (Class) findTestedElementByID("_2021x_2_302b0611_1670957740478_263727_3439");//http://localhost:9850/refmodel/?ID=_2021x_2_302b0611_1670957740478_263727_3439
         SysMLFactory.getInstance().removeElement(port);
     }
 

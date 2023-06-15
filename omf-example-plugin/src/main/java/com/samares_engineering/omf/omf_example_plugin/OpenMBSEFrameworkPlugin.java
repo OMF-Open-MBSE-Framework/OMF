@@ -19,6 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
@@ -33,7 +34,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
-//                new Dev(),
+                new SysMLBasicFeature(),
                 new FeaturesDeactivationFeature(),
 //                new ErrorManagementFeatureExample(),
                 new HyperLinkFeature(),

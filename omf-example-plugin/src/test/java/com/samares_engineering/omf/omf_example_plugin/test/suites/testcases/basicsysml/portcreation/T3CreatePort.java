@@ -15,7 +15,7 @@ public class T3CreatePort extends AModelComparatorTestCase {
 
     @Override
     public void initVariables() {
-        setName("[B] create proxy port");
+        setName("[B] create proxy port - for auto interface creation");
         testCaseID = "Create1";
         testPackageName = "1 create proxy port";
     }

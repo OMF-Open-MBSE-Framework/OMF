@@ -5,41 +5,37 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.dev;
+package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic;
 
-import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
-import com.samares_engineering.omf.omf_example_plugin.features.dev.actions.live.creation.OnCreateDebug;
-import com.samares_engineering.omf.omf_example_plugin.features.dev.actions.live.creation.OnPartRenaming;
-import com.samares_engineering.omf.omf_example_plugin.features.dev.actions.DebugAction;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.SynchAllNameAction;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Dev extends AFeature {
-    public Dev() {
+public class SysMLBasicFeature extends AFeature {
+    public SysMLBasicFeature() {
         super( "Dev");
     }
 
     @Override
     protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
+        return new SysMLBasicOptionHelper(this);
     }
 
     @Override
     public List<IUIAction> initFeatureActions() {
         return List.of(
 //             new ResetListeners()
-            new DebugAction()
+            new SynchAllNameAction()
         );
     }
 
@@ -51,14 +47,10 @@ public class Dev extends AFeature {
     @Override
     public List<IRuleEngine> initLiveActions() {
         RuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
-        creationRE.addRule(new OnCreateDebug());
-
-        RuleEngine updateRE = new RuleEngine(RECategoryEnum.UPDATE);
-        updateRE.addRule(new OnPartRenaming());
+        creationRE.addRule(new CreateAutoInterface_OnPortCreation());
 
         return List.of(
-            creationRE,
-            updateRE
+            creationRE
         );
     }
 
@@ -69,19 +61,12 @@ public class Dev extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        return Collections.emptyList();
+        return ((SysMLBasicOptionHelper) getEnvOptionsHelper()).getAllOptions();
     }
 
     @Override
     protected List<IOption> initProjectOnlyOptions() {
-        StringProperty projectOpt = new StringProperty("PROJECT PROPERTY ONLY",
-                "---");
-        var test = new OptionImpl(
-                projectOpt,
-                "TEST GROUP",
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment);
 
-        return Arrays.asList(test);
+        return Collections.emptyList();
     }
 }

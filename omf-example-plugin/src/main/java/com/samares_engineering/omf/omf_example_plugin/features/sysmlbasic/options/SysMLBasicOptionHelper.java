@@ -1,0 +1,38 @@
+package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options;
+
+import com.nomagic.magicdraw.properties.BooleanProperty;
+import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
+
+import java.util.List;
+
+public class SysMLBasicOptionHelper extends EnvOptionsHelper {
+
+    public static final String ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION = "Activate auto InterfaceBlock creation when port created :";
+    private String GROUP = "OMF Features";
+
+    public SysMLBasicOptionHelper(MDFeature feature) {
+        super(feature);
+    }
+
+
+    public List<IOption> getAllOptions() {
+        BooleanProperty isInterfaceCreationActivated = new BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, true);
+
+        OptionImpl isInterfaceCreationActivatedOption = new OptionImpl(
+                isInterfaceCreationActivated,
+                GROUP,
+                getFeature().getPlugin().getEnvironmentOptionsGroup(),
+                OptionKind.Environment
+        );
+
+        return List.of(isInterfaceCreationActivatedOption);
+    }
+
+    public boolean isAutoInterfaceCreationActivated() {
+        return (boolean) getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).getValue();
+    }
+}
