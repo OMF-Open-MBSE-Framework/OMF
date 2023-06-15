@@ -67,6 +67,20 @@ class OmfGradlePlugin implements Plugin<Project> {
             options.encoding = 'UTF-8'
         }
 
+        // Customize clean task to not remove all the files from build dir
+        project.afterEvaluate {
+            project.tasks.clean {
+                group = '_dev'
+                // Don't delete build dir and sub Dir
+                delete = []
+                // Delete those specific dir :
+                delete 'build/classes', 'build/distributions', 'build/generated',
+                        "build/${mdPluginBuild.distributionFolderName.get()}", 'build/libs',
+                        'build/reports', "build/${mdPluginBuild.testDistributionFolderName.get()}",
+                        'build/tmp', 'build/test-reports', 'build/resources'
+            }
+        }
+
         /*
         Add dependencies to third party tasks
          */

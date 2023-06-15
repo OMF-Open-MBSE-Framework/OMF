@@ -89,17 +89,7 @@ mdPluginBuild {
 }
 
 // ======================== GRADLE TASKS DEFINITION ========================
-// Customize clean task to not remove all the files from build dir
-clean {
-    group '_dev'
-    // Don't delete build dir and sub Dir
-    delete = []
-    // Delete those specific dir :
-    delete 'build/classes', 'build/distributions', 'build/generated',
-            "build/$generatedDistFolderName", 'build/libs', 'build/plugin',
-            'build/reports', "build/$testDistFolderName",
-            'build/tmp', 'build/test-reports'
-}
+
 
 // Source definition for jar building
 task sourceJar(type: Jar) {
