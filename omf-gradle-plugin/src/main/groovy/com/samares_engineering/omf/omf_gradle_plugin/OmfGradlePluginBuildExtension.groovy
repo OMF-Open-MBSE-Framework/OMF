@@ -13,13 +13,9 @@ interface OmfGradlePluginBuildExtension {
 
     Property<String> getMyPluginMainClass()
 
-    Property<String> getDistributionFolderName()
-
     Property<String> getPluginDeliveryName()
 
     Property<String> getTestPluginDeliveryName()
-
-    Property<String> getTestDistributionFolderName()
 
     Property<String> getMyTestPluginMainClass()
 

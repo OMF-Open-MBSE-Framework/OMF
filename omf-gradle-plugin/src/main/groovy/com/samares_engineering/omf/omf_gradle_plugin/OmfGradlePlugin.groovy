@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_gradle_plugin
 
-import com.samares_engineering.omf.omf_gradle_plugin.tasks.BuildDist
+import com.samares_engineering.omf.omf_gradle_plugin.tasks.PackagePlugin
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.RunPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,7 +24,9 @@ class OmfGradlePlugin implements Plugin<Project> {
          */
         project.ext.isRelease = !project.version.endsWith("-SNAPSHOT")
         project.ext.buildTimestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
-        project.ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
+        project.ext.pluginPackageFolderName = 'packaged-plugin'
+        project.ext.testPluginPackageFolderName = 'packaged-test-plugin'
+
 
         /*
          Declare dependency configurations. Configurations are dependency 'categories' that are used to separate
@@ -75,8 +77,8 @@ class OmfGradlePlugin implements Plugin<Project> {
                 delete = []
                 // Delete those specific dir :
                 delete 'build/classes', 'build/distributions', 'build/generated',
-                        "build/${mdPluginBuild.distributionFolderName.get()}", 'build/libs',
-                        'build/reports', "build/${mdPluginBuild.testDistributionFolderName.get()}",
+                        "build/${project.pluginPackageFolderName}", 'build/libs',
+                        'build/reports', "build/${project.testPluginPackageFolderName}",
                         'build/tmp', 'build/test-reports', 'build/resources'
             }
         }
@@ -102,8 +104,8 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerInstallPluginTask(project)
         registerInstallTestPluginTask(project)
         registerRunPluginTask(project)
-        registerBuildDistTask(project)
-        registerBuildTestDistTask(project)
+        registerPackagePluginTask(project)
+        registerPackageTestPluginTask(project)
         registerInstallMagicDrawTask(project)
         registerSrcZipDirTask(project)
         registerZipPluginLocallyTask(project)
@@ -129,9 +131,9 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerZipPluginLocallyTask(Project project) {
         project.tasks.register('zipPluginLocally', Zip) {
             group = "_delivery"
-            dependsOn 'buildDist'
+            dependsOn 'packagePlugin'
 
-            from "$project.buildDir/${mdPluginBuild.distributionFolderName.get()}"
+            from "$project.buildDir/${project.pluginPackageFolderName}"
 
             archiveFileName = "${mdPluginBuild.pluginDeliveryName.get()}.zip"
             destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
@@ -141,9 +143,9 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerZipTestPluginLocallyTask(Project project) {
         project.tasks.register('zipTestPluginLocally', Zip) {
             group = "_delivery"
-            dependsOn 'buildTestDist'
+            dependsOn 'packageTestPlugin'
 
-            from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
+            from "$project.buildDir/${project.testPluginPackageFolderName}"
 
             archiveFileName = "${mdPluginBuild.testPluginDeliveryName.get()}.zip"
             destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
@@ -194,12 +196,12 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerInstallTestPluginTask(Project project) {
         project.tasks.register('installTestPlugin') {
             group = "_install"
-            dependsOn 'installPlugin', 'buildTestDist'
+            dependsOn 'installPlugin', 'packageTestPlugin'
 
             doLast {
                 project.copy {
                     setFileMode(0755)
-                    from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
+                    from "$project.buildDir/${project.testPluginPackageFolderName}"
                     into "$project.buildDir/install"
                 }
             }
@@ -209,12 +211,12 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerInstallPluginTask(Project project) {
         project.tasks.register('installPlugin') {
             group = "_install"
-            dependsOn 'buildDist', 'deletePlugins'
+            dependsOn 'packagePlugin', 'deletePlugins'
 
             doLast {
                 project.copy {
                     setFileMode(0755)
-                    from "build/${mdPluginBuild.distributionFolderName.get()}"
+                    from "build/${project.pluginPackageFolderName}"
                     into "$project.buildDir/install"
                 }
             }
@@ -236,15 +238,15 @@ class OmfGradlePlugin implements Plugin<Project> {
         }
     }
 
-    private void registerBuildTestDistTask(Project project) {
-        project.tasks.register('buildTestDist', BuildDist) {
+    private void registerPackageTestPluginTask(Project project) {
+        project.tasks.register('packageTestPlugin', PackagePlugin) {
             group = "_install"
-            dependsOn 'testJar', 'buildDist'
+            dependsOn 'testJar', 'packagePlugin'
 
             humanVersion = mdPluginBuild.humanVersion
             pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
 
-            distributionFolderName = mdPluginBuild.testDistributionFolderName
+            pluginPackageFolderName = project.testPluginPackageFolderName
             myPluginMainClass = mdPluginBuild.myTestPluginMainClass
             myPackage = mdPluginBuild.myTestPackage
             myPluginName = mdPluginBuild.myTestPluginName
@@ -256,15 +258,15 @@ class OmfGradlePlugin implements Plugin<Project> {
         }
     }
 
-    private void registerBuildDistTask(Project project) {
-        project.tasks.register('buildDist', BuildDist) {
+    private void registerPackagePluginTask(Project project) {
+        project.tasks.register('packagePlugin', PackagePlugin) {
             group = "_install"
             dependsOn 'jar'
 
             humanVersion = mdPluginBuild.humanVersion
             pluginDeliveryName = mdPluginBuild.pluginDeliveryName
 
-            distributionFolderName = mdPluginBuild.distributionFolderName
+            pluginPackageFolderName = project.pluginPackageFolderName
             myPluginMainClass = mdPluginBuild.myPluginMainClass
             myPackage = mdPluginBuild.myPackage
             myPluginName = mdPluginBuild.myPluginName

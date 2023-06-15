@@ -78,14 +78,12 @@ mdPluginBuild {
     myPluginId = pluginId
     myPluginMainClass = pluginMainClass
     localDeliveryDirectory = srcLocalDestinationDir
-    distributionFolderName = generatedDistFolderName
     pluginDeliveryName = thePluginDeliveryName
     testPluginDeliveryName = theTestPluginDeliveryName
     myTestPluginId = testPluginId
     myTestPluginName = testPluginName
     myTestPluginMainClass = testPluginMainClass
     myTestPackage = testPluginPackage
-    testDistributionFolderName = testDistFolderName
 }
 
 // ======================== GRADLE TASKS DEFINITION ========================
