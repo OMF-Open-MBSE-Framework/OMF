@@ -3,20 +3,20 @@ pluginManagement {
         maven {
             allowInsecureProtocol = true
             credentials {
-                username nexusUsername
-                password nexusPassword
+                username mavenRepoUsername
+                password mavenRepoPassword
             }
-            url = "$nexusUrl/maven-releases"
-            name 'Samares Nexus releases'
+            url = mavenRepoUrl
+            name 'MavenReleaseRepo'
         }
         maven {
             allowInsecureProtocol = true
             credentials {
-                username nexusUsername
-                password nexusPassword
+                username mavenRepoUsername
+                password mavenRepoPassword
             }
-            url = "$nexusUrl/maven-snapshots"
-            name 'Samares Nexus snapshots'
+            url = mavenSnapshotRepoUrl
+            name 'MavenSnapshotRepo'
         }
         gradlePluginPortal()
     }

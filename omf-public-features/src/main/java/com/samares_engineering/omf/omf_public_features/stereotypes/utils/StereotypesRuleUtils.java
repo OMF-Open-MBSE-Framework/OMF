@@ -7,23 +7,29 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.utils;
 
 
+import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.CallBehaviorAction;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.lang.Class;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class StereotypesRuleUtils {
 
@@ -76,6 +82,7 @@ public class StereotypesRuleUtils {
     public static boolean ownerHasStereotype(Element src, List<String> strOwner) {
         Element owner = src.getOwner();
         if (owner == null) return false;
+        if(strOwner.isEmpty()) return true;
         return owner.getAppliedStereotype().stream().map(Stereotype::getName)
                 .anyMatch(strOwner::contains);
     }
@@ -85,8 +92,25 @@ public class StereotypesRuleUtils {
         if (stereotype == null) {
             throw new OMFException("Can't find stereotype " + strInstance + " in project profiles", GenericException.ECriticality.CRITICAL);
         }
-        StereotypesHelper.addStereotype((Element) evt.getSource(), stereotype);
-        checkStereotypeApplication((Element) evt.getSource(), strInstance);
+        Element elementToStereotype = (Element) evt.getSource();
+        removeRedundantStereotypes(stereotype, elementToStereotype);
+
+        StereotypesHelper.addStereotype(elementToStereotype, stereotype);
+        checkStereotypeApplication(elementToStereotype, strInstance);
+    }
+
+    /**
+     * Check if the stereotype or a generalized version of it is applied to the element, and remove them.
+     * @param stereotype
+     * @param elementToStereotype
+     */
+    public static void removeRedundantStereotypes(Stereotype stereotype, Element elementToStereotype) {
+        ModelHelper.getGeneralClassifiersRecursively(stereotype)//Removing all redundant stereotypes of the same type (using generalization)
+                .stream()
+                .filter(Stereotype.class::isInstance)
+                .map(Stereotype.class::cast)
+                .filter(str -> elementToStereotype.getAppliedStereotype().contains(str))
+                .forEach(str -> StereotypesHelper.removeStereotype(elementToStereotype, str));
     }
 
     public static void createTypeBehavior(PropertyChangeEvent evt, String strType) {
@@ -183,10 +207,17 @@ public class StereotypesRuleUtils {
      */
     public static Stereotype getStereotypeFromAnyProfile(String str){
         Collection<Profile> profileList = StereotypesHelper.getAllProfiles(OMFUtils.currentProject);
+        Function<Profile, List<Stereotype>> getAllStereotypes = profile -> {
+            List<Stereotype> stereotypes = profile.getNestedPackage().stream()
+                    .map(Package::getOwnedStereotype)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+            stereotypes.addAll(profile.getOwnedStereotype());
+            return stereotypes;
+        };
+
         Optional<Stereotype> optStereotype = profileList.stream()
-                .map(Profile::getNestedPackage)
-                .flatMap(Collection::stream)
-                .map(Package::getOwnedStereotype)
+                .map(getAllStereotypes)
                 .flatMap(Collection::stream)
                 .filter(Stereotype -> Stereotype.getName().equalsIgnoreCase(str))
                 .findFirst();

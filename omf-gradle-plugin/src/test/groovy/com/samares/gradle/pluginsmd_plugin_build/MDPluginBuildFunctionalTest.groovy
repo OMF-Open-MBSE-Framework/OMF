@@ -23,19 +23,17 @@ class MDPluginBuildFunctionalTest extends Specification {
         buildFile << """
             mdPluginBuild {
                 humanVersion                = "version"
-                buildTimestamp              = "timestamp"
                 myPluginName                = "pluginName"
                 myPluginId                  = "pluginId"
                 myPackage                   = "pluginPackage"
                 myPluginMainClass           = "pluginMainClass"
-                distributionFolderName      = "generatedDistFolderName"
-                humanVersionCore            = "coreVersion"
+                distributionFolderName      = "generatedPluginPackageFolderName"
                 pluginDeliveryName = "pluginDeliveryName"
                 myTestPluginId          = "testPluginId"
                 myTestPluginName        = "pluginTestName"
                 myTestPluginMainClass   = "testPluginMainClass"
                 myTestPackage = "testPluginId"
-                testDistributionFolderName = "testDistFolderName"
+                testDistributionFolderName = "testPluginPackageFolderName"
                 localDeliveryDirectory = "localDeliveryDirectory"
                 testPluginDeliveryName = "testPluginDeliveryName"
             }
@@ -46,7 +44,7 @@ class MDPluginBuildFunctionalTest extends Specification {
                 .withDebug(true)
                 .withProjectDir(testProjectDir)
                 .withArguments(
-                        'buildDist', //'buildTestDist',
+                        'packagePlugin', //'packageTestPlugin',
                         //'runPlugin',
                         'installZippedMDPlugins', 'installMagicDraw', 'installPlugin', 'installTestPlugin',
                         'deliverLocally', 'zipPluginLocally', 'srcZipDir'
@@ -54,7 +52,7 @@ class MDPluginBuildFunctionalTest extends Specification {
                 .withPluginClasspath()
                 .build()
         then:
-        //result.task(":buildDist").outcome == TaskOutcome.SUCCESS
+        //result.task(":packagePlugin").outcome == TaskOutcome.SUCCESS
         true
     }
 }

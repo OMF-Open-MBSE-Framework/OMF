@@ -28,4 +28,8 @@ public class TestUtils {
         return (OMFPluginEnvOptionsGroup) getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup();
     }
 
+    //OMF Activation feature
+//    public static void setAutomationsActivated(AbstractTestCase testcase, String pluginName, boolean b) {
+//        testcase.getEnvironmentOptionByID("activate automations " + pluginName + " :", pluginName + "Features Configurations");
+//    }
 }

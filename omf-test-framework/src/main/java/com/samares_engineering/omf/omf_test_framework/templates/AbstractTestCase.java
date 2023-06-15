@@ -73,6 +73,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     private APITestComponent apiTestComponent;
 
+    public ElementsStoredInTestCase elementsStoredInTestCase;
+
 
     public AbstractTestCase() {
         this.loggerTest     = new TestLogger(getLogger());
@@ -81,6 +83,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         this.oracleProject  = getTestBatch().getOracleProject();
         this.initZipProject = getTestBatch().getInitZipProject();
         this.oracleZipProject = getTestBatch().getOracleZipProject();
+        this.elementsStoredInTestCase = new ElementsStoredInTestCase();
     }
 
     public AbstractTestCase(TestLogger logger) {
@@ -173,14 +176,25 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     /**
      * Test : compare two projects to see automation works
+     * Run testActions if any, else testAction
      */
     @Test
     public void test() {
         //Action to test
-        if(initProject != null)
-            executeInsideSession(this::testAction);
-        else
-            testAction();
+        List<Runnable> runnableList = testActions();
+        if (!runnableList.isEmpty()) {
+            if(initProject != null)
+                runnableList.forEach(action -> executeInsideSession(action));
+            else
+                runnableList.forEach(action -> action.run());
+        }
+
+        else {
+            if(initProject != null)
+                executeInsideSession(this::testAction);
+            else
+                testAction();
+        }
 
         //Verify
         verifyResults();
@@ -200,9 +214,21 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     /**
      * Describe here all the user actions to test.
      * The Goal is to simulate the user actions, as if he was doing it manually.
+     * WARNNG : not executed if testActions() is redefined.
      * Example: open a wizard, creating an element, click on a button, etc.
      */
     public abstract void testAction();
+
+    /**
+     * Describe here all the user actions to test.
+     * The Goal is to simulate the user actions, as if he was doing it manually.
+     * Allow to test several actions in different session
+     * WARNING : executed in place of testAction() if redefined
+     * Example: open a wizard, creating an element, click on a button, etc.
+     */
+    public List<Runnable> testActions() {
+        return Collections.emptyList();
+    }
 
 
     /**
