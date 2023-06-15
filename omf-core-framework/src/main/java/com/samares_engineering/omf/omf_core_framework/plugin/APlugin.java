@@ -149,7 +149,7 @@ public abstract class APlugin extends Plugin {
         configureConstants();
         configureFeatureRegisterer();
         configureFeatures();
-        registerAllFeatures();;
+        registerAllFeatures();
 
         isInitialized = true;
     }
@@ -214,7 +214,7 @@ public abstract class APlugin extends Plugin {
      * CONFIGURE DEVELOPMENT/TESTING OPTIONS:
      * - GUI_REQUIRED: to inform custom wizard to not be displayed
      */
-    protected void configureConstants() {
+    protected void  configureConstants() {
         try {
             OMFConstants.GUI_REQUIRED = !Application.runtimeInternal().isTester() || Application.runtimeInternal().isDeveloper();
         } catch (Exception e) {

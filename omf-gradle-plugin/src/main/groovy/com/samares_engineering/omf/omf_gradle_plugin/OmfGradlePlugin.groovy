@@ -1,18 +1,37 @@
 package com.samares_engineering.omf.omf_gradle_plugin
 
-import com.samares_engineering.omf.omf_gradle_plugin.tasks.BuildDist
+import com.samares_engineering.omf.omf_gradle_plugin.tasks.PackagePlugin
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.RunPlugin
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.Delete
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Zip
+import org.gradle.api.tasks.compile.JavaCompile
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class OmfGradlePlugin implements Plugin<Project> {
     OmfGradlePluginBuildExtension mdPluginBuild;
 
     void apply(Project project) {
         mdPluginBuild = project.extensions.create('mdPluginBuild', OmfGradlePluginBuildExtension)
+
+        /*
+          Declare project properties
+         */
+        project.ext.isRelease = !project.version.endsWith("-SNAPSHOT")
+        project.ext.buildTimestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
+        project.ext.pluginPackageFolderName = 'packaged-plugin'
+        project.ext.testPluginPackageFolderName = 'packaged-test-plugin'
+
+
+        /*
+         Declare dependency configurations. Configurations are dependency 'categories' that are used to separate
+         dependencies that are used for different purposes
+         */
 
         project.configurations {
             mdApplicationArchive.extendsFrom(implementation)
@@ -23,18 +42,70 @@ class OmfGradlePlugin implements Plugin<Project> {
             compileOnly.extendsFrom(otherMDPluginLibrary)
         }
 
+        /*
+         Declare plugin usage
+         */
+
         project.getPlugins().apply('java')
 
+        /*
+        Register tasks
+         */
+
         registerTasks(project)
+
+        /*
+        Configure (mainly third party) tasks
+         */
+
+        project.tasks.withType(JavaExec).configureEach {
+            classpath = project.configurations.mdLibrary
+            workingDir 'build/install'
+            args 'TESTER'
+        }
+
+        // TODO: Check if needed (might be default)
+        project.tasks.withType(JavaCompile).configureEach {
+            options.encoding = 'UTF-8'
+        }
+
+        // Customize clean task to not remove all the files from build dir
+        project.afterEvaluate {
+            project.tasks.clean {
+                group = '_dev'
+                // Don't delete build dir and sub Dir
+                delete = []
+                // Delete those specific dir :
+                delete 'build/classes', 'build/distributions', 'build/generated',
+                        "build/${project.pluginPackageFolderName}", 'build/libs',
+                        'build/reports', "build/${project.testPluginPackageFolderName}",
+                        'build/tmp', 'build/test-reports', 'build/resources'
+            }
+        }
+
+        /*
+        Add dependencies to third party tasks
+         */
+
+        project.tasks.compileJava.dependsOn 'installMagicDraw', 'installZippedMDPlugins'
+
+        // Publish tasks are generated with custom names starting with "publish" by the maven-publish plugin
+        project.tasks.configureEach {
+            if (name.startsWith('publish')) {
+                dependsOn 'zipPluginLocally'
+            }
+        }
+
     }
 
     private void registerTasks(Project project) {
         registerInstallZippedMDPluginsTask(project)
+        registerDeletePluginsTask(project)
         registerInstallPluginTask(project)
         registerInstallTestPluginTask(project)
         registerRunPluginTask(project)
-        registerBuildDistTask(project)
-        registerBuildTestDistTask(project)
+        registerPackagePluginTask(project)
+        registerPackageTestPluginTask(project)
         registerInstallMagicDrawTask(project)
         registerSrcZipDirTask(project)
         registerZipPluginLocallyTask(project)
@@ -44,7 +115,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerDeliverLocallyTask(Project project) {
         project.tasks.register('deliverLocally', Copy) {
-            it.group = "_dev"
+            group = "_dev"
+            dependsOn 'zipPluginLocally', 'zipTestPluginLocally', 'scrZipDir'
 
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.pluginDeliveryName.get()}.zip"
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.testPluginDeliveryName.get()}.zip"
@@ -58,43 +130,47 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerZipPluginLocallyTask(Project project) {
         project.tasks.register('zipPluginLocally', Zip) {
-            it.group = "_delivery"
+            group = "_delivery"
+            dependsOn 'packagePlugin'
 
-            from "$project.buildDir/${mdPluginBuild.distributionFolderName.get()}"
+            from "$project.buildDir/${project.pluginPackageFolderName}"
 
-            it.archiveFileName = "${mdPluginBuild.pluginDeliveryName.get()}.zip"
-            it.destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
+            archiveFileName = "${mdPluginBuild.pluginDeliveryName.get()}.zip"
+            destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
         }
     }
 
     private void registerZipTestPluginLocallyTask(Project project) {
         project.tasks.register('zipTestPluginLocally', Zip) {
-            it.group = "_delivery"
+            group = "_delivery"
+            dependsOn 'packageTestPlugin'
 
-            from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
+            from "$project.buildDir/${project.testPluginPackageFolderName}"
 
-            it.archiveFileName = "${mdPluginBuild.testPluginDeliveryName.get()}.zip"
-            it.destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
+            archiveFileName = "${mdPluginBuild.testPluginDeliveryName.get()}.zip"
+            destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
         }
     }
 
     private void registerSrcZipDirTask(Project project) {
         project.tasks.register('srcZipDir', Zip) {
-            it.group = "_delivery"
+            group = "_delivery"
 
             from "src"
 
-            it.archiveFileName = "SRC_${mdPluginBuild.pluginDeliveryName.get()}.zip"
-            it.destinationDirectory = project.file(mdPluginBuild.localDeliveryDirectory.get())
+            archiveFileName = "SRC_${mdPluginBuild.pluginDeliveryName.get()}.zip"
+            destinationDirectory = project.file(mdPluginBuild.localDeliveryDirectory.get())
         }
     }
 
     private void registerInstallMagicDrawTask(Project project) {
         project.tasks.register('installMagicDraw') {
-            it.group = "_install"
+            group = "_install"
+            dependsOn project.configurations.mdApplicationArchive
+
             def cameoConf = project.configurations.mdApplicationArchive
             def isAlreadyInstalled = new File("$project.buildDir/install").exists()
-            it.doLast {
+            doLast {
                 if (cameoConf.isEmpty()) {
                     //throw new GradleException("Can't install Magicdraw as magicdraw dependency has not been configured")
                 } else if (isAlreadyInstalled) {
@@ -111,16 +187,21 @@ class OmfGradlePlugin implements Plugin<Project> {
     }
 
     private void registerRunPluginTask(Project project) {
-        project.tasks.register('runPlugin', RunPlugin)
+        project.tasks.register('runPlugin', RunPlugin) {
+            group = "_dev"
+            dependsOn 'installPlugin', 'installTestPlugin'
+        }
     }
 
     private void registerInstallTestPluginTask(Project project) {
         project.tasks.register('installTestPlugin') {
-            it.group = "_install"
-            it.doLast {
+            group = "_install"
+            dependsOn 'installPlugin', 'packageTestPlugin'
+
+            doLast {
                 project.copy {
                     setFileMode(0755)
-                    from "$project.buildDir/${mdPluginBuild.testDistributionFolderName.get()}"
+                    from "$project.buildDir/${project.testPluginPackageFolderName}"
                     into "$project.buildDir/install"
                 }
             }
@@ -129,11 +210,13 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerInstallPluginTask(Project project) {
         project.tasks.register('installPlugin') {
-            it.group = "_install"
-            it.doLast {
+            group = "_install"
+            dependsOn 'packagePlugin', 'deletePlugins'
+
+            doLast {
                 project.copy {
                     setFileMode(0755)
-                    from "build/${mdPluginBuild.distributionFolderName.get()}"
+                    from "build/${project.pluginPackageFolderName}"
                     into "$project.buildDir/install"
                 }
             }
@@ -142,7 +225,9 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerInstallZippedMDPluginsTask(Project project) {
         project.tasks.register('installZippedMDPlugins') {
-            it.group = "_install"
+            group = "_install"
+            dependsOn project.configurations.zippedMDPlugin
+
             doLast {
                 project.copy {
                     setFileMode(0755)
@@ -153,40 +238,52 @@ class OmfGradlePlugin implements Plugin<Project> {
         }
     }
 
-    private void registerBuildTestDistTask(Project project) {
-        project.tasks.register('buildTestDist', BuildDist) {
-            it.group = "_install"
-            it.humanVersion = mdPluginBuild.humanVersion
-            it.buildTimestamp = mdPluginBuild.buildTimestamp
-            it.humanVersionCore = mdPluginBuild.humanVersionCore
-            it.pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
+    private void registerPackageTestPluginTask(Project project) {
+        project.tasks.register('packageTestPlugin', PackagePlugin) {
+            group = "_install"
+            dependsOn 'testJar', 'packagePlugin'
 
-            it.distributionFolderName = mdPluginBuild.testDistributionFolderName
-            it.myPluginMainClass = mdPluginBuild.myTestPluginMainClass
-            it.myPackage = mdPluginBuild.myTestPackage
-            it.myPluginName = mdPluginBuild.myTestPluginName
-            it.myPluginId = mdPluginBuild.myTestPluginId
-            it.resolvedArtifacts = project.configurations.testPluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+            humanVersion = mdPluginBuild.humanVersion
+            pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
 
-            it.pluginUnderTestId = mdPluginBuild.myPluginId
-            it.pluginUnderTestName = mdPluginBuild.myPluginName
+            pluginPackageFolderName = project.testPluginPackageFolderName
+            myPluginMainClass = mdPluginBuild.myTestPluginMainClass
+            myPackage = mdPluginBuild.myTestPackage
+            myPluginName = mdPluginBuild.myTestPluginName
+            myPluginId = mdPluginBuild.myTestPluginId
+            resolvedArtifacts = project.configurations.testPluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+
+            pluginUnderTestId = mdPluginBuild.myPluginId
+            pluginUnderTestName = mdPluginBuild.myPluginName
         }
     }
 
-    private void registerBuildDistTask(Project project) {
-        project.tasks.register('buildDist', BuildDist) {
-            it.group = "_install"
-            it.humanVersion = mdPluginBuild.humanVersion
-            it.buildTimestamp = mdPluginBuild.buildTimestamp
-            it.humanVersionCore = mdPluginBuild.humanVersionCore
-            it.pluginDeliveryName = mdPluginBuild.pluginDeliveryName
+    private void registerPackagePluginTask(Project project) {
+        project.tasks.register('packagePlugin', PackagePlugin) {
+            group = "_install"
+            dependsOn 'jar'
 
-            it.distributionFolderName = mdPluginBuild.distributionFolderName
-            it.myPluginMainClass = mdPluginBuild.myPluginMainClass
-            it.myPackage = mdPluginBuild.myPackage
-            it.myPluginName = mdPluginBuild.myPluginName
-            it.myPluginId = mdPluginBuild.myPluginId
-            it.resolvedArtifacts = project.configurations.pluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+            humanVersion = mdPluginBuild.humanVersion
+            pluginDeliveryName = mdPluginBuild.pluginDeliveryName
+
+            pluginPackageFolderName = project.pluginPackageFolderName
+            myPluginMainClass = mdPluginBuild.myPluginMainClass
+            myPackage = mdPluginBuild.myPackage
+            myPluginName = mdPluginBuild.myPluginName
+            myPluginId = mdPluginBuild.myPluginId
+            resolvedArtifacts = project.configurations.pluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+        }
+    }
+
+    // Task to delete plugins created before a new build.
+    // Previously in custom task clean, it was blocking the "hot debug" mode
+    private void registerDeletePluginsTask(Project project) {
+        project.tasks.register('deletePlugins', Delete) {
+            group = "_dev"
+
+            // TODO : Would be nice to also delete any "zippedMdPlugin" installed as well
+            delete 'build/install/plugins/' + mdPluginBuild.myPackage.get(),
+                    'build/install/plugins/' + mdPluginBuild.myTestPackage.get()
         }
     }
 }

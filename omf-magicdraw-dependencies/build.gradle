@@ -8,11 +8,11 @@ repositories {
     maven {
         allowInsecureProtocol = true
         credentials {
-            username nexusUsername
-            password nexusPassword
+            username mavenRepoUsername
+            password mavenRepoPassword
         }
-        url = "$nexusUrl/maven-releases"
-        name 'Samares Nexus releases'
+        url = mavenRepoUrl
+        name 'SamaresPrivateMavenRepo'
     }
 }
 

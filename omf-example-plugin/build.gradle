@@ -1,9 +1,4 @@
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 plugins {
-    id 'idea'
-    id 'java'
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
     id 'com.samares-engineering.omf.omf-gradle-plugin'
@@ -18,12 +13,7 @@ ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
 ext.theTestPluginDeliveryName = testPluginPackage + "_" + version
 ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
         mdVersionShort + "_" + version
-ext.buildNumber = project.hasProperty('buildNumber') ? project.getProperty('buildNumber') : System.currentTimeSeconds()
-ext.timestamp = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm").format(LocalDateTime.now())
-ext.isRelease = !version.endsWith("-SNAPSHOT")
-var userDirName = System.getProperty("user.dir")
-var projectsResources = "\\..\\..\\src\\test\\resources\\projects"
-var resourcesDir = userDirName + projectsResources
+var resourcesDir = "${System.getProperty("user.dir")}\\..\\..\\src\\test\\resources\\projects"
 
 // ============================= REPOSITORY DECLARATION & DEPENDENCIES =============================
 
@@ -31,45 +21,45 @@ repositories {
     maven {
         allowInsecureProtocol = true
         credentials {
-            username nexusUsername
-            password nexusPassword
+            username mavenRepoUsername
+            password mavenRepoPassword
         }
-        url = "$nexusUrl/maven-internal-releases"
-        name 'Samares Nexus internal releases'
+        url = mavenRepoUrl
+        name 'MavenReleaseRepo'
     }
     maven {
         allowInsecureProtocol = true
         credentials {
-            username nexusUsername
-            password nexusPassword
+            username mavenRepoUsername
+            password mavenRepoPassword
         }
-        url = "$nexusUrl/maven-releases"
-        name 'Samares Nexus releases'
-    }
-    maven {
-        allowInsecureProtocol = true
-        credentials {
-            username nexusUsername
-            password nexusPassword
-        }
-        url = "$nexusUrl/maven-snapshots"
-        name 'Samares Nexus snapshots'
+        url = mavenSnapshotRepoUrl
+        name 'MavenSnapshotRepo'
     }
     mavenCentral()
 }
 
+/*
+ Use the following dependency configurations :
+    - mdApplicationArchive: declares the MagicDraw zip archive, should only be used once
+    - mdLibrary: declares dependencies that are added to the classpath when we launch MagicDraw. Only the libraries
+    in the magicdraw /lib folder should be added here.
+    - pluginLibrary: for dependencies that are required by the plugin at runtime
+    - testPluginLibrary: for dependencies that are required by the test plugin at runtime
+    - zippedMDPlugin: declares a plugin zip archive to be automatically installed in MagicDraw when we launch it.
+    - otherMDPluginLibrary: declares dependencies of a plugin that is marked as <required-plugin> in the plugin.xml.
+    In such cases MagicDraw will add the plugin to the classpath at runtime automatically but we need to add the jars
+    of the plugin in Gradle to be able to compile the code.
+ */
 dependencies {
-    // Use MCSE 2021x Refresh2
     mdApplicationArchive mdMavenArchive
 
-    // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.=
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
     pluginLibrary project(':omf-core-framework')
     pluginLibrary project(':omf-public-features')
 
-    testPluginLibrary 'junit:junit:4.12'
     testPluginLibrary 'ant:ant-junit:1.6.5'
     testPluginLibrary 'org.apache.ant:ant:1.8.2'
     testPluginLibrary 'org.eclipse.jetty:jetty-client:9.4.38.v20210224'
@@ -83,71 +73,21 @@ dependencies {
 // Samares gradle plugin configuration
 mdPluginBuild {
     humanVersion = version
-    buildTimestamp = timestamp
     myPluginName = pluginName
     myPackage = "${omfPackage}.plugin"
     myPluginId = pluginId
     myPluginMainClass = pluginMainClass
     localDeliveryDirectory = srcLocalDestinationDir
-    distributionFolderName = generatedDistFolderName
     pluginDeliveryName = thePluginDeliveryName
-    humanVersionCore = "0.0.0"
     testPluginDeliveryName = theTestPluginDeliveryName
     myTestPluginId = testPluginId
     myTestPluginName = testPluginName
     myTestPluginMainClass = testPluginMainClass
     myTestPackage = testPluginPackage
-    testDistributionFolderName = testDistFolderName
-}
-
-// ======================== JAVA TASKS CONFIG ========================
-// Configuration for javaExec Tasks
-tasks.withType(JavaExec) {
-    classpath = configurations.mdLibrary
-    workingDir 'build/install'
-    args 'TESTER'
-}
-
-//TODO is this necessary ?
-tasks.withType(Tar) {
-    enabled = false
 }
 
 // ======================== GRADLE TASKS DEFINITION ========================
-// Customize clean task to not remove all the files from build dir
-clean {
-    group '_dev'
-    // Don't delete build dir and sub Dir
-    delete = []
-    // Delete those specific dir :
-    delete 'build/classes', 'build/distributions', 'build/generated',
-            "build/$generatedDistFolderName", 'build/libs', 'build/plugin',
-            'build/reports', "build/$testDistFolderName",
-            'build/tmp'
-}
 
-// Task to delete plugins created before a new build.
-// Previously in custom task clean, it was blocking the "hot debug" mode
-task deletePlugins(type: Delete) {
-    group '_dev'
-    delete 'build/install/plugins/' + omfPackage,
-            'build/tmp', 'build/install/plugins/' + omfPackage,
-            'build/install/plugins/' + testPluginPackage,
-            'build/test-reports'
-}
-
-task fatJar(type: Jar) {
-    baseName = 'omf-fatjar'
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from sourceSets.main.allSource
-    from { configurations.pluginLibrary.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
-
-// Encoding option for all javaCompile tasks
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
 
 // Source definition for jar building
 task sourceJar(type: Jar) {
@@ -223,7 +163,6 @@ retrieveModel.dependsOn installTestPlugin
 
 tasks.all { task ->
     if (task.name.startsWith('publish')) {
-        task.dependsOn zipPluginLocally
         task.dependsOn javadoc
         task.dependsOn sourceJar
         task.dependsOn ":omf-test-framework:jar"
@@ -242,14 +181,9 @@ tasks.junitHtmlReport.doLast {
 }
 
 // ============================= TASK CONFIGURATION =============================
-javadoc {
-    enabled false
-}
-
-// Mandatory to CI/CD process
-test {
-    // Fail the build if units tests are failed ; true to ignore
-    ignoreFailures = true
+junitHtmlReport {
+    testResultsDir = "test-reports/TEST-XML"
+    testReportsDir = "test-reports/TEST-HTML"
 }
 
 java {
@@ -309,13 +243,13 @@ ext.setDefaultPomValues = { pom ->
 publishing {
     repositories {
         maven {
-            name = "NexusSamares"
+            name = "PrivateSamaresRepo"
             credentials {
-                username nexusUsername
-                password nexusPassword
+                username mavenRepoUsername
+                password mavenRepoPassword
             }
-            def releasesRepoUrl = "$nexusUrl/maven-releases"
-            def snapshotsRepoUrl = "$nexusUrl/maven-snapshots"
+            def releasesRepoUrl = mavenRepoUrl
+            def snapshotsRepoUrl = mavenSnapshotRepoUrl
             url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
             allowInsecureProtocol true
         }
@@ -390,31 +324,10 @@ publishing {
                         "framework or not."
             }
         }
-
-        // Publish plugin .jar to Nexus repo
-        //jar(MavenPublication) {
-        //    groupId = omfPackage + "." + mdVersionShort
-        //    artifactId = "omf-fatJar"
-        //    artifact fatJar
-        //}
     }
 }
 
-junitHtmlReport {
-    testResultsDir = "test-reports/TEST-XML"
-    testReportsDir = "test-reports/TEST-HTML"
-}
-
-zipPluginLocally.dependsOn buildDist
-zipTestPluginLocally.dependsOn buildTestDist
-deliverLocally.dependsOn zipPluginLocally, zipTestPluginLocally, srcZipDir
-runPlugin.dependsOn installPlugin, installTestPlugin
-installPlugin.dependsOn buildDist, deletePlugins
-installTestPlugin.dependsOn installPlugin, buildTestDist
-buildDist.dependsOn jar
-buildTestDist.dependsOn testJar, buildDist
-installMagicDraw.dependsOn configurations.mdApplicationArchive
-installZippedMDPlugins.dependsOn configurations.zippedMDPlugin
-compileJava.dependsOn clean, installMagicDraw, installZippedMDPlugins
+installPlugin.dependsOn deletePlugins
+compileJava.dependsOn clean
 runTestNoLog.finalizedBy 'junitHtmlReport'
 runTest.finalizedBy 'junitHtmlReport'

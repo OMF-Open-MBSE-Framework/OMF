@@ -2,10 +2,8 @@ package com.samares_engineering.omf.omf_gradle_plugin.tasks;
 
 import org.gradle.api.tasks.JavaExec;
 
-class RunPlugin extends JavaExec {
+abstract class RunPlugin extends JavaExec {
     RunPlugin() {
-        group = "_dev"
-
         classpath project.configurations.mdLibrary
         workingDir "$project.buildDir/install"
         mainClass = 'com.nomagic.magicdraw.Main'
