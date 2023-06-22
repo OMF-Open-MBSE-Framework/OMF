@@ -87,7 +87,7 @@ class OmfGradlePlugin implements Plugin<Project> {
         Add dependencies to third party tasks
          */
 
-        project.tasks.compileJava.dependsOn 'installMagicDraw', 'installZippedMDPlugins'
+        project.tasks.compileJava.dependsOn 'installMagicDraw', 'installZippedMDPlugins', 'clean'
 
         // Publish tasks are generated with custom names starting with "publish" by the maven-publish plugin
         project.tasks.configureEach {
@@ -100,7 +100,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerTasks(Project project) {
         registerInstallZippedMDPluginsTask(project)
-        registerDeletePluginsTask(project)
+        registerCleanInstalledPluginsTask(project)
         registerInstallPluginTask(project)
         registerInstallTestPluginTask(project)
         registerRunPluginTask(project)
@@ -111,6 +111,7 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerZipPluginLocallyTask(project)
         registerDeliverLocallyTask(project)
         registerZipTestPluginLocallyTask(project)
+        registerCleanMagicDrawTask(project)
     }
 
     private void registerDeliverLocallyTask(Project project) {
@@ -211,7 +212,7 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerInstallPluginTask(Project project) {
         project.tasks.register('installPlugin') {
             group = "_install"
-            dependsOn 'packagePlugin', 'deletePlugins'
+            dependsOn 'packagePlugin', 'cleanInstalledPlugins'
 
             doLast {
                 project.copy {
@@ -277,13 +278,33 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     // Task to delete plugins created before a new build.
     // Previously in custom task clean, it was blocking the "hot debug" mode
-    private void registerDeletePluginsTask(Project project) {
-        project.tasks.register('deletePlugins', Delete) {
+    private void registerCleanInstalledPluginsTask(Project project) {
+        project.tasks.register('cleanInstalledPlugins', Delete) {
             group = "_dev"
+            description = "Deletes the currently installed plugin and test plugin."
+            // We need the packagePlugin task to run first so that we know the file structure of the plugin package in
+            // order to delete it properly
+            dependsOn "packagePlugin", "packageTestPlugin"
+
+            doFirst {
+
+                // TODO : Would be nice to also delete any "zippedMdPlugin" installed as well
+                delete 'build/install/plugins/' + mdPluginBuild.myPackage.get(),
+                        'build/install/plugins/' + mdPluginBuild.myTestPackage.get()
+            }
+        }
+    }
+
+    private void registerCleanMagicDrawTask(Project project) {
+        project.tasks.register('cleanMagicDraw', Delete) {
+            group = "_dev"
+            description = "Deletes the current MagicDraw installation and reinstalls it. MagicDraw is not reinstalled " +
+                    "except when this task is run."
+            finalizedBy 'installMagicDraw'
 
             // TODO : Would be nice to also delete any "zippedMdPlugin" installed as well
-            delete 'build/install/plugins/' + mdPluginBuild.myPackage.get(),
-                    'build/install/plugins/' + mdPluginBuild.myTestPackage.get()
+            delete 'build/install'
+
         }
     }
 }

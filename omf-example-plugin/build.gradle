@@ -327,7 +327,5 @@ publishing {
     }
 }
 
-installPlugin.dependsOn deletePlugins
-compileJava.dependsOn clean
 runTestNoLog.finalizedBy 'junitHtmlReport'
 runTest.finalizedBy 'junitHtmlReport'
