@@ -116,6 +116,7 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerRunTestsTask(project)
         registerDebugTestsTask(project)
         registerRunTestsNoLogTask(project)
+        registerRetrieveModelTask(project)
     }
 
     private void registerDeliverLocallyTask(Project project) {
@@ -344,7 +345,7 @@ class OmfGradlePlugin implements Plugin<Project> {
     }
 
     private void registerRetrieveModelTask(Project project) {
-        project.tasks.register('runTestsNoLog', RunTests) {
+        project.tasks.register('retrieveModelTask', RunTests) {
             group = "_dev"
             // TODO Add description, not sure what the task does
             description = ""
