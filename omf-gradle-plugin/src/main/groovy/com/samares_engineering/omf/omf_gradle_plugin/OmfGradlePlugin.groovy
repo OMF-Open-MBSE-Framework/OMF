@@ -207,6 +207,11 @@ class OmfGradlePlugin implements Plugin<Project> {
             description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)." +
                     " Connect with a remote debugger on port 5005 (default)"
             dependsOn 'installPlugin', 'installTestPlugin'
+
+            jvmArgs += [
+                    "-Xdebug",
+                    "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=$project.properties.javaDebugPort"
+            ]
         }
     }
 
@@ -241,9 +246,11 @@ class OmfGradlePlugin implements Plugin<Project> {
                     " MagicDraw"
             dependsOn project.configurations.zippedMDPlugin
 
-            setFileMode(0755)
-            from project.configurations.zippedMDPlugin.collect { project.zipTree(it) }
-            into "$project.buildDir/install"
+            doLast {
+                setFileMode(0755)
+                from project.configurations.zippedMDPlugin.collect { project.zipTree(it) }
+                into "$project.buildDir/install"
+            }
         }
     }
 
