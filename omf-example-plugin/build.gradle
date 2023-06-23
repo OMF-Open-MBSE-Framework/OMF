@@ -88,7 +88,6 @@ mdPluginBuild {
 
 // ======================== GRADLE TASKS DEFINITION ========================
 
-
 // Source definition for jar building
 task sourceJar(type: Jar) {
     archiveClassifier.set("sources")
@@ -96,80 +95,23 @@ task sourceJar(type: Jar) {
 }
 sourceJar.dependsOn classes
 
-
-// ============TESTS SETUP (TASKS, DISTRIBUTION, JVM)========================
 task testJar(type: Jar) {
     archiveClassifier.set("tests")
     from sourceSets.test.output.classesDirs
 }
 
-
-// Args for jvm (used with commandLineActionLauncher from CAMEO)
-def testArgs = [
-        '-Desi.system.config=data/application.conf',
-        '-Dcom.nomagic.magicdraw.commandline.action=' + testLauncher,
-        '-Dtests.resources=' + resourcesDir
-]
-
-def twcArgs = [
-        "-DserverIp=$ipServer",
-        "-DuserName=$twcUsername",
-        "-DuserPwd=$twcPassword",
-        "-Dtest=true"
-]
-
-// To launch units tests in CAMEO from IntelliJ
-task runTest(type: JavaExec) {
-    group '_dev'
-    mainClass = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
-    jvmArgs += testArgs
-    jvmArgs += twcArgs
-    args += '-verbose'
-}
-runTest.dependsOn installTestPlugin
-
 task copyTestProjectResult(type: JavaExec) {
 //    group '_dev'
     //copy the result of the test project in the test project folder 'testResultFolder'
-
 }
-runTest.dependsOn installTestPlugin
 
-task runTestNoLog(type: JavaExec) {
-    group '_dev'
-    mainClass = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
-    jvmArgs += testArgs
-    jvmArgs += twcArgs
-}
-runTestNoLog.dependsOn installTestPlugin
-
-def modelSaveArgs = [
-        "-Dcom.nomagic.magicdraw.commandline.action=" + testRetriever,
-        "-Dtest=false",
-        "-DprojectInitName=ModelForTestAuto_Init.mdzip",   // Mandatory
-        "-DprojectFinalName=ModelForTestAuto_Final.mdzip", // Optional, can be left blanked
-        "-DsaveLocation=" + resourcesDir
-]
-
-task retrieveModel(type: JavaExec) {
-    group '_dev'
-    main = 'com.nomagic.magicdraw.commandline.CommandLineActionLauncher'
-    jvmArgs += testArgs
-    jvmArgs += twcArgs
-    jvmArgs += modelSaveArgs
-    args += '-verbose'
-}
-retrieveModel.dependsOn installTestPlugin
-
-tasks.all { task ->
-    if (task.name.startsWith('publish')) {
-        task.dependsOn javadoc
-        task.dependsOn sourceJar
-        task.dependsOn ":omf-test-framework:jar"
-        task.dependsOn ":omf-core-framework:jar"
-        task.dependsOn ":omf-utils:jar"
-        task.dependsOn ":omf-public-features:jar"
+// ============================= TASK CONFIGURATION =============================
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 tasks.junitHtmlReport.doLast {
@@ -180,19 +122,14 @@ tasks.junitHtmlReport.doLast {
     }
 }
 
-// ============================= TASK CONFIGURATION =============================
 junitHtmlReport {
     testResultsDir = "test-reports/TEST-XML"
     testReportsDir = "test-reports/TEST-HTML"
 }
+runTestsNoLog.finalizedBy 'junitHtmlReport'
+runTests.finalizedBy 'junitHtmlReport'
+debugTests.finalizedBy 'junitHtmlReport'
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-    withSourcesJar()
-    withJavadocJar()
-}
 
 signing {
     if (isRelease) {
@@ -237,6 +174,17 @@ ext.setDefaultPomValues = { pom ->
         connection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
         developerConnection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
         url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+    }
+}
+
+tasks.all { task ->
+    if (task.name.startsWith('publish')) {
+        task.dependsOn javadoc
+        task.dependsOn sourceJar
+        task.dependsOn ":omf-test-framework:jar"
+        task.dependsOn ":omf-core-framework:jar"
+        task.dependsOn ":omf-utils:jar"
+        task.dependsOn ":omf-public-features:jar"
     }
 }
 
@@ -326,6 +274,3 @@ publishing {
         }
     }
 }
-
-runTestNoLog.finalizedBy 'junitHtmlReport'
-runTest.finalizedBy 'junitHtmlReport'

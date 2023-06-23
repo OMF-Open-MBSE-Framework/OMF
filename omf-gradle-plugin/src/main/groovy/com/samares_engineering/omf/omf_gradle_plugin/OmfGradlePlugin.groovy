@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_gradle_plugin
 
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.PackagePlugin
 import com.samares_engineering.omf.omf_gradle_plugin.tasks.RunPlugin
+import com.samares_engineering.omf.omf_gradle_plugin.tasks.RunTests
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
@@ -112,6 +113,9 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerDeliverLocallyTask(project)
         registerZipTestPluginLocallyTask(project)
         registerCleanMagicDrawTask(project)
+        registerRunTestsTask(project)
+        registerDebugTestsTask(project)
+        registerRunTestsNoLogTask(project)
     }
 
     private void registerDeliverLocallyTask(Project project) {
@@ -305,6 +309,55 @@ class OmfGradlePlugin implements Plugin<Project> {
             // TODO : Would be nice to also delete any "zippedMdPlugin" installed as well
             delete 'build/install'
 
+        }
+    }
+
+    private void registerRunTestsTask(Project project) {
+        project.tasks.register('runTests', RunTests) {
+            group = "_dev"
+            description = "Run functional tests with verbose output."
+
+            args += '-verbose'
+        }
+    }
+
+    private void registerDebugTestsTask(Project project) {
+        project.tasks.register('debugTests', RunTests) {
+            group = "_dev_eclipse"
+            description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)."
+
+            args += '-verbose'
+            jvmArgs += [
+                    "-Xdebug",
+                    "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=$project.properties.javaDebugPort"
+            ]
+        }
+    }
+
+    private void registerRunTestsNoLogTask(Project project) {
+        project.tasks.register('runTestsNoLog', RunTests) {
+            group = "_dev"
+            description = "Run functional tests without MagicDraw logs (much faster)."
+
+            args += '-verbose'
+        }
+    }
+
+    private void registerRetrieveModelTask(Project project) {
+        project.tasks.register('runTestsNoLog', RunTests) {
+            group = "_dev"
+            // TODO Add description, not sure what the task does
+            description = ""
+
+            args += '-verbose'
+            jvmArgs += [
+                "-Dcom.nomagic.magicdraw.commandline.action=" + project.properties.testRetriever,
+                "-Dtest=false",
+                    // TODO We shouldn't have hardcoded models here
+                "-DprojectInitName=ModelForTestAuto_Init.mdzip",   // Mandatory
+                "-DprojectFinalName=ModelForTestAuto_Final.mdzip", // Optional, can be left blanked
+                "-DsaveLocation=${System.getProperty("user.dir")}\\..\\..\\src\\test\\resources\\projects"
+            ]
         }
     }
 }
