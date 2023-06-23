@@ -18,7 +18,7 @@ public class CodeGenerationUtils {
      *
      * Example : generationPathRoot : /home/myProject/foo
      *           classPackage       : myPackage
-     *           -> class generated : /home/myProject/foo/myPackage/className.java
+     *           class generated : /home/myProject/foo/myPackage/className.java
      */
     public static void writeToFile(TypeSpec classBuilder, String generationPathRoot, String classPackage) {
         JavaFile javaFile = JavaFile.builder(classPackage, classBuilder)
@@ -36,7 +36,7 @@ public class CodeGenerationUtils {
      * @param str
      * @return
      *
-     * Example: "this is an example" -> "thisIsAnExample"
+     * Example: from "this is an example" to "thisIsAnExample"
      */
     public static String toCamelCase(String str) {
         String[] words = str.toLowerCase().split("[^a-zA-Z]+"); // TODO : may want to keep number at some point, just not in first position
