@@ -229,8 +229,6 @@ class OmfGradlePlugin implements Plugin<Project> {
                     into "$project.buildDir/install"
                 }
             }
-            setFileMode(0755)
-
         }
     }
 
