@@ -10,10 +10,6 @@ group omfPackage + '.' + mdVersionShort
 // ============================= GLOBAL VARIABLES DECLARATION =============================
 
 ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
-ext.theTestPluginDeliveryName = testPluginPackage + "_" + version
-ext.srcLocalDestinationDir = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
-        mdVersionShort + "_" + version
-var resourcesDir = "${System.getProperty("user.dir")}\\..\\..\\src\\test\\resources\\projects"
 
 // ============================= REPOSITORY DECLARATION & DEPENDENCIES =============================
 
@@ -77,9 +73,10 @@ mdPluginBuild {
     myPackage = "${omfPackage}.plugin"
     myPluginId = pluginId
     myPluginMainClass = pluginMainClass
-    localDeliveryDirectory = srcLocalDestinationDir
+    localDeliveryDirectory = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
+            mdVersionShort + "_" + version
     pluginDeliveryName = thePluginDeliveryName
-    testPluginDeliveryName = theTestPluginDeliveryName
+    testPluginDeliveryName = testPluginPackage + "_" + version
     myTestPluginId = testPluginId
     myTestPluginName = testPluginName
     myTestPluginMainClass = testPluginMainClass
@@ -88,22 +85,6 @@ mdPluginBuild {
 
 // ======================== GRADLE TASKS DEFINITION ========================
 
-// Source definition for jar building
-task sourceJar(type: Jar) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
-}
-sourceJar.dependsOn classes
-
-task testJar(type: Jar) {
-    archiveClassifier.set("tests")
-    from sourceSets.test.output.classesDirs
-}
-
-task copyTestProjectResult(type: JavaExec) {
-//    group '_dev'
-    //copy the result of the test project in the test project folder 'testResultFolder'
-}
 
 // ============================= TASK CONFIGURATION =============================
 java {

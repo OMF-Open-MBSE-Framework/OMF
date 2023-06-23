@@ -8,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.bundling.Zip
 import org.gradle.api.tasks.compile.JavaCompile
 
@@ -92,8 +93,12 @@ class OmfGradlePlugin implements Plugin<Project> {
 
         // Publish tasks are generated with custom names starting with "publish" by the maven-publish plugin
         project.tasks.configureEach {
-            if (name.startsWith('publish')) {
+            if (name.startsWith 'publish') {
                 dependsOn 'zipPluginLocally'
+            }
+
+            if (name.equals 'publish') {
+                group = '_delivery'
             }
         }
 
@@ -105,10 +110,10 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerInstallPluginTask(project)
         registerInstallTestPluginTask(project)
         registerRunPluginTask(project)
+        registerDebugPluginTask(project)
         registerPackagePluginTask(project)
         registerPackageTestPluginTask(project)
         registerInstallMagicDrawTask(project)
-        registerSrcZipDirTask(project)
         registerZipPluginLocallyTask(project)
         registerDeliverLocallyTask(project)
         registerZipTestPluginLocallyTask(project)
@@ -117,16 +122,18 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerDebugTestsTask(project)
         registerRunTestsNoLogTask(project)
         registerRetrieveModelTask(project)
+        registerTestJarTask(project)
+        registerSourceJarTask(project)
     }
 
     private void registerDeliverLocallyTask(Project project) {
         project.tasks.register('deliverLocally', Copy) {
-            group = "_dev"
+            group = "_delivery"
+            description = "Deliver the plugin to the local file system"
             dependsOn 'zipPluginLocally', 'zipTestPluginLocally', 'scrZipDir'
 
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.pluginDeliveryName.get()}.zip"
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.testPluginDeliveryName.get()}.zip"
-            project.print "Delivering plugin to ${mdPluginBuild.localDeliveryDirectory.get()}"
             into mdPluginBuild.localDeliveryDirectory.get()
             doLast {
                 print "Plugin delivered to file:///${mdPluginBuild.localDeliveryDirectory.get()}"
@@ -136,10 +143,11 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerZipPluginLocallyTask(Project project) {
         project.tasks.register('zipPluginLocally', Zip) {
-            group = "_delivery"
+            group = "_build"
+            description = "Zip the packaged plugin"
             dependsOn 'packagePlugin'
 
-            from "$project.buildDir/${project.pluginPackageFolderName}"
+            from "$project.buildDir/$project.pluginPackageFolderName"
 
             archiveFileName = "${mdPluginBuild.pluginDeliveryName.get()}.zip"
             destinationDirectory = project.file("$project.buildDir/builtPlugin/$project.version")
@@ -148,7 +156,8 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerZipTestPluginLocallyTask(Project project) {
         project.tasks.register('zipTestPluginLocally', Zip) {
-            group = "_delivery"
+            group = "_build"
+            description = "Zip the packaged test plugin"
             dependsOn 'packageTestPlugin'
 
             from "$project.buildDir/${project.testPluginPackageFolderName}"
@@ -158,20 +167,11 @@ class OmfGradlePlugin implements Plugin<Project> {
         }
     }
 
-    private void registerSrcZipDirTask(Project project) {
-        project.tasks.register('srcZipDir', Zip) {
-            group = "_delivery"
-
-            from "src"
-
-            archiveFileName = "SRC_${mdPluginBuild.pluginDeliveryName.get()}.zip"
-            destinationDirectory = project.file(mdPluginBuild.localDeliveryDirectory.get())
-        }
-    }
-
     private void registerInstallMagicDrawTask(Project project) {
         project.tasks.register('installMagicDraw') {
             group = "_install"
+            description = "Install MagicDraw from the archive specified with the configuration 'mdApplicationArchive'" +
+                    " into the build/install directory"
             dependsOn project.configurations.mdApplicationArchive
 
             def cameoConf = project.configurations.mdApplicationArchive
@@ -195,58 +195,64 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerRunPluginTask(Project project) {
         project.tasks.register('runPlugin', RunPlugin) {
             group = "_dev"
+            description = "Run MagicDraw with the plugin installed. If using IntelliJ you can also run in debug mode. If" +
+                    " using Eclipse use the dedicated 'debugPlugin' task"
+            dependsOn 'installPlugin', 'installTestPlugin'
+        }
+    }
+
+    private void registerDebugPluginTask(Project project) {
+        project.tasks.register('debugPlugin', RunPlugin) {
+            group = "_dev_eclipse"
+            description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)." +
+                    " Connect with a remote debugger on port 5005 (default)"
             dependsOn 'installPlugin', 'installTestPlugin'
         }
     }
 
     private void registerInstallTestPluginTask(Project project) {
-        project.tasks.register('installTestPlugin') {
+        project.tasks.register('installTestPlugin', Copy) {
             group = "_install"
+            description = "Installs the packaged test plugin into MagicDraw"
             dependsOn 'installPlugin', 'packageTestPlugin'
 
-            doLast {
-                project.copy {
-                    setFileMode(0755)
-                    from "$project.buildDir/${project.testPluginPackageFolderName}"
-                    into "$project.buildDir/install"
-                }
-            }
+            setFileMode(0755)
+            from "$project.buildDir/${project.testPluginPackageFolderName}"
+            into "$project.buildDir/install"
         }
     }
 
     private void registerInstallPluginTask(Project project) {
-        project.tasks.register('installPlugin') {
+        project.tasks.register('installPlugin', Copy) {
             group = "_install"
+            description = "Installs the packaged plugin into MagicDraw"
             dependsOn 'packagePlugin', 'cleanInstalledPlugins'
 
-            doLast {
-                project.copy {
-                    setFileMode(0755)
-                    from "build/${project.pluginPackageFolderName}"
-                    into "$project.buildDir/install"
-                }
-            }
+            setFileMode(0755)
+            from "build/${project.pluginPackageFolderName}"
+            into "$project.buildDir/install"
         }
     }
 
     private void registerInstallZippedMDPluginsTask(Project project) {
-        project.tasks.register('installZippedMDPlugins') {
+        project.tasks.register('installZippedMDPlugins', Copy) {
             group = "_install"
+            description = "Installs the plugins declared as dependencies using the 'zippedMDPlugin' configuration into" +
+                    " MagicDraw"
             dependsOn project.configurations.zippedMDPlugin
 
-            doLast {
-                project.copy {
-                    setFileMode(0755)
-                    from project.configurations.zippedMDPlugin.collect { project.zipTree(it) }
-                    into "$project.buildDir/install"
-                }
-            }
+            setFileMode(0755)
+            from project.configurations.zippedMDPlugin.collect { project.zipTree(it) }
+            into "$project.buildDir/install"
         }
     }
 
     private void registerPackageTestPluginTask(Project project) {
         project.tasks.register('packageTestPlugin', PackagePlugin) {
-            group = "_install"
+            group = "_build"
+            description = "Packages the test plugin into a zip file that can be installed into MagicDraw, containing the " +
+                    "plugin, descriptors and other needed resources"
+
             dependsOn 'testJar', 'packagePlugin'
 
             humanVersion = mdPluginBuild.humanVersion
@@ -266,8 +272,10 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerPackagePluginTask(Project project) {
         project.tasks.register('packagePlugin', PackagePlugin) {
-            group = "_install"
-            dependsOn 'jar'
+            group = "_build"
+            description = "Packages the plugin into a zip file that can be installed into MagicDraw, containing the " +
+                    "plugin, descriptors and other needed resources"
+            dependsOn "jar"
 
             humanVersion = mdPluginBuild.humanVersion
             pluginDeliveryName = mdPluginBuild.pluginDeliveryName
@@ -325,7 +333,8 @@ class OmfGradlePlugin implements Plugin<Project> {
     private void registerDebugTestsTask(Project project) {
         project.tasks.register('debugTests', RunTests) {
             group = "_dev_eclipse"
-            description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)."
+            description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)." +
+                    " Connect with a remote debugger on port 5005 (default)"
 
             args += '-verbose'
             jvmArgs += [
@@ -359,6 +368,27 @@ class OmfGradlePlugin implements Plugin<Project> {
                 "-DprojectFinalName=ModelForTestAuto_Final.mdzip", // Optional, can be left blanked
                 "-DsaveLocation=${System.getProperty("user.dir")}\\..\\..\\src\\test\\resources\\projects"
             ]
+        }
+    }
+
+    private void registerTestJarTask(Project project) {
+        project.tasks.register('testJar', Jar) {
+            group "_build"
+            description "Creates a jar containing the compiled classes of the test plugin."
+
+            archiveClassifier.set("tests")
+            from project.sourceSets.test.output.classesDirs
+        }
+    }
+
+    private void registerSourceJarTask(Project project) {
+        project.tasks.register('sourceJar', Jar) {
+            group "_build"
+            description "Creates a jar containing the source code of the plugin and test plugin."
+            archiveClassifier.set("sources")
+            from project.sourceSets.main.allSource
+
+            dependsOn 'classes'
         }
     }
 }
