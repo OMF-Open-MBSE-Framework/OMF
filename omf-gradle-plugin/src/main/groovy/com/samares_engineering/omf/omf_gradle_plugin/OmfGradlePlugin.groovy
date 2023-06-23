@@ -216,40 +216,55 @@ class OmfGradlePlugin implements Plugin<Project> {
     }
 
     private void registerInstallTestPluginTask(Project project) {
-        project.tasks.register('installTestPlugin', Copy) {
+        project.tasks.register('installTestPlugin') {
             group = "_install"
             description = "Installs the packaged test plugin into MagicDraw"
             dependsOn 'installPlugin', 'packageTestPlugin'
 
+            // Fails on Jenkins if we don't do this for some reason
+            doLast {
+                project.copy {
+                    setFileMode 0755
+                    from "$project.buildDir/${project.testPluginPackageFolderName}"
+                    into "$project.buildDir/install"
+                }
+            }
             setFileMode(0755)
-            from "$project.buildDir/${project.testPluginPackageFolderName}"
-            into "$project.buildDir/install"
+
         }
     }
 
     private void registerInstallPluginTask(Project project) {
-        project.tasks.register('installPlugin', Copy) {
+        project.tasks.register('installPlugin') {
             group = "_install"
             description = "Installs the packaged plugin into MagicDraw"
             dependsOn 'packagePlugin', 'cleanInstalledPlugins'
 
-            setFileMode(0755)
-            from "build/${project.pluginPackageFolderName}"
-            into "$project.buildDir/install"
+            // Fails on Jenkins if we don't do this for some reason
+            doLast {
+                project.copy {
+                    setFileMode 0755
+                    from "build/${project.pluginPackageFolderName}"
+                    into "$project.buildDir/install"
+                }
+            }
         }
     }
 
     private void registerInstallZippedMDPluginsTask(Project project) {
-        project.tasks.register('installZippedMDPlugins', Copy) {
+        project.tasks.register('installZippedMDPlugins') {
             group = "_install"
             description = "Installs the plugins declared as dependencies using the 'zippedMDPlugin' configuration into" +
                     " MagicDraw"
             dependsOn project.configurations.zippedMDPlugin
 
+            // Fails on Jenkins if we don't do this for some reason
             doLast {
-                setFileMode(0755)
-                from project.configurations.zippedMDPlugin.collect { project.zipTree(it) }
-                into "$project.buildDir/install"
+                project.copy {
+                    setFileMode 0755
+                    from project.configurations.zippedMDPlugin.collect { project.zipTree(it) }
+                    into "$project.buildDir/install"
+                }
             }
         }
     }
