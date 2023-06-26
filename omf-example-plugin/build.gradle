@@ -10,6 +10,7 @@ group omfPackage + '.' + mdVersionShort
 // ============================= GLOBAL VARIABLES DECLARATION =============================
 
 ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
+ext.theTestPluginDeliveryName = omfPackage + ".test-plugin" + "_" + version
 
 // ============================= REPOSITORY DECLARATION & DEPENDENCIES =============================
 
@@ -76,7 +77,7 @@ mdPluginBuild {
     localDeliveryDirectory = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
             mdVersionShort + "_" + version
     pluginDeliveryName = thePluginDeliveryName
-    testPluginDeliveryName = testPluginPackage + "_" + version
+    testPluginDeliveryName = theTestPluginDeliveryName
     myTestPluginId = testPluginId
     myTestPluginName = testPluginName
     myTestPluginMainClass = testPluginMainClass
@@ -203,7 +204,7 @@ publishing {
             artifact("$buildDir/builtPlugin/$project.version/${thePluginDeliveryName}.zip")
             setDefaultPomValues(pom)
             pom {
-                name = "$examplePluginArtefactId:$mavenRepoGroupId"
+                name = "$examplePluginArtefactId:$omfPackage"
                 description = "An example plugin demonstrating use of the framework."
             }
         }
@@ -214,7 +215,7 @@ publishing {
             from project(":omf-core-framework").components.java
             setDefaultPomValues(pom)
             pom {
-                name = "$coreFrameworkArtefactId:$mavenRepoGroupId"
+                name = "$coreFrameworkArtefactId:$omfPackage"
                 description = "A framework for developing MagicDraw plugins."
             }
         }
@@ -225,7 +226,7 @@ publishing {
             from project(":omf-test-framework").components.java
             setDefaultPomValues(pom)
             pom {
-                name = "$testFrameworkArtefactId:$mavenRepoGroupId"
+                name = "$testFrameworkArtefactId:$omfPackage"
                 description = "A framework for developing functional tests for MagicDraw plugins."
             }
         }
@@ -236,7 +237,7 @@ publishing {
             from project(":omf-public-features").components.java
             setDefaultPomValues(pom)
             pom {
-                name = "$publicFeaturesArtefactId:$mavenRepoGroupId"
+                name = "$publicFeaturesArtefactId:$omfPackage"
                 description = "A collection of open source features that can be integrated to third-party plugins."
             }
         }
@@ -247,7 +248,7 @@ publishing {
             from project(":omf-utils").components.java
             setDefaultPomValues(pom)
             pom {
-                name = "$utilsArtefactId:$mavenRepoGroupId"
+                name = "$utilsArtefactId:$omfPackage"
                 description = "A collection of utilities methods used in the framework as well as helpers for the " +
                         "MagicDraw public api that can be useful for plugin regardless of whether they use the " +
                         "framework or not."

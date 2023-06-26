@@ -13,7 +13,7 @@ abstract class RunTests extends JavaExec {
         // Test args
         jvmArgs += [
                 "-Desi.system.config=data/application.conf",
-                "-Dcom.nomagic.magicdraw.commandline.action=$project.properties.testLauncher",
+                "-Dcom.nomagic.magicdraw.commandline.action=com.samares_engineering.omf.omf_test_framework.BatchLauncher",
                 "-Dtests.resources=${System.getProperty("user.dir")}\\..\\..\\src\\test\\resources\\projects"
         ]
         // TWC args
