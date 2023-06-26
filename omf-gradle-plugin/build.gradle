@@ -3,7 +3,7 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'maven-publish'
 
 group 'com.samares-engineering.omf.omf-gradle-plugin'
-version '0.115.8-SNAPSHOT'
+version '0.115.10-SNAPSHOT'
 ext.mainClass = 'com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePlugin'
 ext.isRelease = !version.endsWith("-SNAPSHOT")
 
