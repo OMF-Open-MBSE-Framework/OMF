@@ -8,12 +8,10 @@ plugins {
 group omfPackage + '.' + mdVersionShort
 
 // ============================= GLOBAL VARIABLES DECLARATION =============================
-
 ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
 ext.theTestPluginDeliveryName = omfPackage + ".test-plugin" + "_" + version
 
 // ============================= REPOSITORY DECLARATION & DEPENDENCIES =============================
-
 repositories {
     maven {
         allowInsecureProtocol = true
@@ -83,9 +81,6 @@ mdPluginBuild {
     myTestPluginMainClass = testPluginMainClass
     myTestPackage = testPluginPackage
 }
-
-// ======================== GRADLE TASKS DEFINITION ========================
-
 
 // ============================= TASK CONFIGURATION =============================
 java {
