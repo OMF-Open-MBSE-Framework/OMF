@@ -8,28 +8,23 @@
 package com.samares_engineering.omf.omf_example_plugin.test.utils;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_example_plugin.OpenMBSEFrameworkPlugin;
-import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
+import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
+import com.samares_engineering.omf.omf_example_plugin.OMFExamplePlugin;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 
 public class TestUtils {
 
-    public static OpenMBSEFrameworkPlugin getOpenMBSEFrameworkPlugin() {
+    public static OMFExamplePlugin getOpenMBSEFrameworkPlugin() {
         try {
-            return (OpenMBSEFrameworkPlugin) TestHelper.findTestedPluginInstance(OpenMBSEFrameworkPlugin.class);
+            return (OMFExamplePlugin) TestHelper.findTestedPluginInstance(OMFExamplePlugin.class);
         } catch (OMFTestFrameworkException e) {
             OMFErrorHandler.handleException(e, true);
         }
         return null;
     }
 
-    public static OMFPluginEnvOptionsGroup getEnvOptions() {
-        return (OMFPluginEnvOptionsGroup) getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup();
+    public static OMFPropertyOptionsGroup getEnvOptions() {
+        return getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup();
     }
-
-    //OMF Activation feature
-//    public static void setAutomationsActivated(AbstractTestCase testcase, String pluginName, boolean b) {
-//        testcase.getEnvironmentOptionByID("activate automations " + pluginName + " :", pluginName + "Features Configurations");
-//    }
 }

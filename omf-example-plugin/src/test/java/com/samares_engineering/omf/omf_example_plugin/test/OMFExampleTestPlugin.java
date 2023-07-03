@@ -12,7 +12,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
@@ -29,11 +28,10 @@ import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class TestPlugin extends APlugin {
+public class OMFExampleTestPlugin extends APlugin {
 
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
@@ -88,7 +86,7 @@ public class TestPlugin extends APlugin {
 
     @Override
     public OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
-        return null;
+        return new OMFPropertyOptionsGroup("omf.example.test.plugin", "OMF Example Test Plugin");
     }
 
     @Override
@@ -106,19 +104,5 @@ public class TestPlugin extends APlugin {
         return ListenerManager.getInstance();
     }
 
-    @Override
-    public boolean close() {
-        return true;
-    }
-
-    @Override
-    public boolean isSupported() {
-        return true;
-    }
-
-    @Override
-    public List<AOptionListener> initEnvironmentOptionsListener() {
-        return Collections.emptyList();
-    }
 }
 

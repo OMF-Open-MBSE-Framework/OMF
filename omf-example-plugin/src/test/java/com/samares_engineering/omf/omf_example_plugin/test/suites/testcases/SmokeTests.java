@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases;
 
 
 import com.nomagic.magicdraw.tests.MagicDrawTestCase;
-import com.samares_engineering.omf.omf_example_plugin.OpenMBSEFrameworkPlugin;
+import com.samares_engineering.omf.omf_example_plugin.OMFExamplePlugin;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,7 +19,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 public class SmokeTests extends MagicDrawTestCase {
-    OpenMBSEFrameworkPlugin plugin;
+    OMFExamplePlugin plugin;
 
     /**
      * Rule to calculate/show time for each testcase
@@ -44,7 +44,7 @@ public class SmokeTests extends MagicDrawTestCase {
     public void setUpTest() throws Exception {
         setSkipMemoryTest(true);
         super.setUpTest();
-        plugin = (OpenMBSEFrameworkPlugin) TestHelper.findTestedPluginInstance(OpenMBSEFrameworkPlugin.class);
+        plugin = (OMFExamplePlugin) TestHelper.findTestedPluginInstance(OMFExamplePlugin.class);
     }
 
     @Test

@@ -21,7 +21,6 @@ import com.samares_engineering.omf.omf_example_plugin.features.errorexample.Erro
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
-import com.samares_engineering.omf.omf_example_plugin.options.OMFPluginEnvOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
@@ -31,7 +30,7 @@ import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFe
 import java.util.Collections;
 import java.util.List;
 
-public class OpenMBSEFrameworkPlugin extends APlugin {
+public class OMFExamplePlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
@@ -64,7 +63,7 @@ public class OpenMBSEFrameworkPlugin extends APlugin {
 
     @Override
     public OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
-        return new OMFPluginEnvOptionsGroup();
+        return new OMFPropertyOptionsGroup("omf.example.plugin", "OMF Example Plugin");
     }
 
     @Override

@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
+ * @since 0.0.0
  ******************************************************************************/
 
 
@@ -40,15 +40,14 @@ public class TestGenerationFeature extends AFeature {
 
     public List<String> PROJECT_OPTION_GROUPIDS = Arrays.asList("");
 
-    public TestGenerationFeature(){
+    public TestGenerationFeature() {
         super("[TEST GENERATION]");
     }
 
     public String getServerAddress() {
         try {
             return OMFApiServer.getInstance().getURI().toString();
-        }
-        catch (APIServerException e) {
+        } catch (APIServerException e) {
             OMFErrorHandler.handleException(new CodeGenerationException("API Server is not started", e, GenericException.ECriticality.ALERT), false);
             return "SERVER_NOT_STARTED";
         }
@@ -93,15 +92,25 @@ public class TestGenerationFeature extends AFeature {
     @Override
     public List<IOption> initOptions() {
         // Test Generation Root Path
-        StringProperty testGenRootPathProp = new StringProperty(TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_ID,
-                                                                TestGenerationEnvOptionsHelper.getTestGenerationRootPathDefaultValue());
-        IOption testGenRootPath = createEnvOption(testGenRootPathProp, TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_GRP);
+        StringProperty testGenRootPathProp = new StringProperty(
+                TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_ID,
+                TestGenerationEnvOptionsHelper.getTestGenerationRootPathDefaultValue()
+        );
+        IOption testGenRootPath = createEnvOption(
+                testGenRootPathProp,
+                TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_GRP
+        );
 
 
         // Test Generation Java Package
-        StringProperty testGenJavaPackageProp = new StringProperty(TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_ID,
-                TestGenerationEnvOptionsHelper.getTestGenerationJavaPackageDefaultValue());
-        IOption testGenJavaPackage = createEnvOption(testGenJavaPackageProp, TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_GRP);
+        StringProperty testGenJavaPackageProp = new StringProperty(
+                TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_ID,
+                TestGenerationEnvOptionsHelper.getTestGenerationJavaPackageDefaultValue()
+        );
+        IOption testGenJavaPackage = createEnvOption(
+                testGenJavaPackageProp,
+                TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_GRP
+        );
 
         return Arrays.asList(
                 testGenRootPath,

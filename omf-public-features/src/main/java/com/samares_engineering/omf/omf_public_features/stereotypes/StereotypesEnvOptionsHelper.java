@@ -5,7 +5,7 @@ import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.APropertyOptionsGroup;
+import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
@@ -48,7 +48,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
 
     public void addOwnerPropertyOption(String name, Element owner) {
         ElementProperty property = new ElementProperty(name, owner);
-        property.setResourceProvider(APropertyOptionsGroup.PROPERTY_RESOURCE_PROVIDER);
+        property.setResourceProvider(OMFPropertyOptionsGroup.PROPERTY_RESOURCE_PROVIDER);
         property.setGroup(ORGANIZER_CONFIG_GRP);
         getOptionGroup().addProperty(property, true);
     }
