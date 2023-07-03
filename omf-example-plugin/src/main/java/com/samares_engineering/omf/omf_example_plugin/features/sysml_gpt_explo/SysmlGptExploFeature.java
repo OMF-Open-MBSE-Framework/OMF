@@ -63,12 +63,10 @@ public class SysmlGptExploFeature extends AFeature {
 
     @Override
     protected List<IOption> initProjectOnlyOptions() {
-        var projectOpt = new OptionImpl(
+        var projectOpt = createEnvOption(
                 new StringProperty(GPT_GENERATED_JSON_TO_IMPORT,
                         "C:\\Users\\HugoStinson\\OneDrive - SAMARES ENGINEERING\\Bureau\\gptMagicdrawTest.json"),
-                "Sysml gpt explo",
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment);
+                "Sysml gpt explo");
 
         return Arrays.asList(projectOpt);
     }

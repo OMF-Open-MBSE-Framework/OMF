@@ -1,6 +1,7 @@
 package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -25,10 +26,11 @@ public class SysMLBasicOptionHelper extends EnvOptionsHelper {
         OptionImpl isInterfaceCreationActivatedOption = new OptionImpl(
                 isInterfaceCreationActivated,
                 GROUP,
-                getFeature().getPlugin().getEnvironmentOptionsGroup(),
+                getFeature().getPlugin().getEnvironmentOptionsGroup()
+                        .orElseThrow(() -> new OMFFeatureRegisteringException("Environment options group not registered" +
+                                "for plugin")),
                 OptionKind.Environment
         );
-
         return List.of(isInterfaceCreationActivatedOption);
     }
 

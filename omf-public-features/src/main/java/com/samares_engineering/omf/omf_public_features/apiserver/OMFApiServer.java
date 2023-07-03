@@ -5,7 +5,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 import org.eclipse.jetty.server.Request;
@@ -91,11 +91,11 @@ public class OMFApiServer extends AbstractHandler {
             ColorPrinter.status("API Server started on port " + port);
             getURI();
         }catch (BindException portAlreadyUsedException){
-            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, the port " + port + " is already used." +
+            OMFErrorHandler.handleException(new OMFException("Error while starting API server, the port " + port + " is already used." +
                     "You can change the port in the OMF Environment options then restart the server using Advanced Menu -> Restart API Server." +
-                    "\nPlease contact the plugin: " + getPluginName() + " provider", portAlreadyUsedException, GenericException.ECriticality.CRITICAL), false);
+                    "\nPlease contact the plugin: " + getPluginName() + " provider",  portAlreadyUsedException, GenericException.ECriticality.CRITICAL), false);
         }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
+            OMFErrorHandler.handleException(new OMFException("Error while starting API server, this will strongly impact features using API Server." +
                     "\nPlease contact the plugin: " + getPluginName() + " provider", e, GenericException.ECriticality.CRITICAL), false);
         }
     }
@@ -104,7 +104,7 @@ public class OMFApiServer extends AbstractHandler {
         try {
             server.stop();
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while stopping API server, this will strongly impact features using API Server." +
+            OMFErrorHandler.handleException(new OMFException("Error while stopping API server, this will strongly impact features using API Server." +
                     "\nPlease try to use the dedicated Action in OMF Advanced Menu, and contact the plugin: " + getPluginName() + " provider", e, GenericException.ECriticality.CRITICAL), false);
         }
     }

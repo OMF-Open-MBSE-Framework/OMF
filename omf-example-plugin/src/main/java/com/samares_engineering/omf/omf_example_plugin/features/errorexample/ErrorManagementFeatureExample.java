@@ -64,12 +64,11 @@ public class ErrorManagementFeatureExample extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        OptionImpl testEnvOption = new OptionImpl(
+        OptionImpl testEnvOption = createEnvOption(
                 new BooleanProperty("Activate Live Action:", true),
-                "OMF Example",
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment
+                "OMF Example"
         );
+
 
         testEnvOption.addListenerToRegister(new AOptionListener() {
             @Override

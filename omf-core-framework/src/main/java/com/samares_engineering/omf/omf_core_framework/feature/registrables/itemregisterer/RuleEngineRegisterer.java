@@ -9,11 +9,10 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.item
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.listeners.IElementListener;
@@ -40,23 +39,19 @@ public class RuleEngineRegisterer implements IFeatureItemRegisterer<IRuleEngine>
      * Will allow
      * @param ruleEngines
      */
-    public void registerFeatureItems(List<IRuleEngine> ruleEngines) throws FeatureException {
+    public void registerFeatureItems(List<IRuleEngine> ruleEngines) {
         try {
             ruleEngines.forEach(this::registerFeatureItem);
         }catch (Exception e){
-            throw new FeatureException(
-                    "[Feature Registerer] Unable to register LiveActions",
-                    e, GenericException.ECriticality.CRITICAL);
+            throw new OMFFeatureRegisteringException("Unable to register LiveActions", e);
         }
     }
 
-    public void unregisterFeatureItems(List<IRuleEngine> ruleEngines) throws FeatureException {
+    public void unregisterFeatureItems(List<IRuleEngine> ruleEngines){
         try {
             ruleEngines.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
-            throw new FeatureException(
-                    "[Feature Registerer] Unable to unregister liveActions",
-                    e, GenericException.ECriticality.CRITICAL);
+            throw new OMFFeatureRegisteringException(" Unable to unregister liveActions", e);
         }
     }
 
@@ -146,12 +141,12 @@ public class RuleEngineRegisterer implements IFeatureItemRegisterer<IRuleEngine>
     }
 
     @Override
-    public void registerFeature(MDFeature feature) throws FeatureException {
+    public void registerFeatureItems(MDFeature feature) {
         registerFeatureItems(feature.getRuleEngines());
     }
 
     @Override
-    public void unregisterFeature(MDFeature feature) throws FeatureException {
+    public void unregisterFeatureItems(MDFeature feature) {
         unregisterFeatureItems(feature.getRuleEngines());
     }
 

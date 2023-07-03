@@ -9,7 +9,8 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -42,8 +43,8 @@ public class FeatureRegisterer {
     public void registerFeature(MDFeature feature) {
         try {
             if(isAlreadyRegistered(feature)) {
-                throw new FeatureException("Trying to register feature " + feature.getName() +
-                        " which is already registered.", GenericException.ECriticality.ALERT);
+                OMFErrorHandler.handleException(new OMFFrameworkException("Trying to register feature " + feature.getName() +
+                        " which is already registered.", GenericException.ECriticality.ALERT));
             }
 
             feature.initFeature(plugin);
@@ -52,13 +53,13 @@ public class FeatureRegisterer {
             registeredFeatures.add(feature);
 
             for (IFeatureItemRegisterer registerer : featureItemRegisters) {
-                registerer.registerFeature(feature);
+                registerer.registerFeatureItems(feature);
                 if (OMFUtils.currentProject != null) {
-                    registerProjectOnlyFeatureItems(feature);
+                    registerProjectOnlyItemsOfFeature(feature);
                 }
             }
-        } catch (FeatureException e) { //TODO: Act if feature need to be unregistered
-            OMFErrorHandler.handleException(new FeatureException("Error while registering feature " + feature.getName(),
+        } catch (Exception e) {
+            OMFErrorHandler.handleException(new OMFFrameworkException("Error while registering feature " + feature.getName(),
                     e, GenericException.ECriticality.CRITICAL), false);
         }
     }
@@ -72,6 +73,14 @@ public class FeatureRegisterer {
     }
 
     /**
+     * Registers project only items of a list of features, see {@link FeatureRegisterer#registerProjectOnlyItemsOfFeature(MDFeature)}
+     * @param features
+     */
+    public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
+        features.forEach(this::registerProjectOnlyItemsOfFeature);
+    }
+
+    /**
      * Registers feature items that are declared as "project only" until project is opened. This method is then called
      * every time the project opens.
      * On the first registration, the items are also initialised. We wait until the project to be opened to initialise
@@ -79,95 +88,90 @@ public class FeatureRegisterer {
      * you need to set a default value from the Sysml profile in an Option
      * @param feature
      */
-    private void registerProjectOnlyFeatureItems(MDFeature feature) {
+    private void registerProjectOnlyItemsOfFeature(MDFeature feature) {
         feature.initProjectOnlyFeatureItems();
 
         projectOnlyFeatureItemRegisters.forEach(registerer -> {
             try {
-                registerer.registerFeature(feature);
-            }catch (FeatureException e) {
-                OMFErrorHandler.handleException(new FeatureException("Error while registering project only items for feature " +
-                        feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+                registerer.registerFeatureItems(feature);
+            } catch (Exception e) {
+                OMFErrorHandler.handleException(
+                        new OMFFrameworkException("Error while registering project only items for feature " +
+                        feature.getName(), e, GenericException.ECriticality.CRITICAL));
             }
         });
 
     }
 
     /**
-     * Registers project only items of a list of features, see {@link FeatureRegisterer#registerProjectOnlyFeatureItems(MDFeature)}
-     * @param features
-     */
-    public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
-        features.forEach(this::registerProjectOnlyFeatureItems);
-    }
-
-    /**
      * Unregisters a feature using delegation to unregister all its items using the according item registerer
      * On Failure it will continue to unregister the feature items and then throw an exception for each item that failed
-     * @param feature
+     * @param feature the feature to unregister
      */
-    public void unregisterFeature(MDFeature feature){
-        try {
-            if (!isAlreadyRegistered(feature)) {
-                throw new FeatureException("Trying to unregister feature " + feature.getName() +
-                        " which is not registered.", GenericException.ECriticality.ALERT);
-            }
-
-            registeredFeatures.remove(feature);
-            for (IFeatureItemRegisterer registerer : featureItemRegisters) {
-               try {
-                   registerer.unregisterFeature(feature);
-               }catch (FeatureException e) {
-                   OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
-                           feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-               }
-            }
-
-            for (IFeatureItemRegisterer registerer : projectOnlyFeatureItemRegisters) {
-               try {
-                   registerer.unregisterFeature(feature);
-               }catch (FeatureException e) {
-                   OMFErrorHandler.handleException(new FeatureException("Error while unregistering Project only items for feature " +
-                           feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-               }
-            }
-
-            feature.setIsRegistered(false);
-
-        }catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while unregistering items for feature " +
-                    feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+    public void unregisterFeature(MDFeature feature) throws OMFFeatureRegisteringException {
+        if (!isAlreadyRegistered(feature)) {
+            OMFErrorHandler.handleException(new OMFFrameworkException("Trying to unregister feature "
+                    + feature.getName() + " which is not registered.", GenericException.ECriticality.ALERT));
         }
+
+        registeredFeatures.remove(feature);
+        for (IFeatureItemRegisterer<?> registerer : featureItemRegisters) {
+           try {
+               registerer.unregisterFeatureItems(feature);
+           } catch (Exception e) {
+               throw new OMFFeatureRegisteringException(
+                       "Error while unregistering items for feature " + feature.getName(), e);
+           }
+        }
+
+        for (IFeatureItemRegisterer<?> registerer : projectOnlyFeatureItemRegisters) {
+           try {
+               registerer.unregisterFeatureItems(feature);
+           }catch (Exception e) {
+              throw new OMFFeatureRegisteringException("Error while unregistering Project only items for feature " +
+                       feature.getName(), e);
+           }
+        }
+
+        feature.setIsRegistered(false);
     }
 
     /**
      * Unregisters a list of features, see {@link FeatureRegisterer#unregisterFeature(MDFeature)}
-     * @param features
+     * @param features the features to unregister
      */
     public void unregisterFeatures(List<MDFeature> features){
-        new ArrayList<>(features).forEach(this::unregisterFeature); //New Arraylist to manage List modifications while iterating
+        new ArrayList<>(features).forEach(feature -> {
+            try {
+                unregisterFeature(feature);
+            } catch (Exception e) {
+                OMFErrorHandler.handleException(new OMFFrameworkException("Error while unregistering feature " +
+                        feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+            }
+        });
     }
 
     /**
-     * Unregisters project only items of a list of features, see {@link FeatureRegisterer#unregisterDelayedItemsOfFeature(MDFeature)}
-     * @param features
+     * Unregisters project only items of a list of features, see {@link FeatureRegisterer#unregisterProjectOnlyItemsOfFeature(MDFeature)}
+     * @param features the features to unregister
      */
     public void unregisterProjectOnlyItemsOfFeatures(List<MDFeature> features){
-        new ArrayList<>(features).forEach(this::unregisterDelayedItemsOfFeature);//New Arraylist to manage List modifications while iterating
+        new ArrayList<>(features).forEach(this::unregisterProjectOnlyItemsOfFeature);//New Arraylist to manage List modifications while iterating
     }
 
     /**
      * Unregisters project only items of a feature using delegation to unregister all its items using the according item registerer
-     * @param feature
+     * @param feature the feature to unregister
      */
-    public void unregisterDelayedItemsOfFeature(MDFeature feature){
+    public void unregisterProjectOnlyItemsOfFeature(MDFeature feature){
         projectOnlyFeatureItemRegisters.forEach(registerer -> {
             try {
-                registerer.unregisterFeature(feature);
-            }catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while unregistering project only items for feature " +
-                    feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
-        }});
+                registerer.unregisterFeatureItems(feature);
+            } catch (Exception e) {
+                OMFErrorHandler.handleException(new OMFFrameworkException("Error while unregistering project only items for" +
+                    " feature " + feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+            }
+        });
     }
 
     /** Checks if a feature is already registered
@@ -189,8 +193,8 @@ public class FeatureRegisterer {
        try {
            this.featureItemRegisters.add(featureItemRegisterer);
            featureItemRegisterer.init(this);
-       }catch (FeatureException e) {
-           OMFErrorHandler.handleException(new FeatureException("Error while adding feature item registerer " +
+       }catch (Exception e) {
+           OMFErrorHandler.handleException(new OMFFrameworkException("Error while adding feature item registerer " +
                    featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
        }
     }
@@ -234,8 +238,8 @@ public class FeatureRegisterer {
         try{
             this.projectOnlyFeatureItemRegisters.add(featureItemRegisterer);
             featureItemRegisterer.init(this);
-        }catch (FeatureException e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while adding project only feature item registerer " +
+        }catch (Exception e) {
+            OMFErrorHandler.handleException(new OMFFrameworkException("Error while adding project only feature item registerer " +
                     featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
         }
     }

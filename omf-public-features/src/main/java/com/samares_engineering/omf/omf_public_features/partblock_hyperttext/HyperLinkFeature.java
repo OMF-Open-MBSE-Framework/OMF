@@ -62,12 +62,9 @@ public class HyperLinkFeature extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        OptionImpl testEnvOption = new OptionImpl(
+        OptionImpl testEnvOption = createEnvOption(
                 new BooleanProperty("Activate autoLink from part to Block (add hyperlink to access Block Specification with double click on part:", true),
-                "Feature Activation",
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment
-        );
+                "Feature Activation");
 
         testEnvOption.addListenerToRegister(new AOptionListener() {
             @Override

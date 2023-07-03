@@ -7,11 +7,9 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -54,8 +52,9 @@ public class ProjectOnlyOptionRegisterer implements IProjectOnlyFeatureItemRegis
             if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) return;
             option.register();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not register " + option.getKind().toString()
-                    + " option for mdFeature: " + option.getFeature().getName(), e, GenericException.ECriticality.CRITICAL), false);
+            throw new OMFFeatureRegisteringException(
+                    "[Feature] Could not register " + option.getKind().toString()
+                    + " option for mdFeature: " + option.getFeature().getName());
         }
     }
 
@@ -64,18 +63,19 @@ public class ProjectOnlyOptionRegisterer implements IProjectOnlyFeatureItemRegis
             if (option == null) return;
             option.unregister();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("[Feature] Could not unregister " + option.getKind().toString()
-                    + " option from mdFeature: " + option.getFeature().getName(), e, GenericException.ECriticality.CRITICAL), false);
+            throw new OMFFeatureRegisteringException(
+                    "[Feature] Could not unregister " + option.getKind().toString() + " option from mdFeature: " +
+                            option.getFeature().getName(), e);
         }
     }
 
     @Override
-    public void registerFeature(MDFeature feature) throws FeatureException {
+    public void registerFeatureItems(MDFeature feature) {
         registerFeatureItems(feature.getProjectOnlyOptions());
     }
 
     @Override
-    public void unregisterFeature(MDFeature feature) throws FeatureException {
+    public void unregisterFeatureItems(MDFeature feature) {
         unregisterFeatureItems(feature.getProjectOnlyOptions());
     }
 

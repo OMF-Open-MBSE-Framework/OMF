@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Maven repo gradle system properties have been changed to be more general
+- To declare a environment option group in a plugin, you now only have to declare an instance of OMFOptionsGroup instead
+of having to create a class that implements an abstract class from OMF.
 
 ## [1.0.0]
 

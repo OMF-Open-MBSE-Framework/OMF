@@ -11,13 +11,12 @@ import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.RestartAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.StopAPIServerAction;
@@ -68,23 +67,18 @@ public class APIServerFeature extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
-        OptionImpl serverURLOption = new OptionImpl(
+        OptionImpl serverURLOption = createEnvOption(
                 new StringProperty(APIEnvOptionsHelper.API_SERVER_URL, serverURL),
-                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment);
+                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP
+        );
 
-        OptionImpl serverPortOption = new OptionImpl(
+        OptionImpl serverPortOption = createEnvOption(
                 new StringProperty(APIEnvOptionsHelper.API_SERVER_PORT, "" + serverPort),
-                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment);
+                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP);
 
-        OptionImpl serverActivationOption = new OptionImpl(
+        OptionImpl serverActivationOption = createEnvOption(
                 new BooleanProperty(APIEnvOptionsHelper.API_SERVER_ACTIVATED, true),
-                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP,
-                plugin.getEnvironmentOptionsGroup(),
-                OptionKind.Environment);
+                APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP);
 
         return Arrays.asList(
                 serverURLOption,
@@ -95,7 +89,6 @@ public class APIServerFeature extends AFeature {
 
     @Override
     protected List<IOption> initProjectOnlyOptions() {
-
         return Collections.emptyList();
     }
 
@@ -110,8 +103,8 @@ public class APIServerFeature extends AFeature {
         try {
             OMFApiServer.getInstance(getPlugin()).startServer(serverPort);
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
-                    "\nPlease try to restart the API Server using OMF Advanced Menu", e, GenericException.ECriticality.CRITICAL));
+            OMFErrorHandler.handleException(new OMFFeatureException("Error while starting API server, this will strongly impact features using API Server." +
+                    "\nPlease try to restart the API Server using OMF Advanced Menu", this, e, GenericException.ECriticality.CRITICAL));
             return;
         }
 
@@ -125,9 +118,8 @@ public class APIServerFeature extends AFeature {
         try {
             OMFApiServer.getInstance(getPlugin()).stopServer();
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while stopping API server, this will strongly impact features using API Server." +
-                    "\nPlease try to restart the API Server using OMF Advanced Menu", e, GenericException.ECriticality.CRITICAL));
-            return;
+            OMFErrorHandler.handleException(new OMFFeatureException("Error while stopping API server, this will strongly impact features using API Server." +
+                    "\nPlease try to restart the API Server using OMF Advanced Menu", this, e, GenericException.ECriticality.CRITICAL));
         }
     }
 }

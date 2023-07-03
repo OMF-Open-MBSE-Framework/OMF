@@ -73,26 +73,41 @@ public class StereotypesFeature extends AFeature {
         // Organizer
         StringProperty organizerConfigFilePathProp = new StringProperty(StereotypesEnvOptionsHelper.ORGANIZER_CONFIG_FILE_PATH_ID,
                 StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
-        options.add(createEnvOption(organizerConfigFilePathProp, StereotypesEnvOptionsHelper.ORGANIZER_CONFIG_GRP));
+        options.add(createEnvOption(
+                organizerConfigFilePathProp,
+                StereotypesEnvOptionsHelper.ORGANIZER_CONFIG_GRP)
+        );
 
-        var isActivatedProperty = new BooleanProperty(StereotypesEnvOptionsHelper.ORGANIZER_ACTIVATION_ID, true);
-        options.add(createEnvOption(isActivatedProperty, StereotypesEnvOptionsHelper.ORGANIZER_CONFIG_GRP));
+        options.add(createEnvOption(
+                new BooleanProperty(StereotypesEnvOptionsHelper.ORGANIZER_ACTIVATION_ID, true),
+                StereotypesEnvOptionsHelper.ORGANIZER_CONFIG_GRP)
+        );
 
         // Type to instance
         StringProperty instanceConfigFilePathProp = new StringProperty(StereotypesEnvOptionsHelper.INSTANCE_CONFIG_FILE_PATH_ID,
                 StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
-        options.add(createEnvOption(instanceConfigFilePathProp, StereotypesEnvOptionsHelper.INSTANCE_CONFIG_GRP));
+        options.add(createEnvOption(
+                instanceConfigFilePathProp,
+                StereotypesEnvOptionsHelper.INSTANCE_CONFIG_GRP)
+        );
 
-        options.add(createEnvOption(new BooleanProperty(StereotypesEnvOptionsHelper.INSTANCE_ACTIVATION_ID, true),
-                StereotypesEnvOptionsHelper.INSTANCE_CONFIG_GRP));
+        options.add(createEnvOption(
+                new BooleanProperty(StereotypesEnvOptionsHelper.INSTANCE_ACTIVATION_ID, true),
+                StereotypesEnvOptionsHelper.INSTANCE_CONFIG_GRP)
+        );
 
         // Instance to type
         StringProperty typeConfigFilePathProp = new StringProperty(StereotypesEnvOptionsHelper.TYPE_CONFIG_FILE_PATH_ID,
                 StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
-        options.add(createEnvOption(typeConfigFilePathProp, StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP));
+        options.add(createEnvOption(
+                typeConfigFilePathProp,
+                StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP)
+        );
 
-        options.add(createEnvOption(new BooleanProperty(StereotypesEnvOptionsHelper.TYPE_ACTIVATION_ID, true),
-                StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP));
+        options.add(createEnvOption(
+                new BooleanProperty(StereotypesEnvOptionsHelper.TYPE_ACTIVATION_ID, true),
+                StereotypesEnvOptionsHelper.TYPE_CONFIG_GRP)
+        );
 
         return options;
     }

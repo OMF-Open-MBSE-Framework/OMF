@@ -9,6 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
@@ -201,7 +202,9 @@ public abstract class AFeature implements MDFeature {
         return new OptionImpl(
             property,
             groupName,
-            plugin.getEnvironmentOptionsGroup(),
+            plugin.getEnvironmentOptionsGroup()
+                    .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
+                            "for this plugin")),
             OptionKind.Environment
         );
     }

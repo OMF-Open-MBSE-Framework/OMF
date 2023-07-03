@@ -13,6 +13,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
@@ -43,8 +46,15 @@ public class ImportFromGPT extends AUIAction {
         partPropertiesToConnect = new HashMap<>();
 
         // Load the JSON data from file
-        String jsonFilePath = (String) feature.getPlugin().getEnvironmentOptionsGroup()
-                .getProperty(SysmlGptExploFeature.GPT_GENERATED_JSON_TO_IMPORT).getValue();
+        String jsonFilePath = null;
+        try {
+            jsonFilePath = (String) feature.getPlugin().getEnvironmentOptionsGroup()
+                    .orElseThrow(() -> new OMFException("No environment options groups have been declared for this " +
+                                            "plugin", GenericException.ECriticality.CRITICAL)
+                    ).getProperty(SysmlGptExploFeature.GPT_GENERATED_JSON_TO_IMPORT).getValue();
+        } catch (OMFException e) {
+            OMFErrorHandler.handleException(e);
+        }
         JSONTokener tokener = null;
         try {
             tokener = new JSONTokener(new FileReader(jsonFilePath));

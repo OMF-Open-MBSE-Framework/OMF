@@ -8,11 +8,10 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
 
 import com.nomagic.magicdraw.actions.ActionsProvider;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
@@ -42,36 +41,29 @@ public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
                 "NO MENU CONFIGURATOR REGISTERED");
     }
 
-    public void registerFeatureItems(List<IUIAction> actions) throws FeatureException {
+    public void registerFeatureItems(List<IUIAction> actions) {
         if (actions == null) {
-            throw new FeatureException(
-                    "[Feature Registerer] Trying to register actions but passed action list is null",
-                    GenericException.ECriticality.ALERT);
+            throw new OMFFeatureRegisteringException(
+                    "Trying to register actions but passed action list is null");
         }
         try {
             actions.forEach(this::registerFeatureItem);
             refreshConfigurators();
         } catch (Exception e) {
-            throw new FeatureException(
-                    "[Feature Registerer] Unable to register MDActions",
-                    e, GenericException.ECriticality.CRITICAL);
+            throw new OMFFeatureRegisteringException("Unable to register MDActions", e);
         }
     }
 
-    public void unregisterFeatureItems(List<IUIAction> actions) throws FeatureException {
+    public void unregisterFeatureItems(List<IUIAction> actions) {
         if (actions == null) {
-            throw new FeatureException(
-                    "[Feature Registerer] Trying to unregister actions but passed action list is null",
-                    GenericException.ECriticality.ALERT);
+            throw new OMFFeatureRegisteringException("Trying to unregister actions but passed action list is null");
         }
         try {
             resetConfigurators();
             actions.forEach(this::unregisterFeatureItem);
             refreshConfigurators();
         } catch (Exception e) {
-            throw new FeatureException(
-                    "[Feature Registerer] Unable to unregister MDActions",
-                    e, GenericException.ECriticality.CRITICAL);
+            throw new OMFFeatureRegisteringException("Unable to unregister MDActions", e);
         }
     }
 
@@ -114,12 +106,12 @@ public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
     }
 
     @Override
-    public void registerFeature(MDFeature feature) throws FeatureException {
+    public void registerFeatureItems(MDFeature feature) {
         registerFeatureItems(feature.getUIActions());
     }
 
     @Override
-    public void unregisterFeature(MDFeature feature) throws FeatureException {
+    public void unregisterFeatureItems(MDFeature feature) {
         unregisterFeatureItems(feature.getUIActions());
     }
 

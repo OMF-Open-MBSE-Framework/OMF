@@ -3,6 +3,7 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
@@ -12,7 +13,9 @@ public abstract class EnvOptionsHelper {
 
     protected EnvOptionsHelper(MDFeature feature) {
         this.feature = feature;
-        this.optionsGroup = feature.getPlugin().getEnvironmentOptionsGroup();
+        this.optionsGroup = feature.getPlugin().getEnvironmentOptionsGroup()
+                .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
+                "for this plugin"));
     }
 
     public final OMFPropertyOptionsGroup getOptionGroup() {

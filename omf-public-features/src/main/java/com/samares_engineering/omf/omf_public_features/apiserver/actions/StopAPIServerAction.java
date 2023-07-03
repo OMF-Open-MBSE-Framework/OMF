@@ -11,7 +11,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -40,8 +40,9 @@ public class StopAPIServerAction extends AUIAction {
                 OMFApiServer.getInstance().stopServer();
             OMFLogger.getInstance().info("API Server stopped");
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new FeatureException("Error while starting API server, this will strongly impact features using API Server." +
-                    "\nPlease contact the plugin: " + feature.getPlugin().getName() + " provider", e, GenericException.ECriticality.CRITICAL));
+            OMFErrorHandler.handleException(new OMFFeatureException("Error while starting API server, this will strongly impact features using API Server." +
+                    "\nPlease contact the plugin: " + feature.getPlugin().getName() + " provider",
+                    getFeature(), e, GenericException.ECriticality.CRITICAL));
         }
 
     }

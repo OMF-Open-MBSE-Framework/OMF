@@ -40,6 +40,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import org.apache.commons.collections4.CollectionUtils;
 
+import javax.annotation.CheckForNull;
 import java.util.*;
 
 /**
@@ -388,8 +389,8 @@ public abstract class APlugin extends Plugin {
         return projectOptionConfigurator;
     }
 
-    public OMFPropertyOptionsGroup getEnvironmentOptionsGroup() {
-        return environmentOptionsGroup;
+    public Optional<OMFPropertyOptionsGroup> getEnvironmentOptionsGroup() {
+        return Optional.ofNullable(environmentOptionsGroup);
     }
 
     public FeatureRegisterer getFeatureRegisterer() {

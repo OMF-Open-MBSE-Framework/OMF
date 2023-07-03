@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_public_features.lockmanager;
@@ -10,9 +10,9 @@ package com.samares_engineering.omf.omf_public_features.lockmanager;
 import com.nomagic.magicdraw.core.Application;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
@@ -33,8 +33,8 @@ public class LockSafeFeature extends AFeature {
 
     private RestrictedElementCheckerListener restrictedElementListener;
 
-    public LockSafeFeature(){
-       super("LockManager Feature");
+    public LockSafeFeature() {
+        super("LockManager Feature");
         restrictedElementListener = new RestrictedElementCheckerListener();
     }
 
@@ -47,11 +47,14 @@ public class LockSafeFeature extends AFeature {
                     LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
                     restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
                     restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());
-                }catch (Exception e) {
-                    OMFErrorHandler.handleException(new FeatureException("Error while configuring LockManagerFeature", e, GenericException.ECriticality.ALERT), false);
-                }});
-        }catch (Exception e){
-            OMFErrorHandler.handleException(new FeatureException("Error while registering LockManagerFeature", e, GenericException.ECriticality.ALERT), false);
+                } catch (Exception e) {
+                    OMFErrorHandler.handleException(new OMFFeatureException("Error while configuring LockManagerFeature",
+                            this, e, GenericException.ECriticality.ALERT), false);
+                }
+            });
+        } catch (Exception e) {
+            OMFErrorHandler.handleException(new OMFFeatureException("Error while registering LockManagerFeature",
+                    this, e, GenericException.ECriticality.ALERT), false);
         }
     }
 
@@ -90,7 +93,9 @@ public class LockSafeFeature extends AFeature {
     }
 
     @Override
-    public List<IRuleEngine> initLiveActions() { return Collections.emptyList();}
+    public List<IRuleEngine> initLiveActions() {
+        return Collections.emptyList();
+    }
 
     @Override
     protected List<IRuleEngine> initProjectOnlyLiveActions() {

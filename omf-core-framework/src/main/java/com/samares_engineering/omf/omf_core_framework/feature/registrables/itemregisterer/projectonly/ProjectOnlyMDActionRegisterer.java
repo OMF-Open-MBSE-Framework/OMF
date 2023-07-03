@@ -8,10 +8,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
 import com.nomagic.magicdraw.actions.ActionsProvider;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.errors.FeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
@@ -59,33 +58,31 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
     /**
      * Register a list of UIActions and refresh the configurators.
      * @param actions
-     * @throws FeatureException
      */
-    public void registerFeatureItems(List<IUIAction> actions) throws FeatureException {
+    public void registerFeatureItems(List<IUIAction> actions) {
        try{
            actions.forEach(this::registerFeatureItem);
            refreshConfigurators();
        } catch (Exception e){
-           throw new FeatureException(
-                   "[Feature Registerer] Unable to register MDActions",
-                   e, GenericException.ECriticality.CRITICAL);
+           throw new OMFFeatureRegisteringException(
+                   "Unable to register MDActions",
+                   e);
        }
     }
 
     /**
      * Unregister a list of UIActions and refresh the configurators.
      * @param actions
-     * @throws FeatureException
      */
-    public void unregisterFeatureItems(List<IUIAction> actions) throws FeatureException {
+    public void unregisterFeatureItems(List<IUIAction> actions) {
         try {
             resetConfigurators();
             actions.forEach(this::unregisterFeatureItem);
             refreshConfigurators();
         } catch (Exception e){
-           throw new FeatureException(
+           throw new OMFFeatureRegisteringException(
                     "[Feature Registerer] Unable to unregister MDActions",
-                    e, GenericException.ECriticality.CRITICAL);
+                    e);
         }
     }
 
@@ -143,12 +140,12 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
     }
 
     @Override
-    public void registerFeature(MDFeature feature) throws FeatureException {
+    public void registerFeatureItems(MDFeature feature) {
         registerFeatureItems(feature.getProjectOnlyUIActions());
     }
 
     @Override
-    public void unregisterFeature(MDFeature feature) throws FeatureException {
+    public void unregisterFeatureItems(MDFeature feature) {
         unregisterFeatureItems(feature.getProjectOnlyUIActions());
     }
 
