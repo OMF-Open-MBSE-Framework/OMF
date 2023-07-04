@@ -8,14 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [UNRELEASED]
 ### Added
 - "generate model architecture" feature which generates a UML model of the OMF project in Magicdraw
-- 
+- Eclipse specific gradle tasks **debugPlugin** and **debugTests** to allow debugging on that IDE
+- TestGeneration feature that add an action generates test case code for creation tests from a test case in the model
+
 ### Fixed
 - Error messages relating to the API server feature
+- Example test plugin was missing an option group
 
 ### Changed
-- Maven repo gradle system properties have been changed to be more general
+- Gradle build configuration and project properties changed to allow development in environments with 
+limited internet access and on the eclipse IDA
 - To declare a environment option group in a plugin, you now only have to declare an instance of OMFOptionsGroup instead
 of having to create a class that implements an abstract class from OMF.
+- Framework now better handles case when no option group has been declared in a plugin.
+- A number of gradle tasks where renamed and reorganized.
+- 
+
+### Removed
+- The **mavenGroupId** and **testLauncher** gradle properties.
 
 ## [1.0.0]
 
