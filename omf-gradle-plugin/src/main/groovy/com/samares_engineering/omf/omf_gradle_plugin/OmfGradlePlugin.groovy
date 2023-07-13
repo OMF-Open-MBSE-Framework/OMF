@@ -130,7 +130,7 @@ class OmfGradlePlugin implements Plugin<Project> {
         project.tasks.register('deliverLocally', Copy) {
             group = "_delivery"
             description = "Deliver the plugin to the local file system"
-            dependsOn 'zipPluginLocally', 'zipTestPluginLocally', 'scrZipDir'
+            dependsOn 'zipPluginLocally', 'zipTestPluginLocally'
 
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.pluginDeliveryName.get()}.zip"
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.testPluginDeliveryName.get()}.zip"
