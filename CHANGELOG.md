@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "generate model architecture" feature which generates a UML model of the OMF project in Magicdraw
 - Eclipse specific gradle tasks **debugPlugin** and **debugTests** to allow debugging on that IDE
 - TestGeneration feature that add an action generates test case code for creation tests from a test case in the model
+- EventChecker new method isIstanceOf allowing to check if an event is an instance of a given class and isTrue(customPredicate) to validate a custom predicate 
 
 ### Fixed
 - Error messages relating to the API server feature
