@@ -16,7 +16,7 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
     public String id = "";
     public boolean isActivated = true;
 
-    public ARule(){};
+    public ARule(){}
 
     public ARule(String id){
         this.id = id;
@@ -29,7 +29,8 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
 
     protected abstract boolean eventMatches(PropertyChangeEvent evt);
 
-    public abstract void debug(Object o);
+    @Deprecated
+    public void debug(Object o){}
 
     @Override
     public boolean isActivated() {

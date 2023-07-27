@@ -27,6 +27,7 @@ of having to create a class that implements an abstract class from OMF.
 
 ### Removed
 - The **mavenGroupId** and **testLauncher** gradle properties.
+- ARule debug method is now deprecated and will be removed in a future version
 
 ## [1.0.0]
 
