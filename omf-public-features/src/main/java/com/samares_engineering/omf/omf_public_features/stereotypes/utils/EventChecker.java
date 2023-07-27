@@ -84,4 +84,16 @@ public class EventChecker {
         predicates.add(evt -> evt.getPropertyName().equals(PropertyNames.NAME) && evt.getOldValue() != null);
         return this;
     }
+    public EventChecker isInstanceOf(Class clazz) {
+        isSourceNotNull();
+        predicates.add(evt -> clazz.isInstance(evt.getSource()));
+        return this;
+    }
+
+    public EventChecker isTrue(Predicate<PropertyChangeEvent> predicate) {
+        isSourceNotNull();
+        predicates.add(predicate);
+        return this;
+    }
+
 }
