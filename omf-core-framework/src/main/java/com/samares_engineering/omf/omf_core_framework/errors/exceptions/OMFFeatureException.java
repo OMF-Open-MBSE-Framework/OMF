@@ -13,8 +13,13 @@ public class OMFFeatureException extends OMFException {
     public OMFFeatureException(String errorMsg, MDFeature feature, Exception exception, ECriticality criticality) {
         super(generateErrorMessageWithPrefix(errorMsg, feature), exception, criticality);
     }
+    public OMFFeatureException(String debugMessage, String userMessage, MDFeature feature, Exception exception, ECriticality criticality) {
+        super(debugMessage, generateErrorMessageWithPrefix(userMessage, feature), exception, criticality);
+    }
 
     private static String generateErrorMessageWithPrefix(String errorMsg, MDFeature feature) {
         return "[" + feature.getPlugin().getName() + "::" + feature.getName() + "] " + errorMsg;
     }
+
+
 }
