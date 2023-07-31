@@ -29,12 +29,10 @@ public class OMFErrorHandler {
         eLock.lockedElements.stream().forEach(lockedElement -> OMFLogger.getInstance().log(eLock.getMessage(), lockedElement, OMFLogLevel.ERROR));
     }
 
-    public static void handleException(Exception uncaughtException) {
-        handleException(uncaughtException, true);
-    }
     public static void handleException(OMFRollBackException rollBackException) {
         displayDEVMessage("RollBack requested", rollBackException, OMFLogLevel.INFO);
     }
+
 
     public static void handleException(OMFException omfException) {
         handleException(omfException, true);
@@ -42,20 +40,31 @@ public class OMFErrorHandler {
 
     public static void handleException(OMFException exception, boolean cancelSession) {
         defaultOMFExceptionHandling(exception, cancelSession);
-
     }
+
+    public static void handleException(OMFUserSilentException omfException) {
+        handleException(omfException, true);
+    }
+    public static void handleException(OMFUserSilentException exception, boolean cancelSession) {
+        exception.displayDevMessage();
+        handleRollBack(exception, cancelSession);
+    }
+
 
     public static void handleException(LayoutException exception, boolean cancelSession) {
        defaultOMFExceptionHandling(exception, cancelSession);
 
+    }
+
+    public static void handleException(Exception uncaughtException) {
+        handleException(uncaughtException, true);
     }
     public static void handleException(Exception uncaughtException, boolean cancelSession) {
         OMFUnCaughtException omfUnCaughtException = new OMFUnCaughtException(uncaughtException);
         defaultOMFExceptionHandling(omfUnCaughtException, cancelSession);
     }
 
-
-
+    //-------------------------------- Behavior/ Rollback ------------------------------------------------
     private static void defaultOMFExceptionHandling(GenericException exception, boolean cancelSession) {
         exception.displayDevMessage();
         exception.displayUserMessage();
@@ -74,6 +83,8 @@ public class OMFErrorHandler {
             throw new OMFRollBackException(exception.getMessage());
     }
 
+
+    //-------------------------------- LOGGING ------------------------------------------------
 
     public static void displayUserMessage(String tag, Exception exception, OMFLogLevel errorLvl) {
         OMFLogger.getInstance().log("[" + tag + "] - " + exception.getMessage(), null, errorLvl);

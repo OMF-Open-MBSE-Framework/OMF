@@ -10,11 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "generate model architecture" feature which generates a UML model of the OMF project in Magicdraw
 - Eclipse specific gradle tasks **debugPlugin** and **debugTests** to allow debugging on that IDE
 - TestGeneration feature that add an action generates test case code for creation tests from a test case in the model
-- EventChecker new method isIstanceOf allowing to check if an event is an instance of a given class and isTrue(customPredicate) to validate a custom predicate 
-
+- EventChecker new method isInstanceOf allowing to check if an event is an instance of a given class and isTrue(customPredicate) to validate a custom predicate
+- OMFSilentException has been added to allow to throw an exception without displaying anything on User Interface (no popup, no console)
+- 
 ### Fixed
 - Error messages relating to the API server feature
 - Example test plugin was missing an option group
+- OMFErrorHandler will no more display user messages when it's blank or empty
 
 ### Changed
 - Gradle build configuration and project properties changed to allow development in environments with 

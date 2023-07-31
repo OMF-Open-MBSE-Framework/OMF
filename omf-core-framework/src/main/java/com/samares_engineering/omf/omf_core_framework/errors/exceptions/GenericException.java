@@ -61,6 +61,8 @@ public class GenericException extends Exception implements IException {
     }
 
     public void displayUserMessage() {
+        if(Strings.isNullOrEmpty(userMessage)) return;
+
         OMFLogLevel logLevel = OMFLogLevel.WARNING;
         if (criticality == ECriticality.CRITICAL)
             logLevel = OMFLogLevel.ERROR;
