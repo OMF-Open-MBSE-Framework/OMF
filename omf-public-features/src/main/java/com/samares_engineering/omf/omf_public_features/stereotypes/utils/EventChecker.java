@@ -46,6 +46,11 @@ public class EventChecker {
         predicates.add(evt -> evt.getSource() instanceof Element && StereotypesHelper.hasStereotype((Element) evt.getSource(), stereotype));
         return this;
     }
+
+    public EventChecker hasStereotypeOrDerived(Stereotype stereotype){
+        predicates.add(evt -> evt.getSource() instanceof Element && StereotypesHelper.hasStereotypeOrDerived((Element) evt.getSource(), stereotype));
+        return this;
+    }
     public EventChecker isInstanceDeleted(){
         predicates.add(
                 evt ->  evt.getPropertyName().equals(UML2MetamodelConstants.BEFORE_DELETE)
