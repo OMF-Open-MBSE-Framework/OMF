@@ -116,7 +116,8 @@ public class OMFUtils {
      * @return the part
      * @deprecated This methods sustains legacy code and will be removed in a near future.
      */
-    @Deprecated(since = "1.0.0", forRemoval = true)
+//    @Deprecated(since = "1.0.0", forRemoval = true)
+    @Deprecated
     public static Property getPartInContext(Element partType, List<Property> availableParts) {
         return availableParts.stream()
                 .filter(property -> partType.equals((property).getType()))
