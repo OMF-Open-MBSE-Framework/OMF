@@ -9,7 +9,9 @@ import com.nomagic.magicdraw.core.project.ProjectsManager;
 import com.nomagic.magicdraw.hyperlinks.Hyperlink;
 import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.magicdraw.uml.BaseElement;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.NoElementFoundException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.apiserver.OMFProjectManager;
@@ -51,10 +53,11 @@ public class ExtHyperTextServerRouting {
     }
 
     private static void handleOpenElementInBrowser(String id) throws DevelopmentException {
-        BaseElement element = OMFUtils.currentProject.getElementByID(id);
-        if(element == null)
-            throw new DevelopmentException("[API SELECT ELEMENT] ELEMENT NOT FOUND WITH ID: " + id);
-        Application.getInstance().getMainFrame().getBrowser().getActiveTree().openNode(element);
+      try {
+          OMFUtils.selectElementInContainmentTree(id);
+      } catch (NoElementFoundException e) {
+          OMFErrorHandler.handleException(e, false);
+      }
     }
 
     //ROUTING

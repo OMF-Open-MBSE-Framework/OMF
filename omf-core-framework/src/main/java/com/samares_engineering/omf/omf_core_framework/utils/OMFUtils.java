@@ -6,13 +6,22 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.utils;
 
+import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
+import com.nomagic.magicdraw.ui.browser.BrowserTabTree;
+import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.NoElementFoundException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.*;
@@ -102,11 +111,12 @@ public class OMFUtils {
     }
 
     /**
-     * Gets get Part In Context.
-     *
+     * Gets get all parts typed by partType in a given context.
      * @param partType the part type
      * @return the part
+     * @deprecated This methods sustains legacy code and will be removed in a near future.
      */
+    @Deprecated(since = "1.0.0", forRemoval = true)
     public static Property getPartInContext(Element partType, List<Property> availableParts) {
         return availableParts.stream()
                 .filter(property -> partType.equals((property).getType()))
@@ -114,16 +124,12 @@ public class OMFUtils {
                 .orElse(null);
     }
 
-    /**
-     * Gets get Part In Context.
-     *
-     * @param partType the part type
-     * @return the part
-     */
-    public static Property getPartInContextWithID(Element partType, String id, List<Property> availableParts) {
-        return availableParts.stream().filter(property -> partType.equals((property).getType()) && Profile.getInstance().getSysml().block().is(property.getOwner())).iterator().next();
-    }
 
+    /**
+     * Compute the property path from a connector end, including the partWithPort if it is not a port.
+     * @param ce
+     * @return
+     */
     public static List<Property> getPropertyPathListFromConnectorEnd(ConnectorEnd ce) {
         ConnectableElement end = ce.getRole();
         ArrayList<Element> elementPath = new ArrayList(Profile.getInstance().getSysml().elementPropertyPath().getPropertyPath(ce));
@@ -140,6 +146,36 @@ public class OMFUtils {
 
     public static String getUserDir() {
         return System.getProperty("user.dir");
+    }
+
+    /**
+     * Select an element in the containment tree by its id.
+     * MagicDraw containment tree shall be accessible in the API.
+     * @param id: id of the element to select
+     * @throws NoElementFoundException: throw an exception if the element is not found
+     */
+    public static void selectElementInContainmentTree(String id) throws NoElementFoundException {
+        BaseElement element = OMFUtils.currentProject.getElementByID(id);
+        if(element == null)
+            throw new NoElementFoundException("[API SELECT ELEMENT] ELEMENT NOT FOUND WITH ID: " + id);
+
+        selectElementInContainmentTree(element);
+    }
+
+    /**
+     * Select an element in the containment tree.
+     * MagicDraw containment tree shall be accessible in the API.
+     * @param element: element to select
+     */
+    public static void selectElementInContainmentTree(BaseElement element) {
+        try {
+            BrowserTabTree containmentTree = Application.getInstance().getMainFrame().getBrowser().getActiveTree();
+            containmentTree.openNode(element);
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new DevelopmentException(
+                    "SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible",
+                    e, GenericException.ECriticality.ALERT), false);
+        }
     }
 
 
