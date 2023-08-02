@@ -23,7 +23,7 @@ public class T3CreatePort extends AModelComparatorTestCase {
 
     @Override
     public void initOptions() {
-        setEnvironmentOptionValueByID("OMF Plugin", "Activate auto InterfaceBlock creation when port created :", true);
+        setEnvironmentOptionValueByID("OMF Example Plugin", "Activate auto InterfaceBlock creation when port created :", true);
     }
 
     @Override
