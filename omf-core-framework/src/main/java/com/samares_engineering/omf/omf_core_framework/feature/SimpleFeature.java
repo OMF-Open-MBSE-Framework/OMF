@@ -1,0 +1,49 @@
+package com.samares_engineering.omf.omf_core_framework.feature;
+
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+
+import java.util.Collections;
+import java.util.List;
+
+public abstract class SimpleFeature extends AFeature{
+    protected SimpleFeature(String name) {
+        super(name);
+    }
+
+    @Override
+    protected EnvOptionsHelper initEnvOptionsHelper() {
+        return null;
+    }
+
+    @Override
+    protected List<IUIAction> initFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<IUIAction> initProjectOnlyFeatureActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<IRuleEngine> initLiveActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<IRuleEngine> initProjectOnlyLiveActions() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<IOption> initOptions() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected List<IOption> initProjectOnlyOptions() {
+        return Collections.emptyList();
+    }
+}
