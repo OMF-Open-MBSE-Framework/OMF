@@ -145,7 +145,7 @@ public class RuleEngine implements IRuleEngine {
         this.rules.add(rule);
     }
     public void addAllRules(List<IRule> lRules){
-        this.rules.addAll(lRules);
+        lRules.forEach(this::addRule);
     }
     public void removeRule(IRule rule){
         this.rules.remove(rule);

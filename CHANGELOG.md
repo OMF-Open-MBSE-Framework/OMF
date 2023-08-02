@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example test plugin was missing an option group
 - OMFErrorHandler will no more display user messages when it's blank or empty
 - OMFFeatureException one missing constructor has been added to differentiate user message and developer message
+- RuleEngine Rule field was not set properly when adding a rule
 
 ### Changed
 - Gradle build configuration and project properties changed to allow development in environments with 
