@@ -20,8 +20,20 @@ import com.samares_engineering.omf.omf_public_features.patterncreation.profile.P
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Helper class to create patterns from Pattern Template elements.
+ * Pattern shall be defined in the project using the PatternProfile, using OnCreation links, and Pattern Template stereotype.
+ */
 public class PatternCreationHelper {
 
+    /**
+     *  Generate the pattern from the template element to the element owner.
+     *  Pattern shall be defined in the project using the PatternProfile, using OnCreation links, and Pattern Template stereotype.
+     * @param createdElement
+     * @param configuredOnCreationDependencies
+     * @throws ReadOnlyElementException
+     * @throws NoPatternFoundOnTemplateElementException
+     */
     public static void generatePatternsFromElements(Element createdElement, List<Dependency> configuredOnCreationDependencies) throws ReadOnlyElementException, NoPatternFoundOnTemplateElementException {
         for (Dependency onCreationDependency: configuredOnCreationDependencies) {
             Optional<Element> optTarget = onCreationDependency.getTarget().stream().findFirst();
@@ -32,6 +44,14 @@ public class PatternCreationHelper {
         }
     }
 
+    /**
+     *  Generate the pattern from the template element, and replace the created element with the generated pattern.
+     *  Pattern shall be defined in the project using the PatternProfile, using OnCreation links, and Pattern Template stereotype.
+     * @param createdElement
+     * @param configuredOnCreationDependencies
+     * @throws ReadOnlyElementException
+     * @throws NoPatternFoundOnTemplateElementException
+     */
     public static void replaceElementWithGeneratedPatterns(Element createdElement, List<Dependency> configuredOnCreationDependencies) throws ReadOnlyElementException, NoPatternFoundOnTemplateElementException {
         for (Dependency onCreationDependency: configuredOnCreationDependencies) {
             Optional<Element> optTarget = onCreationDependency.getTarget().stream().findFirst();
@@ -42,11 +62,28 @@ public class PatternCreationHelper {
         }
     }
 
+    /**
+     * Generate the pattern from the template element, and replace the created element with the generated pattern.
+     * Pattern shall be defined in the project using the PatternProfile, using OnCreation links, and Pattern Template stereotype.
+     * @param createdElement
+     * @param templateElement
+     * @throws ReadOnlyElementException
+     * @throws NoPatternFoundOnTemplateElementException
+     */
     public static void replaceElementWithGeneratedPattern(Element createdElement, Element templateElement) throws ReadOnlyElementException, NoPatternFoundOnTemplateElementException {
         Element copiedTemplateElement = generatePatternFromElement(createdElement, templateElement);
         removePatternSTR(createdElement);
         Refactoring.Replacing.replace(createdElement, copiedTemplateElement, new ConvertElementInfo(createdElement.getClass()));
     }
+
+    /**
+     *  Generate the pattern from the template element, and replace the created element with the generated pattern.
+     *  Pattern shall be defined in the project using the PatternProfile, using OnCreation links, and Pattern Template stereotype.
+     * @param createdElement
+     * @param templateElement
+     * @return
+     * @throws NoPatternFoundOnTemplateElementException
+     */
     public static Element generatePatternFromElement(Element createdElement, Element templateElement) throws NoPatternFoundOnTemplateElementException {
         PatternCreatorProfile.PatternTemplateStereotype patternStr = PatternCreatorProfile.getInstance().patternTemplate();
         removePatternSTR(createdElement);
@@ -76,10 +113,22 @@ public class PatternCreationHelper {
         }
     }
 
+    /**
+     * Copy the pattern from the template element to the created element owner, then remove the pattern template stereotype.
+     * @param createdElement
+     * @param templateElement
+     * @return
+     */
     private static Element copyPattern(Element createdElement, Element templateElement) {
         return removePatternSTR(CopyPasting.copyPasteElement(templateElement, createdElement.getOwner()));
     }
 
+    /**
+     * Copy the pattern from the template element to the created element owner, then remove the pattern template stereotype.
+     * @param createdElement
+     * @param allElementFromPattern
+     * @return
+     */
     private static List<Element> copyPattern(Element createdElement, List<Element> allElementFromPattern) {
         return removePatternSTR(CopyPasting.copyPasteElements(allElementFromPattern, createdElement.getOwner()));
     }
@@ -90,12 +139,23 @@ public class PatternCreationHelper {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Remove the pattern template stereotype from the element.
+     * @param element
+     * @return
+     */
     private static Element removePatternSTR(Element element) {
         PatternCreatorProfile.PatternTemplateStereotype patternStr = PatternCreatorProfile.getInstance().patternTemplate();
         element.getAppliedStereotype().remove(patternStr);
         return element;
     }
 
+    /**
+     * Find the template element in the copied elements using stereotype.
+     * @param templateElement
+     * @param copiedElements
+     * @return
+     */
     private static Element findTemplateElementInCopiedElements(Element templateElement, List<Element> copiedElements) {
         return copiedElements.stream()
                 .filter(element -> element.getHumanName().equals(templateElement.getHumanName()))
@@ -103,6 +163,12 @@ public class PatternCreationHelper {
                 .orElseThrow(() -> new RuntimeException("Template element not found in copied elements"));
     }
 
+    /**
+     * Get all the OnCreation dependencies from the created element.
+     * @param createdElement
+     * @param configuredSTR
+     * @return
+     */
     public static List<Dependency> getAllOnCreationDependencyFromElement(Element createdElement, Set<Stereotype> configuredSTR) {
         return createdElement.getAppliedStereotype().stream()
                 .filter(configuredSTR::contains)
