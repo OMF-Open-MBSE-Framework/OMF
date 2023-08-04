@@ -15,7 +15,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
@@ -28,6 +27,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class ErrorManagementFeatureExample extends AFeature {
+
+    public static String ACTIVATE_ERROR_LIVE_ACTION;
+    public static String OMF_ERROR_EXAMPLE;
 
     public ErrorManagementFeatureExample(){
        super("ERROR MANAGEMENT FEATURE");
@@ -64,9 +66,11 @@ public class ErrorManagementFeatureExample extends AFeature {
 
     @Override
     public List<IOption> initOptions() {
+        ACTIVATE_ERROR_LIVE_ACTION = "[TEST ERROR] Activate Live Action:";
+        OMF_ERROR_EXAMPLE = "OMF Errors Example";
         OptionImpl testEnvOption = createEnvOption(
-                new BooleanProperty("Activate Live Action:", true),
-                "OMF Example"
+                new BooleanProperty(ACTIVATE_ERROR_LIVE_ACTION, false),
+                OMF_ERROR_EXAMPLE
         );
 
 

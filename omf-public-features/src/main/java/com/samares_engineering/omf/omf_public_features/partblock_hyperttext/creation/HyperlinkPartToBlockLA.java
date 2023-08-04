@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.hyperlinks.Hyperlink;
 import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventChecker;
+import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 

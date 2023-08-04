@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventChecker;
+import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 

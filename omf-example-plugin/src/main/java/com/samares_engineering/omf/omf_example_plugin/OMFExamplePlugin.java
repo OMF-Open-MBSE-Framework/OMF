@@ -25,6 +25,7 @@ import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeatur
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
+import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
 import java.util.Collections;
@@ -42,7 +43,8 @@ public class OMFExamplePlugin extends APlugin {
                 new StereotypesFeature(),
                 new APIServerFeature("http://localhost", 9850),
                 new GeneratePluginModelArchi(),
-                new SysmlGptExploFeature()
+                new SysmlGptExploFeature(),
+                new PatternCreationFeature()
         );
     }
 
