@@ -13,7 +13,7 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
-import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreation;
+import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationHelper;
 import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationFeature;
 
 import java.beans.PropertyChangeEvent;
@@ -41,9 +41,9 @@ public class ElementCreatorFromPattern extends ARule {
             Set<Stereotype> configuredSTR = ((PatternCreationFeature) getFeature()).getConfiguredSTR();
             Element createdElement = (Element) e.getSource();
 
-            List<Dependency> configuredOnCreationDependencies = PatternCreation.getAllOnCreationDependencyFromElement(createdElement, configuredSTR);
+            List<Dependency> configuredOnCreationDependencies = PatternCreationHelper.getAllOnCreationDependencyFromElement(createdElement, configuredSTR);
 
-            PatternCreation.replaceElementWithGeneratedPatterns(createdElement, configuredOnCreationDependencies);
+            PatternCreationHelper.replaceElementWithGeneratedPatterns(createdElement, configuredOnCreationDependencies);
 
         }catch (Exception uncheckedException){
             OMFErrorHandler.handleException(uncheckedException);

@@ -16,8 +16,8 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatu
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreation;
-import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreatorProfile;
+import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationHelper;
+import com.samares_engineering.omf.omf_public_features.patterncreation.profile.PatternCreatorProfile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,7 +49,7 @@ public class GenerateTemplateFromSTR extends AUIAction {
                 throw new OMFFeatureException('"' + selectedSTR.getName() + '"' + " has no OnCreation dependency configured for pattern generation.", getFeature(), GenericException.ECriticality.ALERT);
 
             Element rootModel = OMFUtils.currentProject.getPrimaryModel();
-            PatternCreation.replaceElementWithGeneratedPatterns(rootModel, configuredOnCreationDependencies);
+            PatternCreationHelper.replaceElementWithGeneratedPatterns(rootModel, configuredOnCreationDependencies);
 
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, true);

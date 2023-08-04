@@ -1,0 +1,2772 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<diagram version="9" type="Pattern Definition Diagram" baseType="Class Diagram" abbreviation="PDD" category="SysML Diagrams">
+    <requiredPlugin>com.nomagic.magicdraw.plugins.impl.sysml#SysML;MD_customization_for_SysML.mdzip;UML_Standard_Profile.mdzip;PatternProfile.mdzip</requiredPlugin>
+    <helpID>PDD</helpID>
+    <toolbarConfiguration>
+        <category name="Common" id="COMMON_ELEMENTS_STATIC" expandedByDefault="false">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/packagenode.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/packagenode.svg"></icon>
+            <actions>
+                <group>
+                    <standard action="ADD_NOTE" shortcut="pressed N "/>
+                    <standard action="ADD_NOTE_ANCHOR" shortcut="pressed H "/>
+                </group>
+                <standard action="ADD_COMMENT"/>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Comment" description="Problem" listAsElement="false" opposite="false" id="IDaction_1161258471734_623304_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147421421037_25607_638"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Comment" description="Rationale" listAsElement="false" opposite="false" id="IDaction_1161258490265_865153_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147421401018_777370_546"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Comment" description="Element Group" listAsElement="false" opposite="false" id="IDaction_1392204622179_642598_0">
+                    <stereotype id="_17_0_5beta_17530432_1382588727729_600191_12925"/>
+                </custom>
+                <group>
+                    <standard action="CONSTRAINT_ACTION"/>
+                    <standard action="DURATION_CONSTRAINT_ACTION"/>
+                    <standard action="TIME_CONSTRAINT_ACTION"/>
+                </group>
+                <group>
+                    <standard action="ADD_CONTAINMENT_LINK" shortcut="shift pressed C "/>
+                    <standard action="ADD_CONTAINMENT_LINK_OPPOSITE" shortcut="shift pressed K "/>
+                </group>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Abstraction" shortcut="pressed T " listAsElement="false" opposite="false" id="IDaction_1336037660788_456573_0"/>
+                </group>
+                <standard action="ADD_DEPENDENCY" shortcut="shift pressed D "/>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Allocate" listAsElement="false" opposite="false" id="IDaction_1161258505703_142954_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147866646230_488749_1541"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <standard action="ADD_REALIZE" shortcut="pressed E "/>
+                <standard action="ADD_DIAGRAM_OVERVIEW"/>
+                <standard action="ADD_DIAGRAM_LEGEND"/>
+                <standard action="ADD_TEXT_BOX" shortcut="pressed X "/>
+                <group>
+                    <standard action="ADD_SEPARATOR" shortcut="pressed W "/>
+                    <standard action="ADD_SEPARATOR_VERTICAL"/>
+                    <standard action="ADD_RECTANGULAR_SHAPE" shortcut="shift pressed Q "/>
+                </group>
+            </actions>
+        </category>
+        <category name="Profiling Mechanism" id="action_category_1253763102546_438707_0" expandedByDefault="true">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/profilingmechanism.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/profilingmechanism.svg"></icon>
+            <actions>
+                <standard action="ADD_STEREOTYPE" shortcut="shift pressed S "/>
+                <standard action="ADD_METACLASS"/>
+                <standard action="ADD_EXTENSION"/>
+                <standard action="ADD_PROFILE" description="Profile">
+                    <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/profile.svg"></buttonicon>
+                    <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/profile.png"></buttonicon>
+                </standard>
+                <standard action="ADD_PROFILE_APPLICATION"/>
+            </actions>
+        </category>
+        <category name="Patterns" id="action_category_1691147664149_941048_4" expandedByDefault="true">
+            <icon type="small" size="16" filename="https://static.thenounproject.com/png/3558598-200.png"></icon>
+            <icon type="large" size="16" filename="https://static.thenounproject.com/png/3558598-200.png"></icon>
+            <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype" description="Stereotype«Pattern»" listAsElement="false" opposite="false" id="IDaction_1691163189283_494290_0">
+                    <stereotype id="_2021x_2_302b0611_1691071428982_448947_3267"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency" description="Dependency«OnCreation»" listAsElement="false" opposite="false" id="IDaction_1691147735447_80977_4">
+                    <stereotype id="_2021x_2_302b0611_1691071655021_817109_3370"/>
+                    <style>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ColorProperty">
+    <propertyID>FILL_COLOR</propertyID>
+    <value xmi:value="-52"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>USE_FILL_COLOR</propertyID>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>PEN_COLOR</propertyID>
+    <value xmi:value="-16737895"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>TEXT_COLOR</propertyID>
+    <value xmi:value="-16777216"/>
+</mdElement>
+<mdElement elementClass="NumberProperty">
+    <propertyID>LINE_WIDTH</propertyID>
+    <value xmi:value="2.0"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>FONT</propertyID>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_NUMBER_TAG_NAME</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>ELEMENT_NUMBER_DISPLAY_MODE</propertyID>
+    <value>ELEMENT_NUMBER_DISPLAY_MODE_NO_DISPLAY</value>
+    <choice xmi:value="ELEMENT_NUMBER_DISPLAY_MODE_ABOVE^ELEMENT_NUMBER_DISPLAY_MODE_BEFORE^ELEMENT_NUMBER_DISPLAY_MODE_NO_DISPLAY"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>LINK_LINE_STYLE</propertyID>
+    <value>OBLIQUE</value>
+    <choice xmi:value="RECTILINEAR^OBLIQUE^BEZIER"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>IS_ROUNDED</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>CONSTRAINT_TEXT_MODE</propertyID>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SUSPEND_SHAPE_AUTO_RESIZE</propertyID>
+    <value>SUSPEND_SHAPE_AUTO_RESIZE_SAME_AS_DIAGRAM</value>
+    <choice xmi:value="SUSPEND_SHAPE_AUTO_RESIZE_SAME_AS_DIAGRAM^SUSPEND_SHAPE_AUTO_RESIZE_TRUE^SUSPEND_SHAPE_AUTO_RESIZE_FALSE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SUSPEND_LABEL_AUTO_DISPLAY</propertyID>
+    <value>SUSPEND_LABEL_AUTO_DISPLAY_SAME_AS_DIAGRAM</value>
+    <choice xmi:value="SUSPEND_LABEL_AUTO_DISPLAY_SAME_AS_DIAGRAM^SUSPEND_LABEL_AUTO_DISPLAY_TRUE^SUSPEND_LABEL_AUTO_DISPLAY_FALSE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>LABEL_ORIENTATION</propertyID>
+    <value>LABEL_ORIENTATION_HORIZONTAL</value>
+    <choice xmi:value="LABEL_ORIENTATION_HORIZONTAL^LABEL_ORIENTATION_VERTICAL^LABEL_ORIENTATION_AUTOMATIC"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>STEREOTYPE_COLOR</propertyID>
+    <value xmi:value="-16777216"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>STEREOTYPE_FONT</propertyID>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>WRAP_WORDS</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_NAME</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+    <value>STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON</value>
+    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>DSL_STEREOTYPE_DISPLAY_MODE</propertyID>
+    <value>DSL_STEREOTYPE_DISPLAY_MODE_ALL</value>
+    <choice xmi:value="DSL_STEREOTYPE_DISPLAY_MODE_ALL^DSL_STEREOTYPE_DISPLAY_MODE_LAST^DSL_STEREOTYPE_DISPLAY_MODE_NONE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_TAGGED_VALUES</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ELEMENT_PROPERTIES</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ICONS_IN_COMPARTMENTS</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ELEMENT_TYPE_IN_COMPARTMENTS</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_DERIVED_SIGN</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_CONVEYED_A</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_CONVEYED_B</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_CONSTRAINTS</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </style>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Pattern Content" listAsElement="false" opposite="false" id="IDaction_1691147762290_605570_5">
+                    <stereotype id="_18_3_903028d_1448353080811_202046_13416"/>
+                    <buttonicon type="small" size="16" filename="https://static.thenounproject.com/png/3558598-200.png"></buttonicon>
+                    <buttonicon type="large" size="16" filename="https://static.thenounproject.com/png/3558598-200.png"></buttonicon>
+                    <style>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ColorProperty">
+    <propertyID>FILL_COLOR</propertyID>
+    <value xmi:value="-16737895"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>USE_FILL_COLOR</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>PEN_COLOR</propertyID>
+    <value xmi:value="-6719140"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>TEXT_COLOR</propertyID>
+    <value xmi:value="-16777216"/>
+</mdElement>
+<mdElement elementClass="NumberProperty">
+    <propertyID>LINE_WIDTH</propertyID>
+    <value xmi:value="1.0"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>FONT</propertyID>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_NUMBER_TAG_NAME</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>ELEMENT_NUMBER_DISPLAY_MODE</propertyID>
+    <value>ELEMENT_NUMBER_DISPLAY_MODE_NO_DISPLAY</value>
+    <choice xmi:value="ELEMENT_NUMBER_DISPLAY_MODE_ABOVE^ELEMENT_NUMBER_DISPLAY_MODE_BEFORE^ELEMENT_NUMBER_DISPLAY_MODE_NO_DISPLAY"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>AUTOSIZE</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>USE_FIXED_CONNECTION_POINTS</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SUSPEND_SHAPE_AUTO_RESIZE</propertyID>
+    <value>SUSPEND_SHAPE_AUTO_RESIZE_SAME_AS_DIAGRAM</value>
+    <choice xmi:value="SUSPEND_SHAPE_AUTO_RESIZE_SAME_AS_DIAGRAM^SUSPEND_SHAPE_AUTO_RESIZE_TRUE^SUSPEND_SHAPE_AUTO_RESIZE_FALSE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_HEADER_IN_BOLD</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>TEXT_VERTICAL_POSITION</propertyID>
+    <value>TOP</value>
+    <choice xmi:value="TOP^CENTER^BOTTOM"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>STEREOTYPE_COLOR</propertyID>
+    <value xmi:value="-16777216"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>STEREOTYPE_FONT</propertyID>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+    <value>STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT</value>
+    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+    <index xmi:value="3"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>DSL_STEREOTYPE_DISPLAY_MODE</propertyID>
+    <value>DSL_STEREOTYPE_DISPLAY_MODE_ALL</value>
+    <choice xmi:value="DSL_STEREOTYPE_DISPLAY_MODE_ALL^DSL_STEREOTYPE_DISPLAY_MODE_LAST^DSL_STEREOTYPE_DISPLAY_MODE_NONE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_CONSTRAINTS</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>QNAME_DISPLAY_MODE</propertyID>
+    <value>QNAME_DISPLAY_MODE_DO_NOT_DISPLAY</value>
+    <choice xmi:value="QNAME_DISPLAY_MODE_DO_NOT_DISPLAY^QNAME_DISPLAY_MODE_BELOW_NAME^QNAME_DISPLAY_MODE_MERGE_WITH_NAME^QNAME_DISPLAY_MODE_ABOVE_NAME"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>WRAP_WORDS</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>TAGGED_VALUE_HORIZONTAL_POSITION</propertyID>
+    <value>RIGHT</value>
+    <choice xmi:value="CENTER^LEFT^RIGHT"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>CONSTRAINT_TEXT_MODE</propertyID>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ELEMENT_PROPERTIES</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ICONS_IN_COMPARTMENTS</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ELEMENT_TYPE_IN_COMPARTMENTS</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_DERIVED_SIGN</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SHOW_MEMBERS_MODE</propertyID>
+    <value>ALL</value>
+    <choice xmi:value="ALL^ONLY_PUBLIC^NOT_PRIVATE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_INHERITED</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SUPPRESS_CLASS_ATTRIBUTES</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>ATTRIBUTE_COLOR</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="-14155776"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>ATTRIBUTE_FONT</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_MORE_SIGN_FOR_ATTRIBUTES</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SORT_CLASS_ATTRIBUTES_MODE</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value>NO_SORT</value>
+    <choice xmi:value="NO_SORT^BY_NAME^BY_STEREOTYPE^BY_VISIBILITY"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SHOW_ASSOCIATION_ENDS_MODE</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value>DO_NOT_DISPLAY</value>
+    <choice xmi:value="ALL^WITHOUT_ASSOCIATION^DO_NOT_DISPLAY"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_VISIBILITY</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_INHERITED_SIGN</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_COMPARTMENT_NAME</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_TYPE</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_STEREOTYPE</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_PROPERTIES</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_TAGGED_VALUES</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_ATTRIBUTES_CONSTRAINTS</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>ATTRIBUTES_CONSTRAINT_TEXT_MODE</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_INIT_VALUE</propertyID>
+    <propertyGroup>ATTRIBUTES</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SUPPRESS_CLASS_OPERATIONS</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_COMPARTMENT_NAME</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>OPERATION_COLOR</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="-16777176"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>OPERATION_FONT</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_SIGNATURE</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_MORE_SIGN_FOR_OPERATIONS</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SORT_CLASS_OPERATIONS_MODE</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value>NO_SORT</value>
+    <choice xmi:value="NO_SORT^BY_NAME^BY_STEREOTYPE^BY_VISIBILITY"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_VISIBILITY</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_INHERITED_SIGN</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_STEREOTYPE</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_PROPERTIES</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_TAGGED_VALUES</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_CONSTRAINTS</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>OPERATIONS_CONSTRAINT_TEXT_MODE</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_FULL_TYPE</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>USE_ADVANCED_COLORING</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_OPERATIONS_PARAMETERS_DIRECTION_KIND</propertyID>
+    <propertyGroup>OPERATIONS</propertyGroup>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>TAGGED_VALUES_DISPLAY_MODE</propertyID>
+    <value>ON_SHAPE</value>
+    <choice xmi:value="ON_SHAPE^IN_COMPARTMENT^DO_NOT_DISPLAY"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_TAGGED_VALUES_STEREOTYPES</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_QUALIFIED_NAME_IN_TAGGED_VALUES</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>MEMBERS_WORD_WRAP</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SUPPRESS_CLASS_PORTS</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_COMPARTMENT_NAME</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>PORTS_COLOR</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="-14155776"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>PORTS_FONT</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_MORE_SIGN_FOR_PORTS</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SORT_CLASS_PORT_MODE</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value>NO_SORT</value>
+    <choice xmi:value="NO_SORT^BY_NAME^BY_STEREOTYPE^BY_VISIBILITY"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SHOW_ASSOCIATION_ENDS_PORTS_MODE</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value>DO_NOT_DISPLAY</value>
+    <choice xmi:value="ALL^WITHOUT_ASSOCIATION^DO_NOT_DISPLAY"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_VISIBILITY</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_INHERITED_SIGN</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_TYPE</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_STEREOTYPE</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_PROPERTIES</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_TAGGED_VALUES</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_PORTS_CONSTRAINTS</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>PORTS_CONSTRAINTS_TEXT_MODE</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_INIT_PORTS_VALUE</propertyID>
+    <propertyGroup>PORTS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SUPPRESS_BEHAVIORS</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>BEHAVIORS_COLOR</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value xmi:value="-14155776"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_INHERITED_SIGN</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_MORE_SIGN_FOR_BEHAVIORS</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_PROPERTIES</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_TAGGED_VALUES</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_CONSTRAINTS</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>BEHAVIORS_CONSTRAINT_TEXT_MODE</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_SIGNATURE</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_PARAMETERS_DIRECTION_KIND</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>BEHAVIORS_FONT</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_BEHAVIORS_STEREOTYPE</propertyID>
+    <propertyGroup>BEHAVIORS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SUPPRESS_SIGNAL_RECEPTIONS</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ColorProperty">
+    <propertyID>RECEPTION_COLOR</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="-16777176"/>
+</mdElement>
+<mdElement elementClass="FontProperty">
+    <propertyID>RECEPTION_FONT</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <fontName>Arial</fontName>
+    <size xmi:value="11"/>
+    <style xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_SIGNAL_RECEPTIONS_SIGNATURE</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_MORE_SIGN_FOR_RECEPTIONS</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>SORT_CLASS_RECEPTIONS_MODE</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value>NO_SORT</value>
+    <choice xmi:value="NO_SORT^BY_SIGNAL_NAME^BY_STEREOTYPE^BY_VISIBILITY"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_SIGNAL_RECEPTIONS_VISIBILITY</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_INHERITED_SIGN</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_STEREOTYPES</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_PROPERTIES</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_TAGGED_VALUES</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_CONSTRAINTS</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>RECEPTIONS_CONSTRAINTS_TEXT_MODE</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value>EXPRESSION_MODE</value>
+    <choice xmi:value="NAME_MODE^EXPRESSION_MODE^NAME_EXPRESSION_MODE"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_PARAMETERS_DIRECTION_KIND</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SUPPRESS_STRUCTURE</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>BORDER_ELEMENT_MARGIN</propertyID>
+    <value>BORDER_ELEMENT_MARGIN_ALL</value>
+    <choice xmi:value="BORDER_ELEMENT_MARGIN_ALL^BORDER_ELEMENT_MARGIN_LEFT^BORDER_ELEMENT_MARGIN_RIGHT^BORDER_ELEMENT_MARGIN_TOP^BORDER_ELEMENT_MARGIN_BOTTOM^BORDER_ELEMENT_MARGIN_LEFT_RIGHT^BORDER_ELEMENT_MARGIN_TOP_BOTTOM^BORDER_ELEMENT_MARGIN_NONE"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>SHOW_RECEPTIONS_COMPARTMENT_NAME</propertyID>
+    <propertyGroup>RECEPTIONS</propertyGroup>
+    <value xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </style>
+                </custom>
+            </actions>
+        </category>
+        <category name="Block Definition Diagram" id="action_category_1156164534125_948326_0" expandedByDefault="false">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/blockdefinitiondiagram.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/blockdefinitiondiagram.svg"></icon>
+            <actions>
+                <standard action="ADD_PACKAGE" shortcut="pressed P "/>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Block" shortcut="pressed B " listAsElement="false" opposite="false" id="IDaction_1156164654562_480223_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147424179914_458922_958"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isActive</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isAbstract</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Interface Block" listAsElement="false" opposite="false" id="IDaction_1326872975359_214227_0">
+                    <stereotype id="_17_0_3_17530432_1320213059640_259248_2362"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdinterfaces.Interface" description="Flow Specification" listAsElement="false" opposite="false" id="IDaction_1331713746146_711068_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147436929898_779228_1998"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Constraint Block" listAsElement="false" opposite="false" id="IDaction_1156164720406_361366_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147767804973_159489_404"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isActive</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isAbstract</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Domain" listAsElement="false" opposite="false" id="IDaction_1175265452171_655761_0">
+                        <stereotype id="_12_1_8740266_1172578094265_388539_1575"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Subsystem" listAsElement="false" opposite="false" id="IDaction_1175265612656_578165_0">
+                        <stereotype id="_12_1_8740266_1172578094265_898135_1579"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="External" listAsElement="false" opposite="false" id="IDaction_1175265579031_441048_0">
+                        <stereotype id="_12_1_8740266_1173094714531_37548_260"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="System" listAsElement="false" opposite="false" id="IDaction_1175265637406_599256_0">
+                        <stereotype id="_12_1_8740266_1172578094265_375361_1577"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="System Context" listAsElement="false" opposite="false" id="IDaction_1175265647609_513299_0">
+                        <stereotype id="_12_1_8740266_1172578094265_310701_1581"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                </group>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DataType" description="Value Type" listAsElement="false" opposite="false" id="IDaction_1156164678968_788175_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147430239267_179145_1189"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification" description="Quantity Kind" listAsElement="false" opposite="false" id="IDaction_1156772324812_364919_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147430310770_313444_1322"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/dimensionnode.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/dimensionnode.png"></buttonicon>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="ElementListProperty">
+        <propertyID>classifier</propertyID>
+        <displayableTypes xmi:value=""/>
+        <selectableTypes xmi:value="Activity^Actor^Artifact^Association^AssociationClass^Class^Collaboration^CommunicationPath^Component^DataType^DeploymentSpecification^Device^Enumeration^ExecutionEnvironment^Extension^FunctionBehavior^InformationItem^Interaction^Interface^Node^OpaqueBehavior^PrimitiveType^ProtocolStateMachine^Signal^StateMachine^Stereotype^UseCase"/>
+        <containment xmi:value="false"/>
+        <ordered xmi:value="true"/>
+        <value>_16_5_1_12c903cb_1245416800625_456261_4784</value>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.InstanceSpecification" description="Unit" listAsElement="false" opposite="false" id="IDaction_1156772222515_855399_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147430329106_6539_1367"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="ElementListProperty">
+        <propertyID>classifier</propertyID>
+        <displayableTypes xmi:value=""/>
+        <selectableTypes xmi:value="Activity^Actor^Artifact^Association^AssociationClass^Class^Collaboration^CommunicationPath^Component^DataType^DeploymentSpecification^Device^Enumeration^ExecutionEnvironment^Extension^FunctionBehavior^InformationItem^Interaction^Interface^Node^OpaqueBehavior^PrimitiveType^ProtocolStateMachine^Signal^StateMachine^Stereotype^UseCase"/>
+        <containment xmi:value="false"/>
+        <ordered xmi:value="true"/>
+        <value>_16_5_1_12c903cb_1245417652468_149854_5164</value>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                </group>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration" description="Enumeration" shortcut="pressed K " listAsElement="false" opposite="false" id="IDaction_1348632415494_68676_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147430239267_179145_1189"/>
+                    <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/enum.svg"></buttonicon>
+                    <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/enum.png"></buttonicon>
+                </custom>
+                <standard action="ADD_SIGNAL"/>
+                <standard action="ADD_INSTANCE_SPECIFICATION" shortcut="shift pressed O "/>
+                <standard action="ADD_INTERFACE" description="Interface" shortcut="pressed I "/>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Proxy Port" listAsElement="false" opposite="false" id="IDaction_1327032080859_181260_0">
+                        <stereotype id="_17_0_3_17530432_1320213131032_5397_2410"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_p.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_p.png"></buttonicon>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Full Port" listAsElement="false" opposite="false" id="IDaction_1327032040578_150542_0">
+                        <stereotype id="_17_0_3_17530432_1320213032822_616987_2338"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_f.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_f.png"></buttonicon>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Port" listAsElement="false" opposite="false" id="IDaction_1237457749187_904344_0"/>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Flow Port" listAsElement="false" opposite="false" id="IDaction_1331713818137_76413_0">
+                        <stereotype id="_11_0_be00301_1147682946132_981479_8"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/flowport.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/flowport.png"></buttonicon>
+                    </custom>
+                </group>
+                <group>
+                    <standard action="ADD_INTERFACE_REALIZATION" shortcut="pressed R "/>
+                    <standard action="ADD_INTERFACE_REALIZATION_OPPOSITE" shortcut="shift pressed R "/>
+                </group>
+                <standard action="ADD_LINK" shortcut="shift pressed L "/>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdassociationclasses.AssociationClass" description="Association Block" listAsElement="false" opposite="false" id="IDaction_1222312665951_587473_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147424179914_458922_958"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/associationblock.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/associationblock.png"></buttonicon>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <name>AssociationClass</name>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isDerived</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <value/>
+        <multiline xmi:value="true"/>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>END_A.aggregation</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+        <value>none</value>
+        <choice xmi:value="none^shared^composite"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isDerived</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isDerivedUnion</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isLeaf</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isOrdered</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isReadOnly</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isStatic</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.isUnique</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+        <value xmi:value="true"/>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>END_A.visibility</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+        <value>private</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="1"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>END_A.documentation</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+        <value/>
+        <multiline xmi:value="true"/>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>END_A.multiplicity</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+        <value>1</value>
+        <choice xmi:value="0^0..1^0..*^1^1..*^*"/>
+        <index xmi:value="3"/>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_A.navigable</propertyID>
+        <propertyGroup>END_A</propertyGroup>
+        <value xmi:value="true"/>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>END_B.aggregation</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+        <value>none</value>
+        <choice xmi:value="none^shared^composite"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isDerived</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isDerivedUnion</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isLeaf</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isOrdered</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isReadOnly</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isStatic</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.isUnique</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+        <value xmi:value="true"/>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>END_B.visibility</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+        <value>private</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="1"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>END_B.documentation</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+        <value/>
+        <multiline xmi:value="true"/>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>END_B.multiplicity</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+        <value>1</value>
+        <choice xmi:value="0^0..1^0..*^1^1..*^*"/>
+        <index xmi:value="3"/>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>END_B.navigable</propertyID>
+        <propertyGroup>END_B</propertyGroup>
+        <value xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdassociationclasses.AssociationClass" description="Association Block with Owned Ends" listAsElement="false" opposite="false" id="IDaction_1382134107789_133984_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147424179914_458922_958"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/abx.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/abx.png"></buttonicon>
+                    </custom>
+                </group>
+                <group>
+                    <standard action="ADD_DIRECTED_ASSOCIATION"/>
+                    <standard action="ADD_ASSOCIATION" shortcut="pressed S "/>
+                </group>
+                <group>
+                    <standard action="ADD_DIRECTED_AGGREGATION"/>
+                    <standard action="ADD_AGGREGATION" shortcut="pressed A "/>
+                </group>
+                <group>
+                    <standard action="ADD_DIRECTED_COMPOSITION"/>
+                    <standard action="ADD_COMPOSITION" shortcut="pressed F "/>
+                </group>
+                <group>
+                    <standard action="ADD_GENERALIZATION" shortcut="pressed G "/>
+                    <standard action="ADD_GENERALIZATION_OPPOSITE" shortcut="shift pressed G "/>
+                </group>
+                <group>
+                    <standard action="ADD_USAGE" shortcut="pressed U "/>
+                    <standard action="ADD_USAGE_OPPOSITE" shortcut="shift pressed U "/>
+                </group>
+                <custom type="com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdinformationflows.InformationFlow" description="Item Flow" listAsElement="false" opposite="false" id="IDaction_1161246339765_953842_0">
+                    <stereotype id="_11_0_be00301_1147691436170_978680_223"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+            </actions>
+        </category>
+        <category name="Internal Block Diagram" id="action_category_1156845949343_978513_0" expandedByDefault="false">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/internalblockdiagram.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/internalblockdiagram.svg"></icon>
+            <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Value Property" listAsElement="false" opposite="false" id="IDaction_1201514835562_480426_0">
+                    <stereotype id="_12_0_be00301_1164123483951_695645_2041"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<name>Property</name>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>aggregation</propertyID>
+    <value>composite</value>
+    <choice xmi:value="none^shared^composite"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerived</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerivedUnion</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isOrdered</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isReadOnly</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isStatic</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isUnique</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>private</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>multiplicity</propertyID>
+    <value/>
+    <choice xmi:value="0^0..1^0..*^1^1..*^*"/>
+    <index xmi:value="-1"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Part Property" listAsElement="false" opposite="false" id="IDaction_1201514667125_801175_0">
+                    <stereotype id="_15_0_be00301_1199377756297_348405_2678"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<name>Property</name>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>aggregation</propertyID>
+    <value>composite</value>
+    <choice xmi:value="none^shared^composite"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerived</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerivedUnion</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isOrdered</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isReadOnly</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isStatic</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isUnique</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>private</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>multiplicity</propertyID>
+    <value/>
+    <choice xmi:value="0^0..1^0..*^1^1..*^*"/>
+    <index xmi:value="-1"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Reference Property" listAsElement="false" opposite="false" id="IDaction_1201514755453_733339_0">
+                    <stereotype id="_15_0_be00301_1199378032543_992832_3096"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<name>Property</name>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>aggregation</propertyID>
+    <value>none</value>
+    <choice xmi:value="none^shared^composite"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerived</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerivedUnion</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isOrdered</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isReadOnly</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isStatic</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isUnique</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>private</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>multiplicity</propertyID>
+    <value/>
+    <choice xmi:value="0^0..1^0..*^1^1..*^*"/>
+    <index xmi:value="-1"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Constraint Property" listAsElement="false" opposite="false" id="IDaction_1201514875906_541977_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147767840464_372327_467"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<name>Property</name>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>aggregation</propertyID>
+    <value>composite</value>
+    <choice xmi:value="none^shared^composite"/>
+    <index xmi:value="2"/>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerived</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isDerivedUnion</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isOrdered</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isReadOnly</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isStatic</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isUnique</propertyID>
+    <value xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>private</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="1"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>multiplicity</propertyID>
+    <value/>
+    <choice xmi:value="0^0..1^0..*^1^1..*^*"/>
+    <index xmi:value="-1"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Flow Property" listAsElement="false" opposite="false" id="IDaction_1239160377453_391423_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147436061009_177713_1911"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Participant Property" listAsElement="false" opposite="false" id="IDaction_1305257164356_656019_0">
+                    <stereotype id="_15_0_be00301_1204738438075_92104_1078"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ElementListProperty">
+    <propertyID>end</propertyID>
+    <displayableTypes xmi:value=""/>
+    <selectableTypes xmi:value="ConnectorEnd"/>
+    <containment xmi:value="false"/>
+    <ordered xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Bound Reference" listAsElement="false" opposite="false" id="IDaction_1391529142420_965091_0">
+                    <stereotype id="_17_0_5beta_17530432_1382589402278_962385_13079"/>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property" description="Classifier Behavior Property" listAsElement="false" opposite="false" id="IDaction_1391529234320_784494_0">
+                    <stereotype id="_17_0_5beta_17530432_1382596103711_316615_13367"/>
+                </custom>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Proxy Port" listAsElement="false" opposite="false" id="IDaction_1326872644609_278979_0">
+                        <stereotype id="_17_0_3_17530432_1320213131032_5397_2410"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_p.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_p.png"></buttonicon>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Full Port" listAsElement="false" opposite="false" id="IDaction_1326872782328_533456_0">
+                        <stereotype id="_17_0_3_17530432_1320213032822_616987_2338"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_f.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/port_f.png"></buttonicon>
+                    </custom>
+                    <standard action="ADD_PORT" shortcut="shift pressed R "/>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port" description="Flow Port" listAsElement="false" opposite="false" id="IDaction_1331714013447_203497_0">
+                        <stereotype id="_11_0_be00301_1147682946132_981479_8"/>
+                        <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/flowport.svg"></buttonicon>
+                        <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/flowport.png"></buttonicon>
+                    </custom>
+                </group>
+                <standard action="ADD_CONNECTOR" shortcut="pressed C "/>
+                <custom type="com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector" description="Binding Connector" listAsElement="false" opposite="false" id="IDaction_1325746922046_883918_0">
+                    <stereotype id="_15_0_be00301_1204738115945_253883_5044"/>
+                </custom>
+            </actions>
+        </category>
+        <category name="Requirements Diagram" id="action_category_1156510810625_392167_1" expandedByDefault="false">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/requirementsdiagram.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/requirementsdiagram.svg"></icon>
+            <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Requirement" listAsElement="false" opposite="false" id="IDaction_1156744065875_532307_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147873190330_159934_2220"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isActive</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isAbstract</propertyID>
+</mdElement>
+<mdElement elementClass="BooleanProperty">
+    <propertyID>isLeaf</propertyID>
+</mdElement>
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Extended Requirement" listAsElement="false" opposite="false" id="IDaction_1175266369203_82605_0">
+                        <stereotype id="_12_1_8740266_1172576734593_228534_190"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Business Requirement" listAsElement="false" opposite="false" id="IDaction_1175266340265_517071_0">
+                        <stereotype id="_12_1_8740266_1172577924546_705207_930"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Usability Requirement" listAsElement="false" opposite="false" id="IDaction_1175266432984_360963_0">
+                        <stereotype id="_12_1_8740266_1172576899359_902879_864"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Functional Requirement" listAsElement="false" opposite="false" id="IDaction_1175266385015_68561_0">
+                        <stereotype id="_12_1_8740266_1172576734609_530688_194"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Interface Requirement" listAsElement="false" opposite="false" id="IDaction_1175266456468_906979_0">
+                        <stereotype id="_12_1_8740266_1172576734609_387880_196"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Performance Requirement" listAsElement="false" opposite="false" id="IDaction_1175266397140_680839_0">
+                        <stereotype id="_12_1_8740266_1172576734609_725391_198"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Physical Requirement" listAsElement="false" opposite="false" id="IDaction_1175266411843_288541_0">
+                        <stereotype id="_12_1_8740266_1172576734609_380772_200"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Design Constraint" listAsElement="false" opposite="false" id="IDaction_1175266358750_362981_0">
+                        <stereotype id="_12_1_8740266_1172576734609_234637_202"/>
+                        <defaults>
+                            <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+<mdElement elementClass="PropertyManager">
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isAbstract</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isActive</propertyID>
+    </mdElement>
+    <mdElement elementClass="BooleanProperty">
+        <propertyID>isLeaf</propertyID>
+    </mdElement>
+    <mdElement elementClass="ChoiceProperty">
+        <propertyID>visibility</propertyID>
+        <value>public</value>
+        <choice xmi:value="public^private^protected^package"/>
+        <index xmi:value="0"/>
+    </mdElement>
+    <mdElement elementClass="StringProperty">
+        <propertyID>documentation</propertyID>
+        <multiline xmi:value="true"/>
+    </mdElement>
+</mdElement>
+                            </PropertyVisitorAcceptor>
+                        </defaults>
+                    </custom>
+                </group>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Satisfy" listAsElement="false" opposite="false" id="IDaction_1156745537906_588158_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147873165274_736484_2128"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Derive" listAsElement="false" opposite="false" id="IDaction_1156744539531_764525_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147872860786_209724_1848"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Copy" listAsElement="false" opposite="false" id="IDaction_1156744453093_267436_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147873127229_923575_2046"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Trace" listAsElement="false" opposite="false" id="IDaction_1156861500015_568569_0">
+                    <stereotype id="_17_0_5beta_17530432_1382584906245_122734_11803"/>
+                    <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/trace-b.svg"></buttonicon>
+                    <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/trace-b.png"></buttonicon>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Verify" listAsElement="false" opposite="false" id="IDaction_1156744552750_594607_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1147873114711_445574_2026"/>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="ChoiceProperty">
+    <propertyID>visibility</propertyID>
+    <value>public</value>
+    <choice xmi:value="public^private^protected^package"/>
+    <index xmi:value="0"/>
+</mdElement>
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Abstraction" description="Refine" listAsElement="false" opposite="false" id="IDaction_1156921751890_878956_0">
+                    <stereotype id="_17_0_5beta_17530432_1382584914591_39608_11809"/>
+                    <buttonicon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/refine-b.svg"></buttonicon>
+                    <buttonicon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/refine-b.png"></buttonicon>
+                    <defaults>
+                        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+                            <mdElement elementClass="PropertyManager">
+<mdElement elementClass="StringProperty">
+    <propertyID>documentation</propertyID>
+    <multiline xmi:value="true"/>
+</mdElement>
+                            </mdElement>
+                        </PropertyVisitorAcceptor>
+                    </defaults>
+                </custom>
+                <group>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activity" description="Test Case Activity" listAsElement="false" opposite="false" id="IDaction_1196168128762_312191_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147937772815_210871_2448"/>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.statemachines.mdbehaviorstatemachines.StateMachine" description="Test Case Statemachine" listAsElement="false" opposite="false" id="IDaction_1196168367801_123186_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147937772815_210871_2448"/>
+                    </custom>
+                    <custom type="com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.Interaction" description="Test Case Interaction" listAsElement="false" opposite="false" id="IDaction_1196168445350_523111_0">
+                        <stereotype id="_11_5EAPbeta_be00301_1147937772815_210871_2448"/>
+                    </custom>
+                </group>
+            </actions>
+        </category>
+        <category name="Use Case Diagram" id="USECASE_DIAGRAM_ELEMENTS" expandedByDefault="false">
+            <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/usecasediagram.png"></icon>
+            <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/sysml/icons/diagrams/usecasediagram.svg"></icon>
+            <actions>
+                <standard action="ADD_ACTOR" shortcut="pressed A "/>
+                <standard action="ADD_USECASE" shortcut="pressed U "/>
+                <group>
+                    <standard action="ADD_PACKAGE" shortcut="pressed P "/>
+                    <standard action="ADD_SYSTEM_BOUNDARY" shortcut="pressed B "/>
+                </group>
+                <standard action="ADD_SUBSYSTEM"/>
+                <standard action="ADD_INCLUDE" shortcut="pressed C "/>
+                <group>
+                    <standard action="ADD_EXTEND" shortcut="pressed E "/>
+                    <standard action="ADD_EXTEND_OPPOSITE" shortcut="shift pressed E "/>
+                </group>
+                <standard action="ADD_ASSOCIATION" shortcut="pressed S "/>
+                <group>
+                    <standard action="ADD_GENERALIZATION" shortcut="pressed G "/>
+                    <standard action="ADD_GENERALIZATION_OPPOSITE" shortcut="shift pressed G "/>
+                </group>
+            </actions>
+        </category>
+    </toolbarConfiguration>
+    <icon type="small" size="16" filename="https://static.thenounproject.com/png/3558598-200.png"></icon>
+    <icon type="diagraming" size="-1" filename="https://static.thenounproject.com/png/3558598-200.png"></icon>
+    <module name="MD_customization_for_SysML.mdzip" location="C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\profiles\MD_customization_for_SysML.mdzip">
+        <root id="_12_0EAPbeta_be00301_1156851270584_552173_1"/>
+    </module>
+    <module name="UML_Standard_Profile.mdzip" location="C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\profiles\UML_Standard_Profile.mdzip">
+        <root id="magicdraw_uml_standard_profile_v_0001"/>
+    </module>
+    <module name="PatternProfile.mdzip" location="C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\profiles\PatternProfile.mdzip">
+        <root id="_2021x_2_302b0611_1691071413425_883096_3236"/>
+    </module>
+    <elementstyle name="Class">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+                    <value>STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES</value>
+                    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+                    <index xmi:value="5"/>
+                </mdElement>
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>SHOW_ASSOCIATION_ENDS_MODE</propertyID>
+                    <propertyGroup>ATTRIBUTES</propertyGroup>
+                    <value>WITHOUT_ASSOCIATION</value>
+                    <choice xmi:value="ALL^WITHOUT_ASSOCIATION^DO_NOT_DISPLAY"/>
+                    <index xmi:value="1"/>
+                </mdElement>
+                <mdElement elementClass="BooleanProperty">
+                    <propertyID>SUPPRESS_CLASS_OPERATIONS</propertyID>
+                    <propertyGroup>OPERATIONS</propertyGroup>
+                    <value xmi:value="true"/>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <elementstyle name="AssociationClass">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="ChoiceProperty">
+                    <propertyID>STEREOTYPES_DISPLAY_MODE</propertyID>
+                    <value>STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES</value>
+                    <choice xmi:value="STEREOTYPE_DISPLAY_MODE_TEXT_AND_ICON^STEREOTYPE_DISPLAY_MODE_TEXT^STEREOTYPE_DISPLAY_MODE_ICON^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE_AND_TEXT^STEREOTYPE_DISPLAY_MODE_SHAPE_IMAGE^STEREOTYPE_DISPLAY_MODE_DO_NOT_DISPLAY_STEREOTYPES"/>
+                    <index xmi:value="5"/>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </elementstyle>
+    <stereotypestyle id="_2021x_2_302b0611_1691071655021_817109_3370">
+        <PropertyVisitorAcceptor xmlns:xmi="http://www.omg.org/spec/XMI/20131001">
+            <mdElement elementClass="PropertyManager">
+                <mdElement elementClass="ColorProperty">
+                    <propertyID>PEN_COLOR</propertyID>
+                    <value xmi:value="-16737895"/>
+                </mdElement>
+                <mdElement elementClass="NumberProperty">
+                    <propertyID>LINE_WIDTH</propertyID>
+                    <value xmi:value="2.0"/>
+                </mdElement>
+            </mdElement>
+        </PropertyVisitorAcceptor>
+    </stereotypestyle>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdusecases.Actor</element>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_ACTOR</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DIRECTED_ASSOCIATION">
+            <target>ADD_USECASE</target>
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="ADD_DIRECTED_AGGREGATION">
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_USECASE</target>
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="ADD_AGGREGATION">
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="ADD_COMPOSITION">
+            <target>ADD_ACTOR</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Enumeration</element>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_ENUMERATION</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>ADD_ENUMERATION</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DIRECTED_ASSOCIATION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_DIRECTED_AGGREGATION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_ASSOCIATION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_AGGREGATION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdinformationflows.InformationItem</element>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdinterfaces.Interface</element>
+        <path action="ADD_INTERFACE_REALIZATION_OPPOSITE">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_USAGE_OPPOSITE">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Operation</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package</element>
+        <path action="ADD_CONTAINMENT_LINK_OPPOSITE">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>ADD_PACKAGE</target>
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP"/>
+        <path action="ADD_ELEMENT_IMPORT"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port</element>
+        <path action="ADD_USAGE">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Reception</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Slot</element>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype</element>
+        <path action="IDaction_1691147735447_80977_4"/>
+        <path action="ADD_GENERALIZATION"/>
+        <path action="ADD_GENERALIZATION_OPPOSITE"/>
+        <path action="ADD_ASSOCIATION"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <element>com.nomagic.uml2.ext.magicdraw.mdusecases.UseCase</element>
+        <path action="ADD_ASSOCIATION">
+            <target>ADD_ACTOR</target>
+            <target>ADD_USECASE</target>
+            <target>ADD_SUBSYSTEM</target>
+        </path>
+        <path action="ADD_EXTEND_OPPOSITE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_INCLUDE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>ADD_USECASE</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_HTML_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>ADD_HTML_COMMENT</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430239267_179145_1189" name="Value Type"/>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213032822_616987_2338" name="Full Port"/>
+        <path action="ADD_USAGE">
+            <target>ADD_INTERFACE</target>
+        </path>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147436929898_779228_1998" name="Flow Specification"/>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1331713746146_711068_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_310701_1581" name="System Context"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="IDaction_1327032040578_150542_0"/>
+        <path action="IDaction_1331713818137_76413_0"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1175265647609_513299_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1175265647609_513299_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1161258505703_142954_0">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_15_0_be00301_1199377756297_348405_2678" name="Part Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147767840464_372327_467" name="Constraint Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1173094714531_37548_260" name="External"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="IDaction_1327032040578_150542_0"/>
+        <path action="IDaction_1331713818137_76413_0"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1175265579031_441048_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1175265579031_441048_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1161258505703_142954_0">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_0EAPbeta_be00301_1161355503976_51059_459" name="Constraint Parameter"/>
+        <path action="IDaction_1325746922046_883918_0"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_388539_1575" name="Domain"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="IDaction_1327032040578_150542_0"/>
+        <path action="IDaction_1331713818137_76413_0"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1175265452171_655761_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1175265452171_655761_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1161258505703_142954_0">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_0_be00301_1147682946132_981479_8" name="Flow Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213059640_259248_2362" name="Interface Block"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1326872975359_214227_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1326872975359_214227_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_375361_1577" name="System"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="IDaction_1327032040578_150542_0"/>
+        <path action="IDaction_1331713818137_76413_0"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1175265637406_599256_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1175265637406_599256_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1161258505703_142954_0">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147420812402_281263_364" name="Viewpoint"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_0_be00301_1164123483951_695645_2041" name="Value Property"/>
+        <path action="ADD_CONNECTOR"/>
+        <path action="IDaction_1325746922046_883918_0"/>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_15_0_be00301_1199378032543_992832_3096" name="Reference Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430329106_6539_1367" name="Unit"/>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147767804973_159489_404" name="Constraint Block"/>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1156164720406_361366_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1156921751890_878956_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147424179914_458922_958" name="Block"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="IDaction_1327032040578_150542_0"/>
+        <path action="IDaction_1331713818137_76413_0"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1161258505703_142954_0">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_12_1_8740266_1172578094265_898135_1579" name="Subsystem"/>
+        <path action="IDaction_1327032080859_181260_0"/>
+        <path action="IDaction_1327032040578_150542_0"/>
+        <path action="IDaction_1331713818137_76413_0"/>
+        <path action="MENU_SEPARATOR"/>
+        <path action="ADD_DIRECTED_COMPOSITION">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION">
+            <target>IDaction_1175265612656_578165_0</target>
+        </path>
+        <path action="ADD_GENERALIZATION_OPPOSITE">
+            <target>IDaction_1175265612656_578165_0</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1161258505703_142954_0">
+            <target>IDaction_1156164654562_480223_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147430310770_313444_1322" name="QuantityKind"/>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_PACKAGE_IMPORT_RELATIONSHIP">
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156745537906_588158_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_17_0_3_17530432_1320213131032_5397_2410" name="Proxy Port"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147436061009_177713_1911" name="Flow Property"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147420760998_43940_227" name="View"/>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147937772815_210871_2448" name="Test Case"/>
+        <path action="IDaction_1156744552750_594607_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+    <manipulators>
+        <stereotype id="_11_5EAPbeta_be00301_1147873190330_159934_2220" name="Requirement"/>
+        <path action="ADD_DEPENDENCY">
+            <target>IDaction_1156164654562_480223_0</target>
+            <target>IDaction_1156164720406_361366_0</target>
+            <target>ADD_INTERFACE</target>
+            <target>ADD_DATA_TYPE</target>
+            <target>IDaction_1156164678968_788175_0</target>
+            <target>IDaction_1348632415494_68676_0</target>
+            <target>ADD_PACKAGE</target>
+        </path>
+        <path action="IDaction_1156744453093_267436_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="IDaction_1156744539531_764525_0">
+            <target>IDaction_1156744065875_532307_0</target>
+        </path>
+        <path action="ADD_NOTE_ANCHOR">
+            <target>ADD_NOTE</target>
+            <target>ADD_COMMENT</target>
+            <target>IDaction_1161258471734_623304_0</target>
+            <target>IDaction_1161258490265_865153_0</target>
+        </path>
+    </manipulators>
+</diagram>

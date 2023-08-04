@@ -20,6 +20,7 @@ import com.samares_engineering.omf.omf_public_features.patterncreation.actions.G
 import com.samares_engineering.omf.omf_public_features.patterncreation.actions.GenerateTemplateFromSTR;
 import com.samares_engineering.omf.omf_public_features.patterncreation.actions.RefreshPatternConfiguration;
 import com.samares_engineering.omf.omf_public_features.patterncreation.creation.ElementCreatorFromPattern;
+import com.samares_engineering.omf.omf_public_features.patterncreation.profile.PatternCreatorProfile;
 
 import java.util.*;
 import java.util.stream.Collectors;

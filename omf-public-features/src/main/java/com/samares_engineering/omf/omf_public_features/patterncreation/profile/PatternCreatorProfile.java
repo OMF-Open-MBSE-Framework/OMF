@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_public_features.patterncreation;
+package com.samares_engineering.omf.omf_public_features.patterncreation.profile;
 
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.profiles.ProfileCache;
@@ -23,8 +23,8 @@ public class PatternCreatorProfile extends ProfileImplementation
     public static final String PROFILE_NAME =  "PatternCreatorProfile";
 
     private final OnCreationStereotype onCreationStereotype;
-    private final PatternStereotype patternStereotype;
-    private final SourceDefaultCreationPatternStereotype sourceDefaultCreationPatternStereotype;
+    private final PatternInstanceStereotype patternInstanceStereotype;
+    private final PatternTemplateStereotype patternTemplateStereotype;
 
     public static PatternCreatorProfile getInstance(){
         return getInstance(OMFUtils.currentProject);
@@ -52,21 +52,21 @@ public class PatternCreatorProfile extends ProfileImplementation
     {
         super(cache);
         onCreationStereotype = new OnCreationStereotype(this);
-        patternStereotype = new PatternStereotype(this);
-        sourceDefaultCreationPatternStereotype = new SourceDefaultCreationPatternStereotype(this);
+        patternInstanceStereotype = new PatternInstanceStereotype(this);
+        patternTemplateStereotype = new PatternTemplateStereotype(this);
 
     }
     public OnCreationStereotype onCreation()
     {
         return onCreationStereotype;
     }
-    public PatternStereotype pattern()
+    public PatternInstanceStereotype patternInstance()
     {
-        return patternStereotype;
+        return patternInstanceStereotype;
     }
-    public SourceDefaultCreationPatternStereotype sourceDefaultCreationPattern()
+    public PatternTemplateStereotype patternTemplate()
     {
-        return sourceDefaultCreationPatternStereotype;
+        return patternTemplateStereotype;
     }
 
 
@@ -92,13 +92,13 @@ public class PatternCreatorProfile extends ProfileImplementation
         @Override
         public boolean is(@CheckForNull Element element)
         {
-            return element instanceof com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DirectedRelationship &&
+            return element instanceof com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency &&
                     _p.isTypeOf(element, getStereotype());
         }
 
         public static boolean isInstance(@CheckForNull Element element)
         {
-            if(element instanceof com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DirectedRelationship)
+            if(element instanceof com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency)
             {
                 PatternCreatorProfile instance = getInstance(element);
                 return instance.isTypeOf(element, instance.onCreation().getStereotype());
@@ -107,15 +107,15 @@ public class PatternCreatorProfile extends ProfileImplementation
         }
 
     }
-    public static class PatternStereotype extends StereotypeWrapper
+    public static class PatternInstanceStereotype extends StereotypeWrapper
     {
 
 
-        //stereotype Pattern and its tags
-        public static final String STEREOTYPE_NAME =  "Pattern";
+        //stereotype Pattern Instance and its tags
+        public static final String STEREOTYPE_NAME =  "Pattern Instance";
 
         private final PatternCreatorProfile _p;
-        protected  PatternStereotype(PatternCreatorProfile profile)
+        protected  PatternInstanceStereotype(PatternCreatorProfile profile)
         {
             super(profile);
             _p = profile;
@@ -129,30 +129,30 @@ public class PatternCreatorProfile extends ProfileImplementation
         @Override
         public boolean is(@CheckForNull Element element)
         {
-            return element != null &&
+            return element instanceof com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype &&
                     _p.isTypeOf(element, getStereotype());
         }
 
         public static boolean isInstance(@CheckForNull Element element)
         {
-            if(element != null)
+            if(element instanceof com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype)
             {
                 PatternCreatorProfile instance = getInstance(element);
-                return instance.isTypeOf(element, instance.pattern().getStereotype());
+                return instance.isTypeOf(element, instance.patternInstance().getStereotype());
             }
             return false;
         }
 
     }
-    public static class SourceDefaultCreationPatternStereotype extends StereotypeWrapper
+    public static class PatternTemplateStereotype extends StereotypeWrapper
     {
 
 
-        //stereotype SourceDefaultCreationPattern and its tags
-        public static final String STEREOTYPE_NAME =  "SourceDefaultCreationPattern";
+        //stereotype Pattern Template and its tags
+        public static final String STEREOTYPE_NAME =  "Pattern Template";
 
         private final PatternCreatorProfile _p;
-        protected  SourceDefaultCreationPatternStereotype(PatternCreatorProfile profile)
+        protected  PatternTemplateStereotype(PatternCreatorProfile profile)
         {
             super(profile);
             _p = profile;
@@ -175,7 +175,7 @@ public class PatternCreatorProfile extends ProfileImplementation
             if(element != null)
             {
                 PatternCreatorProfile instance = getInstance(element);
-                return instance.isTypeOf(element, instance.sourceDefaultCreationPattern().getStereotype());
+                return instance.isTypeOf(element, instance.patternTemplate().getStereotype());
             }
             return false;
         }
@@ -187,8 +187,8 @@ public class PatternCreatorProfile extends ProfileImplementation
     {
         Collection<ProfileElementWrapper> wrappers = new ArrayList<>();
         wrappers.add(onCreationStereotype);
-        wrappers.add(patternStereotype);
-        wrappers.add(sourceDefaultCreationPatternStereotype);
+        wrappers.add(patternInstanceStereotype);
+        wrappers.add(patternTemplateStereotype);
         return wrappers;
     }
 
@@ -201,8 +201,8 @@ public class PatternCreatorProfile extends ProfileImplementation
             final Collection<Stereotype> stereotypes = new HashSet<>();
 
             stereotypes.add(onCreationStereotype.getStereotype());
-            stereotypes.add(patternStereotype.getStereotype());
-            stereotypes.add(sourceDefaultCreationPatternStereotype.getStereotype());
+            stereotypes.add(patternInstanceStereotype.getStereotype());
+            stereotypes.add(patternTemplateStereotype.getStereotype());
 
             return stereotypes;
         }
@@ -212,4 +212,4 @@ public class PatternCreatorProfile extends ProfileImplementation
 
 
 }
-//MD5sum:3F5AB42AB466F8974FFCEE3F5B6F9A1B
+//MD5sum:5DAD2213CC89534E7AAC53208583B11B
