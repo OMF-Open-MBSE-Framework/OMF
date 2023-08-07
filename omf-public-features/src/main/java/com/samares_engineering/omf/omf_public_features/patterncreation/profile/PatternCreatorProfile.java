@@ -29,7 +29,6 @@ public class PatternCreatorProfile extends ProfileImplementation
     public static PatternCreatorProfile getInstance(){
         return getInstance(OMFUtils.currentProject);
     }
-
     public static PatternCreatorProfile getInstance(BaseElement baseElement)
     {
         PatternCreatorProfile profile = ProfilesBridge.getProfile(PatternCreatorProfile.class, baseElement);

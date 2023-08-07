@@ -16,9 +16,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.patterncreation.actions.GenerateTemplateFromElement;
-import com.samares_engineering.omf.omf_public_features.patterncreation.actions.GenerateTemplateFromSTR;
-import com.samares_engineering.omf.omf_public_features.patterncreation.actions.RefreshPatternConfiguration;
+import com.samares_engineering.omf.omf_public_features.patterncreation.actions.*;
 import com.samares_engineering.omf.omf_public_features.patterncreation.creation.ElementCreatorFromPattern;
 import com.samares_engineering.omf.omf_public_features.patterncreation.profile.PatternCreatorProfile;
 
@@ -43,7 +41,9 @@ public class PatternCreationFeature extends SimpleFeature {
         return Arrays.asList(
                 new RefreshPatternConfiguration(),
                 new GenerateTemplateFromSTR(),
-                new GenerateTemplateFromElement()
+                new GenerateTemplateFromElement(),
+                new ReplaceA_with_B(),
+                new ReplaceB_with_A()
         );
     }
 

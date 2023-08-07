@@ -50,7 +50,7 @@ public class GenerateTemplateFromSTR extends AUIAction {
 
             Element rootModel = OMFUtils.currentProject.getPrimaryModel();
             PatternCreationHelper.replaceElementWithGeneratedPatterns(rootModel, configuredOnCreationDependencies);
-
+//            PatternCreationHelper.generatePatternFromElement(rootModel, selectedSTR);
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, true);
         }
