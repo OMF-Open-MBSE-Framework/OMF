@@ -1,7 +1,6 @@
 package com.samares_engineering.omf.omf_public_features.patterncreation;
 
 import com.nomagic.magicdraw.copypaste.CopyPasting;
-import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.uml.ConvertElementInfo;
 import com.nomagic.magicdraw.uml.Refactoring;
@@ -105,8 +104,8 @@ public class PatternCreationHelper {
                 //Copying the pattern structure, putting in a temp place to allow the refactoring.replace to work without loosing all elements
                 Element srcOwner = getSourceOwner(createdPatternElement);
 
-                NamedElement tmp = createTempOwnerBasedOnPatternTemplateType(templateElementOwner);
-                Collection<Element> patternElements = copyPatternFromTemplateOwner(templateElementOwner, tmp).getOwnedElement();
+//                NamedElement tmp = createTempOwnerBasedOnPatternTemplateType(templateElementOwner);
+                Collection<Element> patternElements = copyPatternFromTemplateOwner(templateElementOwner, OMFUtils.currentProject.getPrimaryModel()).getOwnedElement();
                 Element patternTemplateImpl = getTargetPatternElementFromCopiedElements(patternElements, createdPatternElement);
 
                 Element patternTemplateOwner = patternTemplateImpl.getOwner();
@@ -115,7 +114,7 @@ public class PatternCreationHelper {
                 try {
                     //Replacing the pattern structure element with the owner of the created element (for diagram and relations consistency)
                     Refactoring.Replacing.replace(srcOwner, patternTemplateOwner, new ConvertElementInfo(srcOwner.getClass()));
-                    ModelElementsManager.getInstance().removeElement(tmp);
+//                    ModelElementsManager.getInstance().removeElement(tmp);
                 }catch (ReadOnlyElementException e){
                     OMFErrorHandler.handleException(
                             new OMFException("Cannot replace element with generated pattern, the element "
