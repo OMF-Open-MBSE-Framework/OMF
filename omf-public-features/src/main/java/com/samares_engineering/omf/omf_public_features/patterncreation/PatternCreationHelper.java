@@ -94,11 +94,12 @@ public class PatternCreationHelper {
 
         templateElement.setSyncElement(createdPatternElement); //To retrieve the copied element later
 
-        PatternCreatorProfile.PatternTemplateStereotype patternTemplateStr = PatternCreatorProfile.getInstance().patternTemplate();
-        if(patternTemplateStr.is(templateElement)){ //if template element is THE element defining the pattern structure
+        if(templateElementOwner == templateElement){ //if template element is THE element defining the pattern structure
             return copyPattern(createdPatternElement, templateElement);
         }else{
-            if(patternTemplateStr.is(templateElement.getOwner())){ //The pattern structure is defined by its owner.
+
+            PatternCreatorProfile.PatternTemplateStereotype patternTemplate = PatternCreatorProfile.getInstance().patternTemplate();
+            if(patternTemplate.is(templateElementOwner)){ //The pattern structure is defined by its owner.
                 return copyPatternFromTemplateOwner(createdPatternElement, templateElementOwner);
             }else{
                 throw new NoPatternFoundOnTemplateElementException(templateElement);
@@ -169,7 +170,7 @@ public class PatternCreationHelper {
 
         boolean isOwnerRootModel = srcOwner.equals(OMFUtils.currentProject.getPrimaryModel());
         if(isOwnerRootModel){
-            srcOwner = SysMLFactory.getInstance().createBlock(srcOwner);
+            srcOwner = SysMLFactory.getInstance().createPackage(((NamedElement) createdPatternElement).getName(), srcOwner); //TODO it's a fix, but the package shall not stay in the end?
         }
         return srcOwner;
     }
@@ -188,6 +189,10 @@ public class PatternCreationHelper {
      * @return the compatible PatternTemplate element, or Optional.empty() if none was found
      */
     private static Optional<Element> getAccordingTemplateOwner(Element createdElement, Element templateElement) {
+        PatternCreatorProfile.PatternTemplateStereotype patternTemplate = PatternCreatorProfile.getInstance().patternTemplate();
+        //if the template element is the pattern template itself, return it
+        if(patternTemplate.is(templateElement)) return Optional.of(templateElement);
+
         //If the owner is a PossibleOwner, return it
         Element owner = createdElement.getOwner();
         Optional<Element> optOwner = templateElement.get_directedRelationshipOfSource().stream()
@@ -200,7 +205,7 @@ public class PatternCreationHelper {
 
         //If the owner is a property, the template element can be the pattern template itself
         Element templateOwner = templateElement.getOwner();
-        boolean matchTemplateWithProperties = createdElement instanceof Property && PatternCreatorProfile.getInstance().patternTemplate().is(templateOwner);
+        boolean matchTemplateWithProperties = createdElement instanceof Property && patternTemplate.is(templateOwner);
         if(matchTemplateWithProperties) {
             return templateOwner.getClass().isInstance(owner) ? Optional.of(templateOwner) : Optional.empty();
         }
