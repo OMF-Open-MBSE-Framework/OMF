@@ -16,11 +16,9 @@ import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCr
 
 import java.util.List;
 
-@DiagramAction
-@BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Refresh Pattern Configuration", category = "***PATTERNS")
+@MDAction(actionName = "Refresh Pattern Configuration", category = "PATTERNS")
 public class RefreshPatternConfiguration extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

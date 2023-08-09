@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 public class PatternCreationHelper {
 
-    /**
+    /** //NOT TESTED
      *  Generate the pattern from the template element to the element owner.
      *  Pattern shall be defined in the project using the PatternProfile, using OnCreation links, and Pattern Template stereotype.
      * @param createdElement
@@ -86,8 +86,6 @@ public class PatternCreationHelper {
      * @return
      * @throws NoPatternFoundOnTemplateElementException
      */
-
-
     public static Element generatePatternFromElement(Element createdPatternElement, Element templateElement) throws NoPatternFoundOnTemplateElementException {
         Optional<Element> optTemplateElementOwner = getAccordingTemplateOwner(createdPatternElement, templateElement);
         if(optTemplateElementOwner.isEmpty()) throw new NoPatternFoundOnTemplateElementException(templateElement); //TODO: add a message to the exception "No Pattern corresponding to the template element was found, owners don't match"
@@ -101,38 +99,47 @@ public class PatternCreationHelper {
             return copyPattern(createdPatternElement, templateElement);
         }else{
             if(patternTemplateStr.is(templateElement.getOwner())){ //The pattern structure is defined by its owner.
-                //Copying the pattern structure, putting in a temp place to allow the refactoring.replace to work without loosing all elements
-                Element srcOwner = getSourceOwner(createdPatternElement);
-
-//                NamedElement tmp = createTempOwnerBasedOnPatternTemplateType(templateElementOwner);
-                Collection<Element> patternElements = copyPatternFromTemplateOwner(templateElementOwner, OMFUtils.currentProject.getPrimaryModel()).getOwnedElement();
-                Element patternTemplateImpl = getTargetPatternElementFromCopiedElements(patternElements, createdPatternElement);
-
-                Element patternTemplateOwner = patternTemplateImpl.getOwner();
-                new ArrayList<>(patternTemplateOwner.getOwnedElement()).forEach(e -> e.setOwner(srcOwner));//new Arraylist due to concurrent modification exception
-//                patternTemplateImpl.setOwner(tmp);
-                try {
-                    //Replacing the pattern structure element with the owner of the created element (for diagram and relations consistency)
-                    Refactoring.Replacing.replace(srcOwner, patternTemplateOwner, new ConvertElementInfo(srcOwner.getClass()));
-//                    ModelElementsManager.getInstance().removeElement(tmp);
-                }catch (ReadOnlyElementException e){
-                    OMFErrorHandler.handleException(
-                            new OMFException("Cannot replace element with generated pattern, the element "
-                                    + srcOwner.getHumanName() + " is read only",
-                                    e, GenericException.ECriticality.CRITICAL), true);
-                }
-                Element newSrcOwner = patternTemplateOwner; //srcOwner is now the pattern structure element
-                removePatternSTR(newSrcOwner);
-                removePatternSTR(patternTemplateImpl);
-
-                templateElementOwner.setSyncElement(null);
-                patternTemplateImpl.setSyncElement(null);
-//                return findTemplateElementInCopiedElements(templateElement, (List<Element>) newSrcOwner.getOwnedElement());
-                return patternTemplateImpl;
+                return copyPatternFromTemplateOwner(createdPatternElement, templateElementOwner);
             }else{
                 throw new NoPatternFoundOnTemplateElementException(templateElement);
             }
         }
+    }
+
+    private static Element copyPatternFromTemplateOwner(Element createdPatternElement, Element templateElementOwner) {
+        //Copying the pattern structure, putting in a temp place to allow the refactoring.replace to work without loosing all elements
+
+        Element srcOwner = getSourceOwner(createdPatternElement);
+        Collection<Element> patternElements = copyPatternFromTemplateOwner(templateElementOwner, OMFUtils.currentProject.getPrimaryModel()).getOwnedElement();
+        Element patternTemplateImpl = getTargetPatternElementFromCopiedElements(patternElements, createdPatternElement);
+
+        Element patternTemplateOwner = patternTemplateImpl.getOwner();
+        new ArrayList<>(patternTemplateOwner.getOwnedElement()).forEach(e -> e.setOwner(srcOwner));//new Arraylist due to concurrent modification exception
+
+        Element newSrcOwner = replaceModelElement(srcOwner, patternTemplateOwner);
+
+        removePatternSTR(newSrcOwner);
+        removePatternSTR(patternTemplateImpl);
+
+        //Removing the sync element on the Pattern definition elements
+        templateElementOwner.setSyncElement(null);
+        patternTemplateImpl.setSyncElement(null);
+
+        return patternTemplateImpl;
+    }
+
+    private static Element replaceModelElement(Element srcOwner, Element patternTemplateOwner) {
+        try {
+            //Replacing the pattern structure element with the owner of the created element (for diagram and relations consistency)
+            Refactoring.Replacing.replace(srcOwner, patternTemplateOwner, new ConvertElementInfo(srcOwner.getClass()));
+            return patternTemplateOwner; //srcOwner is now the pattern structure element
+        }catch (ReadOnlyElementException e){
+            OMFErrorHandler.handleException(
+                    new OMFException("Cannot replace element with generated pattern, the element "
+                            + srcOwner.getHumanName() + " is read only",
+                            e, GenericException.ECriticality.CRITICAL), true);
+        }
+        return srcOwner;
     }
 
     private static Element getTargetPatternElementFromCopiedElements(Collection<Element> elements, Element createdPatternElement) {
@@ -156,11 +163,6 @@ public class PatternCreationHelper {
         return copyTemplateOwner;
     }
 
-    private static NamedElement createTempOwnerBasedOnPatternTemplateType(Element templateElementOwner) {
-        NamedElement tmp = (NamedElement) CopyPasting.copyPasteElement(templateElementOwner, OMFUtils.currentProject.getPrimaryModel());
-        tmp.setName("tmp - should be removed after pattern generation");
-        return tmp;
-    }
 
     private static Element getSourceOwner(Element createdPatternElement) {
         Element srcOwner = createdPatternElement.getOwner();
@@ -177,15 +179,16 @@ public class PatternCreationHelper {
     }
 
     /**
-     * Copy the pattern from the template element to the created element owner, then remove the pattern template stereotype.
+     * Retrieve the compatible PatternTemplate element from the created Pattern:
+     * - From the PatternTemplate, retrieve all PossibleOwners;
+     * - if one has the same class as the created element, return it;
+     * - else if the PatternTemplate itself if it is a Property and has the same class as the created element, return it;
      * @param createdElement
-     * @param allElementFromPattern
-     * @return
+     * @param templateElement
+     * @return the compatible PatternTemplate element, or Optional.empty() if none was found
      */
-    private static List<Element> copyPattern(Element createdElement, List<Element> allElementFromPattern) {
-        return removePatternSTR(CopyPasting.copyPasteElements(allElementFromPattern, createdElement.getOwner()));
-    }
     private static Optional<Element> getAccordingTemplateOwner(Element createdElement, Element templateElement) {
+        //If the owner is a PossibleOwner, return it
         Element owner = createdElement.getOwner();
         Optional<Element> optOwner = templateElement.get_directedRelationshipOfSource().stream()
                 .filter(PatternCreatorProfile.getInstance().possiblePatternCreationOwner()::is)
@@ -195,6 +198,7 @@ public class PatternCreationHelper {
                 .findFirst();
         if(optOwner.isPresent()) return optOwner;
 
+        //If the owner is a property, the template element can be the pattern template itself
         Element templateOwner = templateElement.getOwner();
         boolean matchTemplateWithProperties = createdElement instanceof Property && PatternCreatorProfile.getInstance().patternTemplate().is(templateOwner);
         if(matchTemplateWithProperties) {
@@ -203,6 +207,11 @@ public class PatternCreationHelper {
         return Optional.empty();
     }
 
+    /**
+     * Remove the pattern template stereotype from the elements.
+     * @param list
+     * @return
+     */
     private static List<Element> removePatternSTR(List<Element> list) {
         return list.stream()
                 .map(PatternCreationHelper::removePatternSTR)
@@ -212,7 +221,7 @@ public class PatternCreationHelper {
     /**
      * Remove the pattern template stereotype from the element.
      * @param element
-     * @return
+     * @return the element without the pattern template stereotype
      */
     private static Element removePatternSTR(Element element) {
         PatternCreatorProfile.PatternInstanceStereotype patternInstance = PatternCreatorProfile.getInstance().patternInstance();
@@ -226,7 +235,7 @@ public class PatternCreationHelper {
      * Find the template element in the copied elements using stereotype.
      * @param templateElement
      * @param copiedElements
-     * @return
+     * @return the template element in the copied elements
      */
     private static Element findTemplateElementInCopiedElements(Element templateElement, List<Element> copiedElements) {
         return copiedElements.stream()
