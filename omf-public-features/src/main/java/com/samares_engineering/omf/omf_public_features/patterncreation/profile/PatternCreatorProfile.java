@@ -25,10 +25,8 @@ public class PatternCreatorProfile extends ProfileImplementation
     private final OnCreationStereotype onCreationStereotype;
     private final PatternInstanceStereotype patternInstanceStereotype;
     private final PatternTemplateStereotype patternTemplateStereotype;
+    private final PossiblePatternCreationOwnerStereotype possiblePatternCreationOwnerStereotype;
 
-    public static PatternCreatorProfile getInstance(){
-        return getInstance(OMFUtils.currentProject);
-    }
     public static PatternCreatorProfile getInstance(BaseElement baseElement)
     {
         PatternCreatorProfile profile = ProfilesBridge.getProfile(PatternCreatorProfile.class, baseElement);
@@ -53,8 +51,14 @@ public class PatternCreatorProfile extends ProfileImplementation
         onCreationStereotype = new OnCreationStereotype(this);
         patternInstanceStereotype = new PatternInstanceStereotype(this);
         patternTemplateStereotype = new PatternTemplateStereotype(this);
+        possiblePatternCreationOwnerStereotype = new PossiblePatternCreationOwnerStereotype(this);
 
     }
+
+    public static PatternCreatorProfile getInstance() {
+        return getInstance(OMFUtils.currentProject);
+    }
+
     public OnCreationStereotype onCreation()
     {
         return onCreationStereotype;
@@ -66,6 +70,10 @@ public class PatternCreatorProfile extends ProfileImplementation
     public PatternTemplateStereotype patternTemplate()
     {
         return patternTemplateStereotype;
+    }
+    public PossiblePatternCreationOwnerStereotype possiblePatternCreationOwner()
+    {
+        return possiblePatternCreationOwnerStereotype;
     }
 
 
@@ -180,6 +188,43 @@ public class PatternCreatorProfile extends ProfileImplementation
         }
 
     }
+    public static class PossiblePatternCreationOwnerStereotype extends StereotypeWrapper
+    {
+
+
+        //stereotype Possible Pattern Creation Owner and its tags
+        public static final String STEREOTYPE_NAME =  "Possible Pattern Creation Owner";
+
+        private final PatternCreatorProfile _p;
+        protected  PossiblePatternCreationOwnerStereotype(PatternCreatorProfile profile)
+        {
+            super(profile);
+            _p = profile;
+        }
+        @Override
+        @SuppressWarnings("ConstantConditions")
+        public Stereotype getStereotype()
+        {
+            return getElementByName(STEREOTYPE_NAME);
+        }
+        @Override
+        public boolean is(@CheckForNull Element element)
+        {
+            return element instanceof com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency &&
+                    _p.isTypeOf(element, getStereotype());
+        }
+
+        public static boolean isInstance(@CheckForNull Element element)
+        {
+            if(element instanceof com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency)
+            {
+                PatternCreatorProfile instance = getInstance(element);
+                return instance.isTypeOf(element, instance.possiblePatternCreationOwner().getStereotype());
+            }
+            return false;
+        }
+
+    }
 
     @Override
     protected Collection<ProfileElementWrapper> generatedGetAllElementWrappers()
@@ -188,6 +233,7 @@ public class PatternCreatorProfile extends ProfileImplementation
         wrappers.add(onCreationStereotype);
         wrappers.add(patternInstanceStereotype);
         wrappers.add(patternTemplateStereotype);
+        wrappers.add(possiblePatternCreationOwnerStereotype);
         return wrappers;
     }
 
@@ -202,6 +248,7 @@ public class PatternCreatorProfile extends ProfileImplementation
             stereotypes.add(onCreationStereotype.getStereotype());
             stereotypes.add(patternInstanceStereotype.getStereotype());
             stereotypes.add(patternTemplateStereotype.getStereotype());
+            stereotypes.add(possiblePatternCreationOwnerStereotype.getStereotype());
 
             return stereotypes;
         }
@@ -211,4 +258,4 @@ public class PatternCreatorProfile extends ProfileImplementation
 
 
 }
-//MD5sum:5DAD2213CC89534E7AAC53208583B11B
+//MD5sum:AF316732A7A103CCE92087581B3BD039
