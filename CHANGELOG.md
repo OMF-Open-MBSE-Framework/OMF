@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Error messages relating to the API server feature
 - Example test plugin was missing an option group
+- Deliver plugin task was not working properly
 - OMFErrorHandler will no more display user messages when it's blank or empty
 - OMFFeatureException one missing constructor has been added to differentiate user message and developer message
 - RuleEngine Rule field was not set properly when adding a rule
@@ -28,7 +29,6 @@ limited internet access and on the eclipse IDA
 of having to create a class that implements an abstract class from OMF.
 - Framework now better handles case when no option group has been declared in a plugin.
 - A number of gradle tasks where renamed and reorganized.
-- 
 
 ### Removed
 - The **mavenGroupId** and **testLauncher** gradle properties.

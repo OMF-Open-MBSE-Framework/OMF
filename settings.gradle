@@ -25,7 +25,7 @@ pluginManagement {
     includeBuild 'omf-gradle-plugin'
 }
 
-rootProject.name = 'OpenMBSEFramework'
+rootProject.name = 'open-mbse-framework'
 include 'omf-test-framework'
 include 'omf-core-framework'
 include 'omf-utils'
