@@ -16,7 +16,7 @@ import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.EventChecker;
+import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 

@@ -17,15 +17,9 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
-import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
-import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
-import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
-import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
+import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationFeature;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,15 +28,16 @@ public class OMFExamplePlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
-                new SysMLBasicFeature(),
+//                new SysMLBasicFeature(),
                 new FeaturesDeactivationFeature(),
-                new ErrorManagementFeatureExample(),
-                new HyperLinkFeature(),
-                new LockSafeFeature(),
-                new StereotypesFeature(),
+//                new ErrorManagementFeatureExample(),
+//                new HyperLinkFeature(),
+//                new LockSafeFeature(),
+//                new StereotypesFeature(),
                 new APIServerFeature("http://localhost", 9850),
-                new GeneratePluginModelArchi(),
-                new SysmlGptExploFeature()
+//                new GeneratePluginModelArchi(),
+//                new SysmlGptExploFeature(),
+                new PatternCreationFeature()
         );
     }
 
