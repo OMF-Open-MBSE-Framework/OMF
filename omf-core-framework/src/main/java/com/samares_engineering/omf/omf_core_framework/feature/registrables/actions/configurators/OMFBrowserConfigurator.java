@@ -39,11 +39,6 @@ public class OMFBrowserConfigurator extends FeatureActionConfigurator implements
     private void registerBrowserAction(ActionsManager actionsManager, AUIAction action) {
         MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, action);
 
-        if(!actionsManager.getCategories().contains(category) ) {
-            actionsManager.addCategory(category);
-            category.setNested(true);
-        }
-
         if(action.isBrowserAction())
             category.addAction(action.getBrowserAction());
     }

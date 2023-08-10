@@ -19,7 +19,7 @@ public abstract class FeatureActionConfigurator {
 
     public void resetMDActions(ActionsManager actionsManager) {
         genericActions.forEach(action ->
-            ConfiguratorUtils.findCategory(actionsManager, action).ifPresent(category ->
+            ConfiguratorUtils.findCategory(actionsManager, action.getCategory()).ifPresent(category ->
                 action.getAllActions().forEach(category::removeAction)
             )
         );

@@ -28,18 +28,13 @@ public class OMFMainMenuConfigurator extends FeatureActionConfigurator implement
     }
 
     private void registerMenuAction(ActionsManager actionsManager, AUIAction menuAction) {
-        boolean isEnabled = menuAction.checkMenuAvailability();
         MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction);
 
-        if(!actionsManager.getCategories().contains(category) ) {
-            actionsManager.addCategory(category);
-            category.setNested(true);
-        }
         MDAction action = menuAction.getMenuAction();
         if(!category.getActions().contains(menuAction.getMenuAction()))
             category.addAction(menuAction.getMenuAction());
 
-        action.setEnabled(isEnabled);
+        action.setEnabled(menuAction.checkMenuAvailability());
     }
 
     @Override

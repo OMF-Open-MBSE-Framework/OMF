@@ -70,42 +70,29 @@ public class MDActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
         }
     }
 
+    /*
+    Only need to reset the menu configurator because the browser and diagram configurators are reset by magicdraw when
+     */
     private void resetConfigurators() {
-        if (menuConfigurator != null)
-            menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
+        menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
     }
 
     private void refreshConfigurators() {
 //        browserConfigurator.configure(ActionsProvider.getInstance().getDiagramContextActions());
 //        diagramConfigurator.configure(ActionsProvider.getInstance().getContainmentBrowserShortcutsActions();
-        refreshMainMenuConfigurator();
-    }
-
-    private void refreshMainMenuConfigurator() {
-        if (menuConfigurator != null)
-            menuConfigurator.configure(ActionsProvider.getInstance().getMainMenuActions());
+        menuConfigurator.configure(ActionsProvider.getInstance().getMainMenuActions());
     }
 
     public void registerFeatureItem(UIAction action) {
-        if (browserConfigurator != null)
-            browserConfigurator.addNewAction((AUIAction) action);
-
-        if (diagramConfigurator != null)
-            diagramConfigurator.addNewAction((AUIAction) action);
-
-        if (menuConfigurator != null)
-            menuConfigurator.addNewAction((AUIAction) action);
+        browserConfigurator.addNewAction((AUIAction) action);
+        diagramConfigurator.addNewAction((AUIAction) action);
+        menuConfigurator.addNewAction((AUIAction) action);
     }
 
     public void unregisterFeatureItem(UIAction action) {
-        if (browserConfigurator != null)
-            browserConfigurator.removeAction((AUIAction) action);
-
-        if (diagramConfigurator != null)
-            diagramConfigurator.removeAction((AUIAction) action);
-
-        if (menuConfigurator != null)
-            menuConfigurator.removeAction((AUIAction) action);
+        browserConfigurator.removeAction((AUIAction) action);
+        diagramConfigurator.removeAction((AUIAction) action);
+        menuConfigurator.removeAction((AUIAction) action);
     }
 
     @Override

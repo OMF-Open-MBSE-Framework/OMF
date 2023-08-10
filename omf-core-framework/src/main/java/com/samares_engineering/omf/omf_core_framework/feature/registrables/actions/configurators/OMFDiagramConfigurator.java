@@ -36,11 +36,6 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
     private void registerDiagramAction(ActionsManager actionsManager, AUIAction action) {
         MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, action);
 
-        if(!actionsManager.getCategories().contains(category) ) {
-            actionsManager.addCategory(category);
-            category.setNested(true);
-        }
-
         if(action.isDiagramAction())
             category.addAction(action.getDiagramAction());
     }
