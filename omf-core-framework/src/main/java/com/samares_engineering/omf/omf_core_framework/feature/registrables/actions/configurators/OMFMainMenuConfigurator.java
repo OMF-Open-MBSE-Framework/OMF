@@ -9,22 +9,41 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
+import com.nomagic.magicdraw.actions.MDAction;
+import com.nomagic.magicdraw.actions.MDActionsCategory;
+import com.nomagic.magicdraw.utils.PriorityProvider;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 
 public class OMFMainMenuConfigurator extends FeatureActionConfigurator implements AMConfigurator {
-
-    String menuName = "OMF";
-
     /**
      * Action will be added to manager.
      */
     @Override
     public void configure(ActionsManager actionsManager) {
-        configureFeatureActions(actionsManager);
+        resetMDActions(actionsManager);
+        genericActions.stream()
+                .filter(AUIAction::isMenuAction)
+                .forEach(action -> this.registerMenuAction(actionsManager, action));
+
     }
 
+    private void registerMenuAction(ActionsManager actionsManager, AUIAction menuAction) {
+        boolean isEnabled = menuAction.checkMenuAvailability();
+        MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction);
+
+        if(!actionsManager.getCategories().contains(category) ) {
+            actionsManager.addCategory(category);
+            category.setNested(true);
+        }
+        MDAction action = menuAction.getMenuAction();
+        if(!category.getActions().contains(menuAction.getMenuAction()))
+            category.addAction(menuAction.getMenuAction());
+
+        action.setEnabled(isEnabled);
+    }
 
     @Override
     public int getPriority() {
-        return AMConfigurator.MEDIUM_PRIORITY;
+        return PriorityProvider.MEDIUM_PRIORITY;
     }
 }

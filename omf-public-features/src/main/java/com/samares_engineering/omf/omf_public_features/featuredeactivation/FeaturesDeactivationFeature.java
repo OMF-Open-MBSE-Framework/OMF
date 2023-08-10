@@ -13,7 +13,7 @@ import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -56,12 +56,12 @@ public class FeaturesDeactivationFeature extends AFeature {
     }
 
     @Override
-    public List<IUIAction> initFeatureActions() {
+    public List<UIAction> initFeatureActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<IUIAction> initProjectOnlyFeatureActions() {
+    protected List<UIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 

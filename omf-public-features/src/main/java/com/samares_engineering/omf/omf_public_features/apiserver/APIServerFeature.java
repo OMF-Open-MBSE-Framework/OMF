@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericE
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
@@ -43,7 +43,7 @@ public class APIServerFeature extends AFeature {
     }
 
     @Override
-    public List<IUIAction> initFeatureActions() {
+    public List<UIAction> initFeatureActions() {
         return Arrays.asList(
                 new RestartAPIServerAction(),
                 new StopAPIServerAction()
@@ -51,7 +51,7 @@ public class APIServerFeature extends AFeature {
     }
 
     @Override
-    protected List<IUIAction> initProjectOnlyFeatureActions() {
+    protected List<UIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 

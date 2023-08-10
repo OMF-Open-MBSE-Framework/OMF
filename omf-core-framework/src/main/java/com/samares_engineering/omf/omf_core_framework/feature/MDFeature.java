@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -26,11 +26,11 @@ public interface MDFeature {
 
     APlugin getPlugin();
 
-    List<IUIAction> getUIActions();
+    List<UIAction> getUIActions();
     List<IRuleEngine> getRuleEngines();
     List<IOption> getOptions();
 
-    List<IUIAction> getProjectOnlyUIActions();
+    List<UIAction> getProjectOnlyUIActions();
     List<IRuleEngine> getProjectOnlyRuleEngines();
     List<IOption> getProjectOnlyOptions();
 

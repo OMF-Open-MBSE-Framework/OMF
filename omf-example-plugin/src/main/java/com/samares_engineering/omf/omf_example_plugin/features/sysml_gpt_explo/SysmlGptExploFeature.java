@@ -10,10 +10,8 @@ package com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.actions.ImportFromGPT;
 
@@ -35,14 +33,14 @@ public class SysmlGptExploFeature extends AFeature {
     }
 
     @Override
-    public List<IUIAction> initFeatureActions() {
+    public List<UIAction> initFeatureActions() {
         return List.of(
                 new ImportFromGPT()
         );
     }
 
     @Override
-    protected List<IUIAction> initProjectOnlyFeatureActions() {
+    protected List<UIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 

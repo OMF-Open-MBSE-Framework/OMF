@@ -5,43 +5,46 @@
  * @since 0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly;
 
 import com.nomagic.magicdraw.actions.ActionsProvider;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.List;
 import java.util.Objects;
 
-public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
-    private OMFBrowserConfigurator browserConfigurator;
-    private OMFDiagramConfigurator diagramConfigurator;
-    private OMFMainMenuConfigurator menuConfigurator;
+public class MDActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAction> {
+    private final OMFBrowserConfigurator browserConfigurator;
+    private final OMFDiagramConfigurator diagramConfigurator;
+    private final OMFMainMenuConfigurator menuConfigurator;
     private FeatureRegisterer featureRegisterer;
 
-
-    @Override
-    public void init(FeatureRegisterer featureRegisterer) {
+    public MDActionFeatureItemRegisterer(APlugin plugin) {
         this.browserConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getBrowserConfigurator(),
+                plugin.getBrowserConfigurator(),
                 "NO BROWSER CONFIGURATOR REGISTERED");
         this.diagramConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getDiagramConfigurator(),
+                plugin.getDiagramConfigurator(),
                 "NO DIAGRAM CONFIGURATOR REGISTERED");
         this.menuConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getMenuConfigurator(),
+                plugin.getMenuConfigurator(),
                 "NO MENU CONFIGURATOR REGISTERED");
     }
 
-    public void registerFeatureItems(List<IUIAction> actions) {
+    public void init(FeatureRegisterer featureRegisterer) {
+        this.featureRegisterer = featureRegisterer;
+    }
+
+    public void registerFeatureItems(List<UIAction> actions) {
         if (actions == null) {
             throw new OMFFeatureRegisteringException(
                     "Trying to register actions but passed action list is null");
@@ -54,7 +57,7 @@ public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
         }
     }
 
-    public void unregisterFeatureItems(List<IUIAction> actions) {
+    public void unregisterFeatureItems(List<UIAction> actions) {
         if (actions == null) {
             throw new OMFFeatureRegisteringException("Trying to unregister actions but passed action list is null");
         }
@@ -83,7 +86,7 @@ public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
             menuConfigurator.configure(ActionsProvider.getInstance().getMainMenuActions());
     }
 
-    public void registerFeatureItem(IUIAction action) {
+    public void registerFeatureItem(UIAction action) {
         if (browserConfigurator != null)
             browserConfigurator.addNewAction((AUIAction) action);
 
@@ -94,7 +97,7 @@ public class MDActionRegisterer implements IFeatureItemRegisterer<IUIAction> {
             menuConfigurator.addNewAction((AUIAction) action);
     }
 
-    public void unregisterFeatureItem(IUIAction action) {
+    public void unregisterFeatureItem(UIAction action) {
         if (browserConfigurator != null)
             browserConfigurator.removeAction((AUIAction) action);
 

@@ -11,7 +11,8 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFrameworkException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -21,8 +22,8 @@ import java.util.List;
 public class FeatureRegisterer {
 
 
-    private List<IFeatureItemRegisterer> featureItemRegisters;
-    private List<IProjectOnlyFeatureItemRegisterer> projectOnlyFeatureItemRegisters;
+    private List<FeatureItemRegisterer> featureItemRegisters;
+    private List<ProjectOnlyFeatureItemRegisterer> projectOnlyFeatureItemRegisters;
 
     private List<MDFeature> registeredFeatures = new ArrayList<>();
     private final APlugin plugin;
@@ -52,7 +53,7 @@ public class FeatureRegisterer {
 
             registeredFeatures.add(feature);
 
-            for (IFeatureItemRegisterer registerer : featureItemRegisters) {
+            for (FeatureItemRegisterer registerer : featureItemRegisters) {
                 registerer.registerFeatureItems(feature);
                 if (OMFUtils.currentProject != null) {
                     registerProjectOnlyItemsOfFeature(feature);
@@ -115,7 +116,7 @@ public class FeatureRegisterer {
         }
 
         registeredFeatures.remove(feature);
-        for (IFeatureItemRegisterer<?> registerer : featureItemRegisters) {
+        for (FeatureItemRegisterer<?> registerer : featureItemRegisters) {
            try {
                registerer.unregisterFeatureItems(feature);
            } catch (Exception e) {
@@ -124,7 +125,7 @@ public class FeatureRegisterer {
            }
         }
 
-        for (IFeatureItemRegisterer<?> registerer : projectOnlyFeatureItemRegisters) {
+        for (FeatureItemRegisterer<?> registerer : projectOnlyFeatureItemRegisters) {
            try {
                registerer.unregisterFeatureItems(feature);
            }catch (Exception e) {
@@ -189,7 +190,7 @@ public class FeatureRegisterer {
      * and will be called when a feature is registered/unregistered
      * @param featureItemRegisterer
      */
-    public void addIFeatureItemRegisterer(IFeatureItemRegisterer featureItemRegisterer){
+    public void addIFeatureItemRegisterer(FeatureItemRegisterer featureItemRegisterer){
        try {
            this.featureItemRegisters.add(featureItemRegisterer);
            featureItemRegisterer.init(this);
@@ -201,10 +202,10 @@ public class FeatureRegisterer {
 
     /**
      * Adds a list of feature item registerers to the list of item registerers,
-     * see {@link FeatureRegisterer#addIFeatureItemRegisterer(IFeatureItemRegisterer)}
+     * see {@link FeatureRegisterer#addIFeatureItemRegisterer(FeatureItemRegisterer)}
      * @param featureItemRegisterers
      */
-    public void addAllIFeatureItemRegisterer(List<? extends IFeatureItemRegisterer> featureItemRegisterers){
+    public void addAllIFeatureItemRegisterer(List<? extends FeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::addIFeatureItemRegisterer);
     }
 
@@ -215,15 +216,15 @@ public class FeatureRegisterer {
      * and will be called when a feature is registered/unregistered
      * @param featureItemRegisterer
      */
-    public void removeIFeatureItemRegisterer(IFeatureItemRegisterer featureItemRegisterer){
+    public void removeIFeatureItemRegisterer(FeatureItemRegisterer featureItemRegisterer){
         this.featureItemRegisters.remove(featureItemRegisterer);
     }
     /**
      * Removes a list of feature item registerers from the list of item registerers,
-     * see {@link FeatureRegisterer#removeIFeatureItemRegisterer(IFeatureItemRegisterer)}
+     * see {@link FeatureRegisterer#removeIFeatureItemRegisterer(FeatureItemRegisterer)}
      * @param featureItemRegisterers
      */
-    public void removeAllIFeatureItemRegisterer(List<? extends IFeatureItemRegisterer> featureItemRegisterers){
+    public void removeAllIFeatureItemRegisterer(List<? extends FeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::removeIFeatureItemRegisterer);
     }
 
@@ -234,7 +235,7 @@ public class FeatureRegisterer {
      * and will be called when a feature is registered/unregistered
      * @param featureItemRegisterer
      */
-    public void addProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer featureItemRegisterer){
+    public void addProjectOnlyFeatureItemRegisterer(ProjectOnlyFeatureItemRegisterer featureItemRegisterer){
         try{
             this.projectOnlyFeatureItemRegisters.add(featureItemRegisterer);
             featureItemRegisterer.init(this);
@@ -245,10 +246,10 @@ public class FeatureRegisterer {
     }
     /**
      * Adds a list of project only feature item registerers to the list of item registerers,
-     * see {@link FeatureRegisterer#addProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer)}
+     * see {@link FeatureRegisterer#addProjectOnlyFeatureItemRegisterer(ProjectOnlyFeatureItemRegisterer)}
      * @param featureItemRegisterers
      */
-    public void addAllProjectOnlyFeatureItemRegisterer(List<? extends IProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
+    public void addAllProjectOnlyFeatureItemRegisterer(List<? extends ProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::addProjectOnlyFeatureItemRegisterer);
     }
     /**
@@ -258,15 +259,15 @@ public class FeatureRegisterer {
      * and will be called when a feature is registered/unregistered
      * @param featureItemRegisterer
      */
-    public void removeProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer featureItemRegisterer){
+    public void removeProjectOnlyFeatureItemRegisterer(ProjectOnlyFeatureItemRegisterer featureItemRegisterer){
         this.projectOnlyFeatureItemRegisters.remove(featureItemRegisterer);
     }
     /**
      * Removes a list of project only feature item registerers from the list of item registerers,
-     * see {@link FeatureRegisterer#removeProjectOnlyFeatureItemRegisterer(IProjectOnlyFeatureItemRegisterer)}
+     * see {@link FeatureRegisterer#removeProjectOnlyFeatureItemRegisterer(ProjectOnlyFeatureItemRegisterer)}
      * @param featureItemRegisterers
      */
-    public void removeAllProjectOnlyFeatureItemRegisterer(List<? extends IProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
+    public void removeAllProjectOnlyFeatureItemRegisterer(List<? extends ProjectOnlyFeatureItemRegisterer> featureItemRegisterers){
         featureItemRegisterers.forEach(this::removeProjectOnlyFeatureItemRegisterer);
     }
 

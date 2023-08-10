@@ -10,6 +10,10 @@ package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
@@ -31,7 +35,7 @@ public class TemplateFeature extends SimpleFeature {
     }
 
     @Override
-    public List<IUIAction> initFeatureActions() {
+    public List<UIAction> initFeatureActions() {
         return Arrays.asList(
                 new ExampleMDAction1()
         );

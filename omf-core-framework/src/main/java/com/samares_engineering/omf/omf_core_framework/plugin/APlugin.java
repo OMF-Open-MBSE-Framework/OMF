@@ -19,18 +19,18 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFExcep
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureNotFoundException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFPluginRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.MDActionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.OptionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.RuleEngineRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.IProjectOnlyFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyMDActionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.MDActionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.RuleEngineFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyMDActionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
@@ -60,12 +60,12 @@ public abstract class APlugin extends Plugin {
 
     private final Map<String, MDFeature> features = new HashMap<>();
     private FeatureRegisterer featureRegisterer;
-    private MDActionRegisterer uiActionRegisterer;
-    private RuleEngineRegisterer ruleEngineRegisterer;
-    private OptionRegisterer optionRegisterer;
-    private ProjectOnlyMDActionRegisterer projectOnlyUiActionRegisterer;
-    private ProjectOnlyRuleEngineRegisterer projectOnlyRuleEngineRegisterer;
-    private ProjectOnlyOptionRegisterer projectOnlyOptionRegisterer;
+    private MDActionFeatureItemRegisterer uiActionRegisterer;
+    private RuleEngineFeatureItemRegisterer ruleEngineFeatureItemRegisterer;
+    private OptionFeatureItemRegisterer optionFeatureItemRegisterer;
+    private ProjectOnlyMDActionFeatureItemRegisterer projectOnlyUiActionRegisterer;
+    private ProjectOnlyRuleEngineFeatureItemRegisterer projectOnlyRuleEngineFeatureItemRegisterer;
+    private ProjectOnlyOptionFeatureItemRegisterer projectOnlyOptionFeatureItemRegisterer;
     private boolean isInitialized = false;
     private IListenerManager listenerManager;
     private ProjectListener projectListener;
@@ -172,20 +172,20 @@ public abstract class APlugin extends Plugin {
     private void configureFeatureRegisterer() {
         try {
             this.featureRegisterer = new FeatureRegisterer(this);
-            this.uiActionRegisterer = new MDActionRegisterer();
-            this.ruleEngineRegisterer = new RuleEngineRegisterer();
-            this.optionRegisterer = new OptionRegisterer();
-            this.projectOnlyUiActionRegisterer = new ProjectOnlyMDActionRegisterer();
-            this.projectOnlyRuleEngineRegisterer = new ProjectOnlyRuleEngineRegisterer();
-            this.projectOnlyOptionRegisterer = new ProjectOnlyOptionRegisterer();
+            this.uiActionRegisterer = new MDActionFeatureItemRegisterer(this);
+            this.ruleEngineFeatureItemRegisterer = new RuleEngineFeatureItemRegisterer();
+            this.optionFeatureItemRegisterer = new OptionFeatureItemRegisterer();
+            this.projectOnlyUiActionRegisterer = new ProjectOnlyMDActionFeatureItemRegisterer(this);
+            this.projectOnlyRuleEngineFeatureItemRegisterer = new ProjectOnlyRuleEngineFeatureItemRegisterer();
+            this.projectOnlyOptionFeatureItemRegisterer = new ProjectOnlyOptionFeatureItemRegisterer();
 
-            List<IFeatureItemRegisterer> defaultFeatureRegisterer = List.of(uiActionRegisterer,
-                    ruleEngineRegisterer,
-                    optionRegisterer);
+            List<FeatureItemRegisterer> defaultFeatureRegisterer = List.of(uiActionRegisterer,
+                    ruleEngineFeatureItemRegisterer,
+                    optionFeatureItemRegisterer);
 
-            List<IProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
-                    projectOnlyRuleEngineRegisterer,
-                    projectOnlyOptionRegisterer);
+            List<ProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
+                    projectOnlyRuleEngineFeatureItemRegisterer,
+                    projectOnlyOptionFeatureItemRegisterer);
             featureRegisterer.addAllIFeatureItemRegisterer(defaultFeatureRegisterer);
             featureRegisterer.addAllProjectOnlyFeatureItemRegisterer(defaultProjectOnlyFeatureRegisterer);
         }catch (Exception e){
@@ -344,23 +344,23 @@ public abstract class APlugin extends Plugin {
 
 
     //------------------------------------ GETTER SETTER ----------------------------------------------------//
-    public RuleEngineRegisterer getRuleEngineRegisterer() {
-        return ruleEngineRegisterer;
+    public RuleEngineFeatureItemRegisterer getRuleEngineRegisterer() {
+        return ruleEngineFeatureItemRegisterer;
     }
-    public void setRuleEngineRegisterer(RuleEngineRegisterer ruleEngineRegisterer) {
-        this.ruleEngineRegisterer = ruleEngineRegisterer;
+    public void setRuleEngineRegisterer(RuleEngineFeatureItemRegisterer ruleEngineFeatureItemRegisterer) {
+        this.ruleEngineFeatureItemRegisterer = ruleEngineFeatureItemRegisterer;
     }
-    public MDActionRegisterer getUiActionRegisterer() {
+    public MDActionFeatureItemRegisterer getUiActionRegisterer() {
         return uiActionRegisterer;
     }
-    public void setUiActionRegisterer(MDActionRegisterer uiActionRegisterer) {
+    public void setUiActionRegisterer(MDActionFeatureItemRegisterer uiActionRegisterer) {
         this.uiActionRegisterer = uiActionRegisterer;
     }
-    public OptionRegisterer getOptionRegisterer() {
-        return optionRegisterer;
+    public OptionFeatureItemRegisterer getOptionRegisterer() {
+        return optionFeatureItemRegisterer;
     }
-    public void setOptionRegisterer(OptionRegisterer optionRegisterer) {
-        this.optionRegisterer = optionRegisterer;
+    public void setOptionRegisterer(OptionFeatureItemRegisterer optionFeatureItemRegisterer) {
+        this.optionFeatureItemRegisterer = optionFeatureItemRegisterer;
     }
     @Override
     public boolean close() {

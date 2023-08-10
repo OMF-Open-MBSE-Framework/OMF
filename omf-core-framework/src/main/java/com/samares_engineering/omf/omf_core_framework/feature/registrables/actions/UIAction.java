@@ -7,7 +7,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeature
 
 import java.util.List;
 
-public interface IUIAction extends RegistrableFeatureItem {
+public interface UIAction extends RegistrableFeatureItem {
     boolean checkBrowserAvailability();
 
     boolean checkDiagramAvailability();

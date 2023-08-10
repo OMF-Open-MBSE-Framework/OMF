@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel;
 
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.actions.GenerateArchiModel;
@@ -30,14 +30,14 @@ public class GeneratePluginModelArchi extends AFeature {
     }
 
     @Override
-    public List<IUIAction> initFeatureActions() {
+    public List<UIAction> initFeatureActions() {
         return Arrays.asList(
                 new GenerateArchiModel()
         );
     }
 
     @Override
-    protected List<IUIAction> initProjectOnlyFeatureActions() {
+    protected List<UIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 

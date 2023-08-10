@@ -16,8 +16,6 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
-@DiagramAction
-@BrowserAction
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "ACTION NAME", category = "ACTION CATEGORY NAME")
@@ -25,9 +23,7 @@ public class UIActionErrorExample extends AUIAction {
     Runnable runnable;
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null)
-            return false;
-       return true;
+        return OMFUtils.currentProject != null;
     }
 
 

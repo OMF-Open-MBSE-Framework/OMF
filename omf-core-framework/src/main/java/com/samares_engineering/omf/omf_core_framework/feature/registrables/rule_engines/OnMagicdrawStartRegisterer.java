@@ -3,14 +3,14 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule
 import com.nomagic.magicdraw.core.Application;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.OnMagicDrawStart;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OnMagicdrawStartRegisterer implements IFeatureItemRegisterer<OnMagicDrawStart> {
+public class OnMagicdrawStartRegisterer implements FeatureItemRegisterer<OnMagicDrawStart> {
     private FeatureRegisterer featureRegisterer;
     private List<OnMagicDrawStart> onMagicDrawStartFeatures;
 

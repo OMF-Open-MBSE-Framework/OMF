@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
@@ -30,7 +30,7 @@ import java.util.List;
  * Features can be registered as project only, meaning that they will only be available in the current project.
  * see {@link com.samares_engineering.omf.omf_core_framework.plugin.APlugin}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
- * see {@link IUIAction}
+ * see {@link UIAction}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine}
  */
@@ -44,13 +44,13 @@ public abstract class AFeature implements MDFeature {
     protected APlugin plugin;
 
     // Registrable items
-    private final List<IUIAction> mdActions = new ArrayList<>();
+    private final List<UIAction> mdActions = new ArrayList<>();
     private final List<IRuleEngine> liveActions = new ArrayList<>();
     private final List<IOption> options = new ArrayList<>();
 
     // Delayed registrable items
     private final List<IOption> projectOnlyOptions = new ArrayList<>();
-    private final List<IUIAction> projectOnlyMdActions = new ArrayList<>();
+    private final List<UIAction> projectOnlyMdActions = new ArrayList<>();
     private final List<IRuleEngine> projectOnlyLiveActions =  new ArrayList<>();
 
     protected AFeature(String name){
@@ -146,13 +146,13 @@ public abstract class AFeature implements MDFeature {
      * Define all the feature action there, it will be automatically registered with the feature.
      * @return list of MDAction to register
      */
-    protected abstract List<IUIAction> initFeatureActions();
+    protected abstract List<UIAction> initFeatureActions();
 
     /**
      * UI Actions that need to wait for a project to be loaded to be instantiated
      * @return
      */
-    protected abstract List<IUIAction> initProjectOnlyFeatureActions();
+    protected abstract List<UIAction> initProjectOnlyFeatureActions();
 
     /**
      * Define all the feature live actions (RuleEngines) there, it will be automatically registered with the feature.
@@ -248,7 +248,7 @@ public abstract class AFeature implements MDFeature {
         return liveActions;
     }
 
-    public List<IUIAction> getUIActions() {
+    public List<UIAction> getUIActions() {
         return mdActions;
     }
 
@@ -260,7 +260,7 @@ public abstract class AFeature implements MDFeature {
         return projectOnlyLiveActions;
     }
 
-    public List<IUIAction> getProjectOnlyUIActions() {
+    public List<UIAction> getProjectOnlyUIActions() {
         return projectOnlyMdActions;
     }
 

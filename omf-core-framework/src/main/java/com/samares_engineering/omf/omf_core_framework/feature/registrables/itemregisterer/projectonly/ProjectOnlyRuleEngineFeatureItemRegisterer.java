@@ -5,13 +5,12 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.IFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
@@ -22,36 +21,50 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class RuleEngineRegisterer implements IFeatureItemRegisterer<IRuleEngine> {
+/**
+ * This class is used to register RuleEngines (LiveActions) in the ListenerManager.
+ * It will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+ * see {@link IListenerManager}
+ * see {@link IElementListener}
+ * see {@link IRuleEngine}
+ */
+public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<IRuleEngine> {
     /**
      * Use the IListenerManager to get the different listeners (Analyse, Creation, Update, Delete, AfterAutomation).
      */
-    private IListenerManager listenerManager;
+    private  IListenerManager listenerManager;
     private FeatureRegisterer featureRegisterer;
 
-    @Override
     public void init(FeatureRegisterer featureRegisterer) {
-        this.featureRegisterer = featureRegisterer;
+        setFeatureRegisterer(featureRegisterer);
         this.listenerManager = featureRegisterer.getPlugin().getListenerManager();
     }
 
     /**
-     * Will allow
+     * Register all RuleEngines in the ListenerManager
+     * see  {@link #registerFeatureItem(IRuleEngine)}
      * @param ruleEngines
      */
     public void registerFeatureItems(List<IRuleEngine> ruleEngines) {
         try {
             ruleEngines.forEach(this::registerFeatureItem);
         }catch (Exception e){
-            throw new OMFFeatureRegisteringException("Unable to register LiveActions", e);
+            throw new OMFFeatureRegisteringException("[Feature Registerer] Unable to register LiveActions", e);
         }
     }
 
-    public void unregisterFeatureItems(List<IRuleEngine> ruleEngines){
+    /**
+     * Unregister all RuleEngines in the ListenerManager
+     * see {@link #unregisterFeatureItem(IRuleEngine)}
+     * @param ruleEngines
+     */
+    public void unregisterFeatureItems(List<IRuleEngine> ruleEngines) {
         try {
             ruleEngines.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
-            throw new OMFFeatureRegisteringException(" Unable to unregister liveActions", e);
+            throw new OMFFeatureRegisteringException(
+                    "[Feature Registerer] Unable to unregister liveActions",
+                    e);
         }
     }
 
@@ -69,7 +82,6 @@ public class RuleEngineRegisterer implements IFeatureItemRegisterer<IRuleEngine>
         ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
         ruleEngineMap.get(category).add(ruleEngine);
-
     }
 
     /**
@@ -142,12 +154,12 @@ public class RuleEngineRegisterer implements IFeatureItemRegisterer<IRuleEngine>
 
     @Override
     public void registerFeatureItems(MDFeature feature) {
-        registerFeatureItems(feature.getRuleEngines());
+        registerFeatureItems(feature.getProjectOnlyRuleEngines());
     }
 
     @Override
     public void unregisterFeatureItems(MDFeature feature) {
-        unregisterFeatureItems(feature.getRuleEngines());
+        unregisterFeatureItems(feature.getProjectOnlyRuleEngines());
     }
 
     @Override

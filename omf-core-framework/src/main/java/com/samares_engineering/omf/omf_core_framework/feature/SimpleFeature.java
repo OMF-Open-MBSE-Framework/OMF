@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
@@ -18,12 +18,12 @@ public abstract class SimpleFeature extends AFeature{
     }
 
     @Override
-    protected List<IUIAction> initFeatureActions() {
+    protected List<UIAction> initFeatureActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<IUIAction> initProjectOnlyFeatureActions() {
+    protected List<UIAction> initProjectOnlyFeatureActions() {
         return Collections.emptyList();
     }
 

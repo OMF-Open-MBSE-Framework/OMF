@@ -12,10 +12,11 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatu
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,11 +29,23 @@ import java.util.Objects;
  * It is used to register MDActions that are available in the context of a project and a browser.
  * It is used to register MDActions that are available in the context of a project and a menu.
  */
-public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemRegisterer<IUIAction> {
-    private OMFBrowserConfigurator browserConfigurator;
-    private OMFDiagramConfigurator diagramConfigurator;
-    private OMFMainMenuConfigurator menuConfigurator;
+public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<UIAction> {
+    private final OMFBrowserConfigurator browserConfigurator;
+    private final OMFDiagramConfigurator diagramConfigurator;
+    private final OMFMainMenuConfigurator menuConfigurator;
     private FeatureRegisterer featureRegister;
+
+    public ProjectOnlyMDActionFeatureItemRegisterer(APlugin plugin) {
+        this.browserConfigurator = Objects.requireNonNull(
+                plugin.getBrowserConfigurator(),
+                "NO BROWSER CONFIGURATOR REGISTERED");
+        this.diagramConfigurator = Objects.requireNonNull(
+                plugin.getDiagramConfigurator(),
+                "NO DIAGRAM CONFIGURATOR REGISTERED");
+        this.menuConfigurator = Objects.requireNonNull(
+                plugin.getMenuConfigurator(),
+                "NO MENU CONFIGURATOR REGISTERED");
+    }
 
     /**
      * Initialize the registerer with the feature registerer.
@@ -45,21 +58,12 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
      */
     public void init(FeatureRegisterer featureRegisterer) {
         this.featureRegister = featureRegisterer;
-        this.browserConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getBrowserConfigurator(),
-                "NO BROWSER CONFIGURATOR REGISTERED");
-        this.diagramConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getDiagramConfigurator(),
-                "NO DIAGRAM CONFIGURATOR REGISTERED");
-        this.menuConfigurator = Objects.requireNonNull(
-                featureRegisterer.getPlugin().getMenuConfigurator(),
-                "NO MENU CONFIGURATOR REGISTERED");
     }
     /**
      * Register a list of UIActions and refresh the configurators.
      * @param actions
      */
-    public void registerFeatureItems(List<IUIAction> actions) {
+    public void registerFeatureItems(List<UIAction> actions) {
        try{
            actions.forEach(this::registerFeatureItem);
            refreshConfigurators();
@@ -74,7 +78,7 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
      * Unregister a list of UIActions and refresh the configurators.
      * @param actions
      */
-    public void unregisterFeatureItems(List<IUIAction> actions) {
+    public void unregisterFeatureItems(List<UIAction> actions) {
         try {
             resetConfigurators();
             actions.forEach(this::unregisterFeatureItem);
@@ -113,7 +117,7 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
      * Register a UIAction in the configurators.
      * @param action
      */
-    public void registerFeatureItem(IUIAction action) {
+    public void registerFeatureItem(UIAction action) {
         if(browserConfigurator != null)
             browserConfigurator.addNewAction((AUIAction) action);
 
@@ -128,7 +132,7 @@ public class ProjectOnlyMDActionRegisterer implements IProjectOnlyFeatureItemReg
      * Unregister a UIAction in the configurators.
      * @param action
      */
-    public void unregisterFeatureItem(IUIAction action) {
+    public void unregisterFeatureItem(UIAction action) {
         if(browserConfigurator != null)
             browserConfigurator.removeAction((AUIAction) action);
 

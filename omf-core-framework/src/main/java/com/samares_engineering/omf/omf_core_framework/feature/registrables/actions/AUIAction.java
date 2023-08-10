@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AUIAction implements IUIAction {
+public abstract class AUIAction implements UIAction {
 
     private Node[] browserSelectedNodes;
     private List<Element> browserSelectedElements;
