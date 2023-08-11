@@ -37,16 +37,34 @@ public abstract class AMagicDrawFactory {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Get the magicdraw factory, if the project is null, throw an exception
+     * @return
+     */
     public ElementsFactory getMagicDrawFactory() {
+        Objects.requireNonNull(project, "Trying to use a magicdraw factory while specifying a null" +
+                "project");
         return project.getElementsFactory();
     }
+
+    /**
+     * Get the project
+     * @return
+     */
 
     public Project getProject() {
         return project;
     }
 
+    /**
+     * Set the project, if the project is null, log a warning.
+     * @param project
+     */
     public void setProject(Project project) {
-        this.project = Objects.requireNonNull(project, "Trying to use a magicdraw factory while specifying a null" +
-                "project");
+        if(project == null){
+            ColorPrinter.warn("Trying to set a null project to the factory: " + getClass().getSimpleName());
+        }
+        this.project = project;
     }
 }
