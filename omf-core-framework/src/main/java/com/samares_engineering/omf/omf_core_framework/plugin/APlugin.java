@@ -40,7 +40,6 @@ import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import org.apache.commons.collections4.CollectionUtils;
 
-import javax.annotation.CheckForNull;
 import java.util.*;
 
 /**
@@ -135,24 +134,39 @@ public abstract class APlugin extends Plugin {
 
     //------------------------ INITIALIZATION PROCESS-------------------------------------------//
     /**
-     * Initialize the plugin, and will configure ActionConfigurators, Options, Constants, and will register features.
+     * Please do not override this method, use initPlugin() instead.
+     * It will call initPlugin() and handle exceptions
      */
     @Override
     public void init() {
+        try {
+            initPlugin();
+        }catch (Exception exception){
+            OMFErrorHandler.handleException(new OMFPluginRegisteringException("Error occurred during Plugin Initialization",
+                    exception, this, GenericException.ECriticality.CRITICAL));
+        }
+    }
 
-//        ProjectOptions.addConfigurator();
-//        ProjectOptions.addConfigurator(TestProjectOptionsConfigurator.getInstance())
-        configureListenerManager();
-        configureActions();
-        configureProjectListener();
-        configureEnvironmentOptions();
-        configureProjectOptions();
-        configureConstants();
-        configureFeatureRegisterer();
-        configureFeatures();
-        registerAllFeatures();
+    /**
+     * Initialize the plugin, and will configure ActionConfigurators, Options, Constants, and will register features.
+     * Override this method to add custom configuration.
+     * Call super.initPlugin() to keep default OMF configuration.
+     */
+    public void initPlugin() {
+    //        ProjectOptions.addConfigurator();
+    //        ProjectOptions.addConfigurator(TestProjectOptionsConfigurator.getInstance())
+            configureListenerManager();
+            configureActions();
+            configureProjectListener();
+            configureEnvironmentOptions();
+            configureProjectOptions();
+            configureConstants();
+            configureFeatureRegisterer();
+            configureFeatures();
+            registerAllFeatures();
 
-        isInitialized = true;
+            isInitialized = true;
+
     }
 
     private void configureFeatureRegisterer() {
