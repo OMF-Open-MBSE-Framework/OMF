@@ -6,13 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+
+### Features
+- **PATTERN FEATURE**: Allow to define pattern in project and to generate it on its creation
+
 ### Added
 - "generate model architecture" feature which generates a UML model of the OMF project in Magicdraw
 - Eclipse specific gradle tasks **debugPlugin** and **debugTests** to allow debugging on that IDE
 - TestGeneration feature that add an action generates test case code for creation tests from a test case in the model
 - EventChecker new method isInstanceOf allowing to check if an event is an instance of a given class and isTrue(customPredicate) to validate a custom predicate
 - OMFSilentException has been added to allow to throw an exception without displaying anything on User Interface (no popup, no console)
-- PATTERN FEATURE
 
 ### Fixed
 - Error messages relating to the API server feature
@@ -21,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OMFErrorHandler will no more display user messages when it's blank or empty
 - OMFFeatureException one missing constructor has been added to differentiate user message and developer message
 - RuleEngine Rule field was not set properly when adding a rule
+- AMagicDrawFactory allow to set Null Project but will throw an exception if you try to get the MagicDrawFactory
 
 ### Changed
 - Gradle build configuration and project properties changed to allow development in environments with 
