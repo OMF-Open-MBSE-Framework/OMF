@@ -11,6 +11,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import java.util.*;
 
 public class ConfiguratorUtils {
+
+    public static final String CATEGORY_SEPARATOR_REGEX = "\\.";
+
     private ConfiguratorUtils() {}
 
     /**
@@ -20,7 +23,7 @@ public class ConfiguratorUtils {
      * @return the parent category of the action
      */
     public static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, UIAction action) {
-        List<String> subCategoryNames = Arrays.asList(action.getCategory().split("\\."));
+        List<String> subCategoryNames = Arrays.asList(action.getCategory().split(CATEGORY_SEPARATOR_REGEX));
         if (subCategoryNames.isEmpty()) {
             OMFErrorHandler.handleException(new OMFFrameworkException("Trying to create or find a category with an empty " +
                     "name", GenericException.ECriticality.CRITICAL), true);

@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.IUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
@@ -38,7 +38,7 @@ public class PatternCreationFeature extends SimpleFeature {
     }
 
     @Override
-    public List<IUIAction> initFeatureActions() {
+    public List<UIAction> initFeatureActions() {
         return Arrays.asList(
                 new RefreshPatternConfiguration(),
                 new GenerateTemplateFromElement()
