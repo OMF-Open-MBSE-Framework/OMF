@@ -10,14 +10,15 @@ package com.samares_engineering.omf.omf_core_framework.factory;
 import com.nomagic.magicdraw.core.Project;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class FactoryManager {
-    public static List<AMagicDrawFactory> factories = Arrays.asList(
+    public static List<AMagicDrawFactory> factories = new ArrayList<>(Arrays.asList(
             OMFFactory.getInstance(),
             SysMLFactory.getInstance()
-    );
+    ));
 
     public static void initAllFactories(){
         initAllFactories(OMFUtils.currentProject);

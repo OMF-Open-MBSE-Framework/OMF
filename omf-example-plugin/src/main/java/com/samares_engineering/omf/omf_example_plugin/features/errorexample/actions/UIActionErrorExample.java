@@ -22,12 +22,14 @@ import java.util.List;
 @DeactivateListener
 @MDAction(actionName = "ACTION NAME", category = "ACTION CATEGORY NAME")
 public class UIActionErrorExample extends AUIAction {
+    Runnable runnable;
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(OMFUtils.currentProject == null)
             return false;
        return true;
     }
+
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
@@ -41,6 +43,10 @@ public class UIActionErrorExample extends AUIAction {
         }
     }
 
+    @Override
+    protected void executeDiagramAction(List<Element> selectedElements) {
+        super.executeDiagramAction(selectedElements);
+    }
 
 
 }
