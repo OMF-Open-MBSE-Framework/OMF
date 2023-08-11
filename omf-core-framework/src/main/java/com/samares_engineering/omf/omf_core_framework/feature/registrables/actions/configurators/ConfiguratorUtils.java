@@ -13,6 +13,12 @@ import java.util.*;
 public class ConfiguratorUtils {
     private ConfiguratorUtils() {}
 
+    /**
+     * Finds the parent category of the action, as defined by the user in the MDAction annotation.
+     * Subcategories are separated by a dot in the category string; in that case, the last category is returned.
+     * The category and any parent categories are created if they do not exist.
+     * @return the parent category of the action
+     */
     public static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, UIAction action) {
         List<String> subCategoryNames = Arrays.asList(action.getCategory().split("\\."));
         if (subCategoryNames.isEmpty()) {
@@ -45,9 +51,13 @@ public class ConfiguratorUtils {
         return subCategories;
     }
 
+    /**
+     * Find the top level category with the given name if it exists, if not it is created
+     * @return the category
+     */
     private static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, String categoryName) {
         Optional<MDActionsCategory> optCategory = findCategory(actionsManager, categoryName);
-        MDActionsCategory category = optCategory.orElseGet(() -> createNewCategory(categoryName));
+        MDActionsCategory category = optCategory.orElseGet(() -> instantiateNewCategory(categoryName));
         if(!actionsManager.getCategories().contains(category) ) {
             actionsManager.addCategory(category);
             category.setNested(true);
@@ -55,32 +65,47 @@ public class ConfiguratorUtils {
         return category;
     }
 
+    /**
+     * Find the subcategory with the given name in the given category if it exists, if not it is created
+     * @return the subcategory
+     */
     private static MDActionsCategory findOrCreateSubCategory(MDActionsCategory category, String subCategoryName) {
         Optional<MDActionsCategory> optCategory = findSubCategory(category, subCategoryName);
-        MDActionsCategory subCategory = optCategory.orElseGet(() -> createNewCategory(subCategoryName));
+        MDActionsCategory subCategory = optCategory.orElseGet(() -> instantiateNewCategory(subCategoryName));
         if(!category.getCategories().contains(subCategory) ) {
-            // To nest a category we use the addAction method, I know it's weird, but it works
+            // To nest a category we use the addAction method, I know it's weird, but categories are derived from actions
             category.addAction(subCategory);
             subCategory.setNested(true);
         }
         return subCategory;
     }
 
-    static Optional<MDActionsCategory> findCategory(ActionsManager actionsManager, String categoryName) {
+    /**
+     * Find the top level category with the given name if it exists
+     * @return an optional containing the category if it exists
+     */
+    public static Optional<MDActionsCategory> findCategory(ActionsManager actionsManager, String categoryName) {
         return actionsManager.getCategories().stream()
                 .filter(MDActionsCategory.class::isInstance)
                 .map(MDActionsCategory.class::cast)
                 .filter(cat -> cat.getName().equals(categoryName)).findAny();
     }
 
-    static Optional<MDActionsCategory> findSubCategory(MDActionsCategory category, String subCategoryName) {
+    /**
+     * Find the subcategory with the given name in the given category if it exists
+     * @return an optional containing the subcategory if it exists
+     */
+    public static Optional<MDActionsCategory> findSubCategory(MDActionsCategory category, String subCategoryName) {
         return category.getCategories().stream()
                 .filter(MDActionsCategory.class::isInstance)
                 .map(MDActionsCategory.class::cast)
                 .filter(cat -> cat.getName().equals(subCategoryName)).findAny();
     }
 
-    private static MDActionsCategory createNewCategory(String categoryName) {
+    /**
+     * Instantiates a new category (but does not create it in MagicDraw)
+     */
+    public static MDActionsCategory instantiateNewCategory(String categoryName) {
         return new MDActionsCategory("FeatureCategoryID-"
                 + categoryName, categoryName) {
             @Override

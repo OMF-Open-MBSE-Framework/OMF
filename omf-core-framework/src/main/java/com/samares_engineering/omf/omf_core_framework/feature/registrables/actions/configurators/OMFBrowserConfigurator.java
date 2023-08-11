@@ -15,7 +15,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 
 /**
  * BrowserConfigurator: In charge of registering MDActions(right click menu) for browser.
- * When the right click is made, it will call configure(), then will register (display) all actions satisfying the 'checkBrowserAvailability' condition.
+ * When the right click is made, it will call configure(), then will register (display) all actions satisfying the
+ * 'checkBrowserAvailability' condition.
  * To add an Action to the List call 'addNewAction'.
  */
 public class OMFBrowserConfigurator extends FeatureActionConfigurator implements BrowserContextAMConfigurator {
@@ -32,9 +33,7 @@ public class OMFBrowserConfigurator extends FeatureActionConfigurator implements
     }
 
     /**
-     * register an action into the category, if the category doesn't exist it will register it.
-     * @param actionsManager
-     * @param action
+     * Register an action into the category, if the category doesn't exist it will register it.
      */
     private void registerBrowserAction(ActionsManager actionsManager, AUIAction action) {
         MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, action);

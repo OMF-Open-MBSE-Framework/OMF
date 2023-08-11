@@ -18,6 +18,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions.ExampleMDAction1;
+import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions.ExampleMDAction2;
+import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions.ExampleMDAction3;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.creation.LiveActionExample;
 
 import java.util.Arrays;
@@ -37,7 +39,9 @@ public class TemplateFeature extends SimpleFeature {
     @Override
     public List<UIAction> initFeatureActions() {
         return Arrays.asList(
-                new ExampleMDAction1()
+                new ExampleMDAction1(),
+                new ExampleMDAction2(),
+                new ExampleMDAction3()
         );
     }
 
