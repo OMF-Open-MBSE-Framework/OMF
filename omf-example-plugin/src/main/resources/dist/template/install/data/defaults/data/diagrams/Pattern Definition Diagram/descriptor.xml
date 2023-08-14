@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <diagram version="9" type="Pattern Definition Diagram" baseType="Class Diagram" abbreviation="PDD" category="SysML Diagrams">
-    <requiredPlugin>com.nomagic.magicdraw.plugins.impl.sysml#SysML;MD_customization_for_SysML.mdzip;UML_Standard_Profile.mdzip;PatternProfile.mdzip</requiredPlugin>
+    <requiredPlugin>com.nomagic.magicdraw.plugins.impl.sysml#SysML;PatternProfile.mdzip;UML_Standard_Profile.mdzip;MD_customization_for_SysML.mdzip</requiredPlugin>
     <helpID>PDD</helpID>
     <toolbarConfiguration>
         <category name="Common" id="COMMON_ELEMENTS_STATIC" expandedByDefault="false">
@@ -64,6 +64,13 @@
             <icon type="small" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/profilingmechanism.png"></icon>
             <icon type="large" size="16" filename="mdp://resource/com/nomagic/magicdraw/icons/profilingmechanism.svg"></icon>
             <actions>
+                <custom type="com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class" description="Customization" listAsElement="false" opposite="false" id="IDaction_1692037260821_993173_0">
+                    <stereotype id="_11_5EAPbeta_be00301_1148632817486_155219_3"/>
+                </custom>
+                <group>
+                    <standard action="ADD_GENERALIZATION" shortcut="pressed G "/>
+                    <standard action="ADD_GENERALIZATION_OPPOSITE" shortcut="shift pressed G "/>
+                </group>
                 <standard action="ADD_STEREOTYPE" shortcut="shift pressed S "/>
                 <standard action="ADD_METACLASS"/>
                 <standard action="ADD_EXTENSION"/>
@@ -2502,13 +2509,13 @@
     </toolbarConfiguration>
     <icon type="small" size="16" filename="https://www.vendorin.com/assets/images/suppliers/customization-icon.png"></icon>
     <icon type="diagraming" size="-1" filename="https://www.vendorin.com/assets/images/suppliers/customization-icon.png"></icon>
-    <module name="UML_Standard_Profile.mdzip" location="C:\Users\Calliope\IdeaProjects\samaresmbseframework\omf-example-plugin\build\install\profiles\UML_Standard_Profile.mdzip">
-        <root id="magicdraw_uml_standard_profile_v_0001"/>
-    </module>
-    <module name="PatternProfile.mdzip" location="C:\Users\Calliope\IdeaProjects\samaresmbseframework\omf-example-plugin\build\install\profiles\PatternProfile.mdzip">
+    <module name="PatternProfile.mdzip" location="C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\profiles\PatternProfile.mdzip">
         <root id="_2021x_2_302b0611_1691071413425_883096_3236"/>
     </module>
-    <module name="MD_customization_for_SysML.mdzip" location="C:\Users\Calliope\IdeaProjects\samaresmbseframework\omf-example-plugin\build\install\profiles\MD_customization_for_SysML.mdzip">
+    <module name="UML_Standard_Profile.mdzip" location="C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\profiles\UML_Standard_Profile.mdzip">
+        <root id="magicdraw_uml_standard_profile_v_0001"/>
+    </module>
+    <module name="MD_customization_for_SysML.mdzip" location="C:\workspace\DEV\SAMARES\OMF\omf-example-plugin\build\install\profiles\MD_customization_for_SysML.mdzip">
         <root id="_12_0EAPbeta_be00301_1156851270584_552173_1"/>
     </module>
     <elementstyle name="Class">
