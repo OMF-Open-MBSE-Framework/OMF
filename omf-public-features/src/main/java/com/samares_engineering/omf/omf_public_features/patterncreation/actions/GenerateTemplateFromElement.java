@@ -16,20 +16,21 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationHelper;
 import com.samares_engineering.omf.omf_public_features.patterncreation.PatternCreationFeature;
+import com.samares_engineering.omf.omf_public_features.patterncreation.profile.PatternCreatorProfile;
 
 import java.util.List;
 import java.util.Set;
 
 @DiagramAction
 @BrowserAction
-@MenuAction
 @DeactivateListener
-@MDAction(actionName = "Generate Template From Element", category = "***PATTERNS")
+@MDAction(actionName = "Generate and replace Pattern structure From Element", category = "PATTERNS")
 public class GenerateTemplateFromElement extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(OMFUtils.currentProject == null) return false;
         if(selectedElements.size() != 1) return false;
+        if(!PatternCreatorProfile.getInstance().patternInstance().is(selectedElements.get(0))) return false;
        return true;
     }
 
