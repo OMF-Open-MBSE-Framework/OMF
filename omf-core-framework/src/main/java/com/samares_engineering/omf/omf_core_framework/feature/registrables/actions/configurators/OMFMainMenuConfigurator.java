@@ -20,7 +20,7 @@ public class OMFMainMenuConfigurator extends FeatureActionConfigurator implement
      */
     @Override
     public void configure(ActionsManager actionsManager) {
-        resetMDActions(actionsManager);
+        removeActionsFromMD(actionsManager);
         genericActions.stream()
                 .filter(AUIAction::isMenuAction)
                 .forEach(action -> this.registerMenuAction(actionsManager, action));

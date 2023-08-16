@@ -24,6 +24,7 @@ import java.util.List;
 public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<IOption> {
     private FeatureRegisterer featureRegister;
 
+    @Override
     public void init(FeatureRegisterer featureRegisterer) {
         setFeatureRegisterer(featureRegisterer);
     }

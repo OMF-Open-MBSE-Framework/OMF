@@ -26,7 +26,7 @@ public class OMFBrowserConfigurator extends FeatureActionConfigurator implements
 
     @Override
     public void configure(ActionsManager actionsManager, Tree tree) {
-        resetMDActions(actionsManager);
+        removeActionsFromMD(actionsManager);
         genericActions.stream()
                 .filter(AUIAction::checkBrowserAvailability)
                 .forEach(action -> this.registerBrowserAction(actionsManager, action));

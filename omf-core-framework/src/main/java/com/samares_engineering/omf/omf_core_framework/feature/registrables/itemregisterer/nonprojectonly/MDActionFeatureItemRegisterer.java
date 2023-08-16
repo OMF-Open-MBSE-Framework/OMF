@@ -40,10 +40,12 @@ public class MDActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
                 "NO MENU CONFIGURATOR REGISTERED");
     }
 
+    @Override
     public void init(FeatureRegisterer featureRegisterer) {
         this.featureRegisterer = featureRegisterer;
     }
 
+    @Override
     public void registerFeatureItems(List<UIAction> actions) {
         if (actions == null) {
             throw new OMFFeatureRegisteringException(
@@ -51,20 +53,21 @@ public class MDActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
         }
         try {
             actions.forEach(this::registerFeatureItem);
-            refreshConfigurators();
+            addActionsToMD();
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Unable to register MDActions", e);
         }
     }
 
+    @Override
     public void unregisterFeatureItems(List<UIAction> actions) {
         if (actions == null) {
             throw new OMFFeatureRegisteringException("Trying to unregister actions but passed action list is null");
         }
         try {
-            resetConfigurators();
+            removeActionsFromMD();
             actions.forEach(this::unregisterFeatureItem);
-            refreshConfigurators();
+            addActionsToMD();
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Unable to unregister MDActions", e);
         }
@@ -72,23 +75,28 @@ public class MDActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
 
     /*
     Only need to reset the menu configurator because the browser and diagram configurators are reset by magicdraw when
+    opening the context menu
      */
-    private void resetConfigurators() {
-        menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
+    private void removeActionsFromMD() {
+        menuConfigurator.removeActionsFromMD(ActionsProvider.getInstance().getMainMenuActions());
     }
 
-    private void refreshConfigurators() {
-//        browserConfigurator.configure(ActionsProvider.getInstance().getDiagramContextActions());
-//        diagramConfigurator.configure(ActionsProvider.getInstance().getContainmentBrowserShortcutsActions();
+    /*
+    Only need to reset the menu configurator because the browser and diagram configurators are reset by magicdraw when
+    opening the context menu
+     */
+    private void addActionsToMD() {
         menuConfigurator.configure(ActionsProvider.getInstance().getMainMenuActions());
     }
 
+    @Override
     public void registerFeatureItem(UIAction action) {
         browserConfigurator.addNewAction((AUIAction) action);
         diagramConfigurator.addNewAction((AUIAction) action);
         menuConfigurator.addNewAction((AUIAction) action);
     }
 
+    @Override
     public void unregisterFeatureItem(UIAction action) {
         browserConfigurator.removeAction((AUIAction) action);
         diagramConfigurator.removeAction((AUIAction) action);

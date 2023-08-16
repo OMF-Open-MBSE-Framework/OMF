@@ -17,7 +17,7 @@ public abstract class FeatureActionConfigurator {
 
     List<AUIAction> genericActions = new ArrayList<>();
 
-    public void resetMDActions(ActionsManager actionsManager) {
+    public void removeActionsFromMD(ActionsManager actionsManager) {
         genericActions.forEach(action ->
             ConfiguratorUtils.findCategory(actionsManager, action.getCategory()).ifPresent(category ->
                 action.getAllActions().forEach(category::removeAction)

@@ -21,7 +21,7 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
     @Override
     public void configure(ActionsManager actionsManager, DiagramPresentationElement diagramPresentationElement,
                           PresentationElement[] presentationElements, @CheckForNull PresentationElement presentationElement) {
-        resetMDActions(actionsManager);
+        removeActionsFromMD(actionsManager);
         genericActions.stream()
                 .filter(AUIAction::checkDiagramAvailability)
                 .forEach(action -> this.registerDiagramAction(actionsManager, action));

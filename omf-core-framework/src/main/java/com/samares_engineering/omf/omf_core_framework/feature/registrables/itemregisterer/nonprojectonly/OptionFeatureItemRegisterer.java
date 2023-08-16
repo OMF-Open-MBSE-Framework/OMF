@@ -19,6 +19,8 @@ import java.util.List;
 
 public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<IOption> {
     FeatureRegisterer featureRegisterer;
+
+    @Override
     public void init(FeatureRegisterer featureRegisterer) {
         setFeatureRegisterer(featureRegisterer);
     }

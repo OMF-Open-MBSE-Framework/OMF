@@ -56,6 +56,7 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
      * and a {@link OMFMainMenuConfigurator}.
      * @param featureRegisterer
      */
+    @Override
     public void init(FeatureRegisterer featureRegisterer) {
         this.featureRegister = featureRegisterer;
     }
@@ -63,6 +64,7 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
      * Register a list of UIActions and refresh the configurators.
      * @param actions
      */
+    @Override
     public void registerFeatureItems(List<UIAction> actions) {
        try{
            actions.forEach(this::registerFeatureItem);
@@ -78,6 +80,7 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
      * Unregister a list of UIActions and refresh the configurators.
      * @param actions
      */
+    @Override
     public void unregisterFeatureItems(List<UIAction> actions) {
         try {
             resetConfigurators();
@@ -95,7 +98,7 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
      */
     private void resetConfigurators() {
         if(menuConfigurator != null)
-            menuConfigurator.resetMDActions(ActionsProvider.getInstance().getMainMenuActions());
+            menuConfigurator.removeActionsFromMD(ActionsProvider.getInstance().getMainMenuActions());
     }
     /**
      * Refresh the configurators with the new actions.
@@ -117,6 +120,7 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
      * Register a UIAction in the configurators.
      * @param action
      */
+    @Override
     public void registerFeatureItem(UIAction action) {
         if(browserConfigurator != null)
             browserConfigurator.addNewAction((AUIAction) action);
@@ -132,6 +136,7 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
      * Unregister a UIAction in the configurators.
      * @param action
      */
+    @Override
     public void unregisterFeatureItem(UIAction action) {
         if(browserConfigurator != null)
             browserConfigurator.removeAction((AUIAction) action);

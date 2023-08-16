@@ -35,6 +35,7 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
     private  IListenerManager listenerManager;
     private FeatureRegisterer featureRegisterer;
 
+    @Override
     public void init(FeatureRegisterer featureRegisterer) {
         setFeatureRegisterer(featureRegisterer);
         this.listenerManager = featureRegisterer.getPlugin().getListenerManager();

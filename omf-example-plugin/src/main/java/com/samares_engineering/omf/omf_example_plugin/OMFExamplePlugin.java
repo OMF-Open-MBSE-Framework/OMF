@@ -45,7 +45,8 @@ public class OMFExamplePlugin extends APlugin {
                 new APIServerFeature("http://localhost", 9850),
                 new GeneratePluginModelArchi(),
                 new SysmlGptExploFeature(),
-                new PatternCreationFeature()
+                new PatternCreationFeature(),
+                new TemplateFeature()
         );
     }
 
