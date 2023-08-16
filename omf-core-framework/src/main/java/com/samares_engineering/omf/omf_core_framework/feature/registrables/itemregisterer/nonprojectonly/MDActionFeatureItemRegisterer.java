@@ -13,9 +13,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
@@ -91,9 +91,9 @@ public class MDActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
 
     @Override
     public void registerFeatureItem(UIAction action) {
-        browserConfigurator.addNewAction((AUIAction) action);
-        diagramConfigurator.addNewAction((AUIAction) action);
-        menuConfigurator.addNewAction((AUIAction) action);
+        browserConfigurator.addAction((AUIAction) action);
+        diagramConfigurator.addAction((AUIAction) action);
+        menuConfigurator.addAction((AUIAction) action);
     }
 
     @Override

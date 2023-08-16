@@ -13,9 +13,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFBrowserConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFDiagramConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.List;
@@ -123,13 +123,13 @@ public class ProjectOnlyMDActionFeatureItemRegisterer implements ProjectOnlyFeat
     @Override
     public void registerFeatureItem(UIAction action) {
         if(browserConfigurator != null)
-            browserConfigurator.addNewAction((AUIAction) action);
+            browserConfigurator.addAction((AUIAction) action);
 
         if(diagramConfigurator != null)
-            diagramConfigurator.addNewAction((AUIAction) action);
+            diagramConfigurator.addAction((AUIAction) action);
 
         if(menuConfigurator != null)
-            menuConfigurator.addNewAction((AUIAction) action);
+            menuConfigurator.addAction((AUIAction) action);
     }
 
     /**

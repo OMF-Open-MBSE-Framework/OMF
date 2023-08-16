@@ -4,7 +4,7 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations;
 
 
 import com.nomagic.actions.AMConfigurator;
@@ -13,8 +13,10 @@ import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
 
-public class OMFMainMenuConfigurator extends FeatureActionConfigurator implements AMConfigurator {
+public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AMConfigurator {
     /**
      * Action will be added to manager.
      */
@@ -28,7 +30,7 @@ public class OMFMainMenuConfigurator extends FeatureActionConfigurator implement
     }
 
     private void registerMenuAction(ActionsManager actionsManager, AUIAction menuAction) {
-        MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction);
+        MDActionsCategory category = UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction);
 
         MDAction action = menuAction.getMenuAction();
         if(!category.getActions().contains(menuAction.getMenuAction()))

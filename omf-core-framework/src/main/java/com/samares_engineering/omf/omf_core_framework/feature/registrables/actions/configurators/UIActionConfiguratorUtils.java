@@ -10,11 +10,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 
 import java.util.*;
 
-public class ConfiguratorUtils {
+public class UIActionConfiguratorUtils {
 
     public static final String CATEGORY_SEPARATOR_REGEX = "\\.";
 
-    private ConfiguratorUtils() {}
+    private UIActionConfiguratorUtils() {}
 
     /**
      * Finds the parent category of the action, as defined by the user in the MDAction annotation.

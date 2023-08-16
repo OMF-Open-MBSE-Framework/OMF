@@ -4,7 +4,7 @@
  * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since 0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations;
 
 
 import com.nomagic.actions.ActionsManager;
@@ -14,10 +14,12 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
 
 import javax.annotation.CheckForNull;
 
-public class OMFDiagramConfigurator extends FeatureActionConfigurator implements DiagramContextAMConfigurator {
+public class OMFDiagramConfigurator extends AUIActionConfigurator implements DiagramContextAMConfigurator {
     @Override
     public void configure(ActionsManager actionsManager, DiagramPresentationElement diagramPresentationElement,
                           PresentationElement[] presentationElements, @CheckForNull PresentationElement presentationElement) {
@@ -34,7 +36,7 @@ public class OMFDiagramConfigurator extends FeatureActionConfigurator implements
      * @param action
      */
     private void registerDiagramAction(ActionsManager actionsManager, AUIAction action) {
-        MDActionsCategory category = ConfiguratorUtils.findOrCreateCategory(actionsManager, action);
+        MDActionsCategory category = UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action);
 
         if(action.isDiagramAction())
             category.addAction(action.getDiagramAction());

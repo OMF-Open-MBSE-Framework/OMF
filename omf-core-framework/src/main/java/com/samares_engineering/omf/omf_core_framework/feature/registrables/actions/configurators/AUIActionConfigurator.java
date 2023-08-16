@@ -13,28 +13,28 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FeatureActionConfigurator {
+public abstract class AUIActionConfigurator implements UIActionConfigurator {
 
-    List<AUIAction> genericActions = new ArrayList<>();
+    protected List<AUIAction> genericActions = new ArrayList<>();
 
     public void removeActionsFromMD(ActionsManager actionsManager) {
         genericActions.forEach(action ->
-            ConfiguratorUtils.findCategory(actionsManager, action.getCategory()).ifPresent(category ->
+            UIActionConfiguratorUtils.findCategory(actionsManager, action.getCategory()).ifPresent(category ->
                 action.getAllActions().forEach(category::removeAction)
             )
         );
     }
 
-    public void addNewAction(AUIAction action){
+    public void addAction(AUIAction action){
         genericActions.add(action);
     }
     public void removeAction(AUIAction action){
         genericActions.remove(action);
     }
-    public void addNewActions(List<AUIAction> actions){
-        genericActions.addAll(actions);
+    public void addActions(List<AUIAction> actions){
+        genericActions.forEach(this::addAction);
     }
     public void removeActions(List<AUIAction> actions){
-        genericActions.removeAll(actions);
+        genericActions.forEach(this::removeAction);
     }
 }
