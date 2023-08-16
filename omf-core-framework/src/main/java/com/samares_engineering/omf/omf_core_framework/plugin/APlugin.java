@@ -24,11 +24,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.MDActionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.UIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.RuleEngineFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyMDActionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyUIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
@@ -67,10 +67,10 @@ public abstract class APlugin extends Plugin {
     private FeatureRegisterer featureRegisterer;
 
     // Feature item registerers
-    private MDActionFeatureItemRegisterer uiActionFeatureItemRegisterer;
+    private UIActionFeatureItemRegisterer uiActionFeatureItemRegisterer;
     private RuleEngineFeatureItemRegisterer ruleEngineFeatureItemRegisterer;
     private OptionFeatureItemRegisterer optionFeatureItemRegisterer;
-    private ProjectOnlyMDActionFeatureItemRegisterer projectOnlyUiActionRegisterer;
+    private ProjectOnlyUIActionFeatureItemRegisterer projectOnlyUiActionRegisterer;
     private ProjectOnlyRuleEngineFeatureItemRegisterer projectOnlyRuleEngineFeatureItemRegisterer;
     private ProjectOnlyOptionFeatureItemRegisterer projectOnlyOptionFeatureItemRegisterer;
 
@@ -183,10 +183,10 @@ public abstract class APlugin extends Plugin {
     private void configureFeatureRegisterer() {
         try {
             this.featureRegisterer = new FeatureRegisterer(this);
-            this.uiActionFeatureItemRegisterer = new MDActionFeatureItemRegisterer(this);
+            this.uiActionFeatureItemRegisterer = new UIActionFeatureItemRegisterer(this);
             this.ruleEngineFeatureItemRegisterer = new RuleEngineFeatureItemRegisterer();
             this.optionFeatureItemRegisterer = new OptionFeatureItemRegisterer();
-            this.projectOnlyUiActionRegisterer = new ProjectOnlyMDActionFeatureItemRegisterer(this);
+            this.projectOnlyUiActionRegisterer = new ProjectOnlyUIActionFeatureItemRegisterer(this);
             this.projectOnlyRuleEngineFeatureItemRegisterer = new ProjectOnlyRuleEngineFeatureItemRegisterer();
             this.projectOnlyOptionFeatureItemRegisterer = new ProjectOnlyOptionFeatureItemRegisterer();
 
@@ -359,7 +359,7 @@ public abstract class APlugin extends Plugin {
         return ruleEngineFeatureItemRegisterer;
     }
 
-    public MDActionFeatureItemRegisterer getUiActionFeatureItemRegisterer() {
+    public UIActionFeatureItemRegisterer getUiActionFeatureItemRegisterer() {
         return uiActionFeatureItemRegisterer;
     }
 
@@ -441,7 +441,7 @@ public abstract class APlugin extends Plugin {
         return this.getDescriptor().getName();
     }
 
-    public ProjectOnlyMDActionFeatureItemRegisterer getProjectOnlyUiActionRegisterer() {
+    public ProjectOnlyUIActionFeatureItemRegisterer getProjectOnlyUiActionRegisterer() {
         return projectOnlyUiActionRegisterer;
     }
 

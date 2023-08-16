@@ -14,6 +14,7 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
 
@@ -23,9 +24,9 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
     @Override
     public void configure(ActionsManager actionsManager, DiagramPresentationElement diagramPresentationElement,
                           PresentationElement[] presentationElements, @CheckForNull PresentationElement presentationElement) {
-        removeActionsFromMD(actionsManager);
+        unregisterActionsFromMD(actionsManager);
         genericActions.stream()
-                .filter(AUIAction::checkDiagramAvailability)
+                .filter(UIAction::checkDiagramAvailability)
                 .forEach(action -> this.registerDiagramAction(actionsManager, action));
 
     }
@@ -35,7 +36,7 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
      * @param actionsManager
      * @param action
      */
-    private void registerDiagramAction(ActionsManager actionsManager, AUIAction action) {
+    private void registerDiagramAction(ActionsManager actionsManager, UIAction action) {
         MDActionsCategory category = UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action);
 
         if(action.isDiagramAction())

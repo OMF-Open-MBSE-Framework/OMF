@@ -12,6 +12,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.Developm
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.listeners.IElementListener;

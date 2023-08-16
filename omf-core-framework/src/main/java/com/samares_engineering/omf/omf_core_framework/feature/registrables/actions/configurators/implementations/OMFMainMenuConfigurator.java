@@ -13,6 +13,7 @@ import com.nomagic.magicdraw.actions.MDAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
 
@@ -22,14 +23,14 @@ public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AM
      */
     @Override
     public void configure(ActionsManager actionsManager) {
-        removeActionsFromMD(actionsManager);
+        unregisterActionsFromMD(actionsManager);
         genericActions.stream()
-                .filter(AUIAction::isMenuAction)
+                .filter(UIAction::isMenuAction)
                 .forEach(action -> this.registerMenuAction(actionsManager, action));
 
     }
 
-    private void registerMenuAction(ActionsManager actionsManager, AUIAction menuAction) {
+    private void registerMenuAction(ActionsManager actionsManager, UIAction menuAction) {
         MDActionsCategory category = UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction);
 
         MDAction action = menuAction.getMenuAction();

@@ -4,6 +4,7 @@ import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfigurator;
 
 import java.util.List;
 

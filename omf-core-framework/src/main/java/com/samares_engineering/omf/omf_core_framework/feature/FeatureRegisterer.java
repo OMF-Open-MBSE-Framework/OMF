@@ -12,7 +12,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericE
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 

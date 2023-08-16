@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer;
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem;

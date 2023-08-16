@@ -8,16 +8,16 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
 
 import com.nomagic.actions.ActionsManager;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AUIActionConfigurator implements UIActionConfigurator {
 
-    protected List<AUIAction> genericActions = new ArrayList<>();
+    protected List<UIAction> genericActions = new ArrayList<>();
 
-    public void removeActionsFromMD(ActionsManager actionsManager) {
+    public void unregisterActionsFromMD(ActionsManager actionsManager) {
         genericActions.forEach(action ->
             UIActionConfiguratorUtils.findCategory(actionsManager, action.getCategory()).ifPresent(category ->
                 action.getAllActions().forEach(category::removeAction)
@@ -25,16 +25,16 @@ public abstract class AUIActionConfigurator implements UIActionConfigurator {
         );
     }
 
-    public void addAction(AUIAction action){
+    public void addAction(UIAction action){
         genericActions.add(action);
     }
-    public void removeAction(AUIAction action){
+    public void removeAction(UIAction action){
         genericActions.remove(action);
     }
-    public void addActions(List<AUIAction> actions){
+    public void addActions(List<UIAction> actions){
         genericActions.forEach(this::addAction);
     }
-    public void removeActions(List<AUIAction> actions){
+    public void removeActions(List<UIAction> actions){
         genericActions.forEach(this::removeAction);
     }
 }
