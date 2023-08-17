@@ -12,7 +12,7 @@ TODO
 # Release process (for maintainers)
 - Update release notes in `CHANGELOG.md` (see [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)) by moving  [UNRELEASED] changes to a new version
 - Commit changes
-- Create a new branch from `0-DEV` with the name `RELEASE/<version>`
+- Create a new branch from `0-DEV` with the name `RELEASE/<version>` (e.g. `RELEASE/1.0.0`)
 - On the release branch, change the version in `gradle.properties` (remove SNAPSHOT suffix)
 - Commit and push. The CI/CD will build the plugin and publish it to Nexus & Maven Central staging
 - If there are validation problems:
