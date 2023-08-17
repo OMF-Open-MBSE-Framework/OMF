@@ -10,7 +10,7 @@ This project contains a framework for the development of Magicdraw plugins. As s
 TODO
 
 # Release process (for maintainers)
-- Update release notes in `CHANGELOG.md` (see [Keep a Changelog](https://keepachangelog.com/en/1.0.0/))
+- Update release notes in `CHANGELOG.md` (see [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)) by moving  [UNRELEASED] changes to a new version
 - Commit changes
 - Create a new branch from `0-DEV` with the name `RELEASE/<version>`
 - On the release branch, change the version in `gradle.properties` (remove SNAPSHOT suffix)

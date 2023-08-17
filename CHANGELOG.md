@@ -1,4 +1,4 @@
-**# Changelog
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -7,15 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
-### Features
-- **PATTERN FEATURE**: Allow to define pattern in project and to generate it on its creation
+## [1.0.25] - 2023-08-17
+
+### Added Public Features
+- **Pattern** feature: Allows to define pattern in project and to generate it on its creation
+- **TestGeneration** feature that adds an action generates test case code for creation tests from a test case in the model
+- **GenerateModelArchitecture** feature which generates a UML model of the OMF project in Magicdraw
 
 ### Added
-- "generate model architecture" feature which generates a UML model of the OMF project in Magicdraw
 - Eclipse specific gradle tasks **debugPlugin** and **debugTests** to allow debugging on that IDE
-- TestGeneration feature that add an action generates test case code for creation tests from a test case in the model
-- EventChecker new method isInstanceOf allowing to check if an event is an instance of a given class and isTrue(customPredicate) to validate a custom predicate
+- new method isInstanceOf in EventChecker allowing to check if an event is an instance of a given class and isTrue(customPredicate) 
+to validate a custom predicate
 - OMFSilentException has been added to allow to throw an exception without displaying anything on User Interface (no popup, no console)
+- Handling of subcategories for UIActions by using "." as a separator in the action name
+- Naming conventions to README.md
 
 ### Fixed
 - Error messages relating to the API server feature
@@ -29,16 +34,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Gradle build configuration and project properties changed to allow development in environments with 
 limited internet access and on the eclipse IDA
-- To declare a environment option group in a plugin, you now only have to declare an instance of OMFOptionsGroup instead
-of having to create a class that implements an abstract class from OMF.
-- Framework now better handles case when no option group has been declared in a plugin.
 - A number of gradle tasks where renamed and reorganized.
+- To declare a environment option group in a plugin, you now only have to declare an instance of OMFOptionsGroup instead
+  of having to create a class that implements an abstract class from OMF.
+- Framework now better handles case when no option group has been declared in a plugin.
 
 ### Removed
 - The **mavenGroupId** and **testLauncher** gradle properties.
 - ARule debug method is now deprecated and will be removed in a future version
 
-## [1.0.0]
+## [1.0.0] - 2023-05-11
 
 ### Added
 - Utils: EventChecker adding hasStereotype clause
@@ -53,18 +58,13 @@ of having to create a class that implements an abstract class from OMF.
   - Rollback can be triggered from LiveAction or UIActions.
 - Core: FeatureRegisterer now uses a list of FeatureItemRegisterer allowing developer to customize how features registering are handling. 
  It also allows developer to add their own featureItems.
-
-
-
-
+  
 ### Known Limitations
 - Documentation is not up-to-date with the latest changes.
 - OMFExample is not published yet.
 - Popup Error needs to be improved, to be able to display more information (Exception tags, etc.)
 - Exception tags are not yet implemented
-- MainMenuAction: provided selectedElements come from both diagram and browser. Documentation need to be clarified on this point. 
-
-
+- MainMenuAction: provided selectedElements come from both diagram and browser. Documentation need to be clarified on this point.
 
 ### Added
 - Error Management handling inside OMF Core, allowing rollback in case of errors.
