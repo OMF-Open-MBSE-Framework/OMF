@@ -22,7 +22,7 @@ import com.samares_engineering.omf.omf_example_plugin.test.feature.FeatureCopyID
 import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.LocalAPIBatch;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.LocalBatch;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.TWCBatch;
-import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
+import com.samares_engineering.omf.omf_example_plugin.privatefeaturelibrary.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 
