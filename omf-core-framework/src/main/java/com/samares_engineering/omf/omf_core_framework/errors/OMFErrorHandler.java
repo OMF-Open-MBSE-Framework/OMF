@@ -67,14 +67,28 @@ public class OMFErrorHandler {
     //-------------------------------- Behavior/ Rollback ------------------------------------------------
     private static void defaultOMFExceptionHandling(GenericException exception, boolean cancelSession) {
         exception.displayDevMessage();
+
+        if(exception.getCriticality() == GenericException.ECriticality.SILENT) return;
+
+        exception.displayUserMessage();
         exception.displayUserMessage();
         NotificationManager.getInstance().showNotification(new Notification(
                 "[Plugin Error]", //TODO REPLACE WITH GENERIC EXCEPTION TAG
                 "[Plugin Error]",
-                "[Plugin Error] " + exception.getUserMessage(),
-                NotificationSeverity.ERROR));
+                "[Plugin Error] " + exception.getUserMessage(), getNotificationSeverity(exception.getCriticality())));
 
         handleRollBack(exception, cancelSession);
+    }
+
+    private static NotificationSeverity getNotificationSeverity(GenericException.ECriticality criticality) {
+        switch (criticality){
+            case CRITICAL:
+                return NotificationSeverity.ERROR;
+            case SILENT:
+            case ALERT:
+            default:
+                return NotificationSeverity.WARNING;
+        }
     }
 
     private static void handleRollBack(GenericException exception, boolean cancelSession) {
