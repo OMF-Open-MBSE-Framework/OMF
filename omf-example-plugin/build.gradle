@@ -54,6 +54,7 @@ dependencies {
     pluginLibrary project(':omf-test-framework')
     pluginLibrary project(':omf-core-framework')
     pluginLibrary project(':omf-public-features')
+    pluginLibrary project(':smart-private')
 
     testPluginLibrary 'ant:ant-junit:1.6.5'
     testPluginLibrary 'org.apache.ant:ant:1.8.2'
@@ -61,10 +62,10 @@ dependencies {
     testPluginLibrary project(':omf-test-framework')
     testPluginLibrary project(':omf-core-framework')
 
-    implementation 'com.squareup:javapoet:1.13.0'
+    pluginLibrary 'com.squareup:javapoet:1.13.0'
 
-    implementation 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
-    implementation 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
+    pluginLibrary 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
+    pluginLibrary 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
 
     zippedMDPlugin "com.nomagic.magicdraw:devtools:2021x_Refresh2@zip"
     otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])

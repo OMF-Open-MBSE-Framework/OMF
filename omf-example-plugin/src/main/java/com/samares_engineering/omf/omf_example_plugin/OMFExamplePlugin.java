@@ -26,7 +26,7 @@ import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeatur
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
-import com.samares_engineering.omf.omf_example_plugin.privatefeaturelibrary.patterncreation.PatternCreationFeature;
+import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
 import java.util.Collections;

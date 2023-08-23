@@ -32,3 +32,5 @@ include 'omf-utils'
 include 'omf-magicdraw-dependencies'
 include 'omf-public-features'
 include 'omf-example-plugin'
+include 'smart-private'
+

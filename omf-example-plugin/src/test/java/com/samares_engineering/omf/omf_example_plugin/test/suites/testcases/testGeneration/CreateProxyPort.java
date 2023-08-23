@@ -6,7 +6,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_example_plugin.privatefeaturelibrary.testGeneration.utils.OptionsBaseline;
+import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.utils.OptionsBaseline;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import java.lang.Override;
 import java.lang.String;
