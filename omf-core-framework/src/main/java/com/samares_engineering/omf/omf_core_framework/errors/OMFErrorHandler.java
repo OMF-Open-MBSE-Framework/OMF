@@ -71,7 +71,6 @@ public class OMFErrorHandler {
         if(exception.getCriticality() == GenericException.ECriticality.SILENT) return;
 
         exception.displayUserMessage();
-        exception.displayUserMessage();
         NotificationManager.getInstance().showNotification(new Notification(
                 "[Plugin Error]", //TODO REPLACE WITH GENERIC EXCEPTION TAG
                 "[Plugin Error]",

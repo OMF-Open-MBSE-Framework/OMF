@@ -58,6 +58,8 @@ public class GenericException extends Exception implements IException {
         System.err.println(debugMessage);
         if(null != exception)
             exception.printStackTrace();
+        else
+            printStackTrace();
     }
 
     public void displayUserMessage() {
