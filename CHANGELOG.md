@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [OMFErrorHandler] Improving ErrorManagement: 
     - Take into account the ECriticality on the notification window
     - does not display anything if ECriticality is SILENT
+-  [CloneManager - BETA] CloneManager allows to clone deeply elements within a project.
 
 ### Fixed
 ### Changed

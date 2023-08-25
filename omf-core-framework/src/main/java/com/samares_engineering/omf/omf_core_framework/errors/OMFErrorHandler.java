@@ -72,9 +72,9 @@ public class OMFErrorHandler {
 
         exception.displayUserMessage();
         NotificationManager.getInstance().showNotification(new Notification(
-                "[Plugin Error]", //TODO REPLACE WITH GENERIC EXCEPTION TAG
-                "[Plugin Error]",
-                "[Plugin Error] " + exception.getUserMessage(), getNotificationSeverity(exception.getCriticality())));
+                "[Plugin Error]", //id or something
+                "[Plugin Error]",//title: TODO REPLACE WITH GENERIC EXCEPTION TAG
+                "" + exception.getUserMessage(), getNotificationSeverity(exception.getCriticality())));
 
         handleRollBack(exception, cancelSession);
     }
