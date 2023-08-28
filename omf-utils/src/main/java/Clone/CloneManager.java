@@ -54,7 +54,7 @@ public class CloneManager {
     }
 
     /**
-     * @Precondition: the originalElement and the copiedElements must have been initialized setting the syncElement to their owner
+     * Precondition: the originalElement and the copiedElements must have been initialized setting the syncElement to their owner
      * Retrieve the cloned element from the copied elements list
      * @param orinalElement the original element
      * @param copiedElements the list of copied elements
