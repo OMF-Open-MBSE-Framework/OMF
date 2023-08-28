@@ -151,9 +151,35 @@ public class CloneManager {
      * @return the part elements
      */
     public List<Element> getPartElementToCopy(Property part) {
-        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(part));
-        elementsToCopy.add(part);
-        Type type = part.getType();
+      return getPropertyElementToCopy(part);
+    }
+
+    /**
+     * Get all the property elements to copy, including the relationship links.
+     * It retrieves deeply the classifier of the property.
+     * @param property the property to get the elements from
+     * @return the property elements
+     */
+    public List<Element> getPropertyElementToCopy(Property property) {
+        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(property));
+        elementsToCopy.add(property);
+        Type type = property.getType();
+        if (type == null) return elementsToCopy;
+
+        elementsToCopy.addAll(getDeepCopyClassifier(type));
+        return elementsToCopy;
+    }
+
+
+    /**
+     * Get deeply all the classifier elements to copy, including the relationship links.
+     * @param port the port to get the elements from
+     * @return the classifier elements
+     */
+    public List<Element> getPortElementToCopy(Port port) {
+        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(port));
+        elementsToCopy.add(port);
+        Type type = port.getType();
         if (type == null) return elementsToCopy;
 
         elementsToCopy.addAll(getDeepCopyClassifier(type));
@@ -184,17 +210,6 @@ public class CloneManager {
         return deepCopyElements;
     }
 
-    /**
-     * Get deeply all the classifier elements to copy, including the relationship links.
-     * @param port the port to get the elements from
-     * @return the classifier elements
-     */
-    public List<Element> getPortElementToCopy(Port port) {
-        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(port));
-        elementsToCopy.add(port.getType());
-        elementsToCopy.add(port);
-        return elementsToCopy;
-    }
 
     /**
      * Get all the relationship links from the element (source and target)
