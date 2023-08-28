@@ -100,10 +100,7 @@ public class CloneManager {
      * @return the connector elements
      */
     public Collection<? extends Element> getConnectorFromPort(Port port) {
-        Element sharedOwner = port.getOwner();
-        Collection<Connector> connectors = Connectors.collectConnectors(port).stream()
-                .filter(connector -> sharedOwner == connector.getOwner())
-                .collect(Collectors.toList());
+        Collection<Connector> connectors = Connectors.collectConnectors(port);
         return getConnectorElements(connectors);
     }
 
