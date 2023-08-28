@@ -74,7 +74,7 @@ public class CloneManager {
      * Set the syncElement of the originalElement to its owner, to be able to retrieve it later
      * @param originalElement the original element
      */
-    public void setOriginalElementToClone(Property originalElement) {
+    public void setOriginalElementToClone(Element originalElement) {
         originalElement.setSyncElement(originalElement.getOwner());
     }
 
