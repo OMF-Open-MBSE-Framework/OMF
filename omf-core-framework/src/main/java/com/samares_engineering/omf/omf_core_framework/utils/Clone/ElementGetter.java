@@ -8,7 +8,9 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -105,14 +107,22 @@ public class ElementGetter {
 
     /**
      * Get all the connectors from the ports
-     * @param list
-     * @return
+     * @param list the list of ports to get the connectors from
+     * @return the connectors
      */
     public List<Connector> getAllConnectorsFromPorts(List<Port> list) {
         return list.stream().map(Connectors::collectConnectors)
                 .flatMap(Collection::stream)
                 .distinct()
                 .collect(Collectors.toList());
+    }
+    /**
+     * Get all the connectors from the ports
+     * @param port the port to get the connectors from
+     * @return the connectors
+     */
+    public List<Connector> getAllConnectorsFromPort(Port port) {
+        return (List<Connector>) Connectors.collectConnectors(port);
     }
 
 }

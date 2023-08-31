@@ -8,6 +8,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.ConnectorUtils;
+import org.apache.commons.collections4.MapUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,8 +24,9 @@ public class CloneManager {
     public static final String DEFAULT_CLONED_ELEMENT_SUFFIX = "_CLONED";
     public Map<Element, Element> taggedElementForCopy;
 
-    private final List<Element> allStereotypes;
-    public Map<Element, Element> orignialClonedMap;
+    private List<Element> allStereotypes;
+    private Map<Element, Element> orignialClonedMap;
+    private Map<Element, Element> reversedMap;
     private int iTaggedElement;
     private List<Element> clonedElements;
 
@@ -42,6 +44,10 @@ public class CloneManager {
      * @param suffix the suffix to add to all cloned elements
      */
     public CloneManager(String suffix) {
+        initAllInternalVariables(suffix);
+    }
+
+    private void initAllInternalVariables(String suffix) {
         elementsToCopy = new HashSet<>();
         CLONED_ELEMENT_SUFFIX = suffix;
         taggedElementForCopy = new HashMap<>();
@@ -50,6 +56,64 @@ public class CloneManager {
         allStereotypes = Profile._getSysml().getAllStereotypes().stream().collect(Collectors.toList()); //TODO use the previous element to copy to tag the elements
     }
 
+    private void reset() {
+        initAllInternalVariables(CLONED_ELEMENT_SUFFIX);
+    }
+
+    //------------------------------------ PRECONFIGURED COPY METHODS --------------------------------------------------
+
+    public Map<Element, Element> clonePort(Port port) {
+        reset();
+        setOriginalElementToClone(port);
+        addAllElementsToCopy(getPortElementToCopy(port));
+
+
+        List<Port> list = elementGetter.getAllConnectedNestedPorts(port);
+        List<Connector> connectorList = elementGetter.getAllConnectorsFromPorts(list);
+
+        addAllElementsToCopy(connectorList);
+
+        cloneElements(port.getOwner());
+
+        fixAllCopiedConnectors();
+
+
+        return getOrignialClonedMap();
+    }
+
+    public Map<Element, Element> cloneProperty(Property property) {
+        reset();
+        setOriginalElementToClone(property);
+        addAllElementsToCopy(getPropertyElementToCopy(property));
+        addAllElementsToCopy(getTypeElementsToCopy(property.getType()));
+
+        cloneElements(property.getOwner());
+        return getOrignialClonedMap();
+    }
+    public Map<Element, Element> clonePart(Property part) {
+        reset();
+        setOriginalElementToClone(part);
+        addAllElementsToCopy(getPartElementToCopy(part));
+        addAllElementsToCopy(getTypeElementsToCopy(part.getType()));
+        addAllElementsToCopy(elementGetter.getConnectorElementsFromPart(part));
+
+        cloneElements(part.getOwner());
+
+        return getOrignialClonedMap();
+    }
+
+    public Map<Element, Element> cloneType(Type type) {
+        reset();
+        setOriginalElementToClone(type);
+        addAllElementsToCopy(getTypeElementsToCopy(type));
+
+        cloneElements(type.getOwner());
+        return getOrignialClonedMap();
+    }
+
+
+
+    //------------------------------------ ADD ELEMENTS TO COPY---------------------------------------------------------
 
     /**
      * Clone all the Elements inside the owner, and rename them with the PREFIX_CLONE
@@ -115,6 +179,15 @@ public class CloneManager {
         if(type == null) return Collections.emptyList();
         List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(type));
         elementsToCopy.add(type);
+        addAllElementsToCopy(type.getOwnedElement().stream()
+                .filter(Port.class::isInstance)
+                .map(Port.class::cast)
+                .map(elementGetter::getAllConnectedNestedPorts)
+                .flatMap(Collection::stream)
+                .map(elementGetter::getAllConnectorsFromPort)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList()));
+
         return elementsToCopy;
     }
 
@@ -189,12 +262,28 @@ public class CloneManager {
     /**
      * Fix all the cloned elements (Ownership, property path, ...)
      */
-    private void fixAllClonedElements() {
+    public void fixAllClonedElements() {
         //TODO: fix ownership of each element
         //TODO: call fixCopiedConnectors
     }
     /**
-     * Fix all the copied connectors paths.
+     * Fix all the cloned connectors paths.
+     * It will fix the ownership of the connectors and the property path of the connector ends.
+     * (When copying a connector, the property path of the connector is set by MagicDraw depending on the copy element list,
+     * if a port is copied with its connector, the property path of the connector will be set to the copied port: OK.
+     * But if there is a nested port from the same interface with the destination,
+     * the destination propertyPathWill be affected, thus the connector will be broken)
+     */
+    public void fixAllCopiedConnectors() {
+        getClonedElements().stream()
+                .filter(Connector.class::isInstance)
+                .map(Connector.class::cast)
+                .forEach(this::fixClonedConnector);
+
+    }
+    /**
+     *
+     * Fix all the cloned connectors paths.
      * It will fix the ownership of the connectors and the property path of the connector ends.
      * (When copying a connector, the property path of the connector is set by MagicDraw depending on the copy element list,
      * if a port is copied with its connector, the property path of the connector will be set to the copied port: OK.
@@ -202,24 +291,42 @@ public class CloneManager {
      * the destination propertyPathWill be affected, thus the connector will be broken)
      * @param connectorList the list of connectors to fix
      */
-    private void fixCopiedConnectors(List<Connector> connectorList) {
-        for (Connector originalConnector : connectorList) {
-            Connector copiedConnector = (Connector) retrieveClonedElement(originalConnector);
+    public void fixCopiedConnectors(List<Connector> connectorList) {
+        connectorList.forEach(this::fixClonedConnector);
 
-            copiedConnector.setOwner(originalConnector.getOwner()); //FIX Ownership
-
-            int iEndToFix = getEndToFix(copiedConnector);
-            if (iEndToFix == -1) continue;
-            ConnectorEnd endToFix = copiedConnector.getEnd().get(iEndToFix);
-
-            //Fix property path
-            List<Element> propertyPath = Profile._getSysml().elementPropertyPath().getPropertyPath(originalConnector.getEnd().get(iEndToFix));
-            Profile._getSysml().elementPropertyPath().setPropertyPath(endToFix, propertyPath);
-
-            //Fix role
-            endToFix.setRole(originalConnector.getEnd().get(iEndToFix).getRole());
-        }
     }
+
+    /**
+     * Fix the cloned connector paths.
+     * It will fix the ownership of the connector and the property path of the connector ends.
+     * (When copying a connector, the property path of the connector is set by MagicDraw depending on the copy element list,
+     * if a port is copied with its connector, the property path of the connector will be set to the copied port: OK.
+     * But if there is a nested port from the same interface with the destination,
+     * the destination propertyPathWill be affected, thus the connector will be broken
+     * @param clonedConnector
+     */
+    public void fixClonedConnector(Connector clonedConnector) {
+        Connector originalConnector = (Connector) retrieveOriginalElement(clonedConnector);
+
+        clonedConnector.setOwner(originalConnector.getOwner()); //FIX Ownership
+
+        int iEndToFix = getEndToFix(clonedConnector);
+        if (iEndToFix == -1) return;
+        ConnectorEnd endToFix = clonedConnector.getEnd().get(iEndToFix);
+
+        //Fix property path
+        List<Element> propertyPath = Profile._getSysml().elementPropertyPath().getPropertyPath(originalConnector.getEnd().get(iEndToFix));
+        Profile._getSysml().elementPropertyPath().setPropertyPath(endToFix, propertyPath);
+
+        //Fix role
+        endToFix.setRole(originalConnector.getEnd().get(iEndToFix).getRole());
+    }
+
+    public Element retrieveOriginalElement(Element clonedElement) {
+        return reversedMap.get(clonedElement);
+    }
+
+
     /**
      * Compute which end to fix from the connector.
      * It will return the index of the end to fix, or -1 if no end to fix.
@@ -271,6 +378,7 @@ public class CloneManager {
         clonedElements.forEach(clonedElement -> taggedElementForCopy.put(clonedElement.getSyncElement(), clonedElement));
         getElementsToCopy()
                 .forEach(originalElement -> orignialClonedMap.put(originalElement, retrieveClonedElementFromTag(originalElement)));
+        reversedMap = MapUtils.invertMap(orignialClonedMap);
     }
 
     /**
@@ -280,10 +388,17 @@ public class CloneManager {
      */
     private void tagsElementForCopy(Collection<? extends Element> elements) {
         //TODO: use the previous element to copy to tag the elements
+        List<Element> elementsToTagRef = new ArrayList<>(elementsToCopy);
+        elementsToTagRef = allStereotypes;
         for (Element element : elements) {
-            Element tagElement = allStereotypes.get(iTaggedElement++);
+            Element tagElement = getNextElementToTag(elementsToTagRef);
             tagElementForCopy(element, tagElement);
         }
+    }
+
+    private Element getNextElementToTag(List<Element> elementsToTagRef) {
+
+        return elementsToTagRef.get(iTaggedElement++);
     }
 
     /**
@@ -322,6 +437,23 @@ public class CloneManager {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+
+
+    /**
+     * Add all the elements to copy to the copy list
+     * @param elements the elements to add
+     */
+    public void addAllElementsToCopy(Collection<? extends Element> elements) {
+        elements.forEach(this::addElementToCopy);
+    }
+
+    /**
+     * Add the element to the copy list
+     * @param element the element to add
+     */
+    public void addElementToCopy(Element element) {
+        elementsToCopy.add(element);
+    }
 
     /**
      * Get the elements to copy
@@ -364,6 +496,59 @@ public class CloneManager {
         return orignialClonedMap.get(originalElement);
     }
 
+    public Map<Element, Element> getOrignialClonedMap() {
+        return orignialClonedMap;
+    }
 
+    public List<Element> getClonedElements() {
+        return clonedElements;
+    }
 
+    public ElementGetter getElementGetter() {
+        return elementGetter;
+    }
+
+    public Map<Element, Element> getTaggedElementForCopy() {
+        return taggedElementForCopy;
+    }
+
+    public void setTaggedElementForCopy(Map<Element, Element> taggedElementForCopy) {
+        this.taggedElementForCopy = taggedElementForCopy;
+    }
+
+    public List<Element> getAllStereotypes() {
+        return allStereotypes;
+    }
+
+    public void setAllStereotypes(List<Element> allStereotypes) {
+        this.allStereotypes = allStereotypes;
+    }
+
+    public void setOrignialClonedMap(Map<Element, Element> orignialClonedMap) {
+        this.orignialClonedMap = orignialClonedMap;
+    }
+
+    public Map<Element, Element> getReversedMap() {
+        return reversedMap;
+    }
+
+    public void setReversedMap(Map<Element, Element> reversedMap) {
+        this.reversedMap = reversedMap;
+    }
+
+    public int getiTaggedElement() {
+        return iTaggedElement;
+    }
+
+    public void setiTaggedElement(int iTaggedElement) {
+        this.iTaggedElement = iTaggedElement;
+    }
+
+    public void setClonedElements(List<Element> clonedElements) {
+        this.clonedElements = clonedElements;
+    }
+
+    public void setElementGetter(ElementGetter elementGetter) {
+        this.elementGetter = elementGetter;
+    }
 }

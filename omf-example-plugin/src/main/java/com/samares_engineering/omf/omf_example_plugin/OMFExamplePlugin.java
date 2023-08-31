@@ -17,6 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
+import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.CloneElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
@@ -36,6 +37,7 @@ public class OMFExamplePlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
+                new CloneElementFeature(),
                 new SysMLBasicFeature(),
                 new FeaturesDeactivationFeature(),
                 new ErrorManagementFeatureExample(),

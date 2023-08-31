@@ -21,7 +21,7 @@ public class SysMLBasicOptionHelper extends EnvOptionsHelper {
 
 
     public List<IOption> getAllOptions() {
-        BooleanProperty isInterfaceCreationActivated = new BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, true);
+        BooleanProperty isInterfaceCreationActivated = new BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, false);
 
         OptionImpl isInterfaceCreationActivatedOption = new OptionImpl(
                 isInterfaceCreationActivated,

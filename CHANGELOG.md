@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  [CloneManager - BETA] CloneManager allows to clone deeply elements within a project.
   - Allows to clone ports with interface, relations, and all connectors (including connectors from nested ports)
   - Allows to clone parts with their block, relations, and all connectors (including connectors from nested ports)
-  - LIMITATIONS: when cloning nested ports with connections in multi-instance context (nested ports from the same interface),
-    nested ports with depth > 2 are cloned, but not displayable. Investigation ongoing whether it is a MagicDraw bug or not.
+  - LIMITATIONS (2021 R1): when cloning nested ports with connections in multi-instance context (nested ports from the same interface),
+    nested ports with depth > 2 are cloned, but not displayable. Fix in MCSE 2021 R2.
      
 
 ### Fixed
