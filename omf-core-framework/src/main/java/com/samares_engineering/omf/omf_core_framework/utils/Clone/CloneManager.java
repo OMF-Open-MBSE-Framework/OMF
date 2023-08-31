@@ -1,10 +1,8 @@
-package Clone;
+package com.samares_engineering.omf.omf_core_framework.utils.Clone;
 
 import com.nomagic.magicdraw.copypaste.CopyPasting;
-import com.nomagic.magicdraw.uml2.Connectors;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
@@ -30,6 +28,8 @@ public class CloneManager {
     private int iTaggedElement;
     private List<Element> clonedElements;
 
+    private ElementGetter elementGetter;
+
     /**
      * Default constructor
      */
@@ -46,6 +46,7 @@ public class CloneManager {
         CLONED_ELEMENT_SUFFIX = suffix;
         taggedElementForCopy = new HashMap<>();
         orignialClonedMap = new HashMap<>();
+        elementGetter = new ElementGetter();
         allStereotypes = Profile._getSysml().getAllStereotypes().stream().collect(Collectors.toList()); //TODO use the previous element to copy to tag the elements
     }
 
@@ -103,56 +104,7 @@ public class CloneManager {
         originalElement.setSyncElement(originalElement.getOwner());
     }
 
-    /**
-     * Get the all the connector elements from the part, including the relationship links.
-     * @param part the part to get the connector elements from
-     * @return the connector elements
-     */
-    public Collection<? extends Element> getConnectorElementsFromPart(Property part) {
-        Element sharedOwner = part.getOwner();
-        Collection<Connector> connectors = part.get_connectorEndOfPartWithPort().stream()
-                .map(ConnectorEnd::get_connectorOfEnd)
-                .filter(connector -> sharedOwner == connector.getOwner())
-                .collect(Collectors.toList());
-
-        return getConnectorElements(connectors);
-    }
-
-
-    /**
-     * Get the all the connector elements from the port, including the relationship links.
-     * @param port the port to get the connector elements from
-     * @return the connector elements
-     */
-    public Collection<? extends Element> getConnectorFromPort(Port port) {
-        Collection<Connector> connectors = Connectors.collectConnectors(port);
-        return getConnectorElements(connectors);
-    }
-
-    /**
-     * Get All connector elements from the connector, including the relationship links.
-     * @param connector the connector to get the elements from
-     * @return the connector elements
-     */
-    public List<Element> getConnectorElements(Connector connector) {
-        List<Element> connectorElements = getRelationshipsFromElement(connector);
-        connectorElements.add(connector);
-        return connectorElements;
-    }
-
-    /**
-     * Get All connector elements from the connectors, including the relationship links.
-     * @param connectors the connectors to get the elements from
-     * @return the connector elements
-     */
-    public List<Element> getConnectorElements(Collection<Connector> connectors) {
-        return Stream.concat(
-                        connectors.stream()
-                                .map(this::getRelationshipsFromElement)
-                                .flatMap(Collection::stream),
-                        connectors.stream())
-                .collect(Collectors.toList());
-    }
+    //------------------------------------ GET ELEMENTS TO COPY---------------------------------------------------------
 
     /**
      * Get all Type Elements to copy, including the relationship links.
@@ -161,7 +113,7 @@ public class CloneManager {
      */
     public Collection<? extends Element> getTypeElementsToCopy(Type type) {
         if(type == null) return Collections.emptyList();
-        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(type));
+        List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(type));
         elementsToCopy.add(type);
         return elementsToCopy;
     }
@@ -173,7 +125,7 @@ public class CloneManager {
      * @return the part elements
      */
     public List<Element> getPartElementToCopy(Property part) {
-      return getPropertyElementToCopy(part);
+        return getPropertyElementToCopy(part);
     }
 
     /**
@@ -183,7 +135,7 @@ public class CloneManager {
      * @return the property elements
      */
     public List<Element> getPropertyElementToCopy(Property property) {
-        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(property));
+        List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(property));
         elementsToCopy.add(property);
         Type type = property.getType();
         if (type == null) return elementsToCopy;
@@ -199,7 +151,7 @@ public class CloneManager {
      * @return the classifier elements
      */
     public List<Element> getPortElementToCopy(Port port) {
-        List<Element> elementsToCopy = new ArrayList<>(getRelationshipsFromElement(port));
+        List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(port));
         elementsToCopy.add(port);
         Type type = port.getType();
         if (type == null) return elementsToCopy;
@@ -224,61 +176,12 @@ public class CloneManager {
                                 .map(this::getDeepCopyClassifier)
                                 .flatMap(Collection::stream),
                         ownedElement.stream()
-                                .map(this::getRelationshipsFromElement)
+                                .map(elementGetter::getRelationshipsFromElement)
                                 .flatMap(Collection::stream))
                 .collect(Collectors.toList());
-        deepCopyElements.addAll(getRelationshipsFromElement(type));
+        deepCopyElements.addAll(elementGetter.getRelationshipsFromElement(type));
         deepCopyElements.add(type);
         return deepCopyElements;
-    }
-
-
-    /**
-     * Get all the relationship links from the element (source and target)
-     * @param element
-     * @return
-     */
-    public List<Element> getRelationshipsFromElement(Element element) {
-        List<Element> traceability = new ArrayList<>(element.get_directedRelationshipOfSource());
-        traceability.addAll(element.get_directedRelationshipOfTarget());
-        return traceability;
-    }
-
-    /**
-     * Get all the connected nested ports from the port
-     * @param port
-     * @return
-     */
-    public List<Port> getAllConnectedNestedPorts(Port port) {
-        List<Port> allPortFromInterface = new ArrayList<>();
-        getAllNestedPortFromPort(port, allPortFromInterface);
-        allPortFromInterface.add(port);
-        return allPortFromInterface;
-    }
-
-    /**
-     * Get all the nested ports from the port using Interfaces, and add them to the list
-     * @param port the port to get the nested ports from
-     * @param portList the list of nested ports
-     */
-    public void getAllNestedPortFromPort(Port port, List<Port> portList){
-        ((Class) port.getType()).getOwnedPort()
-                .stream()
-                .forEach(ownedPort  ->{ portList.add(ownedPort); getAllNestedPortFromPort(ownedPort, portList);});
-
-    }
-
-
-    /**
-     * Get all the connectors from the ports
-     * @param list
-     * @return
-     */
-    public List<Connector> getAllConnectorsFromPorts(List<Port> list) {
-        return list.stream().map(Connectors::collectConnectors)
-                .flatMap(Collection::stream)
-                .distinct()
-                .collect(Collectors.toList());
     }
 
 

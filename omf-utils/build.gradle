@@ -18,7 +18,5 @@ repositories {
 
 dependencies {
     compileOnly project(":omf-magicdraw-dependencies")
-    compileOnly project(":omf-core-framework")
-    compileOnly project(":omf-test-framework")
 }
 
