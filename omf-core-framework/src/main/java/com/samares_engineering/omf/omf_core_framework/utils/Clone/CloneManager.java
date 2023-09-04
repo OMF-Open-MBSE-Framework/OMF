@@ -95,9 +95,11 @@ public class CloneManager {
         setOriginalElementToClone(part);
         addAllElementsToCopy(getPartElementToCopy(part));
         addAllElementsToCopy(getTypeElementsToCopy(part.getType()));
-        addAllElementsToCopy(elementGetter.getConnectorElementsFromPart(part));
+//        addAllElementsToCopy(elementGetter.getConnectorElementsFromPart(part));
 
         cloneElements(part.getOwner());
+
+        fixAllCopiedConnectors();
 
         return getOrignialClonedMap();
     }
@@ -108,6 +110,7 @@ public class CloneManager {
         addAllElementsToCopy(getTypeElementsToCopy(type));
 
         cloneElements(type.getOwner());
+        fixAllCopiedConnectors();
         return getOrignialClonedMap();
     }
 
@@ -315,11 +318,14 @@ public class CloneManager {
         ConnectorEnd endToFix = clonedConnector.getEnd().get(iEndToFix);
 
         //Fix property path
-        List<Element> propertyPath = Profile._getSysml().elementPropertyPath().getPropertyPath(originalConnector.getEnd().get(iEndToFix));
+        ConnectorEnd originalEnd = originalConnector.getEnd().get(iEndToFix);
+        List<Element> propertyPath = Profile._getSysml().elementPropertyPath().getPropertyPath(originalEnd);
         Profile._getSysml().elementPropertyPath().setPropertyPath(endToFix, propertyPath);
 
+        //fixPartWithPort
+        endToFix.setPartWithPort(originalEnd.getPartWithPort());
         //Fix role
-        endToFix.setRole(originalConnector.getEnd().get(iEndToFix).getRole());
+        endToFix.setRole(originalEnd.getRole());
     }
 
     public Element retrieveOriginalElement(Element clonedElement) {

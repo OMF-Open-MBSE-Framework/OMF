@@ -7,8 +7,6 @@
 
 package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.creation;
 
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 
@@ -30,12 +28,12 @@ public class LiveActionExample extends ARule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        try {
-            Class block = (Class) e.getSource();
-            block.setName("succeed");
-        }catch (Exception uncheckedException){
-            OMFErrorHandler.handleException(uncheckedException);
-        }
+//        try {
+//            Class block = (Class) e.getSource();
+//            block.setName("succeed");
+//        }catch (Exception uncheckedException){
+//            OMFErrorHandler.handleException(uncheckedException);
+//        }
 
         return e;
     }
