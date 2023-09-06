@@ -139,5 +139,15 @@ public class ElementGetter {
     }
 
 
-
+    /**
+     * Get all the traceability relationships from the provided connector
+     * @param connector the connector to get the traceability relationships from
+     * @return the traceability relationships
+     */
+    public Collection<? extends Element> getAllRelationFromConnector(Connector connector) {
+        return Stream.concat(
+                        connector.getClientDependency().stream(),
+                        connector.getSupplierDependency().stream())
+                .collect(Collectors.toList());
+    }
 }

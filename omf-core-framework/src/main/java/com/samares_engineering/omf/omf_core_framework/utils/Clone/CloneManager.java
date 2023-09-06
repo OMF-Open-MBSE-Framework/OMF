@@ -151,6 +151,20 @@ public class CloneManager {
     }
 
 
+    /**
+     * Make a deep copy of the provided connector and all relationship links.
+     * @param connector the connector to copy
+     * @return the map between the original elements and the cloned elements
+     */
+    public Map<Element, Element> clonedConnector(Connector connector) {
+        reset();
+        setOriginalElementToClone(connector);
+        addAllElementsToCopy(elementGetter.getAllRelationFromConnector(connector));
+        cloneElements(connector.getOwner());
+        fixAllCopiedConnectors();
+        return getOrignialClonedMap();
+    }
+
 
     //------------------------------------ ADD ELEMENTS TO COPY---------------------------------------------------------
 
