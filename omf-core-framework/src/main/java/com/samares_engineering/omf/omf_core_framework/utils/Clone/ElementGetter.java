@@ -125,4 +125,19 @@ public class ElementGetter {
         return (List<Connector>) Connectors.collectConnectors(port);
     }
 
+
+    /**
+     * Get all the traceability relationships from the provided connectors
+     * @param connectorList the connectors to get the traceability relationships from
+     * @return the traceability relationships
+     */
+    public Collection<? extends Element> getAllRelationFromConnectors(List<Connector> connectorList) {
+        return Stream.concat(
+                        connectorList.stream().map(Connector::getClientDependency).flatMap(Collection::stream),
+                        connectorList.stream().map(Connector::getSupplierDependency).flatMap(Collection::stream))
+                .collect(Collectors.toList());
+    }
+
+
+
 }

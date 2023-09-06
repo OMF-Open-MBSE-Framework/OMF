@@ -47,6 +47,10 @@ public class CloneManager {
         initAllInternalVariables(suffix);
     }
 
+    /**
+     * Initialize all the internal variables
+     * @param suffix the suffix to add to all cloned elements
+     */
     private void initAllInternalVariables(String suffix) {
         elementsToCopy = new HashSet<>();
         CLONED_ELEMENT_SUFFIX = suffix;
@@ -56,12 +60,20 @@ public class CloneManager {
         allStereotypes = Profile._getSysml().getAllStereotypes().stream().collect(Collectors.toList()); //TODO use the previous element to copy to tag the elements
     }
 
+    /**
+     * Reset all the internal variables
+     */
     private void reset() {
         initAllInternalVariables(CLONED_ELEMENT_SUFFIX);
     }
 
     //------------------------------------ PRECONFIGURED COPY METHODS --------------------------------------------------
 
+    /**
+     * Make a deep copy of the provided port and all its elements, including ports, parts, interfaces, connectors, relationship links.
+     * @param port the port to copy
+     * @return the map between the original elements and the cloned elements
+     */
     public Map<Element, Element> clonePort(Port port) {
         reset();
         setOriginalElementToClone(port);
@@ -70,8 +82,8 @@ public class CloneManager {
 
         List<Port> list = elementGetter.getAllConnectedNestedPorts(port);
         List<Connector> connectorList = elementGetter.getAllConnectorsFromPorts(list);
-
         addAllElementsToCopy(connectorList);
+        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(connectorList));
 
         cloneElements(port.getOwner());
 
@@ -81,21 +93,36 @@ public class CloneManager {
         return getOrignialClonedMap();
     }
 
+    /**
+     * Make a deep copy of the provided property and all its elements, including ports, parts, interfaces, connectors, relationship links.
+     * @param property the property to copy
+     * @return the map between the original elements and the cloned elements
+     */
     public Map<Element, Element> cloneProperty(Property property) {
         reset();
         setOriginalElementToClone(property);
         addAllElementsToCopy(getPropertyElementToCopy(property));
         addAllElementsToCopy(getTypeElementsToCopy(property.getType()));
 
+        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+
         cloneElements(property.getOwner());
         return getOrignialClonedMap();
     }
+
+    /**
+     * Make a deep copy of the provided part and all its elements, including ports, parts, interfaces, connectors, relationship links.
+     * @param part the part to copy
+     * @return the map between the original elements and the cloned elements
+     */
     public Map<Element, Element> clonePart(Property part) {
         reset();
         setOriginalElementToClone(part);
         addAllElementsToCopy(getPartElementToCopy(part));
         addAllElementsToCopy(getTypeElementsToCopy(part.getType()));
-//        addAllElementsToCopy(elementGetter.getConnectorElementsFromPart(part));
+
+        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+
 
         cloneElements(part.getOwner());
 
@@ -104,10 +131,19 @@ public class CloneManager {
         return getOrignialClonedMap();
     }
 
+    /**
+     * Make a deep copy of the provided type and all its elements, including ports, parts,
+     * interfaces, connectors, relationship links.
+     * @param type the type to copy
+     * @return the map between the original elements and the cloned elements
+     */
     public Map<Element, Element> cloneType(Type type) {
         reset();
         setOriginalElementToClone(type);
         addAllElementsToCopy(getTypeElementsToCopy(type));
+
+
+        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
 
         cloneElements(type.getOwner());
         fixAllCopiedConnectors();
@@ -444,6 +480,16 @@ public class CloneManager {
 
     //------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Get all the connectors to copy
+     * @return the connectors to copy
+     */
+    public List<Connector> getAllConnectorsToCopy(){
+        return elementsToCopy.stream()
+                .filter(Connector.class::isInstance)
+                .map(Connector.class::cast)
+                .collect(Collectors.toList());
+    }
 
     /**
      * Add all the elements to copy to the copy list
