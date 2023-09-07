@@ -80,7 +80,7 @@ public class CloneManager {
         addAllElementsToCopy(getPortElementToCopy(port));
 
 
-        List<Port> list = elementGetter.getAllConnectedNestedPorts(port);
+        List<Port> list = elementGetter.getAllNestedPortFromPort(port);
         List<Connector> connectorList = elementGetter.getAllConnectorsFromPorts(list);
         addAllElementsToCopy(connectorList);
         addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(connectorList));
@@ -159,6 +159,7 @@ public class CloneManager {
     public Map<Element, Element> clonedConnector(Connector connector) {
         reset();
         setOriginalElementToClone(connector);
+        addElementToCopy(connector);
         addAllElementsToCopy(elementGetter.getAllRelationFromConnector(connector));
         cloneElements(connector.getOwner());
         fixAllCopiedConnectors();
@@ -174,7 +175,7 @@ public class CloneManager {
      * @return the list of copied elements
      */
     public List<Element> cloneElements(Element owner) {
-        List<Element> listElementToClone = elementsToCopy.stream().collect(Collectors.toList());
+        List<Element> listElementToClone = new ArrayList<>(elementsToCopy);
         tagsElementForCopy(listElementToClone);
         clonedElements = CopyPasting.copyPasteElements(listElementToClone, owner);
 
@@ -235,7 +236,7 @@ public class CloneManager {
         addAllElementsToCopy(type.getOwnedElement().stream()
                 .filter(Port.class::isInstance)
                 .map(Port.class::cast)
-                .map(elementGetter::getAllConnectedNestedPorts)
+                .map(elementGetter::getAllNestedPortFromPort)
                 .flatMap(Collection::stream)
                 .map(elementGetter::getAllConnectorsFromPort)
                 .flatMap(Collection::stream)

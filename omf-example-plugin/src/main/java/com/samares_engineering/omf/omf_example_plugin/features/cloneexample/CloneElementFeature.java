@@ -10,10 +10,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.cloneexample;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions.ClonePart;
-import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions.ClonePort;
-import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions.CloneProperty;
-import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions.CloneType;
+import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions.*;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
 
 import java.util.List;
@@ -34,7 +31,8 @@ public class CloneElementFeature extends SimpleFeature {
                 new ClonePart(),
                 new ClonePort(),
                 new CloneProperty(),
-                new CloneType()
+                new CloneType(),
+                new GroupPortAction()
         );
     }
 }

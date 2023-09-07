@@ -22,4 +22,8 @@ public class LayoutException extends GenericException {
     public LayoutException(String message, Element createdElement, String featureName) {
         super(message, createdElement, featureName);
     }
+
+    public LayoutException(String errorMsg, Exception exception) {
+        super(errorMsg, exception, ECriticality.ALERT);
+    }
 }

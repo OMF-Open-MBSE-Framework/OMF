@@ -84,6 +84,7 @@ public abstract class AUIAction implements UIAction {
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
                 init();
+                diagramAction.setDiagram(this.getDiagram()); //TODO: temporary fix, to be removed when the diagram action will be fixed
                 executeDiagramAction(diagramSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }
@@ -218,7 +219,7 @@ public abstract class AUIAction implements UIAction {
      * @Hypothesis: Order correspond to the user element selection one.
      * @return selected node list.
      */
-    private Node[] getSelectedBrowserNodes() {
+    public Node[] getSelectedBrowserNodes() {
         if(OMFUtils.currentProject == null)
             return null;
         Browser browser = OMFUtils.currentProject.getBrowser();
@@ -236,7 +237,7 @@ public abstract class AUIAction implements UIAction {
      * @Hypothesis: Order correspond to the user element selection one.
      * @return selected elements list.
      */
-    private List<Element> getSelectedBrowserElements() {
+    public List<Element> getSelectedBrowserElements() {
         if(getSelectedBrowserNodes() == null)
             return Collections.emptyList();
         return Arrays.stream(getSelectedBrowserNodes())
@@ -251,7 +252,7 @@ public abstract class AUIAction implements UIAction {
      * @Hypothesis: Order correspond to the user element selection one.
      * @return selected Presentation Element list.
      */
-    private List<PresentationElement> getSelectedDiagramPresentationElements() {
+    public List<PresentationElement> getSelectedDiagramPresentationElements() {
         if(OMFUtils.currentProject == null)
             return Collections.emptyList();
         DiagramPresentationElement activeDiagram = OMFUtils.currentProject.getActiveDiagram();
@@ -262,7 +263,7 @@ public abstract class AUIAction implements UIAction {
      * @Hypothesis: Order correspond to the user element selection one.
      * @return selected elements list.
      */
-    private List<Element> getSelectedDiagramElements() {
+    public List<Element> getSelectedDiagramElements() {
         return getSelectedDiagramPresentationElements().stream()
                 .map(PresentationElement::getElement)
                 .collect(Collectors.toList());

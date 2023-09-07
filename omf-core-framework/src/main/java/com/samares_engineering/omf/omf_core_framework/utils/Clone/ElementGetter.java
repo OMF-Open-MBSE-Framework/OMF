@@ -81,11 +81,11 @@ public class ElementGetter {
     }
 
     /**
-     * Get all the connected nested ports from the port
-     * @param port
-     * @return
+     * Get all the connected nested ports from the port using Interfaces
+     * @param port the port to get the nested ports from
+     * @return the nested ports
      */
-    public List<Port> getAllConnectedNestedPorts(Port port) {
+    public List<Port> getAllNestedPortFromPort(Port port) {
         List<Port> allPortFromInterface = new ArrayList<>();
         getAllNestedPortFromPort(port, allPortFromInterface);
         allPortFromInterface.add(port);

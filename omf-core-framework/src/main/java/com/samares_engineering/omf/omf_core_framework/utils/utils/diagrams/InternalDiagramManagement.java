@@ -7,17 +7,18 @@
 package com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams;
 
 
+import com.nomagic.magicdraw.context.PropertyPathChangeManager;
 import com.nomagic.magicdraw.openapi.uml.PresentationElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.properties.PropertyID;
 import com.nomagic.magicdraw.properties.PropertyPool;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
+import com.nomagic.magicdraw.uml.symbols.DisplayPathElements;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.uml.symbols.layout.composite.CompositeStructureDiagramLayouter;
 import com.nomagic.magicdraw.uml.symbols.paths.ConnectorView;
 import com.nomagic.magicdraw.uml.symbols.shapes.PartView;
 import com.nomagic.magicdraw.uml.symbols.shapes.PortView;
-import com.nomagic.magicdraw.uml.symbols.shapes.ShapeElement;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
@@ -27,13 +28,13 @@ import com.nomagic.uml2.ext.magicdraw.components.mdbasiccomponents.ConnectorKind
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class InternalDiagramManagement {
@@ -55,14 +56,14 @@ public class InternalDiagramManagement {
             PresentationElement partPresentationElement = diagramPresentationElement.findPresentationElement(part, PartView.class);
 
             if (partPresentationElement != null) { // PresentationElement found
-                for (Port p : block.getOwnedPort()) {
+                for (Port port : block.getOwnedPort()) {
                     boolean shallCreatePortPresentationElement = partPresentationElement.getManipulatedPresentationElements().stream()
-                            .filter(ppe -> ppe.getElement().equals(p))
+                            .filter(ppe -> ppe.getElement().equals(port))
                             .count() == 0;
 
-//                    if (!partPresentationElement.getManipulatedPresentationElements().stream().filter(ppe -> ppe.getElement().equals(p)).iterator().hasNext()) {
+//                    if (!partPresentationElement.getManipulatedPresentationElements().stream().filter(ppe -> ppe.getElement().equals(port)).iterator().hasNext()) {
                     if (shallCreatePortPresentationElement)
-                        manager.createShapeElement(p, partPresentationElement);
+                        manager.createShapeElement(port, partPresentationElement);
                 }
             }
             //this seems to work outside of a transaction as well
@@ -71,38 +72,41 @@ public class InternalDiagramManagement {
 //            Application.getInstance().getGUILog().log(e.getMessage());
         }
 
-        DiagramUtils.getDiagram(diagram).setSelected(Collections.singletonList(diagramPresentationElement));
+        setSelectedElements(DiagramUtils.getDiagram(diagram), Collections.singletonList(diagramPresentationElement));
     }
 
-    public static void refreshSinglePort(Port portToRefresh, Property mbsePart, Diagram diagram) {
-        DiagramPresentationElement diagramPresentationElement = null;
-        diagramPresentationElement = DiagramUtils.getDiagram(diagram);
-
+    public static List<PresentationElement> refreshSinglePort(Port portToRefresh, Property partHostingThePort, Diagram diagram) {
+        DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);
+        List<PresentationElement> displayedPorts = new ArrayList<>();
         try {
             PresentationElementsManager manager = PresentationElementsManager.getInstance();
-            List<PresentationElement> test = diagramPresentationElement.findPresentationElementsForPathConnecting(mbsePart, PartView.class).collect(Collectors.toList());
-//            PresentationElement partPresentationElement = diagramPresentationElement.findPresentationElement(mbsePart, PartView.class);
+            List<PresentationElement> allPartsPEFound = diagramPresentationElement.findPresentationElementsForPathConnecting(partHostingThePort, PartView.class).collect(Collectors.toList());
 
-            for (PresentationElement partPEE : test) {
+            for (PresentationElement partPEE : allPartsPEFound) {
                 boolean shallCreatePortPresentationElement = partPEE.getManipulatedPresentationElements().stream()
                         .filter(ppe -> ppe.getElement().equals(portToRefresh))
                         .count() == 0;
                 if (shallCreatePortPresentationElement)
-                    manager.createShapeElement(portToRefresh, partPEE);
+                    displayedPorts.add(manager.createShapeElement(portToRefresh, partPEE));
             }
 
-            //this seems to work outside of a transaction as well
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
 
         } catch (Exception e) {
-//            Application.getInstance().getGUILog().log(e.getMessage());
+            OMFErrorHandler.handleException(new LayoutException("Error during refresh of single port", e), false);
         }
 
-        DiagramUtils.getDiagram(diagram).setSelected(Collections.singletonList(diagramPresentationElement));
+        setSelectedElements(DiagramUtils.getDiagram(diagram), displayedPorts);
+        return displayedPorts;
     }
 
-    public static void refreshEmbeddedPort(Port portToRefresh, Port hostPort, Diagram diagram) {
+    private static void setSelectedElements(DiagramPresentationElement diagram, List<PresentationElement> diagramPresentationElement) {
+        diagram.setSelected(diagramPresentationElement);
+    }
+
+    public static List<PresentationElement> refreshEmbeddedPort(Port portToRefresh, Port hostPort, Diagram diagram) {
         DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);
+        List<PresentationElement> displayedPorts = new ArrayList<>();
         try {
             PresentationElementsManager manager = PresentationElementsManager.getInstance();
             List<PresentationElement> presentationElements = diagramPresentationElement
@@ -112,21 +116,51 @@ public class InternalDiagramManagement {
                 boolean shallCreatePortPresentationElement = portPEE.getManipulatedPresentationElements().stream()
                         .filter(PortView.class::isInstance)
                         .filter(ppe -> ppe.getElement().equals(portToRefresh))
-                        .count() == 0;
-                ShapeElement shapeElementCreated;
+                        .count() == 0; //Don't already exist under the hostPort
+
                 if (shallCreatePortPresentationElement) {
-                    shapeElementCreated = manager.createShapeElement(portToRefresh, portPEE);
+                    displayedPorts.add(manager.createShapeElement(portToRefresh, portPEE));
                 }
             }
 
-            //this seems to work outside of a transaction as well
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
         } catch (Exception e) {
-            ColorPrinter.warn("Error during refresh of embedded port: \n" + e.getMessage());
-            OMFErrorHandler.handleException(e, false);
-
+            OMFErrorHandler.handleException(new LayoutException("Error during refresh of embedded port", e), false);
         }
-        DiagramUtils.getDiagram(diagram).setSelected(Collections.singletonList(diagramPresentationElement));
+
+        setSelectedElements(DiagramUtils.getDiagram(diagram), displayedPorts);
+        return displayedPorts;
+    }
+
+    public static Collection<? extends PresentationElement> displayAllNestedPortRecursively(Port firstPort, DiagramPresentationElement diagramPE){
+        List<PresentationElement> allDisplayedPorts = new ArrayList<>();
+        List<PresentationElement> allPortToExpands = diagramPE.findPresentationElementsForPathConnecting(firstPort, PortView.class).collect(Collectors.toList());
+        Class typeInterface = (Class) firstPort.getType();
+
+        for (PresentationElement hostingPortPE : allPortToExpands) {
+            List<PresentationElement> PEUnderHostingPort = hostingPortPE.getManipulatedPresentationElements();
+            Predicate<Port> doesNotExist = nestedPort -> diagramPE.findPresentationElementsForPathConnecting(nestedPort, PortView.class)
+                    .allMatch(nestedPortPE -> !PEUnderHostingPort.contains(nestedPortPE));
+
+            typeInterface.getOwnedPort().stream()
+                    .filter(doesNotExist).forEach(nestedPort -> {
+                        PresentationElement nestedPortPE = createPortShapeElement(nestedPort, hostingPortPE);
+                        allDisplayedPorts.add(nestedPortPE);
+                        allDisplayedPorts.addAll(displayAllNestedPortRecursively(nestedPort, diagramPE));
+                    });
+        }
+
+        return allDisplayedPorts;
+    }
+
+    private static PresentationElement createPortShapeElement(Port nestedPort, PresentationElement hostingPortPE) {
+        try {
+            PresentationElementsManager manager = PresentationElementsManager.getInstance();
+            return manager.createShapeElement(nestedPort, hostingPortPE);
+        } catch (ReadOnlyElementException e) {
+            OMFErrorHandler.handleException(new LayoutException("Error during creation of nested port", "createPortShapeElement"), false);
+        }
+        return null;
     }
 
     public static void refreshSinglePortInEveryDiagrams(Port portToRefresh, Property mbsePart) {
@@ -161,7 +195,7 @@ public class InternalDiagramManagement {
             PresentationElement partPresentationElement = dpe.findPresentationElement(mbsePart, PartView.class);
             if (partPresentationElement != null) {
                 listPartPresentationElement.add(partPresentationElement);
-                dpe.setSelected(listPartPresentationElement);
+                setSelectedElements(dpe, listPartPresentationElement);
                 dpe.layout(false, new CompositeStructureDiagramLayouter());
             }
             listPartPresentationElement.clear();
@@ -298,7 +332,7 @@ public class InternalDiagramManagement {
                     boolean isNotPartOfTheConnectedParts = !(srcParts.size() > 0 && srcParts.contains(srcPartPEE.getElement())); //exception on case parent->son when no PropertyPath found
                     if (isNotPartOfTheConnectedParts)
                         continue;
-
+                    //NOT WORKING WITH NESTED PORTS: hypothesis was, port.getParent.getParent was a part, which is not the case when connecting nested ports
                     dstPortViewList.stream()
                             .filter(dstPortPEE -> partParentPEE.equals(dstPortPEE.getParent().getParent().getParent())) //SAME OWNER=> PartParentPEE SRC equals dst PartParentPEE DST
                             .filter(dstPortPEE -> (dstParts.size() > 0 && dstParts.contains(dstPortPEE.getParent().getElement())))
@@ -328,10 +362,183 @@ public class InternalDiagramManagement {
         }
     }
 
+    public static void displayPath(Collection<PresentationElement> presentationElements){
+        String var0 = "CREATE_PATHS";
+        if (presentationElements != null && !presentationElements.isEmpty()) {
+            PropertyPathChangeManager.getInstance(OMFUtils.currentProject).executeWithoutUpdatingPropertyPath(() -> {
+                createConnectorPaths(var0, presentationElements);
+            });
+        }
+    }
+
+    private static void createConnectorPaths(String var0, Collection<PresentationElement> peWithPathToDisplay) {
+        DisplayPathElements.DisplayPathOptions displayPathOption = new DisplayPathElements.DisplayPathOptions();
+        if ("CREATE_PATHS".equals(var0)) {
+            displayPathOption.setDisplayPathsToSelf(true);
+        } else {
+            peWithPathToDisplay = peWithPathToDisplay.size() > 1 ? peWithPathToDisplay : null;
+            displayPathOption.setOnlyBetweenThese(peWithPathToDisplay);
+            displayPathOption.setDisplayPathsToSelf(false);
+        }
+
+        DisplayPathElements.displayPathElements(peWithPathToDisplay, displayPathOption);
+    }
+
+    public static void refreshConnector2(Connector connector, Diagram diagram) {
+
+        DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);
+        ConnectorEnd firstEnd = Objects.requireNonNull(ModelHelper.getFirstEnd(connector), "Connector first end is null");
+        ConnectorEnd secondEnd = Objects.requireNonNull(ModelHelper.getSecondEnd(connector), "Connector second end is null");
+
+
+        List<Property> srcParts = OMFUtils.getPropertyPathListFromConnectorEnd(firstEnd);
+        List<Property> dstParts = OMFUtils.getPropertyPathListFromConnectorEnd(secondEnd);
+
+        boolean isSrcAPort = firstEnd.getRole() instanceof Port;
+        boolean isDstAPort = secondEnd.getRole() instanceof Port;
+
+        if (!isSrcAPort || !isDstAPort) {    //TODO improve ErrorManagement
+            OMFErrorHandler.handleException(
+                    new OMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
+            return;
+        }
+
+        Port srcPort = (Port) firstEnd.getRole();
+        Port dstPort = (Port) secondEnd.getRole();
+
+        PresentationElementsManager manager = PresentationElementsManager.getInstance();
+        PresentationElement connectorPresentationElement = diagramPresentationElement.findPresentationElement(connector, ConnectorView.class);
+
+        List<PresentationElement> srcPortViewList = diagramPresentationElement.findPresentationElementsForPathConnecting(srcPort, PortView.class).collect(Collectors.toList());
+        List<PresentationElement> dstPortViewList = diagramPresentationElement.findPresentationElementsForPathConnecting(dstPort, PortView.class).collect(Collectors.toList());
+
+
+        try {
+
+            if (connector.getKind() == ConnectorKindEnum.DELEGATION) {    //shall create ALL delegation connectors
+                /** A1Bis get as potential src... seems strange */
+                //getParent => PortPEE->PartPEE->ContainerClassfierPEE->PartPEE->etc
+
+                Element diagramOwner = DiagramUtils.getOpenedDiagram().getOwner();
+                Element commonAncestor = diagramOwner;
+
+                final boolean isSrcDiagramOwner = (srcPort.getOwner() == diagramOwner);
+                final boolean isDstDiagramOwner = (dstPort.getOwner() == diagramOwner);
+                final boolean connectedToDiagramBorder = isSrcDiagramOwner || isDstDiagramOwner;
+
+
+                for (PresentationElement srcPortPEE : srcPortViewList) {
+                    PresentationElement srcPartPEE = srcPortPEE.getParent();
+                    PresentationElement partParentPEE = srcPartPEE.getParent().getParent();
+
+                    boolean isNotPartOfTheConnectedParts = (srcParts.size() > 0 && !srcParts.contains(srcPartPEE.getElement())); //exception on case parent->son when no PropertyPath found
+                    if (isNotPartOfTheConnectedParts)
+                        continue;
+
+                    //DIAGRAM BORDER CASES
+                    if (connectedToDiagramBorder) {
+                        PresentationElement dstPortPEE = null;
+
+                        if (isSrcDiagramOwner)
+                            dstPortPEE = (dstPortViewList.size() == 0) ? //if no shape => create new one
+                                    manager.createShapeElement(dstPort, diagramPresentationElement.getDiagramFrame())
+                                    :
+                                    dstPortViewList.stream()
+                                            .filter(dstPortPE -> dstParts.contains(dstPortPE.getParent().getElement()))
+                                            .findFirst().get();
+
+                        if (isDstDiagramOwner)
+                            dstPortPEE = (dstPortViewList.size() == 0) ? //if no shape => create new one
+                                    manager.createShapeElement(dstPort, diagramPresentationElement.getDiagramFrame())
+                                    : //else select the first in the list (no ambiguity)
+                                    dstPortViewList.stream().findFirst().get();
+
+
+                        try {
+                            manager.createPathElement(connector, srcPortPEE, dstPortPEE);
+                        } catch (ReadOnlyElementException e) {
+                            OMFErrorHandler.handleException(e, false);
+                        }
+                    }
+
+                    dstPortViewList.stream()
+                            .filter(dstPortPEE -> partParentPEE.equals(dstPortPEE.getParent()) || dstPortPEE.getParent().getParent().getParent().equals(srcPartPEE)) //PartParentPEE equals dst Part
+                            .forEach(dstPortPEE -> {
+                                PresentationElement connectorPEE = null;
+                                try {
+                                    connectorPEE = manager.createPathElement(connector, srcPortPEE, dstPortPEE);
+                                } catch (ReadOnlyElementException e) {
+                                    OMFErrorHandler.handleException(e, false);
+                                }
+                            });
+                }
+
+            } else {  //ASSEMBLY
+
+                PresentationElement portSourceView = diagramPresentationElement.findPresentationElement(srcPort, PortView.class);
+                PresentationElement portSupplierView = diagramPresentationElement.findPresentationElement(dstPort, PortView.class);
+
+                for (PresentationElement srcPortPEE : srcPortViewList) {
+                    PresentationElement srcPartPEE = srcPortPEE.getParent();
+                    PresentationElement partParentPEE = srcPartPEE.getParent().getParent();
+
+                    boolean isNotPartOfTheConnectedParts = !(srcParts.size() > 0 && srcParts.contains(srcPartPEE.getElement())); //exception on case parent->son when no PropertyPath found
+                    if (isNotPartOfTheConnectedParts)
+                        continue;
+
+                    dstPortViewList.stream()
+//                            .filter(dstPortPEE -> partParentPEE.equals(dstPortPEE.getParent().getParent().getParent())) //SAME OWNER=> PartParentPEE SRC equals dst PartParentPEE DST
+                            .filter(dstPortPEE -> (dstParts.size() > 0 && dstParts.contains(dstPortPEE.getParent().getElement()))) //Src and DST shall not be on the same propertyPath
+                            .forEach(dstPortPEE -> {
+                                PresentationElement connectorPEE = null;
+                                try {
+                                    connectorPEE = manager.createPathElement(connector, srcPortPEE, dstPortPEE);
+                                } catch (ReadOnlyElementException e) {
+                                    OMFErrorHandler.handleException(e, false);
+                                }
+                            });
+                }
+            }
+
+
+            //SHOW ME RED
+//
+//            diagramPresentationElement.findPresentationElementsForPathConnecting(connector, ConnectorView.class)
+//                    .forEach(connectorPEE->{
+//                        connectorPEE.setLineColor(Color.BLUE);
+//                        connectorPEE.setLineWidth(3);
+//                    });
+            //this seems to work outside of a transaction as well
+            diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
+        } catch (Exception e) {
+            OMFErrorHandler.handleException(e, false);
+        }
+    }
+
+    public static void deleteRepresentationElement(Port port, DiagramPresentationElement diagramPE) {
+        PresentationElement presentationElement = diagramPE.findPresentationElement(port, PortView.class);
+        deletePresentationElement(presentationElement);
+    }
+
+    public static void deleteRepresentationElement(Connector connector, DiagramPresentationElement diagramPE) {
+        PresentationElement presentationElement = diagramPE.findPresentationElement(connector, ConnectorView.class);
+        deletePresentationElement(presentationElement);
+    }
+
+    private static void deletePresentationElement(PresentationElement presentationElement) {
+        if (presentationElement != null) {
+            try {
+                PresentationElementsManager.getInstance().deletePresentationElement(presentationElement);
+            } catch (Exception e) {
+                OMFErrorHandler.handleException(new LayoutException("Error during PresentationElement deletion"), false);
+            }
+        }
+    }
+
     public static void layoutCompositeInternalDiagram(Diagram diagram) {
         DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);
         List<PresentationElement> listPresentationElement = new ArrayList<>();
-        diagramPresentationElement.setSelected(listPresentationElement);
+        setSelectedElements(diagramPresentationElement, listPresentationElement);
         diagramPresentationElement.layout(false, new CompositeStructureDiagramLayouter());
     }
 }
