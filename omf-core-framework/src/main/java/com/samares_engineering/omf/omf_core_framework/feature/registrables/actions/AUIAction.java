@@ -216,7 +216,7 @@ public abstract class AUIAction implements UIAction {
     public abstract boolean checkAvailability(List<Element> selectedElements);
     /**
      * Get the selected Nodes inside the Containment Tree.
-     * @Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user element selection one.
      * @return selected node list.
      */
     public Node[] getSelectedBrowserNodes() {
@@ -234,7 +234,7 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Get the selected Elements inside the Containment Tree.
-     * @Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user element selection one.
      * @return selected elements list.
      */
     public List<Element> getSelectedBrowserElements() {
@@ -249,7 +249,7 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Get the Presentation elements of the selected elements inside the active diagram.
-     * @Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user element selection one.
      * @return selected Presentation Element list.
      */
     public List<PresentationElement> getSelectedDiagramPresentationElements() {
@@ -260,7 +260,7 @@ public abstract class AUIAction implements UIAction {
     }
     /**
      * Get the selected Elements inside the active diagram.
-     * @Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user element selection one.
      * @return selected elements list.
      */
     public List<Element> getSelectedDiagramElements() {
