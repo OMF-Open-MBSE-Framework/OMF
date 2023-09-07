@@ -41,7 +41,7 @@ public class InternalDiagramManagement {
     private InternalDiagramManagement() {}
 
     /**
-     * Refresh port.
+     * Display all ports of a part in a diagram
      *
      * @param block   the block
      * @param part    the part
@@ -75,16 +75,27 @@ public class InternalDiagramManagement {
         setSelectedElements(DiagramUtils.getDiagram(diagram), Collections.singletonList(diagramPresentationElement));
     }
 
-    public static List<PresentationElement> refreshSinglePort(Port portToRefresh, Property partHostingThePort, Diagram diagram) {
+    /**
+     * Display all ports hosted by a property in a diagram
+     * @param portToRefresh
+     * @param propertyHostingThePort
+     * @param diagram
+     * @return
+     */
+    public static List<PresentationElement> refreshSinglePort(Port portToRefresh, Property propertyHostingThePort, Diagram diagram) {
         DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);
         List<PresentationElement> displayedPorts = new ArrayList<>();
         try {
             PresentationElementsManager manager = PresentationElementsManager.getInstance();
-            List<PresentationElement> allPartsPEFound = diagramPresentationElement.findPresentationElementsForPathConnecting(partHostingThePort, PartView.class).collect(Collectors.toList());
-
+            List<PresentationElement> allPartsPEFound = diagramPresentationElement.findPresentationElementsForPathConnecting(propertyHostingThePort, PartView.class).collect(Collectors.toList());
+            allPartsPEFound.addAll(diagramPresentationElement.findPresentationElementsForPathConnecting(propertyHostingThePort, PortView.class).collect(Collectors.toList()));
             for (PresentationElement partPEE : allPartsPEFound) {
-                boolean shallCreatePortPresentationElement = partPEE.getManipulatedPresentationElements().stream()
-                        .filter(ppe -> ppe.getElement().equals(portToRefresh))
+                List<PresentationElement> manipuledPEE = partPEE.getManipulatedPresentationElements();
+
+                boolean shallCreatePortPresentationElement = manipuledPEE.stream()
+                        .map(PresentationElement::getElement)
+                        .filter(Objects::nonNull)
+                        .filter(portToRefresh::equals)
                         .count() == 0;
                 if (shallCreatePortPresentationElement)
                     displayedPorts.add(manager.createShapeElement(portToRefresh, partPEE));
@@ -93,7 +104,7 @@ public class InternalDiagramManagement {
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
 
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new LayoutException("Error during refresh of single port", e), false);
+            OMFErrorHandler.handleException(new LayoutException("Error during port: " + portToRefresh.getHumanName() + " displaying, please refresh it manually", e), false);
         }
 
         setSelectedElements(DiagramUtils.getDiagram(diagram), displayedPorts);

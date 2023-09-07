@@ -11,11 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [OMFErrorHandler] Improving ErrorManagement: 
     - Take into account the ECriticality on the notification window
     - does not display anything if ECriticality is SILENT
--  [CloneManager - BETA] CloneManager allows to clone deeply elements within a project.
+-  [CloneManager] CloneManager allows to clone deeply elements within a project.
   - Allows to clone ports with interface, relations, and all connectors (including connectors from nested ports)
   - Allows to clone parts with their block, relations, and all connectors (including connectors from nested ports)
-  - LIMITATIONS (2021 R1): when cloning nested ports with connections in multi-instance context (nested ports from the same interface),
-    nested ports with depth > 2 are cloned, but not displayable. Fix in MCSE 2021 R2.
+  
+- [GroupManager] GroupManager allows to group elements within a project.
+  - Allows to group ports inside a new one updating connectors (including connectors from nested ports)
+  - Allows to group parts inside a new one updating connectors (including connectors from nested ports)
+
+- [InternalDiagramManagement] 
+  - Display Path method added: Exactly as the action available in MagicDraw diagram, it allows to display all connection path from presentation elements. 
      
 
 ### Fixed

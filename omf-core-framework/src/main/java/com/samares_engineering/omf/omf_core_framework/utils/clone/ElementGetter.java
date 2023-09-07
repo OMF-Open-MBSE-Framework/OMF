@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_core_framework.utils.Clone;
+package com.samares_engineering.omf.omf_core_framework.utils.clone;
 
 import com.nomagic.magicdraw.uml2.Connectors;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
@@ -98,7 +98,9 @@ public class ElementGetter {
      * @param portList the list of nested ports
      */
     public void getAllNestedPortFromPort(Port port, List<Port> portList){
-        ((Class) port.getType()).getOwnedPort()
+        Class type = (Class) port.getType();
+        if(type == null) return;
+        type.getOwnedPort()
                 .stream()
                 .forEach(ownedPort  ->{ portList.add(ownedPort); getAllNestedPortFromPort(ownedPort, portList);});
 

@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_core_framework.utils.Clone;
+package com.samares_engineering.omf.omf_core_framework.utils.clone;
 
 import com.nomagic.magicdraw.copypaste.CopyPasting;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
@@ -56,6 +56,7 @@ public class CloneManager {
         CLONED_ELEMENT_SUFFIX = suffix;
         taggedElementForCopy = new HashMap<>();
         orignialClonedMap = new HashMap<>();
+        reversedMap = new HashMap<>();
         elementGetter = new ElementGetter();
         allStereotypes = Profile._getSysml().getAllStereotypes().stream().collect(Collectors.toList()); //TODO use the previous element to copy to tag the elements
     }
@@ -88,7 +89,6 @@ public class CloneManager {
         cloneElements(port.getOwner());
 
         fixAllCopiedConnectors();
-
 
         return getOrignialClonedMap();
     }
@@ -123,7 +123,6 @@ public class CloneManager {
 
         addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
 
-
         cloneElements(part.getOwner());
 
         fixAllCopiedConnectors();
@@ -141,7 +140,6 @@ public class CloneManager {
         reset();
         setOriginalElementToClone(type);
         addAllElementsToCopy(getTypeElementsToCopy(type));
-
 
         addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
 
@@ -161,7 +159,9 @@ public class CloneManager {
         setOriginalElementToClone(connector);
         addElementToCopy(connector);
         addAllElementsToCopy(elementGetter.getAllRelationFromConnector(connector));
+
         cloneElements(connector.getOwner());
+
         fixAllCopiedConnectors();
         return getOrignialClonedMap();
     }
@@ -178,11 +178,20 @@ public class CloneManager {
         List<Element> listElementToClone = new ArrayList<>(elementsToCopy);
         tagsElementForCopy(listElementToClone);
         clonedElements = CopyPasting.copyPasteElements(listElementToClone, owner);
-
         buildClonedElementMap();
+
+        setOwnerCopiedElementOwnerShip();
 
         setSuffix(clonedElements);
         return clonedElements;
+    }
+
+    /**
+     * Set the owner of the copied elements to the owner of the original elements
+     * As the CopyPasting.copyPasteElements() method put each copied element in a given owner, this method will reset the ownership
+     */
+    private void setOwnerCopiedElementOwnerShip() {
+        clonedElements.forEach(element -> element.setOwner(retrieveOriginalElement(element).getOwner()));
     }
 
     /**

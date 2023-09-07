@@ -5,31 +5,21 @@
 
 package com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions;
 
-import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
-import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.ui.ProgressStatusRunner;
-import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
-import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
-import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
-import com.samares_engineering.omf.omf_core_framework.utils.Clone.CloneManager;
-import com.samares_engineering.omf.omf_core_framework.utils.Clone.ElementGetter;
+import com.samares_engineering.omf.omf_core_framework.utils.clone.ElementGetter;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
+import com.samares_engineering.omf.omf_core_framework.utils.group.GroupElementHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,61 +53,17 @@ public class GroupPortAction extends AUIAction {
 
     protected void groupSelectedPorts(List<Port> selectedPorts) {
         PresentationElement partHost =  getSelectedDiagramPresentationElements().get(1).getParent();
-        Element blockOwner = selectedPorts.get(0).getOwner();
 
-        //Creating the new interface and port
-        Class newInterface = SysMLFactory.getInstance().createInterfaceBlock(blockOwner);
-        newInterface.setName("Grouped Interface");
-        
-        Port newGroupedPort = SysMLFactory.getInstance().createProxyPort(blockOwner);
-        newGroupedPort.setType(newInterface);
-        newGroupedPort.setName("-->Grouped Port");
-
-        //Moving all selected ports to the new interface, nesting them
-        new ArrayList<>(selectedPorts).forEach(port -> port.setOwner(newInterface));// new ArrayList<>(selectedPorts) is used to avoid ConcurrentModificationException
-
-        //Updating all the connectors to match the new ports (especially the nested ones)
-        List<Port> allNestedPorts = elementGetter.getAllNestedPortFromPort(newGroupedPort);
-        List<Connector> allConnectorsFromPorts = elementGetter.getAllConnectorsFromPorts(allNestedPorts);
-        List<Connector> refactoredConnectors = updatingAllConnectionsForNesting(selectedPorts, allConnectorsFromPorts, newGroupedPort);
+        //Grouping the ports
+        GroupElementHelper groupElementHelper = new GroupElementHelper().groupPorts(selectedPorts);
+        List<Connector> refactoredConnectors = groupElementHelper.getRefactoredConnectors();
+        Port newGroupedPort = groupElementHelper.getNewGroupedPort();
 
         //Displaying all the new representation elements
         refreshAllDiagramPresentationElements(selectedPorts, refactoredConnectors, partHost, newGroupedPort);
     }
 
-    /**
-     * Update all the connectors to match the new ports (especially the nested ones)
-     * NOTE: This method is using the CloneManager because the original connectors could not been modified <br>
-     * So they are cloned, modified, and the original ones are deleted
-     * @param selectedPorts the ports to group
-     * @param allConnectorsFromPorts the connectors to update
-     * @param newGroupedPort the new port
-     * @return the new connectors
-     */
-    private List<Connector> updatingAllConnectionsForNesting(List<Port> selectedPorts, List<Connector> allConnectorsFromPorts, Port newGroupedPort) {
-        List<Connector> newConnectors = new ArrayList<>();
-        for (Connector connector : allConnectorsFromPorts) {
-            //Cloning the connector
-            CloneManager cloneManager = new CloneManager("");
-            cloneManager.clonedConnector(connector);
-            Connector newConnector = (Connector) cloneManager.retrieveClonedElement(connector);
-            newConnectors.add(newConnector);
 
-            //Updating the connector to match the new port
-            updateConnectorToMatchNewSourcePort(selectedPorts, newConnector, newGroupedPort);
-
-            //Deleting the original connector
-            try {
-                ModelElementsManager.getInstance().removeElement(connector);}
-            catch (ReadOnlyElementException e) {
-                OMFErrorHandler.handleException(
-                        new OMFException("Cannot finalize the port grouping due to a ReadOnly Connector",
-                                e, GenericException.ECriticality.CRITICAL), true);
-            }
-        }
-
-        return newConnectors;
-    }
 
     /**
      * Refresh all the diagram representation elements:
@@ -159,38 +105,5 @@ public class GroupPortAction extends AUIAction {
         portsToDelete.forEach(port -> InternalDiagramManagement.deleteRepresentationElement(port, diagramPE));
     }
 
-    /**
-     * Actual update of the connector to match the new port:
-     * - We determine which end of the connector is the one to update (the one connected to the other port)
-     * - We update the connector to match the new port by replacing the attribute with the original one
-     * @param selectedMICPorts the ports to group
-     * @param connector the connector to update
-     * @param newGroupedPort the new port
-     * @return the updated connector
-     */
-    private Connector updateConnectorToMatchNewSourcePort(List<Port> selectedMICPorts, Connector connector, Port newGroupedPort) {
-       //We determine which end of the connector is the one to update (the one connected to the other port)
-        ConnectorEnd endToUpdate = ModelHelper.getFirstEnd(connector);
-        ConnectableElement roleToUpdate = endToUpdate.getRole();
-        //TODO: this is not working maybe use property path
-        if (!selectedMICPorts.contains(roleToUpdate)) {
-            endToUpdate = ModelHelper.getSecondEnd(connector);
-            roleToUpdate = endToUpdate.getRole();
-        }
-        Profile._getSysml().nestedConnectorEnd().apply(endToUpdate); //As the connector is now nested, we need to apply the nested connector end stereotype
-        boolean isOneOfTheSelectedPort = selectedMICPorts.contains(roleToUpdate);
-        if(isOneOfTheSelectedPort) { //Else it is set with a port, and we don't need to update it
-            endToUpdate.setPartWithPort(newGroupedPort);
-        }
-
-        //Updating the end property path
-        List<Element> pathFirstEnd = new ArrayList<>(Profile._getSysml().elementPropertyPath().getPropertyPath(endToUpdate));
-
-        int indexToInsert = selectedMICPorts.stream().filter(port -> pathFirstEnd.contains(port)).findFirst().map(pathFirstEnd::indexOf).orElse(-1);
-        indexToInsert = indexToInsert == -1 ? pathFirstEnd.size() : indexToInsert;
-        pathFirstEnd.add(indexToInsert, newGroupedPort);
-        Profile._getSysml().elementPropertyPath().setPropertyPath(endToUpdate, pathFirstEnd);
-        return connector;
-    }
 
 }
