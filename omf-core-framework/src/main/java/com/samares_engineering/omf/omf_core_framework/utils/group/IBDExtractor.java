@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.groupfeature;
+package com.samares_engineering.omf.omf_core_framework.utils.group;
 
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.uml.ConvertElementInfo;
