@@ -3,23 +3,28 @@
  * All rights reserved and granted to Renault.
  */
 
-package com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions;
+package com.samares_engineering.omf.omf_example_plugin.features.groupfeature.actions;
 
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
+import com.nomagic.magicdraw.uml.symbols.shapes.PartView;
 import com.nomagic.ui.ProgressStatusRunner;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
+import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.ElementGetter;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
-import com.samares_engineering.omf.omf_core_framework.utils.group.GroupElementHelper;
+import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.IBDExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +32,24 @@ import java.util.stream.Collectors;
 
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Group Ports", category = "Group")
-public class GroupPortAction extends AUIAction {
+@MDAction(actionName = "Group Parts", category = "Group")
+public class GroupPartsAction extends AUIAction {
 
     private ElementGetter elementGetter = new ElementGetter(); //Helper class to retrieve elements from others
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if (selectedElements.size() < 2) return false;
-        Element firstPort = selectedElements.get(0);
-        boolean portOwnerIsABlock = Profile._getSysml().block().is(firstPort.getOwner());
+        Element firstPart = selectedElements.get(0);
+        boolean portOwnerIsABlock = Profile._getSysml().block().is(firstPart.getOwner());
         return portOwnerIsABlock && selectedElements.stream()
-                .allMatch(Port.class::isInstance) && firstPort.getOwner().getOwnedElement().containsAll(selectedElements);
+                .allMatch(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
+                && firstPart.getOwner().getOwnedElement().containsAll(selectedElements);
     }
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        List<Port> selectedMICPorts = selectedElements.stream().map(Port.class::cast)
+        List<Property> selectedMICPorts = selectedElements.stream().map(Property.class::cast)
                 .collect(Collectors.toList());
         ProgressStatusRunner.runWithProgressStatus(progressStatus -> groupSelectedPorts(selectedMICPorts),
                 "Grouping Ports in progress", false, 0);
@@ -51,18 +57,27 @@ public class GroupPortAction extends AUIAction {
 
 
 
-    protected void groupSelectedPorts(List<Port> selectedPorts) {
-        PresentationElement partHost =  getSelectedDiagramPresentationElements().get(1).getParent();
+    protected void groupSelectedPorts(List<Property> selectedParts) {
+        DiagramPresentationElement diagram = OMFUtils.currentProject.getActiveDiagram();
+        Property firstSelectedMICPart =  selectedParts.get(0);
 
-        //Grouping the ports
-        GroupElementHelper groupElementHelper = new GroupElementHelper().groupPorts(selectedPorts);
-        List<Connector> refactoredConnectors = groupElementHelper.getRefactoredConnectors();
-        Port newGroupedPort = groupElementHelper.getNewGroupedPort();
+        Element newBlockOwner = firstSelectedMICPart.getType().getOwner();
 
-        //Displaying all the new representation elements
-        refreshAllDiagramPresentationElements(selectedPorts, refactoredConnectors, partHost, newGroupedPort);
+        List<PresentationElement> listPartViews = selectedParts.stream()
+                .map(this::findPresentationElement)
+                .collect(Collectors.toList());
+
+        Class newBlock = SysMLFactory.getInstance().createBlock(newBlockOwner);
+        newBlock.setName("[GROUPED_BLOCK]");
+
+        Stereotype partPropertySTR = Profile._getSysmlAdditionalStereotypes().partProperty().getStereotype();
+        new IBDExtractor().extractParts(listPartViews, newBlock, partPropertySTR);
     }
 
+    private PresentationElement findPresentationElement(Property property) {
+        DiagramPresentationElement diagram = OMFUtils.currentProject.getActiveDiagram();
+        return diagram.findPresentationElement(property, PartView.class);
+    }
 
 
     /**

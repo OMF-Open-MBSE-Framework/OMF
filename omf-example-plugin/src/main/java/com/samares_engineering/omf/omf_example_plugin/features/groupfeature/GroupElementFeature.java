@@ -5,19 +5,20 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.cloneexample;
+package com.samares_engineering.omf.omf_example_plugin.features.groupfeature;
 
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.actions.*;
+import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.actions.GroupPartsAction;
+import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.actions.GroupPortsAction;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
 
 import java.util.List;
 
-public class CloneElementFeature extends SimpleFeature {
-    public CloneElementFeature() {
-        super( "Clone Element Feature");
+public class GroupElementFeature extends SimpleFeature {
+    public GroupElementFeature() {
+        super( "Group Element Feature");
     }
 
     @Override
@@ -28,11 +29,8 @@ public class CloneElementFeature extends SimpleFeature {
     @Override
     public List<UIAction> initFeatureActions() {
         return List.of(
-                new ClonePart(),
-                new ClonePort(),
-                new CloneProperty(),
-                new CloneType(),
-                new GroupPortAction()
+                new GroupPartsAction(),
+                new GroupPortsAction()
         );
     }
 }

@@ -17,10 +17,11 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.cloneexample.CloneElementFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.clonefeature.CloneElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
+import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
@@ -38,6 +39,7 @@ public class OMFExamplePlugin extends APlugin {
     public List<MDFeature> initFeatures() {
         return List.of(
                 new CloneElementFeature(),
+                new GroupElementFeature(),
                 new SysMLBasicFeature(),
                 new FeaturesDeactivationFeature(),
                 new ErrorManagementFeatureExample(),
