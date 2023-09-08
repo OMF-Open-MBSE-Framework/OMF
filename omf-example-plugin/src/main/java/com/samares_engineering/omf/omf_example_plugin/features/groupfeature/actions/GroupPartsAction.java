@@ -24,7 +24,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.ElementGetter;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
-import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.IBDExtractor;
+import com.samares_engineering.omf.omf_core_framework.utils.group.IBDExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
