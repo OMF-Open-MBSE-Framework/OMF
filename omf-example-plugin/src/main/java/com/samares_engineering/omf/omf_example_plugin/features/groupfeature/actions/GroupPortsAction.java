@@ -16,7 +16,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
-import com.samares_engineering.omf.omf_core_framework.utils.clone.ElementGetter;
 import com.samares_engineering.omf.omf_core_framework.utils.group.GroupElementHelper;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
@@ -29,8 +28,6 @@ import java.util.stream.Collectors;
 @DeactivateListener
 @MDAction(actionName = "Group Ports", category = "Group")
 public class GroupPortsAction extends AUIAction {
-
-    private ElementGetter elementGetter = new ElementGetter(); //Helper class to retrieve elements from others
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
