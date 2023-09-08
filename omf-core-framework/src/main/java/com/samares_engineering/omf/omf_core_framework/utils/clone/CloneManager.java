@@ -6,6 +6,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.utils.clone.exceptions.CloneFailedException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.ConnectorUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -99,14 +102,18 @@ public class CloneManager {
      * @return the map between the original elements and the cloned elements
      */
     public Map<Element, Element> cloneProperty(Property property) {
-        reset();
-        setOriginalElementToClone(property);
-        addAllElementsToCopy(getPropertyElementToCopy(property));
-        addAllElementsToCopy(getTypeElementsToCopy(property.getType()));
+        try {
+            reset();
+            setOriginalElementToClone(property);
+            addAllElementsToCopy(getPropertyElementToCopy(property));
+            addAllElementsToCopy(getTypeElementsToCopy(property.getType()));
 
-        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+            addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
 
-        cloneElements(property.getOwner());
+            cloneElements(property.getOwner());
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new CloneFailedException("Error while cloning property: " + property.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
+        }
         return getOrignialClonedMap();
     }
 
@@ -116,16 +123,20 @@ public class CloneManager {
      * @return the map between the original elements and the cloned elements
      */
     public Map<Element, Element> clonePart(Property part) {
-        reset();
-        setOriginalElementToClone(part);
-        addAllElementsToCopy(getPartElementToCopy(part));
-        addAllElementsToCopy(getTypeElementsToCopy(part.getType()));
+        try {
+            reset();
+            setOriginalElementToClone(part);
+            addAllElementsToCopy(getPartElementToCopy(part));
+            addAllElementsToCopy(getTypeElementsToCopy(part.getType()));
 
-        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+            addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
 
-        cloneElements(part.getOwner());
+            cloneElements(part.getOwner());
 
-        fixAllCopiedConnectors();
+            fixAllCopiedConnectors();
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new CloneFailedException("Error while cloning part: " + part.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
+        }
 
         return getOrignialClonedMap();
     }
@@ -137,14 +148,17 @@ public class CloneManager {
      * @return the map between the original elements and the cloned elements
      */
     public Map<Element, Element> cloneType(Type type) {
-        reset();
-        setOriginalElementToClone(type);
-        addAllElementsToCopy(getTypeElementsToCopy(type));
+        try {
+            reset();
+            setOriginalElementToClone(type);
+            addAllElementsToCopy(getTypeElementsToCopy(type));
 
-        addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+            cloneElements(type.getOwner());
 
-        cloneElements(type.getOwner());
-        fixAllCopiedConnectors();
+            fixAllCopiedConnectors();
+        }catch (Exception e){
+            OMFErrorHandler.handleException(new CloneFailedException("Error while cloning type: " + type.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
+        }
         return getOrignialClonedMap();
     }
 
@@ -454,8 +468,7 @@ public class CloneManager {
      */
     private void tagsElementForCopy(Collection<? extends Element> elements) {
         //TODO: use the previous element to copy to tag the elements
-        List<Element> elementsToTagRef = new ArrayList<>(elementsToCopy);
-        elementsToTagRef = allStereotypes;
+        List<Element> elementsToTagRef = allStereotypes;
         for (Element element : elements) {
             Element tagElement = getNextElementToTag(elementsToTagRef);
             tagElementForCopy(element, tagElement);
@@ -498,7 +511,10 @@ public class CloneManager {
         Element copiedElement = taggedElementForCopy.get(mappedElement);
 
         orinalElement.setSyncElement(null);
-        copiedElement.setSyncElement(null);
+
+        if (copiedElement != null) {
+            copiedElement.setSyncElement(null);
+        }
         return copiedElement;
     }
 

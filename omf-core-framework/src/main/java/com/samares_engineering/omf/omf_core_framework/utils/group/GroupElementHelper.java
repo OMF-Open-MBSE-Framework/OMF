@@ -114,7 +114,7 @@ public class GroupElementHelper {
         List<Element> pathEnd = Profile._getSysml().elementPropertyPath().getPropertyPath(endToUpdate);
 
         boolean isSelectedPortInPropertyPath = selectedMICPorts.stream().anyMatch(pathEnd::contains);
-        if (!isSelectedPortInPropertyPath){
+        if (!isSelectedPortInPropertyPath && !selectedMICPorts.contains(roleToUpdate)){
             endToUpdate = ModelHelper.getSecondEnd(connector);
             roleToUpdate = endToUpdate.getRole();
             pathEnd = new ArrayList<>(Profile._getSysml().elementPropertyPath().getPropertyPath(endToUpdate));
