@@ -6,7 +6,7 @@
  ******************************************************************************/
 
 
-package com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration;
+package com.samares_engineering.omf.omf_public_features.testGeneration;
 
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
@@ -16,9 +16,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.actions.GenerateCreationTest;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.actions.GenerateSnapshotTest;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.CodeGenerationException;
+import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateCreationTest;
+import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateSnapshotTest;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationException;
 import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
 import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 

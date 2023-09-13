@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.classGenerator;
+package com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator;
 
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
@@ -13,9 +13,9 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.CodeGenerationUtils;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.OptionsCodeGenerator;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.utils.OptionsBaseline;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
+import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
