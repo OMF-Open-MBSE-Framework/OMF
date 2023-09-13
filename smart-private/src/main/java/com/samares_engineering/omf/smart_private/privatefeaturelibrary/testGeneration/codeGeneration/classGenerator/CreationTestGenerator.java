@@ -263,7 +263,11 @@ public class CreationTestGenerator {
     }
 
     public String getTestedElementName() {
-        return this.testedElement.getName();
+        return "testedElement_" + cleanString(this.testedElement.getName()) ;
+    }
+
+    private String cleanString(String str) {
+        return str.replaceAll("[^a-zA-Z0-9_]", "");
     }
 
     public Element getTestedElementOwner() {
