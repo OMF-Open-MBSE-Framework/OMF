@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.actions;
 
+import com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
@@ -10,11 +11,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.profile.TestProfile;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.TestGenerationEnvOptionsHelper;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.classGenerator.CreationTestGenerator;
+import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.profile.TestProfile;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.List;
@@ -39,8 +40,8 @@ public class GenerateCreationTest extends AUIAction {
         if(selectedElements.isEmpty())
             return false;
 
-        return selectedElements.size() == 1;
-                //&& isInTestPackage(selectedElements.get(0));
+        return selectedElements.size() == 1 &&
+               isInTestPackage(selectedElements.get(0));
     }
 
 
@@ -90,8 +91,8 @@ public class GenerateCreationTest extends AUIAction {
         if (TestProfile.getInstanceByProject().testPackage().is(parent)) {
             return true;
         }
-        // If parent is a package or model (a model is a package so the frst condition is enought)
-        if (parent instanceof Package) {
+        // If parent is a model
+        if (parent instanceof Model) {
             return false;
         }
 
