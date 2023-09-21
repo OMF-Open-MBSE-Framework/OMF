@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.profile;
+package com.samares_engineering.omf.omf_public_features.testGeneration.profile;
 
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.magicdraw.uml.BaseElement;

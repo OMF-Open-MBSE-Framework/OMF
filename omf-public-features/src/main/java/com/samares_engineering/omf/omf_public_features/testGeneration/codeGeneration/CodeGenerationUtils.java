@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration;
+package com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;

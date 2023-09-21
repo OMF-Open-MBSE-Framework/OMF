@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.actions;
+package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
@@ -6,9 +6,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.TestGenerationFeature;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.CodeGenerationUtils;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.testGeneration.codeGeneration.classGenerator.SnapshotGenerator;
+import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
+import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.classGenerator.SnapshotGenerator;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.List;
