@@ -254,16 +254,19 @@ public class CloneManager {
      */
     public Collection<? extends Element> getTypeElementsToCopy(Type type) {
         if(type == null) return Collections.emptyList();
-        List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(type));
-        elementsToCopy.add(type);
-        addAllElementsToCopy(type.getOwnedElement().stream()
+        Set<Element> elementsToCopy = getDeepCopyClassifier(type);
+//        Set<Element> elementsToCopy = new HashSet<>(elementGetter.getRelationshipsFromElement(type));
+//        elementsToCopy.add(type);
+
+        Set<Connector> collect = type.getOwnedElement().stream()
                 .filter(Port.class::isInstance)
                 .map(Port.class::cast)
                 .map(elementGetter::getAllNestedPortFromPort)
                 .flatMap(Collection::stream)
                 .map(elementGetter::getAllConnectorsFromPort)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toSet());
+        addAllElementsToCopy(collect);
 
         return elementsToCopy;
     }
@@ -315,9 +318,9 @@ public class CloneManager {
      * @param type the type to get the elements from
      * @return the classifier elements
      */
-    public Collection<Element> getDeepCopyClassifier(Type type) {
+    public Set<Element> getDeepCopyClassifier(Type type) {
         Collection<Element> ownedElement = type.getOwnedElement();
-        List<Element> deepCopyElements = Stream.concat(
+        Set<Element> deepCopyElements = Stream.concat(
                         ownedElement.stream()
                                 .filter(TypedElement.class::isInstance)
                                 .map(TypedElement.class::cast)
@@ -328,7 +331,7 @@ public class CloneManager {
                         ownedElement.stream()
                                 .map(elementGetter::getRelationshipsFromElement)
                                 .flatMap(Collection::stream))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         deepCopyElements.addAll(elementGetter.getRelationshipsFromElement(type));
         deepCopyElements.add(type);
         return deepCopyElements;

@@ -36,7 +36,8 @@ public class ClonePart extends AUIAction {
                 && selectedElements.stream()
                 .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
                 .map(Property.class::cast)
-                .allMatch(property -> property.getType() != null);
+                .filter(property -> property.getType() != null)
+                .count() == selectedElements.size();
     }
 
 
