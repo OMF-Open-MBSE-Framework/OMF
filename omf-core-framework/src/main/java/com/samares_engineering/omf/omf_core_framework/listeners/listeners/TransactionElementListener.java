@@ -11,7 +11,7 @@ import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFRollBackException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 

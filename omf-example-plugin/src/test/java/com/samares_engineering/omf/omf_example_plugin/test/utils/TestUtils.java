@@ -8,9 +8,8 @@
 package com.samares_engineering.omf.omf_example_plugin.test.utils;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_example_plugin.OMFExamplePlugin;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;

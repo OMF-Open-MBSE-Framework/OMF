@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
 
 public class NoElementFoundException extends GenericException {
     public NoElementFoundException(String message) {

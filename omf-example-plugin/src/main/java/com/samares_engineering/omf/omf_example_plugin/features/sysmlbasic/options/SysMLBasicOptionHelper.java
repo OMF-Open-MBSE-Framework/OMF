@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;

@@ -5,11 +5,12 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
 
 import com.google.common.base.Strings;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.IException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 

@@ -9,8 +9,8 @@ package com.samares_engineering.omf.omf_public_features.lockmanager;
 
 import com.nomagic.magicdraw.core.Application;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;

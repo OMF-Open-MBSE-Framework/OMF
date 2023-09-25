@@ -19,7 +19,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.transaction.ModelValidationResult;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFLockException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.OMFLockException;
 
 import javax.annotation.CheckForNull;
 import java.beans.PropertyChangeEvent;

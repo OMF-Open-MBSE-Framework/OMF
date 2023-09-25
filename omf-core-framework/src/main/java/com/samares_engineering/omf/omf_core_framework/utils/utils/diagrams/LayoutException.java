@@ -8,7 +8,7 @@
 package com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 
 public class LayoutException extends GenericException {
     public LayoutException(String message) {

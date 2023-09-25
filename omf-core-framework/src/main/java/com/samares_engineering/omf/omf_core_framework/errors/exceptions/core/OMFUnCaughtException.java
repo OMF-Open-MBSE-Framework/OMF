@@ -1,6 +1,8 @@
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.core;
 
-public class OMFUnCaughtException extends OMFException{
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+
+public class OMFUnCaughtException extends OMFException {
     static final String DEFAULT_MESSAGE = "An uncaught error occurred during the plugin execution.\n";
     public OMFUnCaughtException(Exception uncaughtException) {
         this(DEFAULT_MESSAGE + uncaughtException.getMessage(), uncaughtException);

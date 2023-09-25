@@ -18,6 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.CriticalFeatureExampleAction;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.UIActionErrorExample;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.creation.LiveActionErrorExample;
 
@@ -43,6 +44,7 @@ public class ErrorManagementFeatureExample extends AFeature {
     @Override
     public List<UIAction> initFeatureActions() {
         return Arrays.asList(
+                new CriticalFeatureExampleAction(),
                 new UIActionErrorExample()
         );
     }

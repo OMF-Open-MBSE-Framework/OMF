@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.builders.exceptions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.IGenericBuilder;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 
 public class BuilderException extends GenericException {
     private String message;

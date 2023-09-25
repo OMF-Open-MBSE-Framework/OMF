@@ -1,6 +1,8 @@
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature;
 
-public class OMFFeatureNotFoundException extends OMFException{
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+
+public class OMFFeatureNotFoundException extends OMFException {
     public OMFFeatureNotFoundException(String errorMsg, ECriticality criticality) {
         super(errorMsg, criticality);
     }

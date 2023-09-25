@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;

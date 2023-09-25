@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_test_framework.errors;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 
 public class OMFTestFrameworkException extends GenericException {
     public OMFTestFrameworkException(String errorMsg, ECriticality criticality) {

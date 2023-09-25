@@ -4,7 +4,9 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
+
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 
 public class NotImplementedException extends OMFException {
 

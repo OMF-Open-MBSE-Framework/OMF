@@ -1,6 +1,8 @@
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature;
 
-public class OMFFrameworkException extends OMFException{
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+
+public class OMFFrameworkException extends OMFException {
     public OMFFrameworkException(String errorMsg, ECriticality criticality) {
         super("[OMFFramework]" + errorMsg, criticality);
     }

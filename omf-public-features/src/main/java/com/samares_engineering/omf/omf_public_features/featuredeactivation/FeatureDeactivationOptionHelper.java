@@ -1,9 +1,7 @@
 package com.samares_engineering.omf.omf_public_features.featuredeactivation;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;

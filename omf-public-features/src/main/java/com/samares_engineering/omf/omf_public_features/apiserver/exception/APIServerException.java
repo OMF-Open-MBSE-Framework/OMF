@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_public_features.apiserver.exception;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 
 public class APIServerException extends OMFException {
 

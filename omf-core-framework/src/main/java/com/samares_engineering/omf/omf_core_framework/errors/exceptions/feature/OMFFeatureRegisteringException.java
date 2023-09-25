@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature;
 
 /**
  * This exception is thrown when the registration of a feature is compromised, and signals to the framework to

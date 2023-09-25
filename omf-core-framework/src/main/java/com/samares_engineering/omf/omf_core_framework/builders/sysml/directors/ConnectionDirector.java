@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.builders.sysml.ConnectorBu
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.InterfaceBlockBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.ProxyPortBuilder;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramUtils;
 

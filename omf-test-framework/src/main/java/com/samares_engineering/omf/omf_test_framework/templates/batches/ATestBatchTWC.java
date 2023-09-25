@@ -16,7 +16,7 @@ import com.nomagic.task.EmptyProgressStatus;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_test_framework.projectmanager.TestCloseProjects;
 import com.samares_engineering.omf.omf_core_framework.utils.TwcAccessor;
 

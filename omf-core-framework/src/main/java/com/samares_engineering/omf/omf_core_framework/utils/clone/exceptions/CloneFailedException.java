@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.utils.clone.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 
 public class CloneFailedException extends OMFException {
     public CloneFailedException(String errorMsg, ECriticality criticality) {

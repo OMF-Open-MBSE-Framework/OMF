@@ -1,8 +1,9 @@
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin;
 
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
-public class OMFPluginRegisteringException extends OMFException{
+public class OMFPluginRegisteringException extends OMFException {
 
     APlugin currentPlugin;
 
