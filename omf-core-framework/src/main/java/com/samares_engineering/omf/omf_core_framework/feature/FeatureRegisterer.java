@@ -49,7 +49,8 @@ public class FeatureRegisterer {
             }
 
             feature.initFeature(plugin);
-            feature.setIsRegistered(true);
+
+            feature.register();
 
             registeredFeatures.add(feature);
 

@@ -18,6 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.clonefeature.CloneElementFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption.DeactivateFeatureFromOption;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
@@ -28,8 +29,8 @@ import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeatur
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.lockmanager.LockSafeFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
+import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +51,8 @@ public class OMFExamplePlugin extends APlugin {
                 new GeneratePluginModelArchi(),
                 new SysmlGptExploFeature(),
                 new PatternCreationFeature(),
-                new TemplateFeature()
+                new TemplateFeature(),
+                new DeactivateFeatureFromOption()
         );
     }
 

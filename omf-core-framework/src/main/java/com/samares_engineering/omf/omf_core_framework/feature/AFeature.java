@@ -219,8 +219,29 @@ public abstract class AFeature implements MDFeature {
     }
 
     /**
-     * Sets the feature as registered or not.
-     * @param isRegistered
+     * Set the feature as registered only if it's not already the case then calls the corresponding lifecycle hook.
+     * see{@link AFeature#setIsRegistered(boolean)}
+     */
+    @Override
+    public void register() {
+        if(isRegistered) return;
+        setIsRegistered(true);
+    }
+
+    /**
+     * Set the feature as unregistered only if it's not already the case then calls the corresponding lifecycle hook.
+     * see{@link AFeature#setIsRegistered(boolean)}
+     */
+    @Override
+    public void unregister() {
+        if(!isRegistered) return;
+        setIsRegistered(false);
+    }
+
+    /**
+     * Actual set of the feature as registered or not, and calls the corresponding lifecycle hook.
+     * Please use the see{@link AFeature#register()} and see{@link AFeature#unregister()} methods instead of this one.
+     * @param isRegistered true if the feature is registered, false otherwise
      */
     public final void setIsRegistered(boolean isRegistered) {
         this.isRegistered = isRegistered;

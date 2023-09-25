@@ -12,10 +12,13 @@ public abstract class EnvOptionsHelper {
     private final OMFPropertyOptionsGroup optionsGroup;
 
     protected EnvOptionsHelper(MDFeature feature) {
-        this.feature = feature;
-        this.optionsGroup = feature.getPlugin().getEnvironmentOptionsGroup()
+        this(feature, feature.getPlugin().getEnvironmentOptionsGroup()
                 .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
-                "for this plugin"));
+                        "for this plugin")));
+    }
+    protected EnvOptionsHelper(MDFeature feature, OMFPropertyOptionsGroup optionsGroup) {
+        this.feature = feature;
+        this.optionsGroup = optionsGroup;
     }
 
     public final OMFPropertyOptionsGroup getOptionGroup() {

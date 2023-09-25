@@ -28,7 +28,7 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<IOptio
     /**
      * Register all the options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param options
+     * @param options the options to register
      */
     public void registerFeatureItems(List<IOption> options) {
         options.forEach(this::registerFeatureItem);
@@ -37,7 +37,7 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<IOptio
     /**
      * unregister all the options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param options
+     * @param options the options to unregister
      */
     public void unregisterFeatureItems(List<IOption> options){
         options.forEach(this::unregisterFeatureItem);
