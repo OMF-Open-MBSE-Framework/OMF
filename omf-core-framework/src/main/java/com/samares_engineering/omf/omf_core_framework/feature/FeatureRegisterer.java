@@ -49,7 +49,6 @@ public class FeatureRegisterer {
             }
 
             feature.initFeature(plugin);
-
             feature.register();
 
             registeredFeatures.add(feature);
@@ -135,7 +134,7 @@ public class FeatureRegisterer {
            }
         }
 
-        feature.setIsRegistered(false);
+        feature.unregister();
     }
 
     /**

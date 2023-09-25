@@ -10,6 +10,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,7 +74,9 @@ public class DeactivateFeatureFromOption_OptionHelper extends EnvOptionsHelper {
                 .findFirst();
     }
     public List<Property> getAllFeatureOptions() {
-        return getFeature().getPlugin().getFeatures().stream()
+        List<MDFeature> features = new ArrayList<>(getFeature().getPlugin().getFeatures());
+        features.remove(getFeature());
+        return features.stream()
                 .map(this::getFeatureActivationPropertyName)
                 .map(this::getPropertyByName)
                 .collect(Collectors.toList());

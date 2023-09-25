@@ -50,6 +50,7 @@ public class DeactivateFeatureFromOption extends SimpleFeature {
             getEnvOptionsHelper().getFeatureFromOption(getPlugin(), optionProperty)
                     .ifPresent(feature -> setFeatureActivation(feature, (boolean) optionProperty.getValue())));
 
+
     }
 
     @Override
