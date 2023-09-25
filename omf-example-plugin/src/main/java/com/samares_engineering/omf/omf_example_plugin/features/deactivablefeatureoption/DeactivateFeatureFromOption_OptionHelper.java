@@ -23,12 +23,11 @@ public class DeactivateFeatureFromOption_OptionHelper extends EnvOptionsHelper {
         super(feature, featureManagerOptionGroup);
     }
 
-//    public boolean isAutoInterfaceCreationActivated() {
-//        return (boolean) getPropertyByName(MANAGE_FEATURE_ACTIVATION).getValue();
-//    }
+
 
     public OptionImpl createDeactivationOption(MDFeature feature) {
-        BooleanProperty isInterfaceCreationActivated = new BooleanProperty(getFeatureActivationPropertyName(feature), feature.isRegistered());
+        BooleanProperty isInterfaceCreationActivated = new BooleanProperty(
+                getFeatureActivationPropertyName(feature), feature.isRegistered());
 
         OptionImpl option = new OptionImpl(
                 isInterfaceCreationActivated,
@@ -65,7 +64,7 @@ public class DeactivateFeatureFromOption_OptionHelper extends EnvOptionsHelper {
 
 
     private String getFeatureActivationPropertyName(MDFeature feature) {
-        return ACTIVATE_FEATURE_ + feature.getName();
+        return ACTIVATE_FEATURE_ + feature.getName() + ":";
     }
 
     Optional<MDFeature> getFeatureFromOption(APlugin plugin, Property optionProperty) {
