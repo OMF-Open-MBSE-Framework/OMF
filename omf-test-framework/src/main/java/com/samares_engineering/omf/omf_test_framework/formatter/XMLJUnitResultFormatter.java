@@ -7,6 +7,7 @@
 
 package com.samares_engineering.omf.omf_test_framework.formatter;
 
+import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import org.apache.tools.ant.BuildException;
@@ -104,6 +105,7 @@ public class XMLJUnitResultFormatter implements JUnitResultFormatter, XMLConstan
                     try {
                         wri.close();
                     } catch (IOException var10) {
+                        ColorPrinter.err("Unable to close log file: " + var10.getMessage()); //TODO: replace with OMFErrorHandler
                     }
                 }
 

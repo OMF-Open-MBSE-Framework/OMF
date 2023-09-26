@@ -600,9 +600,6 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             Assert.fail("No Diagram opened, please open a diagram before using this method");
         PresentationElement[] selectedPresentationElements = new PresentationElement[]{currentDiagramPresentation.findPresentationElement(selectedElement, AbstractHeaderShapeView.class)};
 
-        if(selectedPresentationElements == null || selectedPresentationElements.length == 0)
-            Assert.fail("No PresentationElement found in the diagram for element: " + selectedElement.getHumanName());
-
         currentDiagramPresentation.setSelected(Arrays.asList(selectedPresentationElements));
 
         ActionsManager actionManager = ActionsProvider.getInstance().getDiagramContextActions(
@@ -632,9 +629,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     /**
      * from the actionManager will search for all the registered Category. If absent the test will fail.
-     * @param actionManager
-     * @param mdActionsCategoryName
-     * @return
+     * @param actionManager ActionsManager
+     * @param mdActionsCategoryName String
+     * @return the category
      */
     public ActionsCategory getCategory(ActionsManager actionManager, String mdActionsCategoryName) {
         Optional<ActionsCategory> optCategory = actionManager.getCategories().stream().filter(cat -> cat.getName().equals(mdActionsCategoryName)).findFirst();
@@ -693,7 +690,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             Method method = optMethod.get();
             method.setAccessible(true);
             Object res = method.invoke(actionsConfiguratorsManager,diagram.get_representation().getType() + "Context");
-            if(res != null && res instanceof List)
+            if(res instanceof List)
                 accessibleDiagramMenus = (List) res;
         } catch (IllegalAccessException | InvocationTargetException e) {
             Assertions.fail("[Technical error] Cannot retrieved the Diagram configurator");

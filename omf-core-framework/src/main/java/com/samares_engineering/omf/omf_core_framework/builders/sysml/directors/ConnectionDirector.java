@@ -247,7 +247,7 @@ public class ConnectionDirector implements IGenericBuilder {
             Property son = (Property) partList.get(i);
             Property mother = (Property) partList.get(i + 1);
 
-            List<Element> motherPropertyPath = partList.stream().collect(Collectors.toList());
+            List<Element> motherPropertyPath = new ArrayList<>(partList);
             motherPropertyPath.remove(0);
             Connector connector = connectorBuilder
                     .srcPart(son)
@@ -272,7 +272,7 @@ public class ConnectionDirector implements IGenericBuilder {
         return this;
     }
 
-    public class MethodReadyToInvoke {
+    public static class MethodReadyToInvoke {
         public Method methodToInvoke;
         public Object context;
         public Object[] parameters;

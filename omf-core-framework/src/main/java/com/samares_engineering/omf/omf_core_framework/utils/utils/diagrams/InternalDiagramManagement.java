@@ -57,9 +57,7 @@ public class InternalDiagramManagement {
 
             if (partPresentationElement != null) { // PresentationElement found
                 for (Port port : block.getOwnedPort()) {
-                    boolean shallCreatePortPresentationElement = partPresentationElement.getManipulatedPresentationElements().stream()
-                            .filter(ppe -> ppe.getElement().equals(port))
-                            .count() == 0;
+                    boolean shallCreatePortPresentationElement = partPresentationElement.getManipulatedPresentationElements().stream().noneMatch(ppe -> Objects.equals(ppe.getElement(), port));
 
 //                    if (!partPresentationElement.getManipulatedPresentationElements().stream().filter(ppe -> ppe.getElement().equals(port)).iterator().hasNext()) {
                     if (shallCreatePortPresentationElement)
@@ -94,9 +92,7 @@ public class InternalDiagramManagement {
 
                 boolean shallCreatePortPresentationElement = manipuledPEE.stream()
                         .map(PresentationElement::getElement)
-                        .filter(Objects::nonNull)
-                        .filter(portToRefresh::equals)
-                        .count() == 0;
+                        .filter(Objects::nonNull).noneMatch(portToRefresh::equals);
                 if (shallCreatePortPresentationElement)
                     displayedPorts.add(manager.createShapeElement(portToRefresh, partPEE));
             }
@@ -125,9 +121,7 @@ public class InternalDiagramManagement {
 
             for (PresentationElement portPEE : presentationElements) {
                 boolean shallCreatePortPresentationElement = portPEE.getManipulatedPresentationElements().stream()
-                        .filter(PortView.class::isInstance)
-                        .filter(ppe -> ppe.getElement().equals(portToRefresh))
-                        .count() == 0; //Don't already exist under the hostPort
+                        .filter(PortView.class::isInstance).noneMatch(ppe -> Objects.equals(ppe.getElement(), portToRefresh)); //Don't already exist under the hostPort
 
                 if (shallCreatePortPresentationElement) {
                     displayedPorts.add(manager.createShapeElement(portToRefresh, portPEE));

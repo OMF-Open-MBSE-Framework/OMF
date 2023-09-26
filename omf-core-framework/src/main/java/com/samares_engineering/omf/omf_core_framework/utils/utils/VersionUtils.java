@@ -42,7 +42,7 @@ public class VersionUtils {
         } catch (IOException e) {
             OMFErrorHandler.handleException(e, false);
         }
-        if (versionPluginList != null && versionPluginList.containsKey("plugin_version")) {
+        if (versionPluginList.containsKey("plugin_version")) {
             return versionPluginList.get("plugin_version");
         }
         return null;

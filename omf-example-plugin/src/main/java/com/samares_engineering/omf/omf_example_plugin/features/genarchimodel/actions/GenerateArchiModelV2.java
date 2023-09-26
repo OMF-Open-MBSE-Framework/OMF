@@ -27,7 +27,7 @@ public class GenerateArchiModelV2 extends AUIAction {
             return false;
         if(selectedElements.isEmpty()) return false;
 
-        return !selectedElements.isEmpty();
+        return true;
     }
 
     @Override

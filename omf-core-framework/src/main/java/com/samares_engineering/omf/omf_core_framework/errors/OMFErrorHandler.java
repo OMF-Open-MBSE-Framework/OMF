@@ -50,7 +50,7 @@ public class OMFErrorHandler {
     /**
      * Handle Core RollBackException: Will do nothing the rollback is already requested.
      * REMEMBER: Rollback are handled by the framework, you should not throw them yourself.
-     * -> In UI Action/LiveAction: throw any exception you want, the framework will handle the rollback.
+     * - In UI Action/LiveAction: throw any exception you want, the framework will handle the rollback.
      * @param rollBackException the exception to handle
      */
     public static void handleException(OMFRollBackException rollBackException) {

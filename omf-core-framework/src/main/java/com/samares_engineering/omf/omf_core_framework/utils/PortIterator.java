@@ -31,9 +31,7 @@ public class PortIterator implements Iterator<List<ConnectableElement>> {
                 .stream()
                 .map(ConnectableElement::getEnd)
                 .flatMap(Collection::stream)
-                .map(ConnectorEnd::get_connectorOfEnd)
-                .filter(connector -> !edgeDone.contains(connector))
-                .count() > 0;
+                .map(ConnectorEnd::get_connectorOfEnd).anyMatch(connector -> !edgeDone.contains(connector));
     }
 
     @Override

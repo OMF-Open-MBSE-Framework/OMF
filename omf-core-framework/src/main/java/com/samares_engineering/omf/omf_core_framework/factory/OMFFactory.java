@@ -25,14 +25,14 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.ConnectorUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramUtils;
+import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,7 +61,8 @@ public class OMFFactory extends AMagicDrawFactory {
         boolean isMotherDiagramBorder = mother instanceof Port && mother.getOwner() == diagram.getOwner();
         Element elementToFind = mother instanceof Port ? mother.getOwner() : mother;
 
-        ArrayList<Property> parts = new ArrayList<Property>();
+        ArrayList<Property> parts = new ArrayList<>();
+        assert sonPEE != null;
         PresentationElement parentItemPEE = sonPEE.getParent();
 
         while (parentItemPEE.getElement() == elementToFind) {
@@ -90,17 +91,14 @@ public class OMFFactory extends AMagicDrawFactory {
     //Update Direction
 
     public Boolean isInterfaceOut(Type type) {
-        boolean isIn = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
-        boolean isOut = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
-        boolean isInOut = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.INOUT));
+        List<Element> allFlowProperty = type.getOwnedElement().stream().filter(flow -> flow instanceof Property && !(flow instanceof Port)).collect(Collectors.toList());
+        boolean isIn = allFlowProperty.stream().anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
+        boolean isOut = allFlowProperty.stream().anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
+        boolean isInOut = allFlowProperty.stream().anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.INOUT));
 
-        if (isIn && isInOut || isInOut)
-            return false;
+        if (isInOut) return false;
 
-        if (isIn)
-            return false;
-
-        return true;
+        return !isIn;
     }
 
     public void conjugatePort(Port port) {

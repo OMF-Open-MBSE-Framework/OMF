@@ -45,7 +45,7 @@ public class GenerateArchiModel extends AUIAction {
             return false;
         if(selectedElements.isEmpty()) return false;
 
-        return !selectedElements.isEmpty();
+        return true;
     }
 
     @Override

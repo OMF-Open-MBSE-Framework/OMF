@@ -470,7 +470,7 @@ public class ElementModelComparator implements ModelComparator {
             return areSameObjects(var19.getElement(), var22.getElement());
         } else {
             //ADDED IF NO DIFF BUT SAME NAME THEN RETURN TRUE
-            if (elem1 instanceof NamedElement && elem2 instanceof NamedElement)
+            if (elem1 instanceof NamedElement)
                 if(((NamedElement) elem1).getName().equals(((NamedElement) elem2).getName()))
                     return true;
             boolean needToCompareOwners = filters.stream().anyMatch(filter -> filter.needToCompareAttribute("owner", elem1, elem2));

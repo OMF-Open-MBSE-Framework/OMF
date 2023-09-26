@@ -23,7 +23,7 @@ public class CSVFileChooser {
         this.fileChooser = new JFileChooser();
         this.fileChooser.setMultiSelectionEnabled(false);
         this.fileChooser.setDialogTitle("Choose the configuration file (csv) file...");
-        javax.swing.filechooser.FileFilter filter = new SimulinkFilter();
+        javax.swing.filechooser.FileFilter filter = new CSVFilter();
         this.fileChooser.setFileFilter(filter);
     }
 
@@ -56,7 +56,7 @@ public class CSVFileChooser {
         private static final CSVFileChooser instance = new CSVFileChooser();
     }
 
-    class SimulinkFilter extends javax.swing.filechooser.FileFilter {
+    static class CSVFilter extends javax.swing.filechooser.FileFilter {
         String description = ".csv file";
 
         @Override
