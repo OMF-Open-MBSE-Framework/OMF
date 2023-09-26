@@ -110,7 +110,7 @@ public class UndoManager {
     }
     /**
      * a Thread is created waiting for the session to be closed before triggering the REDO.
-     * @param project
+     * @param project project where the undo shall be processed
      */
     private void redoOnSessionClosure(Project project) {
         int i =0;

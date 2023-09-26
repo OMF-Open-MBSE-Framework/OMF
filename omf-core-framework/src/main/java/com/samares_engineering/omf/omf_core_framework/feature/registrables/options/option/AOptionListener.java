@@ -18,7 +18,7 @@ import java.util.List;
 public abstract class AOptionListener implements EnvironmentOptions.EnvironmentChangeListener, PropertyChangeListener {
     @Override
     public void updateByEnvironmentProperties(List<Property> list) {
-        list.forEach(p -> ColorPrinter.status("Update" + p.getName()));
+//        list.forEach(p -> ColorPrinter.status("Update" + p.getName()));
     }
 
     @Override
