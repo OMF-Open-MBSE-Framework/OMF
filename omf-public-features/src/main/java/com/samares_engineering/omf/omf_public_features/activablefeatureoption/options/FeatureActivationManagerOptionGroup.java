@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption.options;
+package com.samares_engineering.omf.omf_public_features.activablefeatureoption.options;
 
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
@@ -13,9 +13,9 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
  * FeatureManagerOptionGroup is a group of options in the Environment Options
  * dedicated to the management of the features of the plugin.
  */
-public class FeatureManagerOptionGroup extends OMFPropertyOptionsGroup {
+public class FeatureActivationManagerOptionGroup extends OMFPropertyOptionsGroup {
 
-    public FeatureManagerOptionGroup(String ID, String categoryName) {
+    public FeatureActivationManagerOptionGroup(String ID, String categoryName) {
         super(ID, categoryName);
     }
 }

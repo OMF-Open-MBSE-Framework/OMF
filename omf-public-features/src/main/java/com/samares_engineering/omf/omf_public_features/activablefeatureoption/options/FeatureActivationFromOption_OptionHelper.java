@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption.options;
+package com.samares_engineering.omf.omf_public_features.activablefeatureoption.options;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
@@ -10,7 +10,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
-import com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption.DeactivateFeatureFromOptionFeature;
+import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
  * This class is used to manage the options of the feature
  * It will create the options and update the feature status according to the option value
  */
-public class DeactivateFeatureFromOption_OptionHelper extends EnvOptionsHelper {
+public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
 
     public static final String MANAGE_FEATURE_ACTIVATION = "Manage Feature Activation:";
     public static final String ACTIVATE_FEATURE_ = "Activate ";
 
-    public DeactivateFeatureFromOption_OptionHelper(MDFeature feature, OMFPropertyOptionsGroup featureManagerOptionGroup) {
+    public FeatureActivationFromOption_OptionHelper(MDFeature feature, OMFPropertyOptionsGroup featureManagerOptionGroup) {
         super(feature, featureManagerOptionGroup);
     }
 
@@ -102,8 +102,8 @@ public class DeactivateFeatureFromOption_OptionHelper extends EnvOptionsHelper {
     }
 
     @Override
-    public DeactivateFeatureFromOptionFeature getFeature() {
-        return (DeactivateFeatureFromOptionFeature) super.getFeature();
+    public FeatureActivationFromOptionFeature getFeature() {
+        return (FeatureActivationFromOptionFeature) super.getFeature();
     }
 
     /**

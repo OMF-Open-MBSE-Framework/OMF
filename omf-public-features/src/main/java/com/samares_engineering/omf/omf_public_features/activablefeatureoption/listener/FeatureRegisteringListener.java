@@ -1,10 +1,11 @@
-package com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption;
+package com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener;
 
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OptionNotFound;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.RegisteringPropertyChangeListener;
+import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 
 import java.beans.PropertyChangeEvent;
 
@@ -13,9 +14,9 @@ import java.beans.PropertyChangeEvent;
  * It will update the option value accordingly, so that the option is always in sync with the feature status.
  */
 public class FeatureRegisteringListener extends RegisteringPropertyChangeListener {
-    private final DeactivateFeatureFromOptionFeature activationFeature;
+    private final FeatureActivationFromOptionFeature activationFeature;
 
-    public FeatureRegisteringListener(DeactivateFeatureFromOptionFeature feature) {
+    public FeatureRegisteringListener(FeatureActivationFromOptionFeature feature) {
         this.activationFeature = feature;
 
     }

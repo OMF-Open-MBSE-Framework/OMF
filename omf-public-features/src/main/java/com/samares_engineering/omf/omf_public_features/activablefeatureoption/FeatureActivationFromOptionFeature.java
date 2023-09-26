@@ -5,7 +5,7 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption;
+package com.samares_engineering.omf.omf_public_features.activablefeatureoption;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
@@ -14,8 +14,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption.options.DeactivateFeatureFromOption_OptionHelper;
-import com.samares_engineering.omf.omf_example_plugin.features.deactivablefeatureoption.options.FeatureManagerOptionGroup;
+import com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener.FeatureRegisteringListener;
+import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationFromOption_OptionHelper;
+import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationManagerOptionGroup;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,15 +25,16 @@ import java.util.stream.Collectors;
  * This feature is used to manage the features of the plugin.
  * It will register a dedicated group of options in the Environment Options.
  * It creates the options to activate/deactivate the features and update the feature status according to the option value.
+ * NOTE! Please register this after all other features.
  */
-public class DeactivateFeatureFromOptionFeature extends SimpleFeature {
-    private final FeatureManagerOptionGroup featureManagerOptionGroup;
+public class FeatureActivationFromOptionFeature extends SimpleFeature {
+    private final FeatureActivationManagerOptionGroup featureManagerOptionGroup;
     private final FeatureRegisteringListener featureRegisteringListener;
 
 
-    public DeactivateFeatureFromOptionFeature() {
+    public FeatureActivationFromOptionFeature() {
         super( "Deactivate Features from Options Feature");
-        this.featureManagerOptionGroup = new FeatureManagerOptionGroup("Manage registered Features "
+        this.featureManagerOptionGroup = new FeatureActivationManagerOptionGroup("Manage registered Features "
                 , "Manage registered Features");
         this.featureRegisteringListener = new FeatureRegisteringListener(this);
     }
@@ -41,7 +43,7 @@ public class DeactivateFeatureFromOptionFeature extends SimpleFeature {
 
     @Override
     protected EnvOptionsHelper initEnvOptionsHelper() {
-        return new DeactivateFeatureFromOption_OptionHelper(this, getFeatureManagerOptionGroup());
+        return new FeatureActivationFromOption_OptionHelper(this, getFeatureManagerOptionGroup());
     }
 
     /**
@@ -92,7 +94,7 @@ public class DeactivateFeatureFromOptionFeature extends SimpleFeature {
 
     @Override
     protected List<IOption> initOptions() {
-        DeactivateFeatureFromOption_OptionHelper envOptionsHelper = getEnvOptionsHelper();
+        FeatureActivationFromOption_OptionHelper envOptionsHelper = getEnvOptionsHelper();
         return getPlugin().getFeatures()
                 .stream()
                 .map(envOptionsHelper::createDeactivationOption)
@@ -101,11 +103,11 @@ public class DeactivateFeatureFromOptionFeature extends SimpleFeature {
 
 
     @Override
-    public DeactivateFeatureFromOption_OptionHelper getEnvOptionsHelper() {
-        return (DeactivateFeatureFromOption_OptionHelper) super.getEnvOptionsHelper();
+    public FeatureActivationFromOption_OptionHelper getEnvOptionsHelper() {
+        return (FeatureActivationFromOption_OptionHelper) super.getEnvOptionsHelper();
     }
 
-    public FeatureManagerOptionGroup getFeatureManagerOptionGroup() {
+    public FeatureActivationManagerOptionGroup getFeatureManagerOptionGroup() {
         return featureManagerOptionGroup;
     }
 
