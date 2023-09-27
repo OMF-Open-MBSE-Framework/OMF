@@ -126,7 +126,7 @@ public abstract class AUIAction implements UIAction {
     /**
      * Execute the behavior defined for DiagramAction, listener will be deactivated during the action, and it will be executed inside a session.
      * By default the actionToPerfom() method. Override it if there is a need to distinguish DiagramAction of the other
-     * @param selectedElements
+     * @param selectedElements selected elements
      */
     protected void executeDiagramAction(List<Element> selectedElements) {
         if(deactivateListenerOnTrigger)
@@ -143,7 +143,7 @@ public abstract class AUIAction implements UIAction {
     /**
      * Execute the behavior defined for BrowserAction, listener will be deactivated during the action, and it will be executed inside a session.
      * By default the actionToPerform() method. Override it if there is a need to distinguish BrowserAction of the other
-     * @param selectedElements
+     * @param selectedElements selected elements
      */
     protected void executeBrowserAction(List<Element> selectedElements){
         if(deactivateListenerOnTrigger)
@@ -160,7 +160,7 @@ public abstract class AUIAction implements UIAction {
     /**
      * Execute the behavior defined for Menu Action, listener will be deactivated during the action, and it will be executed inside a session.
      * By default the actionToPerform() method. Override it if there is a need to distinguish Menu Action of the other
-     * @param selectedElements
+     * @param selectedElements selected elements
      */
     protected void executeMenuAction(List<Element> selectedElements){
         if(deactivateListenerOnTrigger)
@@ -176,7 +176,7 @@ public abstract class AUIAction implements UIAction {
     /**
      * Executed action behavior, listener will be deactivated during the action, and it will be executed inside a session.
      * If there is a need to distinguish behavior from different action type, override the according function.
-     * @param selectedElements
+     * @param selectedElements selected elements
      */
     public abstract void actionToPerform(List<Element> selectedElements);
 

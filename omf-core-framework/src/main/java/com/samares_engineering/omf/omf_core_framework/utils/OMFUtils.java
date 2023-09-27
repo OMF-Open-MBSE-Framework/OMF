@@ -153,7 +153,7 @@ public class OMFUtils {
      * Select an element in the containment tree by its id.
      * MagicDraw containment tree shall be accessible in the API.
      * @param id: id of the element to select
-     * //@throws NoElementFoundException: throw an exception if the element is not found
+     * @throws NoElementFoundException: throw an exception if the element is not found
      */
     //TODO: FIX JAVA DOC GENERATION
     public static void selectElementInContainmentTree(String id) throws NoElementFoundException {
