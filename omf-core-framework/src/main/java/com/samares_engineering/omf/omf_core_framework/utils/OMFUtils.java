@@ -128,8 +128,8 @@ public class OMFUtils {
 
     /**
      * Compute the property path from a connector end, including the partWithPort if it is not a port.
-     * @param ce
-     * @return
+     * @param ce the connector end
+     * @return the property path
      */
     public static List<Property> getPropertyPathListFromConnectorEnd(ConnectorEnd ce) {
         ConnectableElement end = ce.getRole();
@@ -152,10 +152,9 @@ public class OMFUtils {
     /**
      * Select an element in the containment tree by its id.
      * MagicDraw containment tree shall be accessible in the API.
-     * @param id: id of the element to select
-     * @throws NoElementFoundException: throw an exception if the element is not found
+     * @param id id of the element to select
+     * @throws NoElementFoundException if the element is not found
      */
-    //TODO: FIX JAVA DOC GENERATION
     public static void selectElementInContainmentTree(String id) throws NoElementFoundException {
         BaseElement element = OMFUtils.currentProject.getElementByID(id);
         if(element == null)
