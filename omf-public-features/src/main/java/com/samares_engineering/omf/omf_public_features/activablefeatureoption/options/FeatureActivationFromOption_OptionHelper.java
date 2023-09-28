@@ -89,7 +89,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
     }
 
     /**
-     * Get all the options to register: => one for each feature declared in the plugin except the current one
+     * Get all the options to register: one for each feature declared in the plugin except the current one
      * @return the options
      */
     public List<Property> getAllFeatureOptions() {

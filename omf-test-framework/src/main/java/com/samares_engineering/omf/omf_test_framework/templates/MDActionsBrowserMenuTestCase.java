@@ -54,9 +54,9 @@ public abstract class MDActionsBrowserMenuTestCase extends AModelComparatorTestC
 
     /**
      * from the actionManager will search for all the registered Category. If absent the test will fail.
-     * @param actionManager
-     * @param mdActionsCategoryName
-     * @return
+     * @param actionManager ActionsManager
+     * @param mdActionsCategoryName String
+     * @return ActionsCategory
      */
     public ActionsCategory getCategory(ActionsManager actionManager, String mdActionsCategoryName) {
         Optional<ActionsCategory> optCategory = actionManager.getCategories().stream().filter(cat -> cat.getName().equals(mdActionsCategoryName)).findFirst();
