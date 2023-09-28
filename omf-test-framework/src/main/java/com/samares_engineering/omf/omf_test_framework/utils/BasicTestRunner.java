@@ -15,7 +15,7 @@ import org.junit.runners.Suite;
 
 import java.lang.reflect.Method;
 
-public class BasicTestRunner extends Runner {
+public class    BasicTestRunner extends Runner {
 
     private Class suiteClass;
 
@@ -35,7 +35,6 @@ public class BasicTestRunner extends Runner {
         System.out.println("running the tests from MyRunner: " + suiteClass);
         try {
             Object testObject = suiteClass.newInstance();
-
 
             Suite.SuiteClasses suiteClasses = (Suite.SuiteClasses) suiteClass.getAnnotation(Suite.SuiteClasses.class);
             for (Class testClass: suiteClasses.value()) {

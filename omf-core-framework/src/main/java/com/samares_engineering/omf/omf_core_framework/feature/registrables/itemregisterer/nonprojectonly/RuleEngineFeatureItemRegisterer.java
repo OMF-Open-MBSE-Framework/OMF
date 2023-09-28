@@ -36,8 +36,8 @@ public class RuleEngineFeatureItemRegisterer implements FeatureItemRegisterer<IR
     }
 
     /**
-     * Will allow
-     * @param ruleEngines
+     * Will allow to register a list of RuleEngine in the listener.
+     * @param ruleEngines List of RuleEngine to register
      */
     public void registerFeatureItems(List<IRuleEngine> ruleEngines) {
         try {

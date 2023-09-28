@@ -38,10 +38,10 @@ public class OMFExamplePlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
+                new FeaturesDeactivationFeature(),
                 new CloneElementFeature(),
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),
-                new FeaturesDeactivationFeature(),
                 new ErrorManagementFeatureExample(),
                 new HyperLinkFeature(),
                 new LockSafeFeature(),
