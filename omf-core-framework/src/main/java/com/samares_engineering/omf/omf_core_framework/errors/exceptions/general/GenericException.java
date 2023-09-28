@@ -8,11 +8,14 @@
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
 
 import com.google.common.base.Strings;
+import com.nomagic.magicdraw.ui.notification.Notification;
+import com.nomagic.magicdraw.ui.notification.NotificationManager;
+import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.IException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 
 public class GenericException extends Exception implements IException {
     protected String message;
@@ -71,6 +74,14 @@ public class GenericException extends Exception implements IException {
             logLevel = OMFLogLevel.ERROR;
 
         OMFLogger.getInstance().log(userMessage, null, logLevel);
+
+        String defaultTitle = "[" + getClass().getSimpleName() + "]";
+        boolean containsATag = getUserMessage().startsWith("[") && getUserMessage().contains("]");
+        String title = containsATag ? getUserMessage().split("]")[0] : defaultTitle;
+        NotificationManager.getInstance().showNotification(new Notification(
+                "[Plugin Error]", //id or something
+                title,//title: TODO REPLACE WITH GENERIC EXCEPTION TAG
+                "" + getUserMessage(), getNotificationSeverity(getCriticality())));
     }
 
     @Override
@@ -141,4 +152,16 @@ public class GenericException extends Exception implements IException {
         ALERT,
         CRITICAL
     }
+
+    private static NotificationSeverity getNotificationSeverity(GenericException.ECriticality criticality) {
+        switch (criticality){
+            case CRITICAL:
+                return NotificationSeverity.ERROR;
+            case SILENT:
+            case ALERT:
+            default:
+                return NotificationSeverity.WARNING;
+        }
+    }
+
 }

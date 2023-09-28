@@ -10,8 +10,6 @@ package com.samares_engineering.omf.omf_core_framework.errors;
 import com.google.common.base.Strings;
 import com.nomagic.esi.api.messages.exceptions.LockException;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
-import com.nomagic.magicdraw.ui.notification.Notification;
-import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
@@ -123,10 +121,6 @@ public class OMFErrorHandler {
         if(exception.getCriticality() == GenericException.ECriticality.SILENT) return;
 
         exception.displayUserMessage();
-        NotificationManager.getInstance().showNotification(new Notification(
-                "[Plugin Error]", //id or something
-                "[Plugin Error]",//title: TODO REPLACE WITH GENERIC EXCEPTION TAG
-                "" + exception.getUserMessage(), getNotificationSeverity(exception.getCriticality())));
 
         handleRollBack(exception, cancelSession);
     }

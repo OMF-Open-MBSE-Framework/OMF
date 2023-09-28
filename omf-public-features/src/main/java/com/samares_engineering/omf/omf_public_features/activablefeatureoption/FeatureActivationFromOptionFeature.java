@@ -33,9 +33,12 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
 
 
     public FeatureActivationFromOptionFeature() {
+        this("Manage Features");
+    }
+    public FeatureActivationFromOptionFeature(String environmentOptionGroupName) {
         super( "Deactivate Features from Options Feature");
         this.featureManagerOptionGroup = new FeatureActivationManagerOptionGroup("Manage registered Features "
-                , "Manage registered Features");
+                , environmentOptionGroupName);
         this.featureRegisteringListener = new FeatureRegisteringListener(this);
     }
 
