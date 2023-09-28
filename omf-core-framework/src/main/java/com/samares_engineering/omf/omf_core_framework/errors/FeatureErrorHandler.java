@@ -9,8 +9,8 @@ public class FeatureErrorHandler {
     public void handleException(CriticalFeatureException criticalFeatureException) {
         MDFeature brokenFeature = criticalFeatureException.getFeature();
         try {
-            FeatureRegisterer featureRegister = brokenFeature.getPlugin().getFeatureRegister();
-            featureRegister.unregisterFeature(brokenFeature);
+            FeatureRegisterer featureRegisterer = brokenFeature.getPlugin().getFeatureRegister();
+            featureRegisterer.unregisterFeature(brokenFeature);
             OMFLogger.getInstance().info("Feature " + brokenFeature.getName() + " has been unregistered due to a critical error");
         }catch (OMFFeatureRegisteringException featureNotUnregister) {
            OMFErrorHandler.handleException(featureNotUnregister);

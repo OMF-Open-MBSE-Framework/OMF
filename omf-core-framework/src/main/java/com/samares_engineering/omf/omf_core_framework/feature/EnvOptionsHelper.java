@@ -7,15 +7,20 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
+import java.util.Optional;
+
 public abstract class EnvOptionsHelper {
     private final MDFeature feature;
     private final OMFPropertyOptionsGroup optionsGroup;
 
     protected EnvOptionsHelper(MDFeature feature) {
-        this.feature = feature;
-        this.optionsGroup = feature.getPlugin().getEnvironmentOptionsGroup()
+        this(feature, feature.getPlugin().getEnvironmentOptionsGroup()
                 .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
-                "for this plugin"));
+                        "for this plugin")));
+    }
+    protected EnvOptionsHelper(MDFeature feature, OMFPropertyOptionsGroup optionsGroup) {
+        this.feature = feature;
+        this.optionsGroup = optionsGroup;
     }
 
     public final OMFPropertyOptionsGroup getOptionGroup() {
@@ -38,4 +43,6 @@ public abstract class EnvOptionsHelper {
     public void addProperty(Property property) {
         optionsGroup.addProperty(property);
     }
+
+
 }

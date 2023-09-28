@@ -38,4 +38,8 @@ public interface MDFeature {
     void initProjectOnlyFeatureItems();
 
     EnvOptionsHelper getEnvOptionsHelper();
+
+    void register();
+
+    void unregister();
 }

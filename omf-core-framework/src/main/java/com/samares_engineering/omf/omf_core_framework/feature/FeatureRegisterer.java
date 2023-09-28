@@ -8,11 +8,12 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFrameworkException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.FeatureRegisteringEventHandler;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -25,6 +26,8 @@ public class FeatureRegisterer {
     private List<FeatureItemRegisterer> featureItemRegisters;
     private List<ProjectOnlyFeatureItemRegisterer> projectOnlyFeatureItemRegisters;
 
+    private final FeatureRegisteringEventHandler eventHandler;
+
     private List<MDFeature> registeredFeatures = new ArrayList<>();
     private final APlugin plugin;
 
@@ -33,13 +36,13 @@ public class FeatureRegisterer {
         this.plugin = plugin;
         this.featureItemRegisters = new ArrayList<>();
         this.projectOnlyFeatureItemRegisters = new ArrayList<>();
-
+        this.eventHandler = new FeatureRegisteringEventHandler(this);
    }
 
     /**
      * Register a feature using delegation to register all its items using the according item registerer
      * ProjectOnly items are registered only if the project is opened
-     * @param feature
+     * @param feature the feature to register
      */
     public void registerFeature(MDFeature feature) {
         try {
@@ -49,7 +52,7 @@ public class FeatureRegisterer {
             }
 
             feature.initFeature(plugin);
-            feature.setIsRegistered(true);
+            feature.register();
 
             registeredFeatures.add(feature);
 
@@ -59,6 +62,7 @@ public class FeatureRegisterer {
                     registerProjectOnlyItemsOfFeature(feature);
                 }
             }
+            eventHandler.fireFeatureRegistered(feature);
         } catch (Exception e) {
             OMFErrorHandler.handleException(new OMFFrameworkException("Error while registering feature " + feature.getName(),
                     e, GenericException.ECriticality.CRITICAL), false);
@@ -67,7 +71,7 @@ public class FeatureRegisterer {
 
     /**
      * Registers a list of features, see {@link FeatureRegisterer#registerFeature(MDFeature)}
-     * @param features
+     * @param features the features to register
      */
     public void registerFeatures(List<MDFeature> features){
         features.forEach(this::registerFeature);
@@ -75,7 +79,7 @@ public class FeatureRegisterer {
 
     /**
      * Registers project only items of a list of features, see {@link FeatureRegisterer#registerProjectOnlyItemsOfFeature(MDFeature)}
-     * @param features
+     * @param features the features to register
      */
     public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
         features.forEach(this::registerProjectOnlyItemsOfFeature);
@@ -87,7 +91,7 @@ public class FeatureRegisterer {
      * On the first registration, the items are also initialised. We wait until the project to be opened to initialise
      * the items in order to avoid instances where the items need the project to be opened to function, for example if
      * you need to set a default value from the Sysml profile in an Option
-     * @param feature
+     * @param feature the feature to register
      */
     private void registerProjectOnlyItemsOfFeature(MDFeature feature) {
         feature.initProjectOnlyFeatureItems();
@@ -134,7 +138,8 @@ public class FeatureRegisterer {
            }
         }
 
-        feature.setIsRegistered(false);
+        feature.unregister();
+        eventHandler.fireFeatureUnregistered(feature);
     }
 
     /**
@@ -289,5 +294,9 @@ public class FeatureRegisterer {
      */
     public APlugin getPlugin() {
         return plugin;
+    }
+
+    public FeatureRegisteringEventHandler getEventHandler() {
+        return eventHandler;
     }
 }

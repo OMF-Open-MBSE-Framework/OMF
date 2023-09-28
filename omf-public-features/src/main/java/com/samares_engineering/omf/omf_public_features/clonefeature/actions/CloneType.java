@@ -5,10 +5,10 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_example_plugin.features.clonefeature.actions;
+package com.samares_engineering.omf.omf_public_features.clonefeature.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
@@ -23,13 +23,14 @@ import java.util.List;
 @BrowserAction
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Clone Port", category = "Clone")
-public class ClonePort extends AUIAction {
+@MDAction(actionName = "Clone Type", category = "Clone")
+public class CloneType extends AUIAction {
+
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         return OMFUtils.currentProject != null
                 && !selectedElements.isEmpty()
-                && selectedElements.stream().allMatch(Port.class::isInstance);
+                && selectedElements.stream().allMatch(Type.class::isInstance);
     }
 
 
@@ -38,8 +39,8 @@ public class ClonePort extends AUIAction {
         try {
             CloneManager cloneManager = new CloneManager();
             selectedElements.stream()
-                    .map(Port.class::cast)
-                    .forEach(cloneManager::clonePort);
+                    .map(Type.class::cast)
+                    .forEach(cloneManager::cloneType);
         } catch (Exception e) {
             OMFErrorHandler.handleException(e, true);
         }

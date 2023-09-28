@@ -10,7 +10,12 @@ import com.nomagic.ci.persistence.IAttachedProject;
 import com.nomagic.ci.persistence.IProject;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectPartLoadedListener;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFCoreException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.factory.FactoryManager;
+import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -19,6 +24,8 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.VersionUtils;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectListener implements ProjectPartLoadedListener {
     public static final String PROFILE_NAME = "";
@@ -180,21 +187,118 @@ public class ProjectListener implements ProjectPartLoadedListener {
     }
 
     protected void openProject(Project project) {
-        OMFUtils.currentProject = project;
-        FactoryManager.initAllFactories(project);
-        Profile.getInstance();
-        ListenerManager.getInstance().registerAllListeners();
-        ListenerManager.getInstance().activateAllListeners();
-        plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(plugin.getFeatureRegisterer().getRegisteredFeatures());
-        plugin.getFeatureRegisterer().getRegisteredFeatures().forEach(MDFeature::onProjectOpen);
+        coreInitialisation(project);
+        listenerInitialisation();
+        featureOpenProjectHandling();
+
+
     }
 
     protected void closeProject() {
         if(OMFUtils.currentProject == null)
             return;
-        ListenerManager.getInstance().removeAllListeners();
+        coreClosingReInitialisation();
         OMFUtils.currentProject = null;
-        plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(plugin.getFeatureRegisterer().getRegisteredFeatures());
-        plugin.getFeatureRegisterer().getRegisteredFeatures().forEach(MDFeature::onProjectClose);
+
+        featureCloseProjectHandling();
     }
+
+
+    private void featureOpenProjectHandling() {
+        FeatureRegisterer featureRegisterer = plugin.getFeatureRegisterer();
+        if(featureRegisterer == null) return;
+        List<MDFeature> registeredFeatures = new ArrayList<>(featureRegisterer.getRegisteredFeatures());
+
+        projectOnlyFeatureRegistering(registeredFeatures);
+        openProjectFeatureTrigger(registeredFeatures);
+    }
+
+    private static void openProjectFeatureTrigger(List<MDFeature> registeredFeatures) {
+        for (MDFeature registeredFeature : registeredFeatures) {
+            try {
+                registeredFeature.onProjectOpen();
+            }catch (Exception exception) {
+                OMFErrorHandler.handleException(
+                        new OMFFeatureException("Error occurred during Feature ProjectOpen trigger",
+                                registeredFeature,
+                                exception, GenericException.ECriticality.CRITICAL), false);
+            }
+        }
+    }
+
+    private void projectOnlyFeatureRegistering(List<MDFeature> registeredFeatures) {
+        try {
+            plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(registeredFeatures);
+        }catch (Exception exception) {
+            OMFErrorHandler.handleException(
+                    new OMFCoreException("Error occurred during Project opening Feature initialisation",
+                            exception, GenericException.ECriticality.CRITICAL), false);
+        }
+    }
+
+    private static void listenerInitialisation() {
+        try {
+            ListenerManager.getInstance().registerAllListeners();
+            ListenerManager.getInstance().activateAllListeners();
+        }catch (Exception exception) {
+            OMFErrorHandler.handleException(
+                    new OMFCoreException("Error occurred during Project opening Listener initialisation",
+                            exception, GenericException.ECriticality.CRITICAL), false);
+        }
+    }
+
+    private static void coreInitialisation(Project project) {
+        try {
+            OMFUtils.currentProject = project;
+            FactoryManager.initAllFactories(project);
+            Profile.getInstance();
+        }catch (Exception exception){
+            OMFErrorHandler.handleException(
+                    new OMFCoreException("Error occurred during Project opening initialisation",
+                            exception, GenericException.ECriticality.CRITICAL), false);
+        }
+    }
+
+    private void featureCloseProjectHandling() {
+        FeatureRegisterer featureRegisterer = plugin.getFeatureRegisterer();
+        if (featureRegisterer == null) return;
+        List<MDFeature> registeredFeatures = featureRegisterer.getRegisteredFeatures();
+        projectOnlyFeatureUnRegistering(registeredFeatures);
+
+        onProjectCloseFeatureTrigger(registeredFeatures);
+    }
+
+    private static void onProjectCloseFeatureTrigger(List<MDFeature> registeredFeatures) {
+        for (MDFeature registeredFeature : registeredFeatures) {
+            try {
+                registeredFeature.onProjectClose();
+            }catch (Exception exception) {
+                OMFErrorHandler.handleException(
+                        new OMFFeatureException("Error occurred during Feature ProjectClose trigger",
+                                registeredFeature,
+                                exception, GenericException.ECriticality.CRITICAL), false);
+            }
+        }
+    }
+
+    private void projectOnlyFeatureUnRegistering(List<MDFeature> registeredFeatures) {
+        try {
+            plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
+        }catch (Exception exception) {
+            OMFErrorHandler.handleException(
+                    new OMFCoreException("Error occurred during Project closing Feature removal",
+                            exception, GenericException.ECriticality.CRITICAL), false);
+        }
+    }
+
+    private static void coreClosingReInitialisation() {
+        try {
+            ListenerManager.getInstance().removeAllListeners();
+        }catch (Exception exception) {
+            OMFErrorHandler.handleException(
+                    new OMFCoreException("Error occurred during Project closing Listener removal",
+                            exception, GenericException.ECriticality.CRITICAL), false);
+        }
+    }
+
 }
