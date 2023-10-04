@@ -2,10 +2,12 @@ package com.samares_engineering.omf.omf_core_framework.utils.clone;
 
 import com.nomagic.magicdraw.copypaste.CopyPasting;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
+import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.exceptions.CloneFailedException;
@@ -13,7 +15,9 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.ConnectorUtils;
 import org.apache.commons.collections4.MapUtils;
 
+import java.lang.Class;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,6 +36,8 @@ public class CloneManager {
     private Map<Element, Element> reversedMap;
     private int iTaggedElement;
     private List<Element> clonedElements;
+    private List<java.lang.Class> metaClassToFilter;
+    private List<Stereotype> stereotypeToFilter;
 
     private ElementGetter elementGetter;
 
@@ -48,6 +54,8 @@ public class CloneManager {
      */
     public CloneManager(String suffix) {
         initAllInternalVariables(suffix);
+        metaClassToFilter = new ArrayList<>();
+        stereotypeToFilter = new ArrayList<>();
     }
 
     /**
@@ -90,6 +98,7 @@ public class CloneManager {
         addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(connectorList));
 
         cloneElements(port.getOwner());
+        removeAllFilteredElements();
 
         fixAllCopiedConnectors();
 
@@ -109,6 +118,7 @@ public class CloneManager {
             addAllElementsToCopy(getTypeElementsToCopy(property.getType()));
 
             addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+            removeAllFilteredElements();
 
             cloneElements(property.getOwner());
         }catch (Exception e){
@@ -128,8 +138,8 @@ public class CloneManager {
             setOriginalElementToClone(part);
             addAllElementsToCopy(getPartElementToCopy(part));
             addAllElementsToCopy(getTypeElementsToCopy(part.getType()));
-
             addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(getAllConnectorsToCopy()));
+            removeAllFilteredElements();
 
             cloneElements(part.getOwner());
 
@@ -139,6 +149,19 @@ public class CloneManager {
         }
 
         return getOrignialClonedMap();
+    }
+
+    private void removeAllFilteredElements() {
+        Predicate<Element> hasMetaClassToFilter = element -> metaClassToFilter.stream()
+                .noneMatch(metaClass -> metaClass.isInstance(element));
+
+        Predicate<Element> hasStereotypeToFilter = element -> stereotypeToFilter.stream().noneMatch(stereotype ->
+                StereotypesHelper.hasStereotypeOrDerived(element, stereotype));
+
+        elementsToCopy = new ArrayList<>(elementsToCopy).stream()
+                .filter(hasMetaClassToFilter)
+                .filter(hasStereotypeToFilter)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -551,8 +574,48 @@ public class CloneManager {
     }
 
     /**
+     * add Classes to filter, the elements of these classes will not be copied
+     * @param metaClasses: each metaClass to add to the filter
+     */
+    public void addMetaClassesToFilter(Class<? extends Element>... metaClasses) {
+        metaClassToFilter.addAll(Arrays.asList(metaClasses));
+    }
+
+    /**
+     * add all Classes to filter, the elements of these classes will not be copied
+     * @param metaClassList the list of classes to filter
+     */
+    public void addMetaClassesToFilter(List<java.lang.Class<? extends Element>> metaClassList) {
+        metaClassToFilter.addAll(metaClassList);
+    }
+
+    /**
+     * add a Class to filter, the elements of this class will not be copied
+     * @param metaClass the class to filter
+     */
+    public void addMetaClassToFilter(java.lang.Class<? extends Element> metaClass) {
+        metaClassToFilter.add(metaClass);
+    }
+
+    /**
+     * add all Stereotypes to filter, the elements with one of these stereotypes will not be copied
+     * @param stereotypeList the list of stereotypes to filter
+     */
+    public void addStereotypesToFilter(List<Stereotype> stereotypeList) {
+        stereotypeToFilter.addAll(stereotypeList);
+    }
+
+    /**
+     * add a Stereotype to filter, the elements with this stereotype will not be copied
+     * @param stereotype the stereotype to filter
+     */
+    public void addStereotypeToFilter(Stereotype stereotype) {
+        stereotypeToFilter.add(stereotype);
+    }
+
+    /**
      * Get the elements to copy
-     * @return
+     * @return the elements to copy
      */
     public Set<Element> getElementsToCopy() {
         return elementsToCopy;
@@ -560,7 +623,7 @@ public class CloneManager {
 
     /**
      * Set the elements to copy
-     * @param elementsToCopy
+     * @param elementsToCopy the elements to copy
      */
     public void setElementsToCopy(Set<Element> elementsToCopy) {
         this.elementsToCopy = elementsToCopy;

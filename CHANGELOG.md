@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -  [CloneManager] CloneManager allows to clone deeply elements within a project.
   - Allows to clone ports with interface, relations, and all connectors (including connectors from nested ports)
   - Allows to clone parts with their block, relations, and all connectors (including connectors from nested ports)
-  
+  - Allow
 - [GroupManager] GroupManager allows to group elements within a project.
   - Allows to group ports inside a new one updating connectors (including connectors from nested ports)
   - Allows to group parts inside a new one updating connectors (including connectors from nested ports)

@@ -8,8 +8,10 @@
 package com.samares_engineering.omf.omf_public_features.clonefeature.actions;
 
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DataType;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
@@ -46,6 +48,7 @@ public class ClonePart extends AUIAction {
         try {
             DiagramPresentationElement activeDiagram = OMFUtils.currentProject.getActiveDiagram();
             CloneManager cloneManager = new CloneManager();
+            cloneManager.addMetaClassesToFilter(DataType.class, Signal.class);
             selectedElements.stream()
                     .map(Property.class::cast)
                     .forEach(part -> {
