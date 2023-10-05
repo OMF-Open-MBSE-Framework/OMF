@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [UNRELEASED]
 
+## [1.0.60] - 2023-10-05
+### Added
+- filter to clone manager allow to specify which elements should be concerned by the cloning
+
+
 ## [1.0.54] - 2023-09-27
 ### Added Public Features
 - **[FeaturesDeactivationFeature.java](omf-public-features%2Fsrc%2Fmain%2Fjava%2Fcom%2Fsamares_engineering%2Fomf%2Fomf_public_features%2Ffeaturedeactivation%2FFeaturesDeactivationFeature)** Create an Environment Option Group to allow to deactivate features

@@ -33,7 +33,7 @@ We follow the classic Java guidelines (**PascalCase** for classes, **camelCase**
 
 **Abstract:** Prefix with A and do not use in the code. Use the interface instead.
 
-Prefix all classes usable by the framework's user by “**OMF**”, don't prefix for internal framework classes.
+Prefix all classes (or rather interfaces) usable by the framework's user by “**OMF**”, don't prefix for internal framework classes.
 
 # Authors
 
