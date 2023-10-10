@@ -28,7 +28,7 @@ import java.util.Set;
 @DiagramAction
 @BrowserAction
 @DeactivateListener
-@MDAction(actionName = "Generate and replace Pattern structure From Element", category = "PATTERNS")
+@MDAction(actionName = "Generate and replace Pattern structure From Element", category = "OMF.PATTERNS")
 public class GenerateTemplateFromElement extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Group Parts", category = "Group")
+@MDAction(actionName = "Group Parts", category = "OMF.Group")
 public class GroupPartsAction extends AUIAction {
 
     private ElementGetter elementGetter = new ElementGetter(); //Helper class to retrieve elements from others

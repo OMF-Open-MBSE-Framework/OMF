@@ -37,7 +37,7 @@ import static com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ParameterDirection
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Generate Model Archi", category = "ArchiGeneration")
+@MDAction(actionName = "Generate Model Archi", category = "OMF.ArchiGeneration")
 public class GenerateArchiModel extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

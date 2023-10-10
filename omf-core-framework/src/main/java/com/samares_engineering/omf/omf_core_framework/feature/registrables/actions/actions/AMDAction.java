@@ -20,7 +20,7 @@ import java.util.List;
 @DiagramAction
 @BrowserAction
 @MenuAction
-@MDAction(actionName = "Action Name", category = "Category Name")
+@MDAction(actionName = "Action Name", category = "OMF.Category Name")
 public class AMDAction extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

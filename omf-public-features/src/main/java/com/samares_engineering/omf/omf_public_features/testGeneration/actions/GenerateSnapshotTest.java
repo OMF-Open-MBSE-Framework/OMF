@@ -15,7 +15,7 @@ import java.util.List;
 
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Snapshot", category = "[TEST GENERATION]")
+@MDAction(actionName = "Snapshot", category = "OMF.[TEST GENERATION]")
 public class GenerateSnapshotTest extends AUIAction {
 
     // Package of the generated class

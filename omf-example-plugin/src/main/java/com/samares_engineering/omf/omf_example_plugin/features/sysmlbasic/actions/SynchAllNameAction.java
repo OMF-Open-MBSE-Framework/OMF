@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import java.util.List;
 @DiagramAction
 @BrowserAction
-@MDAction(actionName = "Propagate Port Name to Interface/Flow", category = "SysMLBasic")
+@MDAction(actionName = "Propagate Port Name to Interface/Flow", category = "OMF.SysMLBasic")
 public class SynchAllNameAction extends AUIAction {
 
 

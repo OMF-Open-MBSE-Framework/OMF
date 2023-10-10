@@ -19,7 +19,7 @@ import java.util.List;
 @DiagramAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "OMF ERROR EXAMPLE", category = "ACTION CATEGORY NAME")
+@MDAction(actionName = "OMF ERROR EXAMPLE", category = "OMF.ACTION CATEGORY NAME")
 public class UIActionErrorExample extends AUIAction {
     Runnable runnable;
     @Override

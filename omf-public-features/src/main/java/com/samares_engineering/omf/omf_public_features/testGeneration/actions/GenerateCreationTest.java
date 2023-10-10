@@ -24,7 +24,7 @@ import java.util.List;
 @DiagramAction
 @BrowserAction
 @DeactivateListener
-@MDAction(actionName = "Generate Creation Test", category = "[TEST GENERATION]")
+@MDAction(actionName = "Generate Creation Test", category = "OMF.[TEST GENERATION]")
 public class GenerateCreationTest extends AUIAction {
 
     // Where the test file should be generated

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Group Ports", category = "Group")
+@MDAction(actionName = "Group Ports", category = "OMF.Group")
 public class GroupPortsAction extends AUIAction {
 
     @Override

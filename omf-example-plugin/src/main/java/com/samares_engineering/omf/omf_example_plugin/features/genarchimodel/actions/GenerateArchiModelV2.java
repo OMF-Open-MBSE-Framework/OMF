@@ -18,7 +18,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Generate Model Archi", category = "ArchiGeneration")
+@MDAction(actionName = "Generate Model Archi", category = "OMF.ArchiGeneration")
 public class GenerateArchiModelV2 extends AUIAction {
 
     @Override

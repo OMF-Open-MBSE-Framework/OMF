@@ -20,7 +20,7 @@ import java.util.List;
 
 @DiagramAction
 @BrowserAction
-@MDAction(actionName = "SAVE TO LOCAL", category = "",
+@MDAction(actionName = "SAVE TO LOCAL", category = "OMF Test",
         keyStroke = "control shift c")
 public class SaveToLocalMDA extends AUIAction {
 

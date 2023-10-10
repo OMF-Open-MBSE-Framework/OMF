@@ -28,7 +28,7 @@ import java.util.List;
 @BrowserAction
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Clone Part", category = "Clone")
+@MDAction(actionName = "Clone Part", category = "OMF.Clone")
 public class ClonePart extends AUIAction {
 
     @Override

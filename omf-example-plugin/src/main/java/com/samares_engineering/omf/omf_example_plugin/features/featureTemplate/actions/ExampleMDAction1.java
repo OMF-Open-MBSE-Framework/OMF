@@ -20,7 +20,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "ACTION NAME", category = "ACTION CATEGORY NAME.Subcategory1.Subcategory2")
+@MDAction(actionName = "ACTION NAME", category = "OMF.ACTION CATEGORY NAME.Subcategory1.Subcategory2")
 public class ExampleMDAction1 extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

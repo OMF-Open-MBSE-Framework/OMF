@@ -23,7 +23,7 @@ import java.util.List;
 @BrowserAction
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Clone Type", category = "Clone")
+@MDAction(actionName = "Clone Type", category = "OMF.Clone")
 public class CloneType extends AUIAction {
 
     @Override

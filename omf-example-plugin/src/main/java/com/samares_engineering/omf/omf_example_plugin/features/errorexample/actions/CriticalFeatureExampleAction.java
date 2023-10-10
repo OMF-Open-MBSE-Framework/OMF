@@ -21,7 +21,7 @@ import java.util.List;
 @DiagramAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "OMF CRITICAL ERROR EXAMPLE", category = "ACTION CATEGORY NAME")
+@MDAction(actionName = "OMF CRITICAL ERROR EXAMPLE", category = "OMF.ACTION CATEGORY NAME")
 public class CriticalFeatureExampleAction extends AUIAction {
     Runnable runnable;
     @Override

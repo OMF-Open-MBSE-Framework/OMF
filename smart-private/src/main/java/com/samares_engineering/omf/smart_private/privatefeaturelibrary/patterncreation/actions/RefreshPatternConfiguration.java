@@ -18,7 +18,7 @@ import java.util.List;
 
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Refresh Pattern Configuration", category = "PATTERNS")
+@MDAction(actionName = "Refresh Pattern Configuration", category = "OMF.PATTERNS")
 public class RefreshPatternConfiguration extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

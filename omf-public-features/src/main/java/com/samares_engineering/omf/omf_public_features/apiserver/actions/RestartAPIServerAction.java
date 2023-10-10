@@ -23,7 +23,7 @@ import java.util.List;
 
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Restart API Server", category = "OMF ADVANCED")
+@MDAction(actionName = "Restart API Server", category = "OMF.OMF ADVANCED")
 public class RestartAPIServerAction extends AUIAction {
 
 

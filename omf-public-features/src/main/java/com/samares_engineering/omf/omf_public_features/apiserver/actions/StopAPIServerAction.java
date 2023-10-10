@@ -23,7 +23,7 @@ import java.util.List;
 
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Stop API Server", category = "OMF ADVANCED")
+@MDAction(actionName = "Stop API Server", category = "OMF.OMF ADVANCED")
 public class StopAPIServerAction extends AUIAction {
 
     @Override

@@ -23,7 +23,7 @@ import java.util.List;
 @BrowserAction
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Clone Port", category = "Clone")
+@MDAction(actionName = "Clone Port", category = "OMF.Clone")
 public class ClonePort extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

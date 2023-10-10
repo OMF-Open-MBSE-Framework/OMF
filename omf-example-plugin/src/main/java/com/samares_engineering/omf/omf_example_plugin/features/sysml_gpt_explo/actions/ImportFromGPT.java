@@ -34,7 +34,7 @@ import java.util.Map;
 
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Import from GPT", category = "Gpt explo")
+@MDAction(actionName = "Import from GPT", category = "OMF.Gpt explo")
 public class ImportFromGPT extends AUIAction {
     private Map<String, Class> createdBlocks = new HashMap<>();
     private Map<Property, String> partPropertiesToConnect = new HashMap<>();

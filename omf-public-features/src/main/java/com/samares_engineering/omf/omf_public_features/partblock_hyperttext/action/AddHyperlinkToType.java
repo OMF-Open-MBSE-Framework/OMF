@@ -22,7 +22,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Add HyperLink to Block", category = "DEV")
+@MDAction(actionName = "Add HyperLink to Block", category = "OMF.Dev")
 public class AddHyperlinkToType extends AUIAction {
 
 
