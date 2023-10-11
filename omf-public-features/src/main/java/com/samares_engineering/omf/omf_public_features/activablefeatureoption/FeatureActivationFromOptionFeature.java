@@ -98,7 +98,9 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     @Override
     protected List<IOption> initOptions() {
         FeatureActivationFromOption_OptionHelper envOptionsHelper = getEnvOptionsHelper();
-        return getPlugin().getFeatures()
+        List<MDFeature> features = getPlugin().getFeatures();
+        features.remove(this); // remove this feature from the list (we don't want to create an option for this feature
+        return features
                 .stream()
                 .map(envOptionsHelper::createDeactivationOption)
                 .collect(Collectors.toList());

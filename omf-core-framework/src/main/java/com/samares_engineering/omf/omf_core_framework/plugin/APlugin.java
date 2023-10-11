@@ -55,7 +55,7 @@ public abstract class APlugin extends Plugin {
     private boolean isInitialized = false;
 
     // Initialized by user implementing the plugin (basically API of the framework for the plugin)
-    private final Map<String, MDFeature> features = new HashMap<>();
+    private final Map<String, MDFeature> features = new LinkedHashMap<>();
     private List<AOptionListener> environmentOptionsListener;
     private FeatureProjectOptionsConfigurator projectOptionConfigurator;
     private OMFPropertyOptionsGroup environmentOptionsGroup;

@@ -38,7 +38,8 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      */
     public OptionImpl createDeactivationOption(MDFeature feature) {
         BooleanProperty isInterfaceCreationActivated = new BooleanProperty(
-                getFeatureActivationPropertyName(feature), feature.isRegistered());
+                getFeatureActivationPropertyName(feature),true);
+        isInterfaceCreationActivated.setValue(feature.isRegistered());
 
         OptionImpl option = new OptionImpl(
                 isInterfaceCreationActivated,

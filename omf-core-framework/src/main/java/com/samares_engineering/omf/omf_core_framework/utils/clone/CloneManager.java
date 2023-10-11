@@ -75,7 +75,7 @@ public class CloneManager {
     /**
      * Reset all the internal variables
      */
-    private void reset() {
+    public void reset() {
         initAllInternalVariables(CLONED_ELEMENT_SUFFIX);
     }
 
@@ -151,7 +151,10 @@ public class CloneManager {
         return getOrignialClonedMap();
     }
 
-    private void removeAllFilteredElements() {
+    /**
+     * Remove all the elements according to the filters: metaClassToFilter and stereotypeToFilter.
+     */
+    public void removeAllFilteredElements() {
         Predicate<Element> hasMetaClassToFilter = element -> metaClassToFilter.stream()
                 .noneMatch(metaClass -> metaClass.isInstance(element));
 
@@ -227,7 +230,7 @@ public class CloneManager {
      * Set the owner of the copied elements to the owner of the original elements
      * As the CopyPasting.copyPasteElements() method put each copied element in a given owner, this method will reset the ownership
      */
-    private void setOwnerCopiedElementOwnerShip() {
+    public void setOwnerCopiedElementOwnerShip() {
         clonedElements.forEach(element -> element.setOwner(retrieveOriginalElement(element).getOwner()));
     }
 
@@ -235,7 +238,7 @@ public class CloneManager {
      * Set the suffix to all the copied elements
      * @param copiedElements the list of copied elements
      */
-    private void setSuffix(List<Element> copiedElements) {
+    public void setSuffix(List<Element> copiedElements) {
         copiedElements.stream()
                 .filter(NamedElement.class::isInstance)
                 .map(NamedElement.class::cast)
