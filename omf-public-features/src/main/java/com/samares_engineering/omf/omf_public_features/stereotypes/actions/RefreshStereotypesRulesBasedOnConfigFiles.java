@@ -21,7 +21,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Refresh stereotypes rules based on config files", category = "OMF.Stereotypes")
+@MDAction(actionName = "Refresh stereotypes rules based on config files", category = "OMF")
 public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
 
     @Override

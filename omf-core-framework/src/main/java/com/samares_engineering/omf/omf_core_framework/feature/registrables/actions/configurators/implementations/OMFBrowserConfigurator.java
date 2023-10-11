@@ -8,10 +8,8 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
-import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.nomagic.magicdraw.ui.browser.Tree;
 import com.nomagic.magicdraw.utils.PriorityProvider;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
@@ -23,14 +21,15 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
  * To add an Action to the List call 'addNewAction'.
  */
 public class OMFBrowserConfigurator extends AUIActionConfigurator implements BrowserContextAMConfigurator {
+    @Override
     public int getPriority() {
         return PriorityProvider.MEDIUM_PRIORITY;
     }
 
     @Override
     public void configure(ActionsManager actionsManager, Tree tree) {
-        unregisterActionsFromMD(actionsManager);
-        genericActions.stream()
+        registeredActions.stream()
+                .filter(UIAction::isBrowserAction)
                 .filter(UIAction::checkBrowserAvailability)
                 .forEach(action -> this.registerBrowserAction(actionsManager, action));
     }
@@ -39,9 +38,6 @@ public class OMFBrowserConfigurator extends AUIActionConfigurator implements Bro
      * Register an action into the category, if the category doesn't exist it will register it.
      */
     private void registerBrowserAction(ActionsManager actionsManager, UIAction action) {
-        MDActionsCategory category = UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action);
-
-        if(action.isBrowserAction())
-            category.addAction(action.getBrowserAction());
+        UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getBrowserAction());
     }
 }

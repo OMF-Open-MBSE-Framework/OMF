@@ -7,8 +7,8 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly;
 
-import com.nomagic.actions.AMConfigurator;
 import com.nomagic.magicdraw.actions.ActionsProvider;
+import com.nomagic.magicdraw.core.Application;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -41,7 +41,6 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
      * a {@link OMFBrowserConfigurator},
      * a {@link OMFDiagramConfigurator}
      * and a {@link OMFMainMenuConfigurator}.
-     * @param featureRegisterer
      */
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -50,7 +49,6 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
 
     /**
      * Register a list of UIActions and refresh the configurators.
-     * @param actions
      */
     @Override
     public void registerFeatureItems(List<UIAction> actions) {
@@ -59,7 +57,7 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
         }
         try {
             actions.forEach(this::registerFeatureItem);
-            registerActionsIntoMD();
+            refreshMainMenuActions();
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Unable to register MDActions", e);
         }
@@ -67,7 +65,6 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
 
     /**
      * Unregister a list of UIActions and refresh the configurators.
-     * @param actions
      */
     @Override
     public void unregisterFeatureItems(List<UIAction> actions) {
@@ -75,49 +72,38 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
             throw new OMFFeatureRegisteringException("Trying to unregister actions but passed action list is null");
         }
         try {
-            unregisterActionsFromMD();
             actions.forEach(this::unregisterFeatureItem);
-            registerActionsIntoMD();
+            refreshMainMenuActions();
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Unable to unregister MDActions", e);
         }
     }
 
-    /*
-    Only need to reset the menu configurator because the browser and diagram configurators are reset by magicdraw when
-    opening the context menu
-     */
-    private void unregisterActionsFromMD() {
-        configurators.stream().filter(AMConfigurator.class::isInstance)
-                .forEach(c -> c.unregisterActionsFromMD(ActionsProvider.getInstance().getMainMenuActions()));
-    }
 
     /*
     Only need to reset the menu configurator because the browser and diagram configurators are reset by magicdraw when
     opening the context menu
      */
-    private void registerActionsIntoMD() {
-        configurators.stream().filter(AMConfigurator.class::isInstance)
-                .map(AMConfigurator.class::cast)
+    private void refreshMainMenuActions() {
+        configurators.stream().filter(OMFMainMenuConfigurator.class::isInstance)
+                .map(OMFMainMenuConfigurator.class::cast)
                 .forEach(c -> c.configure(ActionsProvider.getInstance().getMainMenuActions()));
     }
 
     /**
      * Register a UIAction in the configurators.
-     * @param action
      */
     @Override
     public void registerFeatureItem(UIAction action) {
-        configurators.stream().filter(Objects::nonNull).forEach(c -> c.addAction(action));
+        configurators.stream().filter(Objects::nonNull).forEach(c -> c.addRegisteredAction(action));
     }
 
     /**
      * Unregister a UIAction in the configurators.
-     * @param action
      */
     @Override
     public void unregisterFeatureItem(UIAction action) {
-        configurators.stream().filter(Objects::nonNull).forEach(c -> c.removeAction(action));
+        configurators.stream().filter(Objects::nonNull).forEach(c -> c.removeRegisteredAction(action));
     }
 
     @Override

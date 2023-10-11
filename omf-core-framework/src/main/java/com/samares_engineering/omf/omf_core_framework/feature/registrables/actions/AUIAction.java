@@ -204,7 +204,7 @@ public abstract class AUIAction implements UIAction {
      * @return isAvailable
      */
     public boolean checkMenuAvailability(){
-        return isActivated()&& checkAvailability(Stream.of(getSelectedBrowserElements(), getSelectedDiagramElements())
+        return isActivated() && checkAvailability(Stream.of(getSelectedBrowserElements(), getSelectedDiagramElements())
                 .flatMap(Collection::stream).collect(Collectors.toList()));
     }
 

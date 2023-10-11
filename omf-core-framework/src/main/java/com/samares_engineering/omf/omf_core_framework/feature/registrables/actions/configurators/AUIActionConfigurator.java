@@ -7,34 +7,24 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
 
-import com.nomagic.actions.ActionsManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AUIActionConfigurator implements UIActionConfigurator {
+    protected List<UIAction> registeredActions = new ArrayList<>();
 
-    protected List<UIAction> genericActions = new ArrayList<>();
-
-    public void unregisterActionsFromMD(ActionsManager actionsManager) {
-        genericActions.forEach(action ->
-            UIActionConfiguratorUtils.findCategory(actionsManager, action.getCategory()).ifPresent(category ->
-                action.getAllActions().forEach(category::removeAction)
-            )
-        );
+    public void addRegisteredAction(UIAction action){
+        registeredActions.add(action);
     }
-
-    public void addAction(UIAction action){
-        genericActions.add(action);
+    public void removeRegisteredAction(UIAction action){
+        registeredActions.remove(action);
     }
-    public void removeAction(UIAction action){
-        genericActions.remove(action);
+    public void addRegisteredActions(List<UIAction> actions){
+        registeredActions.forEach(this::addRegisteredAction);
     }
-    public void addActions(List<UIAction> actions){
-        genericActions.forEach(this::addAction);
-    }
-    public void removeActions(List<UIAction> actions){
-        genericActions.forEach(this::removeAction);
+    public void removeRegisteredActions(List<UIAction> actions){
+        registeredActions.forEach(this::removeRegisteredAction);
     }
 }

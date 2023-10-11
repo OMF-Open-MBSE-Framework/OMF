@@ -9,39 +9,36 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
-import com.nomagic.magicdraw.actions.MDAction;
-import com.nomagic.magicdraw.actions.MDActionsCategory;
+import com.nomagic.magicdraw.actions.ActionsProvider;
 import com.nomagic.magicdraw.utils.PriorityProvider;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
 
 public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AMConfigurator {
+    @Override
+    public int getPriority() {
+        return PriorityProvider.MEDIUM_PRIORITY;
+    }
+
     /**
      * Action will be added to manager.
      */
     @Override
     public void configure(ActionsManager actionsManager) {
-        unregisterActionsFromMD(actionsManager);
-        genericActions.stream()
+        registeredActions.stream()
                 .filter(UIAction::isMenuAction)
+                .filter(UIAction::checkMenuAvailability)
                 .forEach(action -> this.registerMenuAction(actionsManager, action));
-
     }
 
     private void registerMenuAction(ActionsManager actionsManager, UIAction menuAction) {
-        MDActionsCategory category = UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction);
-
-        MDAction action = menuAction.getMenuAction();
-        if(!category.getActions().contains(menuAction.getMenuAction()))
-            category.addAction(menuAction.getMenuAction());
-
-        action.setEnabled(menuAction.checkMenuAvailability());
+        UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction).addAction(menuAction.getMenuAction());
     }
 
     @Override
-    public int getPriority() {
-        return PriorityProvider.MEDIUM_PRIORITY;
+    public void removeRegisteredAction(UIAction action) {
+        super.removeRegisteredAction(action);
+        ActionsProvider.getInstance().getMainMenuActions().removeAction(action.getMenuAction());
     }
 }
