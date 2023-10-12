@@ -242,6 +242,7 @@ public abstract class AUIAction implements UIAction {
             return Collections.emptyList();
         return Arrays.stream(getSelectedBrowserNodes())
                 .map(Node::getUserObject)
+                .filter(Objects::nonNull)
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
                 .collect(Collectors.toList());
@@ -266,6 +267,7 @@ public abstract class AUIAction implements UIAction {
     public List<Element> getSelectedDiagramElements() {
         return getSelectedDiagramPresentationElements().stream()
                 .map(PresentationElement::getElement)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
     /**
