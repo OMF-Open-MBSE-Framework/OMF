@@ -52,10 +52,7 @@ public class FeatureRegisterer {
             feature.initFeature(plugin);
             feature.register();
 
-
             registerFeatureItems(feature);
-
-
             if (OMFUtils.currentProject != null) {
                 registerProjectOnlyFeatureItems(feature);
             }
