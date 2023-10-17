@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class ErrorManagementFeatureExample extends AFeature {
-
     public static String ACTIVATE_ERROR_LIVE_ACTION;
     public static String OMF_ERROR_EXAMPLE;
 
@@ -47,11 +46,7 @@ public class ErrorManagementFeatureExample extends AFeature {
                 new CriticalFeatureExampleAction(),
                 new UIActionErrorExample()
         );
-    }
 
-    @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
     }
 
     @Override

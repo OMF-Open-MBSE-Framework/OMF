@@ -13,7 +13,6 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
@@ -23,10 +22,9 @@ import java.util.List;
 @DeactivateListener
 @MDAction(actionName = "OMF CRITICAL ERROR EXAMPLE", category = "OMF.ACTION CATEGORY NAME")
 public class CriticalFeatureExampleAction extends AUIAction {
-    Runnable runnable;
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.currentProject != null;
+        return true;
     }
 
 

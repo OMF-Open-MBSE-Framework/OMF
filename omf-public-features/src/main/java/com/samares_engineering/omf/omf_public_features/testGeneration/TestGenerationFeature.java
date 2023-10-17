@@ -75,11 +75,6 @@ public class TestGenerationFeature extends AFeature {
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.EMPTY_LIST;
-    }
-
-    @Override
     public List<IRuleEngine> initLiveActions() {
         return Collections.EMPTY_LIST;
     }

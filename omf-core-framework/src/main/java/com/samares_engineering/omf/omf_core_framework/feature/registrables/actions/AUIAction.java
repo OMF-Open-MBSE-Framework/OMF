@@ -19,8 +19,8 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
@@ -315,11 +315,11 @@ public abstract class AUIAction implements UIAction {
 
     }
 
-    public void activated() {
+    public void activate() {
         isActivated = true;
     }
 
-    public void deactivated() {
+    public void deactivate() {
         isActivated = false;
     }
 

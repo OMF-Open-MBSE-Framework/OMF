@@ -19,6 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.customizationValidationFeature.CustomizationValidationFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
+import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
@@ -52,7 +53,7 @@ public class OMFExamplePlugin extends APlugin {
                 new SysmlGptExploFeature(),
                 new PatternCreationFeature(),
                 new CustomizationValidationFeature(),
-//                new TemplateFeature(),
+                new TemplateFeature(),
                 new FeatureActivationFromOptionFeature()
         );
     }

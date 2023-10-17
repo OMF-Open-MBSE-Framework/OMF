@@ -10,8 +10,8 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
@@ -48,11 +48,6 @@ public class APIServerFeature extends AFeature {
                 new RestartAPIServerAction(),
                 new StopAPIServerAction()
         );
-    }
-
-    @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
     }
 
     @Override

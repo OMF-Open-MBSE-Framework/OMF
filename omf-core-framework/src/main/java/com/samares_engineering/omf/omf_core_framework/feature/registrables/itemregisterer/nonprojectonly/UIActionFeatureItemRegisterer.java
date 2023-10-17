@@ -7,8 +7,6 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly;
 
-import com.nomagic.magicdraw.actions.ActionsProvider;
-import com.nomagic.magicdraw.core.Application;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -57,7 +55,6 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
         }
         try {
             actions.forEach(this::registerFeatureItem);
-            refreshMainMenuActions();
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Unable to register MDActions", e);
         }
@@ -73,21 +70,9 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
         }
         try {
             actions.forEach(this::unregisterFeatureItem);
-            refreshMainMenuActions();
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Unable to unregister MDActions", e);
         }
-    }
-
-
-    /*
-    Only need to reset the menu configurator because the browser and diagram configurators are reset by magicdraw when
-    opening the context menu
-     */
-    private void refreshMainMenuActions() {
-        configurators.stream().filter(OMFMainMenuConfigurator.class::isInstance)
-                .map(OMFMainMenuConfigurator.class::cast)
-                .forEach(c -> c.configure(ActionsProvider.getInstance().getMainMenuActions()));
     }
 
     /**

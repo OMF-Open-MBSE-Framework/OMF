@@ -43,11 +43,6 @@ public class HyperLinkFeature extends AFeature {
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<IRuleEngine> initLiveActions() {
         IRuleEngine creationRE = new RuleEngine(RECategoryEnum.AFTER_AUTOMATION);
         creationRE.addRule(new HyperlinkPartToBlockLA());
