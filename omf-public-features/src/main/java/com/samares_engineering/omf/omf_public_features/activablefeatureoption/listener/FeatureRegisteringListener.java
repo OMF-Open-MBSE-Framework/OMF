@@ -1,8 +1,11 @@
 package com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener;
 
 import com.nomagic.magicdraw.properties.Property;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFUserSilentException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OptionNotFound;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.RegisteringPropertyChangeListener;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
@@ -25,15 +28,18 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
      * This method is called when a feature is unregistered.
      * It will update the option value accordingly, so that the option is always in sync with the feature status.
      * @param evt the event
-     * @throws OMFException if the option is not found
      */
     @Override
-    public void featureUnregistered(PropertyChangeEvent evt) throws OMFException {
+    public void featureUnregistered(PropertyChangeEvent evt) {
         MDFeature feature = (MDFeature) evt.getOldValue();
-        if(feature == null) return;
-        Property optionProperty = getOptionFromFeature(feature);
-        if(optionProperty == null) throw new OptionNotFound(feature.getName());
-        optionProperty.setValue(false);
+        try {
+            if(feature == null) return;
+            Property optionProperty = getOptionFromFeature(feature);
+            if(optionProperty == null) throw new OptionNotFound(feature.getName());
+            optionProperty.setValue(false);
+        }catch (OptionNotFound e) {
+            OMFErrorHandler.handleException(new OMFUserSilentException("Cannot actualize :" + feature.getName() + ". The related option was not found...", e, GenericException.ECriticality.ALERT), false);
+        }
     }
 
     /**

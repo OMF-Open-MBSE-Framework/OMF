@@ -10,7 +10,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
@@ -32,7 +31,6 @@ import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.Hype
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 
-import java.util.Collections;
 import java.util.List;
 
 public class OMFExamplePlugin extends APlugin {
@@ -92,8 +90,4 @@ public class OMFExamplePlugin extends APlugin {
         return ListenerManager.getInstance();
     }
 
-    @Override
-    public List<AOptionListener> initEnvironmentOptionsListener() {
-       return Collections.emptyList();
-    }
 }
