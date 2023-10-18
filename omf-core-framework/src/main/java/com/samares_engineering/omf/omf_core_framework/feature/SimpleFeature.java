@@ -23,11 +23,6 @@ public abstract class SimpleFeature extends AFeature{
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     protected List<IRuleEngine> initLiveActions() {
         return Collections.emptyList();
     }

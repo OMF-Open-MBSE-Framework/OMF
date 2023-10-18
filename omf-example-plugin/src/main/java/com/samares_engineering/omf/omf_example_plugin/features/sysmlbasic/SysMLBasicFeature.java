@@ -40,11 +40,6 @@ public class SysMLBasicFeature extends AFeature {
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<IRuleEngine> initLiveActions() {
         RuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
         creationRE.addRule(new CreateAutoInterface_OnPortCreation());

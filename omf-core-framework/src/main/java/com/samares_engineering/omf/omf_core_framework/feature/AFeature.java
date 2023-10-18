@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_core_framework.feature;
@@ -39,6 +39,7 @@ public abstract class AFeature implements MDFeature {
     protected boolean isRegistered;
     private boolean isFeatureInitialised = false;
     private boolean isProjectOnlyItemsInitialised = false;
+    private boolean isFeatureItemsInitialised = false;
     private EnvOptionsHelper envOptionsHelper;
 
     protected APlugin plugin;
@@ -51,9 +52,9 @@ public abstract class AFeature implements MDFeature {
     // Delayed registrable items
     private final List<IOption> projectOnlyOptions = new ArrayList<>();
     private final List<UIAction> projectOnlyMdActions = new ArrayList<>();
-    private final List<IRuleEngine> projectOnlyLiveActions =  new ArrayList<>();
+    private final List<IRuleEngine> projectOnlyLiveActions = new ArrayList<>();
 
-    protected AFeature(String name){
+    protected AFeature(String name) {
         this.name = name;
     }
 
@@ -66,6 +67,7 @@ public abstract class AFeature implements MDFeature {
      * We separate this from the constructor as we want to delay the instantiation of feature items to the moment the
      * feature is first registered, as the
      * Note: this does not register the feature into magic draw/listeners.
+     *
      * @param plugin
      */
     public final void initFeature(APlugin plugin) {
@@ -74,60 +76,41 @@ public abstract class AFeature implements MDFeature {
         this.plugin = plugin;
         try {
             this.envOptionsHelper = initEnvOptionsHelper();
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
 
-        try {
-            this.options.addAll(initOptions());
-            options.forEach(this::initRegistrableItem);
-        }catch (Exception e){
+        } catch (Exception e) {
             OMFErrorHandler.handleException(e);
         }
-
-        try {
-            this.mdActions.addAll(initFeatureActions());
-            mdActions.forEach(this::initRegistrableItem);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
-        try {
-            this.liveActions.addAll(initLiveActions());
-            liveActions.forEach(this::initRegistrableItem);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
-
         isFeatureInitialised = true;
+    }
+
+    public void initFeatureItems() {
+        // We only need to initialise feature items once
+        if (isFeatureItemsInitialised) return;
+
+        this.options.addAll(initOptions());
+        options.forEach(this::initRegistrableItem);
+
+        this.mdActions.addAll(initFeatureActions());
+        mdActions.forEach(this::initRegistrableItem);
+
+        this.liveActions.addAll(initLiveActions());
+        liveActions.forEach(this::initRegistrableItem);
+
+        isFeatureItemsInitialised = true;
     }
 
     /**
      * Instantiates the feature items that depend on project to instantiate correctly
      */
     public final void initProjectOnlyFeatureItems() {
-        // We only need to initialise project only items once
+        // We only need to initialise project only feature items once
         if (isProjectOnlyItemsInitialised) return;
 
-        try {
-            this.projectOnlyOptions.addAll(initProjectOnlyOptions());
-            projectOnlyOptions.forEach(this::initRegistrableItem);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
+        this.projectOnlyOptions.addAll(initProjectOnlyOptions());
+        projectOnlyOptions.forEach(this::initRegistrableItem);
 
-        try {
-            this.projectOnlyMdActions.addAll(initProjectOnlyFeatureActions());
-            projectOnlyMdActions.forEach(this::initRegistrableItem);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
-
-        try {
-            this.projectOnlyLiveActions.addAll(initProjectOnlyLiveActions());
-            projectOnlyLiveActions.forEach(this::initRegistrableItem);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
+        this.projectOnlyLiveActions.addAll(initProjectOnlyLiveActions());
+        projectOnlyLiveActions.forEach(this::initRegistrableItem);
 
         isProjectOnlyItemsInitialised = true;
     }
@@ -138,24 +121,21 @@ public abstract class AFeature implements MDFeature {
 
     /**
      * Instantiate the environment option helper to be automatically register with the feature
+     *
      * @return the initialised environment options helper for the feature
      */
     protected abstract EnvOptionsHelper initEnvOptionsHelper();
 
     /**
      * Define all the feature action there, it will be automatically registered with the feature.
+     *
      * @return list of MDAction to register
      */
     protected abstract List<UIAction> initFeatureActions();
 
     /**
-     * UI Actions that need to wait for a project to be loaded to be instantiated
-     * @return
-     */
-    protected abstract List<UIAction> initProjectOnlyFeatureActions();
-
-    /**
      * Define all the feature live actions (RuleEngines) there, it will be automatically registered with the feature.
+     *
      * @return list of IRuleEngine to register
      */
     protected abstract List<IRuleEngine> initLiveActions();
@@ -164,6 +144,7 @@ public abstract class AFeature implements MDFeature {
 
     /**
      * Define all the feature options (Environment and Project) there, it will be automatically registered with the feature.
+     *
      * @return list of IOption to register
      */
     protected abstract List<IOption> initOptions();
@@ -177,22 +158,26 @@ public abstract class AFeature implements MDFeature {
     /**
      * Override this to inject code to be run on feature activation
      */
-    public void onRegistering() {}
+    public void onRegistering() {
+    }
 
     /**
      * Override this to inject code to be run on feature deactivation
      */
-    public void onUnregistering() {}
+    public void onUnregistering() {
+    }
 
     /**
      * Override this to inject code to be run on project opening
      */
-    public void onProjectOpen() {}
+    public void onProjectOpen() {
+    }
 
     /**
      * Override this to inject code to be run on project closing
      */
-    public void onProjectClose() {}
+    public void onProjectClose() {
+    }
 
     /*
     Helpers
@@ -200,12 +185,12 @@ public abstract class AFeature implements MDFeature {
 
     protected OptionImpl createEnvOption(Property property, String groupName) {
         return new OptionImpl(
-            property,
-            groupName,
-            plugin.getEnvironmentOptionsGroup()
-                    .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
-                            "for this plugin")),
-            OptionKind.Environment
+                property,
+                groupName,
+                plugin.getEnvironmentOptionsGroup()
+                        .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
+                                "for this plugin")),
+                OptionKind.Environment
         );
     }
 
@@ -224,7 +209,7 @@ public abstract class AFeature implements MDFeature {
      */
     @Override
     public void register() {
-        if(isRegistered) return;
+        if (isRegistered) return;
         setIsRegistered(true);
     }
 
@@ -234,13 +219,14 @@ public abstract class AFeature implements MDFeature {
      */
     @Override
     public void unregister() {
-        if(!isRegistered) return;
+        if (!isRegistered) return;
         setIsRegistered(false);
     }
 
     /**
      * Actual set of the feature as registered or not, and calls the corresponding lifecycle hook.
      * Please use the see{@link AFeature#register()} and see{@link AFeature#unregister()} methods instead of this one.
+     *
      * @param isRegistered true if the feature is registered, false otherwise
      */
     public final void setIsRegistered(boolean isRegistered) {

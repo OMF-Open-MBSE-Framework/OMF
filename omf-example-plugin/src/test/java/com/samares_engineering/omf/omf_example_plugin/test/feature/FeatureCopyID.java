@@ -38,11 +38,6 @@ public class FeatureCopyID extends AFeature {
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<IRuleEngine> initLiveActions() {
         return Collections.EMPTY_LIST;
     }

@@ -40,11 +40,6 @@ public class SysmlGptExploFeature extends AFeature {
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<IRuleEngine> initLiveActions() {
         return Collections.emptyList();
     }

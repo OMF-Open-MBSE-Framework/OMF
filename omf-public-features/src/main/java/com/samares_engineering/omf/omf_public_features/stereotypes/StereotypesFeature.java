@@ -51,11 +51,6 @@ public class StereotypesFeature extends AFeature {
     }
 
     @Override
-    protected List<UIAction> initProjectOnlyFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public List<IRuleEngine> initLiveActions() {
         IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
         return Arrays.asList(creationRE);

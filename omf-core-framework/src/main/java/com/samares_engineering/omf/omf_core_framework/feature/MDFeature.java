@@ -35,6 +35,8 @@ public interface MDFeature {
     List<IOption> getProjectOnlyOptions();
 
     void initFeature(APlugin plugin);
+    void initFeatureItems();
+
     void initProjectOnlyFeatureItems();
 
     EnvOptionsHelper getEnvOptionsHelper();
