@@ -31,7 +31,7 @@ public class PutAllCustomizationAttributeToStandard extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return selectedElements.get(0) instanceof Package;
+        return selectedElements.stream().anyMatch(Package.class::isInstance);
     }
 
     @Override
