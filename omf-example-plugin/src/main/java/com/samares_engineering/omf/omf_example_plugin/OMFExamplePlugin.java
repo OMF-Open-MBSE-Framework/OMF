@@ -21,6 +21,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.errorexample.Erro
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.sandbox.SandboxFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
@@ -52,6 +53,7 @@ public class OMFExamplePlugin extends APlugin {
                 new PatternCreationFeature(),
                 new CustomizationValidationFeature(),
                 new TemplateFeature(),
+                new SandboxFeature(),
                 new FeatureActivationFromOptionFeature()
         );
     }

@@ -144,10 +144,10 @@ public class LockerManager {
     }
 
 
-    public Collection<? extends OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public Collection<OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
-    public Collection<? extends OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public Collection<OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
 

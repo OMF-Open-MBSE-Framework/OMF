@@ -98,6 +98,7 @@ public abstract class AUIAction implements UIAction {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
+                init();
                 executeMenuAction(browserSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }

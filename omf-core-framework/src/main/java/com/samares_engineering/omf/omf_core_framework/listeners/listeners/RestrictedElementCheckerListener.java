@@ -51,9 +51,7 @@ public class RestrictedElementCheckerListener extends AElementListener implement
         try {
             //if listeners is activated then no automation has been triggered
     //            if (ListenerManager.getInstance().isListenersActivated()) return null;
-            if(!isActivated()) return;
-            if (OMFAutomationManager.getInstance().noAutomationTriggered()) return;
-
+            if(!isActivated() || OMFAutomationManager.getInstance().noAutomationTriggered()) return;
 
             Set<Element> checkedElements = new HashSet<>();
 
@@ -63,15 +61,13 @@ public class RestrictedElementCheckerListener extends AElementListener implement
             boolean hasDeletedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.DELETE));
             boolean hasUpdatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.CREATION));
             boolean hasCreatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.UPDATE));
-            Collection<? extends OMFLockException> deletions = Collections.emptyList();
-            Collection<? extends OMFLockException> creations = Collections.emptyList();
-            Collection<? extends OMFLockException> updates = Collections.emptyList();
-            if (hasDeletedEvent)
-                deletions = LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), checkedElements);
-            if (hasUpdatedEvent)
-                creations = LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), checkedElements);
-            if (hasCreatedEvent)
-                updates = LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), checkedElements);
+
+            Collection<OMFLockException> deletions = hasDeletedEvent ?
+                    LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), checkedElements) : Collections.emptyList();
+            Collection<OMFLockException> creations = hasUpdatedEvent ?
+                    LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), checkedElements) : Collections.emptyList();
+            Collection<OMFLockException> updates = hasCreatedEvent ?
+                    LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), checkedElements) : Collections.emptyList();
 
             deletions.forEach(e -> e.setUserMessage("D]-" + e.getUserMessage()));
             creations.forEach(e -> e.setUserMessage("C]-" + e.getUserMessage()));
@@ -121,8 +117,7 @@ public class RestrictedElementCheckerListener extends AElementListener implement
                             " or are not editable (e.g. project usages access)?",
                     NotificationSeverity.ERROR));
 
-            lockExceptions.stream()
-                    .forEach(OMFErrorHandler::handleException);
+            lockExceptions.forEach(OMFErrorHandler::handleException);
             lockExceptions.clear();
 
             if(!isRollbackEnabled()) return;

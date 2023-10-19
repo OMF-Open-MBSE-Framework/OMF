@@ -35,7 +35,6 @@ public class OMFErrorHandler {
         eLock.lockedElements.stream().forEach(lockedElement -> OMFLogger.getInstance().log(eLock.getMessage(), lockedElement, OMFLogLevel.ERROR));
     }
 
-
     public static void handleException(CriticalFeatureException criticalFeatureException) {
         handleException(criticalFeatureException, true);
     }
