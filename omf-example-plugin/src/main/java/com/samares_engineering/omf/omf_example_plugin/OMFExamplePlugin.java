@@ -39,6 +39,7 @@ public class OMFExamplePlugin extends APlugin {
     public List<MDFeature> initFeatures() {
         return List.of(
                 new FeaturesDeactivationFeature(),
+                new StereotypesFeature(),
                 new CloneElementFeature(),
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),

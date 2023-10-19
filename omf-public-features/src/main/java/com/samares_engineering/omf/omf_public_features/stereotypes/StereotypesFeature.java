@@ -9,8 +9,8 @@ package com.samares_engineering.omf.omf_public_features.stereotypes;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
@@ -20,15 +20,23 @@ import com.samares_engineering.omf.omf_public_features.stereotypes.actions.Refre
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class StereotypesFeature extends AFeature {
+public class StereotypesFeature extends SimpleFeature {
     public static final String FEATURE_NAME = "Stereotypes";
-    private final StereotypesRuleUpdater ruleUpdater = new StereotypesRuleUpdater(this);
+    private final StereotypesRuleUpdater ruleUpdater;
+    private final char delimiter;
 
     public StereotypesFeature() {
-        super(FEATURE_NAME);
+        this(';');
+    }
+    public StereotypesFeature(char delimiter) {
+        this(FEATURE_NAME, delimiter);
+    }
+    public StereotypesFeature(String featureName, char delimiter) {
+        super(featureName);
+        this.delimiter = delimiter;
+        ruleUpdater = new StereotypesRuleUpdater(this, delimiter);
     }
 
     /**
@@ -54,11 +62,6 @@ public class StereotypesFeature extends AFeature {
     public List<IRuleEngine> initLiveActions() {
         IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
         return Arrays.asList(creationRE);
-    }
-
-    @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
-        return Collections.emptyList();
     }
 
     @Override
@@ -108,11 +111,6 @@ public class StereotypesFeature extends AFeature {
     }
 
     @Override
-    protected List<IOption> initProjectOnlyOptions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public void onProjectOpen() {
         // We delegate management of rules to OrganizeListenerConfig
         ruleUpdater.setOrganizerRuleEngine(getRuleEngines().get(0));
@@ -121,5 +119,9 @@ public class StereotypesFeature extends AFeature {
 
     public StereotypesRuleUpdater getRuleUpdater() {
         return ruleUpdater;
+    }
+
+    public char getDelimiter() {
+        return delimiter;
     }
 }

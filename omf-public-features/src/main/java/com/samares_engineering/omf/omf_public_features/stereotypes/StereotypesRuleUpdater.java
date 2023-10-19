@@ -38,9 +38,14 @@ import java.util.List;
 public class StereotypesRuleUpdater {
     private final StereotypesFeature feature;
     private IRuleEngine organizerEngine;
+    private char delimiter;
 
     public StereotypesRuleUpdater(StereotypesFeature feature) {
+        this(feature, ';');
+    }
+    public StereotypesRuleUpdater(StereotypesFeature feature, char delimiter) {
         this.feature = feature;
+        this.delimiter = delimiter;
     }
 
     public void updateAllRulesBasedOnConfigFiles(){
@@ -62,7 +67,7 @@ public class StereotypesRuleUpdater {
     }
 
     private void createInstanceRules(String configFilePath) {
-        List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, ';');
+        List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, delimiter);
         for (List<String> line : linesToParse) {
             String typeListener = line.get(0);
             String typeStereotype = line.get(1);
@@ -106,7 +111,7 @@ public class StereotypesRuleUpdater {
     }
 
     private void createTypeRules(String configFilePath) {
-        List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, ';');
+        List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, delimiter);
         for (List<String> line : linesToParse) {
             String typeListener = line.get(0);
             String instance = line.get(1);
@@ -145,7 +150,7 @@ public class StereotypesRuleUpdater {
     }
 
     private void createOrganizerRules(String configFilePath) {
-        List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, ';');
+        List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, delimiter);
         for (List<String> line : linesToParse) {
             String createdElementStereotype = line.get(0);
             String classOfElement = line.get(1);
@@ -220,5 +225,13 @@ public class StereotypesRuleUpdater {
 
     public void setOrganizerRuleEngine(IRuleEngine organizerEngine) {
         this.organizerEngine = organizerEngine;
+    }
+
+    public char getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(char delimiter) {
+        this.delimiter = delimiter;
     }
 }

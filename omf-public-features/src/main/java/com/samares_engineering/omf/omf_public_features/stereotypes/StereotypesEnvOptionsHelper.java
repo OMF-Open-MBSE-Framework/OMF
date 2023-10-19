@@ -63,7 +63,6 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     /*
     Type group
      */
-
     public static final String INSTANCE_CONFIG_GRP = "Instance";
     public static final String INSTANCE_CONFIG_FILE_PATH_ID = "Automation type to instance configuration file path";
     public static final String INSTANCE_ACTIVATION_ID = "Activate automatic instance stereotype application";
@@ -94,7 +93,6 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
      */
     public static final String TYPE_CONFIG_GRP = "Type";
     public static final String TYPE_CONFIG_FILE_PATH_ID = "Automation instance to type creation configuration file path";
-
     public static final String TYPE_ACTIVATION_ID = "Activate automatic type creation on instance creation";
 
     public static String getTypeConfigFilePathDefaultValue() {
