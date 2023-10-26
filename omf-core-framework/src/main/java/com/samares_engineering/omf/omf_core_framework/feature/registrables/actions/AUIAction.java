@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions;
@@ -18,6 +18,9 @@ import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
@@ -56,16 +59,16 @@ public abstract class AUIAction implements UIAction {
 
     protected MDFeature feature;
 
-    public AUIAction(){
+    public AUIAction() {
         this("", "", false);
     }
 
-    protected AUIAction(String categoryName, String name, boolean shallDeactivateListenerOnTrigger){
+    protected AUIAction(String categoryName, String name, boolean shallDeactivateListenerOnTrigger) {
         this.categoryName = categoryName;
         this.name = name;
 
         deactivateListenerOnTrigger = hasDeactivateListenerAnnotation();
-        this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null){
+        this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
@@ -73,13 +76,14 @@ public abstract class AUIAction implements UIAction {
                 executeBrowserAction(browserSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }
+
             @Override
             public void updateState() {
                 super.updateState();
                 setEnabled(checkBrowserAvailability());
             }
         };
-        this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null){
+        this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
@@ -88,13 +92,14 @@ public abstract class AUIAction implements UIAction {
                 executeDiagramAction(diagramSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }
+
             @Override
             public void updateState() {
                 super.updateState();
                 setEnabled(checkDiagramAvailability());
             }
         };
-        this.menuAction = new com.nomagic.magicdraw.actions.MDAction("", getName(), getKeyStroke(), null){
+        this.menuAction = new com.nomagic.magicdraw.actions.MDAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
@@ -112,71 +117,94 @@ public abstract class AUIAction implements UIAction {
 
     }
 
-    public AUIAction init(){
+    public AUIAction init() {
         browserSelectedNodes = getSelectedBrowserNodes();
         browserSelectedElements = getSelectedBrowserElements();
         diagramSelectedPresentationElements = getSelectedDiagramPresentationElements();
         diagramSelectedElements = getSelectedDiagramElements();
-        if(Strings.isNullOrEmpty(categoryName))
+        if (Strings.isNullOrEmpty(categoryName))
             categoryName = getCategory();
-        if(Strings.isNullOrEmpty(name))
-            name= getCategory();
+        if (Strings.isNullOrEmpty(name))
+            name = getCategory();
         return this;
     }
 
     /**
      * Execute the behavior defined for DiagramAction, listener will be deactivated during the action, and it will be executed inside a session.
      * By default the actionToPerfom() method. Override it if there is a need to distinguish DiagramAction of the other
+     *
      * @param selectedElements selected elements
      */
     protected void executeDiagramAction(List<Element> selectedElements) {
-        if(deactivateListenerOnTrigger)
+        if (deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> actionToPerform(selectedElements));
-        }catch (OMFRollBackException rollbackException){
-            OMFErrorHandler.handleException(rollbackException);
-        }catch (Exception uncaughtException){
-            OMFErrorHandler.handleException(uncaughtException, false);
+            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
+                try {
+                    actionToPerform(selectedElements);
+                } catch (OMFException2 e) {
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
+                } catch (RuntimeException e) {
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
+                }
+            });
+        } catch (RollbackException2 rollbackException) {
+            //OMFErrorHandler.handleException(rollbackException);
         }
     }
 
     /**
      * Execute the behavior defined for BrowserAction, listener will be deactivated during the action, and it will be executed inside a session.
      * By default the actionToPerform() method. Override it if there is a need to distinguish BrowserAction of the other
+     *
      * @param selectedElements selected elements
      */
-    protected void executeBrowserAction(List<Element> selectedElements){
-        if(deactivateListenerOnTrigger)
+    protected void executeBrowserAction(List<Element> selectedElements) {
+        if (deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> actionToPerform(selectedElements));
-        }catch (OMFRollBackException rollbackException){
-            OMFErrorHandler.handleException(rollbackException);
-        }catch (Exception uncaughtException){
-            OMFErrorHandler.handleException(uncaughtException, false);
+            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
+                try {
+                    actionToPerform(selectedElements);
+                } catch (OMFException2 e) {
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
+                } catch (RuntimeException e) {
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
+                }
+            });
+        } catch (RollbackException2 rollbackException) {
+            //OMFErrorHandler.handleException(rollbackException);
         }
     }
 
     /**
      * Execute the behavior defined for Menu Action, listener will be deactivated during the action, and it will be executed inside a session.
      * By default the actionToPerform() method. Override it if there is a need to distinguish Menu Action of the other
+     *
      * @param selectedElements selected elements
      */
-    protected void executeMenuAction(List<Element> selectedElements){
-        if(deactivateListenerOnTrigger)
+    protected void executeMenuAction(List<Element> selectedElements) {
+        if (deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> actionToPerform(selectedElements));
-        }catch (OMFRollBackException rollbackException){
-            OMFErrorHandler.handleException(rollbackException);
-        }catch (Exception uncaughtException){
-            OMFErrorHandler.handleException(uncaughtException, false);
+            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
+                try {
+                    actionToPerform(selectedElements);
+                } catch (OMFException2 e) {
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
+                } catch (RuntimeException e) {
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
+                }
+            });
+        } catch (RollbackException2 rollbackException) {
+            //OMFErrorHandler.handleException(rollbackException);
         }
     }
+
     /**
      * Executed action behavior, listener will be deactivated during the action, and it will be executed inside a session.
      * If there is a need to distinguish behavior from different action type, override the according function.
+     *
      * @param selectedElements selected elements
      */
     public abstract void actionToPerform(List<Element> selectedElements);
@@ -184,27 +212,30 @@ public abstract class AUIAction implements UIAction {
     /**
      * Evaluate if the action shall appear inside the predefined category for Browser action configurator.
      * If there is a need to distinguish check from different action type, override the according function.
+     *
      * @return isAvailable
      */
-    public boolean checkBrowserAvailability(){
+    public boolean checkBrowserAvailability() {
         return isActivated() && checkAvailability(getSelectedBrowserElements());
     }
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Diagram action configurator.
      * If there is a need to distinguish check from different action type, override the according function.
+     *
      * @return isAvailable
      */
-    public boolean checkDiagramAvailability(){
+    public boolean checkDiagramAvailability() {
         return isActivated() && checkAvailability(getSelectedDiagramElements());
     }
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Menu action configurator.
      * If there is a need to distinguish check from different action type, override the according function.
+     *
      * @return isAvailable
      */
-    public boolean checkMenuAvailability(){
+    public boolean checkMenuAvailability() {
         return isActivated() && checkAvailability(Stream.of(getSelectedBrowserElements(), getSelectedDiagramElements())
                 .flatMap(Collection::stream).collect(Collectors.toList()));
     }
@@ -212,12 +243,15 @@ public abstract class AUIAction implements UIAction {
     /**
      * Evaluate if the action shall appear inside the predefined category for all configurators (Menu, Diagram, Browser).
      * If there is a need to distinguish check from different action type, override the according function.
+     *
      * @return isAvailable
      */
     public abstract boolean checkAvailability(List<Element> selectedElements);
+
     /**
      * Get the selected Nodes inside the Containment Tree.
      * Hypothesis: Order correspond to the user element selection one.
+     *
      * @return selected node list.
      */
     public Node[] getSelectedBrowserNodes() {
@@ -227,7 +261,7 @@ public abstract class AUIAction implements UIAction {
         if(browser == null)
             return null;
         ContainmentTree containmentTree = browser.getContainmentTree();
-        if(containmentTree == null)
+        if (containmentTree == null)
             return null;
 
         return containmentTree.getSelectedNodes();
@@ -236,10 +270,11 @@ public abstract class AUIAction implements UIAction {
     /**
      * Get the selected Elements inside the Containment Tree.
      * Hypothesis: Order correspond to the user element selection one.
+     *
      * @return selected elements list.
      */
     public List<Element> getSelectedBrowserElements() {
-        if(getSelectedBrowserNodes() == null)
+        if (getSelectedBrowserNodes() == null)
             return Collections.emptyList();
         return Arrays.stream(getSelectedBrowserNodes())
                 .map(Node::getUserObject)
@@ -252,6 +287,7 @@ public abstract class AUIAction implements UIAction {
     /**
      * Get the Presentation elements of the selected elements inside the active diagram.
      * Hypothesis: Order correspond to the user element selection one.
+     *
      * @return selected Presentation Element list.
      */
     public List<PresentationElement> getSelectedDiagramPresentationElements() {
@@ -260,9 +296,11 @@ public abstract class AUIAction implements UIAction {
         DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
         return Objects.nonNull(activeDiagram)? activeDiagram.getSelected(): new ArrayList<>();
     }
+
     /**
      * Get the selected Elements inside the active diagram.
      * Hypothesis: Order correspond to the user element selection one.
+     *
      * @return selected elements list.
      */
     public List<Element> getSelectedDiagramElements() {
@@ -271,20 +309,23 @@ public abstract class AUIAction implements UIAction {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
+
     /**
      * get the Browser MDAction called by the user.
+     *
      * @return DefaultBrowserAction
      */
-    public DefaultBrowserAction getBrowserAction(){
+    public DefaultBrowserAction getBrowserAction() {
         checkAnnotationPresence();
         return browserAction;
     }
 
     /**
      * get the Diagram MDAction called by the user.
+     *
      * @return DefaultBrowserAction
      */
-    public DefaultDiagramAction getDiagramAction(){
+    public DefaultDiagramAction getDiagramAction() {
         checkAnnotationPresence();
 
         return diagramAction;
@@ -292,9 +333,10 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * get the Menu MDAction called by the user.
+     *
      * @return MDAction
      */
-    public com.nomagic.magicdraw.actions.MDAction getMenuAction(){
+    public com.nomagic.magicdraw.actions.MDAction getMenuAction() {
         checkAnnotationPresence();
 
         return menuAction;
@@ -306,11 +348,11 @@ public abstract class AUIAction implements UIAction {
      * //TODO Please deploy a solution to execute the check in the build phase. see: https://stackoverflow.com/questions/19252973/how-do-i-validate-an-annotation-at-compile-time
      */
     private void checkAnnotationPresence() {
-        if(getClass().isAnnotationPresent(MDAction.class))
+        if (getClass().isAnnotationPresent(MDAction.class))
             return;
 
         OMFErrorHandler.handleException(new DevelopmentException(
-                         "Annotation " + MDAction.class.getSimpleName()
+                "Annotation " + MDAction.class.getSimpleName()
                         + " present in the class: " + getClass().getSimpleName()
                         + ", which is mandatory to register actions"));
 
@@ -327,6 +369,7 @@ public abstract class AUIAction implements UIAction {
     public boolean isActivated() {
         return isActivated;
     }
+
     public boolean isDeactivateListenerOnTrigger() {
         return deactivateListenerOnTrigger;
     }
@@ -338,17 +381,19 @@ public abstract class AUIAction implements UIAction {
     public String getName() {
         return getClass().getAnnotation(MDAction.class).actionName();
     }
+
     public String getCategory() {
         return getClass().getAnnotation(MDAction.class).category();
     }
 
-    public KeyStroke getKeyStroke () {
+    public KeyStroke getKeyStroke() {
         return KeyStroke.getKeyStroke(String.join("->", Arrays.asList(getClass().getAnnotation(MDAction.class).keyStroke())));
     }
 
     public boolean isBrowserAction() {
         return getClass().getAnnotation(BrowserAction.class) != null;
     }
+
     public boolean isDiagramAction() {
         return getClass().getAnnotation(DiagramAction.class) != null;
     }
@@ -356,9 +401,11 @@ public abstract class AUIAction implements UIAction {
     public boolean isMenuAction() {
         return getClass().getAnnotation(MenuAction.class) != null;
     }
+
     private boolean hasDeactivateListenerAnnotation() {
         return getClass().getAnnotation(DeactivateListener.class) != null;
     }
+
     public List<com.nomagic.magicdraw.actions.MDAction> getAllActions() {
         return Arrays.asList(
                 getBrowserAction(),

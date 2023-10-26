@@ -88,7 +88,6 @@ public abstract class AElementListener implements IElementListener {
                 .map(ruleEngine -> ruleEngine.processAllMatchingRule(event))
                 .collect(Collectors.toList())
                 .contains(true);
-        if(hasRulesBeenTriggered) OMFAutomationManager.getInstance().automationTriggered();
         return hasRulesBeenTriggered;
     }
 

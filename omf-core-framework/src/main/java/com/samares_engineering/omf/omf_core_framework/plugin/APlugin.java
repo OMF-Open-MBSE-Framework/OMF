@@ -13,6 +13,8 @@ import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
@@ -149,7 +151,7 @@ public abstract class APlugin extends Plugin {
      * It will call initPlugin() and handle exceptions
      */
     @Override
-    public void init() {
+    public final void init() {
         try {
             initPlugin();
         } catch (Exception exception) {
@@ -175,6 +177,8 @@ public abstract class APlugin extends Plugin {
         configureFeatureRegisterer();
         configureFeatures();
         registerAllFeatures();
+        OMFLogger2.init(this);
+        ErrorHandler2.init(this);
 
         isInitialized = true;
 

@@ -1,12 +1,14 @@
 package com.samares_engineering.omf.omf_example_plugin.features.sandbox.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
-import com.samares_engineering.omf.omf_core_framework.logger2.UIMessage;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 
 import java.util.List;
 
@@ -17,13 +19,13 @@ import java.util.List;
 public class SandboxUIAction extends AUIAction {
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        UIMessage.info().text("Test error ").link("link to element 1", selectedElements.get(0))
+        new OMFLog().text("Test error ").linkElement("link to element 1", selectedElements.get(0))
                 .bold("bold").italic("italic").underline("underscore").strike("striketrough")
-                .link("link to element 2", selectedElements.get(1))
-                .linkAction("Custom Action link", () -> UIMessage.info().text("bonus log !").logToConsole())
-                .text("<A href=\"file://C:/Users/HugoStinson/OneDrive - SAMARES ENGINEERING/Bureau/NOTES MENU OMF.txt\"> lien vers mon crashlog> </A>")
-                .text("<A href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"> lien bonus> </A>")
-                .logToConsole();
+                .linkElement("link to element 2", selectedElements.get(1))
+                .linkAction("Custom Action link", () -> new OMFLog().text("bonus log !").logToConsole(OMFLogLevel.WARNING, getFeature()))
+                .link("lien vers mon crashlog", "file://C:/Users/HugoStinson/OneDrive - SAMARES ENGINEERING/Bureau/NOTES MENU OMF.txt")
+                .link("lien bonus", "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+                .logToConsole(OMFLogLevel.INFO);
     }
 
     @Override

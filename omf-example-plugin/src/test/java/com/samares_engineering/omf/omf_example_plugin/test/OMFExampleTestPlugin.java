@@ -40,9 +40,7 @@ public class OMFExampleTestPlugin extends APlugin {
     );
 
     @Override
-    public void init() {
-        super.init();
-
+    public void initPlugin() {
         // TODO find a way to get the path to set from gradle properties
         System.setProperty("tests.resources", "plugins/com.samares_engineering.omf.omf_example_plugin.test/projects");
 

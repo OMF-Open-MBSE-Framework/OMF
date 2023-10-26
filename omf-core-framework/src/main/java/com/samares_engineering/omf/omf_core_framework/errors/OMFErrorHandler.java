@@ -53,11 +53,10 @@ public class OMFErrorHandler {
     public static void handleException(OMFRollBackException rollBackException) {
         displayDEVMessage("RollBack requested", rollBackException, OMFLogLevel.INFO);
     }
-
-
     public static void handleException(OMFException omfException) {
         handleException(omfException, true);
     }
+
     public static void handleException(OMFException exception, boolean cancelSession) {
         defaultOMFExceptionHandling(exception, cancelSession);
     }

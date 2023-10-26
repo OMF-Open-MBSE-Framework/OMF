@@ -21,8 +21,6 @@ public interface IRuleEngine extends PriorityProvider, RegistrableFeatureItem {
 
     List<IRule> getAllMatchingRules(PropertyChangeEvent evt);
 
-    boolean processFirstMatchingRule(PropertyChangeEvent evt);
-
     boolean processAllMatchingRule(PropertyChangeEvent evt);
 
     boolean skipRules(PropertyChangeEvent evt);
