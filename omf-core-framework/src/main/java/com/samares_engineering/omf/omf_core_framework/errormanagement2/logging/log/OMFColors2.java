@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log;
 
-public class OMFColors {
+public class OMFColors2 {
     static final String WARN = "#FF8800";
     static final String ERROR = "#AA0000";
     static final String INFO = "#0033FF";

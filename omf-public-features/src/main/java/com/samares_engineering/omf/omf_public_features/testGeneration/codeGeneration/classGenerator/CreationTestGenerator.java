@@ -10,7 +10,7 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
@@ -158,7 +158,7 @@ public class CreationTestGenerator {
                 .findFirst();
 
         if (creationMethod.isEmpty()) {
-           throw new OMFException2(new OMFLog().text("Can't find a suitable creation method for the provided element").linkElement(testedElement.getName(), testedElement));
+           throw new OMFException2(new OMFLog2().text("Can't find a suitable creation method for the provided element").linkElement(testedElement.getName(), testedElement));
         }
 
         methodBuilder.addStatement("$T " + this.getTestedElementName() + " = $T.currentProject.getElementsFactory()." + creationMethod.get().getName() + "()", this.getTestedElementClass(), OMFUtils.class);

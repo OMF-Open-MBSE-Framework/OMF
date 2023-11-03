@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging;
 
 import com.nomagic.magicdraw.core.Application;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -30,17 +30,17 @@ public class OMFLogger2 {
         instance = new OMFLogger2(plugin);
     }
 
-    public static void logToConsole(OMFLog logMessage, OMFLogLevel logLevel) {
+    public static void logToConsole(OMFLog2 logMessage, OMFLogLevel logLevel) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
             String formattedLog = logMessage.toHTMLFormat(logLevel, getInstance().plugin.getName());
             Application.getInstance().getGUILog().addHyperlinkedText(formattedLog, logMessage.getLinkActionMapping());
         }
     }
     public static void logToConsole(String message, OMFLogLevel logLevel) {
-        logToConsole(new OMFLog().text(message), logLevel);
+        logToConsole(new OMFLog2().text(message), logLevel);
     }
 
-    public static void logToConsole(OMFLog logMessage, OMFLogLevel logLevel, MDFeature feature) {
+    public static void logToConsole(OMFLog2 logMessage, OMFLogLevel logLevel, MDFeature feature) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
             String formattedLog = logMessage.toHTMLFormat(logLevel, getInstance().plugin.getName(), feature.getName());
             Application.getInstance().getGUILog().addHyperlinkedText(formattedLog, logMessage.getLinkActionMapping());
@@ -48,6 +48,6 @@ public class OMFLogger2 {
     }
 
     public static void logToConsole(String message, OMFLogLevel logLevel, MDFeature feature) {
-        logToConsole(new OMFLog().text(message), logLevel, feature);
+        logToConsole(new OMFLog2().text(message), logLevel, feature);
     }
 }

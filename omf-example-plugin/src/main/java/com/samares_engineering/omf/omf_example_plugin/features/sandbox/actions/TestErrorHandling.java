@@ -13,7 +13,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import static com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier.DEACTIVATE_FEATURE;
+import static com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2.DEACTIVATE_FEATURE;
 
 @MenuAction
 @BrowserAction

@@ -4,7 +4,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
@@ -20,14 +20,14 @@ public class ErrorHandler2 {
 
     public static ErrorHandler2 getInstance() {
         if (instance.plugin == null) {
-            throw new RuntimeException("The ErrorHandler has not been initialized yet. Please call the init() method first.");
+            throw new CoreException2("The ErrorHandler has not been initialized yet. Please call the init() method first.");
         }
         return instance;
     }
 
     public static void init(APlugin plugin) {
         if (instance != null) {
-            throw new RuntimeException("Can't initialize the ErrorHandler has it has already been initialized.");
+            throw new CoreException2("Can't initialize the ErrorHandler has it has already been initialized.");
         }
         instance = new ErrorHandler2(plugin);
     }
@@ -96,14 +96,14 @@ public class ErrorHandler2 {
     }
 
     private static void unregisterFeature(MDFeature impactedFeature) {
-        new OMFLog().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
+        new OMFLog2().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
                 .text("You can reactivate it in the environment options.")
                 .logToConsole(ERROR);
         impactedFeature.getPlugin().getFeatureRegister().unregisterFeature(impactedFeature);
     }
 
     private static void rollbackChanges() {
-        new OMFLog().text("Rolling back action's changes after encountering critical error")
+        new OMFLog2().text("Rolling back action's changes after encountering critical error")
                 .logToConsole(ERROR);
         throw new RollbackException2();
     }

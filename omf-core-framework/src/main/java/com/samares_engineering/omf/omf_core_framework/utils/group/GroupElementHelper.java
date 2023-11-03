@@ -10,7 +10,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.CloneManager;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.ElementGetter;
@@ -89,7 +89,7 @@ public class GroupElementHelper {
                 ModelElementsManager.getInstance().removeElement(connector);}
             catch (ReadOnlyElementException e) {
                 throw new OMFException2("Cannot finalize the port grouping due to a ReadOnly Connector",
-                                e, OMFExceptionModifier.ROLLBACK_CHANGES);
+                                e);
             }
         }
 

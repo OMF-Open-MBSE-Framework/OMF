@@ -11,45 +11,45 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OMFLog {
+public class OMFLog2 {
     private final List<String> messageComponents = new ArrayList<>();
     private final Map<String, Runnable> linkActionMapping = new HashMap<>();
 
-    public OMFLog text(String string) {
+    public OMFLog2 text(String string) {
         messageComponents.add(string);
         return this;
     }
 
-    public OMFLog bold(String string) {
+    public OMFLog2 bold(String string) {
         return text("<B>" + string + "</B>");
     }
 
-    public OMFLog italic(String string) {
+    public OMFLog2 italic(String string) {
         return text("<I>" + string + "</I>");
     }
 
-    public OMFLog underline(String string) {
+    public OMFLog2 underline(String string) {
         return text("<U>" + string + "</U>");
     }
 
-    public OMFLog strike(String string) {
+    public OMFLog2 strike(String string) {
         return text("<S>" + string + "</S>");
     }
 
-    public OMFLog color(String string, String color) {
+    public OMFLog2 color(String string, String color) {
         return text("<font color=" + color + ">" + string + "</font>");
     }
 
-    public OMFLog linkElement(String linkText, Element elementToLink) {
+    public OMFLog2 linkElement(String linkText, Element elementToLink) {
         linkActionMapping.put(linkText, new ElementAction(elementToLink)::selectInBrowser);
         return text("<A>" + linkText + "</A>");
     }
 
-    public OMFLog link(String linkText, String url) {
+    public OMFLog2 link(String linkText, String url) {
         return text("<A href=" + url + ">" + linkText + "</A>");
     }
 
-    public OMFLog linkAction(String linkText, Runnable action) {
+    public OMFLog2 linkAction(String linkText, Runnable action) {
         linkActionMapping.put(linkText, action);
         return text("<A>" + linkText + "</A>");
     }
@@ -90,12 +90,12 @@ public class OMFLog {
     private static String getMessageColor(OMFLogLevel logLevel) {
         switch (logLevel) {
             case WARNING:
-                return OMFColors.WARN;
+                return OMFColors2.WARN;
             case ERROR:
-                return OMFColors.ERROR;
+                return OMFColors2.ERROR;
             case INFO:
             default:
-                return OMFColors.INFO;
+                return OMFColors2.INFO;
         }
     }
 
@@ -114,7 +114,7 @@ public class OMFLog {
      * Syntaxic sugar to reduced boilerplate of logging
      */
 
-    public OMFLog logToConsole(OMFLogLevel logLevel) {
+    public OMFLog2 logToConsole(OMFLogLevel logLevel) {
         OMFLogger2.logToConsole(this, logLevel);
         return this;
     }
