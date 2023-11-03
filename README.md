@@ -14,14 +14,15 @@ TODO
 - Commit changes
 - Create a new branch from `0-DEV` with the name `RELEASE/<version>` (e.g. `RELEASE/1.0.0`)
 - On the release branch, change the version in `gradle.properties` (remove SNAPSHOT suffix)
-- Commit and push. The CI/CD will build the plugin and publish it to Nexus & Maven Central staging
+- Commit and push. 
+- Publish to nexus & maven central staging repo => gradle task `publish` (Broken at the moment) The CI/CD will build the plugin and publish it to Nexus & Maven Central staging
 - If there are validation problems:
   - Fix them on the release branch
   - Commit and push
   - Cherry-pick the fix(es) on `0-DEV`
 - Finalise the deployment to Maven Central by doing a manual release. [Our guide on how to release to maven central](https://samaresengineering.atlassian.net/wiki/spaces/ST/pages/2514026503/Publish+to+Maven+Central)
-- Update the OMF public repo
-- Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch
+- Update the OMF public repo (is this still worth it?)
+- Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch to the next patch version
 - Commit and push
 
 # Naming conventions
