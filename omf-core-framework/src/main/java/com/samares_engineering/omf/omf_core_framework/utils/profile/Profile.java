@@ -8,13 +8,14 @@
 package com.samares_engineering.omf.omf_core_framework.utils.profile;
 
 import com.nomagic.magicdraw.core.Project;
-import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.magicdraw.sysml.util.MDCustomizationForSysMLProfile;
+import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.uml2.MagicDrawProfile;
 import com.nomagic.uml2.StandardProfile;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -48,8 +49,7 @@ public class Profile {
 
     public MagicDrawProfile getMagicDraw() {
         try{return MagicDrawProfile.getInstanceByProject(project);}
-        catch (Exception e){OMFErrorHandler.handleException(new OMFException("MagicDraw profile not found", e, GenericException.ECriticality.CRITICAL));}
-        return null;
+        catch (Exception e){throw new CoreException2("MagicDraw profile not found", e);}
     }
 
     public StandardProfile getStandard() {

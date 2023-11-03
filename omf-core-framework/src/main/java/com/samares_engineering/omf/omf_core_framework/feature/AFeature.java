@@ -8,7 +8,6 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -74,12 +73,7 @@ public abstract class AFeature implements MDFeature {
         // We only need to initialise feature once
         if (isFeatureInitialised) return;
         this.plugin = plugin;
-        try {
-            this.envOptionsHelper = initEnvOptionsHelper();
-
-        } catch (Exception e) {
-            OMFErrorHandler.handleException(e);
-        }
+        this.envOptionsHelper = initEnvOptionsHelper();
         isFeatureInitialised = true;
     }
 

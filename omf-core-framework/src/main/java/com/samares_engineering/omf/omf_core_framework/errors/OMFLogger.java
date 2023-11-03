@@ -90,8 +90,6 @@ public class OMFLogger {
         log(message, elementToLink, OMFLogLevel.ERROR);
     }
 
-
-
     public void logWithOwner(String message, Element elementToLink, OMFLogLevel level) {
         String linkElement = "";
         String linkOwnerElement = "DELETED";

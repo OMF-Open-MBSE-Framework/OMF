@@ -18,9 +18,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.NoElementFoundException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -175,9 +173,7 @@ public class OMFUtils {
             BrowserTabTree containmentTree = Application.getInstance().getMainFrame().getBrowser().getActiveTree();
             containmentTree.openNode(element);
         }catch (Exception e){
-            OMFErrorHandler.handleException(new DevelopmentException(
-                    "SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible",
-                    e, GenericException.ECriticality.ALERT), false);
+            throw new OMFException2("SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible", e);
         }
     }
 }

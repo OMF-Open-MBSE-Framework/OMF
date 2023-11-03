@@ -8,7 +8,7 @@
 package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 
@@ -28,12 +28,8 @@ public class UIActionErrorExample extends AUIAction {
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        try {
-            // Do something
-            throw new RuntimeException("TESTING Framework ERROR");
-        } catch (Exception e) {
-            OMFErrorHandler.handleException(e, true);
-        }
+            throw new OMFException2("TESTING Framework ERROR");
+
     }
 
     @Override

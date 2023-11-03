@@ -1,14 +1,12 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 package com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
@@ -27,7 +25,7 @@ public class InstancePropertyCreatedRule extends ARule {
     public final List<String> ownerValidStereotypes;
 
     public InstancePropertyCreatedRule(String id, Class classOfType, String stereoOfType, Class classOfInstance,
-                                       String stereoOfInstance, String ownerValidStereotypes){
+                                       String stereoOfInstance, String ownerValidStereotypes) {
         this(id, classOfType, stereoOfType, classOfInstance, stereoOfInstance,
                 Arrays.stream(ownerValidStereotypes.split("/"))
                         .filter(Strings::isNotEmpty)
@@ -35,7 +33,7 @@ public class InstancePropertyCreatedRule extends ARule {
     }
 
     public InstancePropertyCreatedRule(String id, Class classOfType, String stereoOfType, Class classOfInstance,
-                                       String stereoOfInstance, List<String> ownerValidStereotypes){
+                                       String stereoOfInstance, List<String> ownerValidStereotypes) {
         super(id);
         this.stereoOfType = stereoOfType;
         this.classOfType = classOfType;
@@ -46,15 +44,15 @@ public class InstancePropertyCreatedRule extends ARule {
 
     @Override
     public boolean eventMatches(PropertyChangeEvent evt) {
-       if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isInstanceActivated()) return false;
-       if (evt.getSource() == null) return false;
-       if(!classOfInstance.isInstance(evt.getSource())) return false;
+        if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isInstanceActivated()) return false;
+        if (evt.getSource() == null) return false;
+        if (!classOfInstance.isInstance(evt.getSource())) return false;
 
         Element srcElement = (Element) evt.getSource();
         boolean isTypeInstantiationPatternSatisfied = StereotypesRuleUtils.isTypeInstantiationPatternSatisfied(
                 srcElement, classOfInstance, this.stereoOfType, this.classOfType);
         boolean ownerHasSpecifiedStereotype = StereotypesRuleUtils.ownerHasStereotype(srcElement, this.ownerValidStereotypes);
-        if(isTypeInstantiationPatternSatisfied && ownerHasSpecifiedStereotype) {
+        if (isTypeInstantiationPatternSatisfied && ownerHasSpecifiedStereotype) {
             System.out.println("[Test]-Part: " + srcElement.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
             return true;
         }
@@ -63,11 +61,7 @@ public class InstancePropertyCreatedRule extends ARule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        try {
-            StereotypesRuleUtils.instantiationBehavior(e, this.stereoOfInstance);
-        } catch (OMFException ex) {
-            OMFErrorHandler.handleException(ex, false);
-        }
+        StereotypesRuleUtils.instantiationBehavior(e, this.stereoOfInstance);
         return e;
     }
 

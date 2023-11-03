@@ -12,17 +12,17 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.PortBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.IGenericBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.ConnectorBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.InterfaceBlockBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.ProxyPortBuilder;
-import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.PortBuilder;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramUtils;
+import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -107,7 +107,7 @@ public class ConnectionDirector implements IGenericBuilder {
         return this;
     }
 
-    private void preBuild() throws BuilderException {
+    private void preBuild() {
         final boolean oneEndIsNull = (src == null && srcBuilder == null)
                 || (dst == null && dstBuilder == null);
         if (oneEndIsNull)
@@ -118,7 +118,7 @@ public class ConnectionDirector implements IGenericBuilder {
     }
 
     @Override
-    public List<Connector> build() throws BuilderException {
+    public List<Connector> build() {
         preBuild();
 
         List<Connector> connectors = new ArrayList<>();
@@ -133,7 +133,7 @@ public class ConnectionDirector implements IGenericBuilder {
         return connectors;
     }
 
-    public ConnectionDirector createDirectConnection() throws BuilderException {
+    public ConnectionDirector createDirectConnection() {
         if (connectorBuilder == null)
             connectorBuilder = new ConnectorBuilder();
 
@@ -235,7 +235,7 @@ public class ConnectionDirector implements IGenericBuilder {
         return this;
     }
 
-    public ConnectionDirector connectConnectionFromSonToMother(Property src, ConnectorBuilder templateConnectorBuilder, Property dst, List<Element> sonPropertyPaths) throws BuilderException {
+    public ConnectionDirector connectConnectionFromSonToMother(Property src, ConnectorBuilder templateConnectorBuilder, Property dst, List<Element> sonPropertyPaths) {
         List<Element> partList = sonPropertyPaths.stream()
                 .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
                 .collect(Collectors.toList());

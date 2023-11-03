@@ -1,11 +1,10 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2;
 
-import com.nomagic.ci.persistence.local.a.U;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
-import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
@@ -91,8 +90,14 @@ public class ErrorHandler2 {
         rollbackChanges();
     }
 
+    public void handleException(CoreException2 exception) {
+        exception.printStackTrace();
+        OMFLogger2.logToConsole("An internal OMF error occurred. " + exception.getMessage(), ERROR);
+    }
+
     private static void unregisterFeature(MDFeature impactedFeature) {
         new OMFLog().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
+                .text("You can reactivate it in the environment options.")
                 .logToConsole(ERROR);
         impactedFeature.getPlugin().getFeatureRegister().unregisterFeature(impactedFeature);
     }

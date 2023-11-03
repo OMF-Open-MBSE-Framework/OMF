@@ -14,9 +14,9 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.PortBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.PortBuilder;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -185,7 +185,7 @@ public class ProxyPortBuilder extends PortBuilder {
 
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
         if (name == null)
             name = "";
@@ -195,7 +195,7 @@ public class ProxyPortBuilder extends PortBuilder {
     }
 
     @Override
-    public Port build() throws BuilderException {
+    public Port build() {
         if (this.createNewElement)
             this.elementToBuild = SysMLFactory.getInstance().createProxyPort();
         super.build();      //Does it co to this preBuild?
@@ -205,7 +205,7 @@ public class ProxyPortBuilder extends PortBuilder {
     }
 
     @Override
-    public Port rebuild() throws BuilderException {
+    public Port rebuild() {
         return super.rebuild();
     }
 

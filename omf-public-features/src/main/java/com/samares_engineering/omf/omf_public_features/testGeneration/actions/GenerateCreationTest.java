@@ -3,9 +3,7 @@ package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
@@ -38,35 +36,29 @@ public class GenerateCreationTest extends AUIAction {
         if(OMFUtils.getProject() == null)
             return false;
 
-        if(selectedElements.isEmpty())
+        if (selectedElements.isEmpty())
             return false;
 
         return selectedElements.size() == 1 &&
-               isInTestPackage(selectedElements.get(0));
+                isInTestPackage(selectedElements.get(0));
     }
-
 
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        try {
-            if (selectedElements == null)
-                return;
+        if (selectedElements == null)
+            return;
 
-            TestGenerationEnvOptionsHelper optionHelper = ((TestGenerationFeature) getFeature()).getOptionsHelper();
-            this.generationPath = optionHelper.getTestGenerationRootPath();
-            this.CREATIONTEST_CLASS_PACKAGE = optionHelper.getTestGenerationJavaPackage();
+        TestGenerationEnvOptionsHelper optionHelper = ((TestGenerationFeature) getFeature()).getOptionsHelper();
+        this.generationPath = optionHelper.getTestGenerationRootPath();
+        this.CREATIONTEST_CLASS_PACKAGE = optionHelper.getTestGenerationJavaPackage();
 
-            selectedElements.stream()
-                    .filter(NamedElement.class::isInstance)
-                    .map(this::createCreationTestGenerator)
-                    .map(CreationTestGenerator::generateTest)
-                    .forEach(this::writeToFile);
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
+        selectedElements.stream()
+                .filter(NamedElement.class::isInstance)
+                .map(this::createCreationTestGenerator)
+                .map(CreationTestGenerator::generateTest)
+                .forEach(this::writeToFile);
     }
-
 
 
     private CreationTestGenerator createCreationTestGenerator(Element testContext) {
@@ -79,9 +71,9 @@ public class GenerateCreationTest extends AUIAction {
     }
 
 
-
     /**
      * Determine if an element is in a package stereotyped <<TestPackage>>
+     *
      * @param e : the element
      * @return
      */
@@ -101,9 +93,9 @@ public class GenerateCreationTest extends AUIAction {
     }
 
 
-
     /**
      * Obtain the package of the element, only if it's stereotyped <<TestPackage>>
+     *
      * @param e : the element
      * @return the package if its stereotyped <<TestPackage>>, null otherwise
      */
@@ -111,8 +103,7 @@ public class GenerateCreationTest extends AUIAction {
         Element parent = e.getOwner();
 
         if (parent == null) {
-            OMFErrorHandler.handleException(new OMFException("The selected element must be contained (directly or not) by a package stereotyped <<TestPackage>>.", GenericException.ECriticality.ALERT), true);
-            return null;
+            throw new OMFException2("The selected element must be contained (directly or not) by a package stereotyped <<TestPackage>>.");
         }
 
         // If parent is a package stereotyped <<TestPackage>>

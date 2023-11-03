@@ -15,7 +15,6 @@ import com.samares_engineering.omf.omf_core_framework.builders.exceptions.Builde
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -136,7 +135,7 @@ public abstract class AGenericBuilder<ConcreteBuiltElement extends Element> impl
         stereotypes.forEach(str -> StereotypesHelper.addStereotype(elementToBuild, str));
     }
 
-    protected void setOwnedElements() throws BuilderException {
+    protected void setOwnedElements() {
         AtomicReference<BuilderException> exception = new AtomicReference<>();
         ownedElements.forEach(ownedElement -> ownedElement.setOwner(elementToBuild));
         ownedElementBuilder.stream()

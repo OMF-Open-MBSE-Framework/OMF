@@ -78,7 +78,7 @@ public class RuleEngine implements IRuleEngine {
                 continue;
             if (rule.matches(evt)) {
                 rulesToExecute.add(rule);
-                ColorPrinter.status("Triggered rule: " + rule.getClass().getName() + " for event: " + evt.getPropertyName()
+                ColorPrinter.status("Triggered rule: " + rule.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
                         + " on element: " + ((Element) evt.getSource()).getHumanName());
                 if (rule.isBlocking()) {
                     ColorPrinter.status("Rule is blocking: stopping rule matching for this event");

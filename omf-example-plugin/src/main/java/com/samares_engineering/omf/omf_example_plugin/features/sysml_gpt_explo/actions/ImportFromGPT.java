@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.actions;
@@ -12,9 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
@@ -46,19 +44,16 @@ public class ImportFromGPT extends AUIAction {
 
         // Load the JSON data from file
         String jsonFilePath = null;
-        try {
-            jsonFilePath = (String) feature.getPlugin().getEnvironmentOptionsGroup()
-                    .orElseThrow(() -> new OMFException("No environment options groups have been declared for this " +
-                                            "plugin", GenericException.ECriticality.CRITICAL)
-                    ).getProperty(SysmlGptExploFeature.GPT_GENERATED_JSON_TO_IMPORT).getValue();
-        } catch (OMFException e) {
-            OMFErrorHandler.handleException(e);
-        }
+        jsonFilePath = (String) feature.getPlugin().getEnvironmentOptionsGroup()
+                .orElseThrow(() -> new OMFException2("No environment options groups have been declared for this " +
+                        "plugin")
+                ).getProperty(SysmlGptExploFeature.GPT_GENERATED_JSON_TO_IMPORT).getValue();
+
         JSONTokener tokener = null;
         try {
             tokener = new JSONTokener(new FileReader(jsonFilePath));
         } catch (FileNotFoundException e) {
-            OMFErrorHandler.handleException(e);
+            throw new OMFException2("The specified file " + jsonFilePath + " could not be found", e);
         }
         JSONObject json = new JSONObject(tokener);
 
@@ -80,7 +75,7 @@ public class ImportFromGPT extends AUIAction {
         createBlocksAndSubBlocks(parentPackage, blocksData);
 
         // Connect the part properties
-        for (Property property: partPropertiesToConnect.keySet()) {
+        for (Property property : partPropertiesToConnect.keySet()) {
             String typingBlockName = partPropertiesToConnect.get(property);
             Class typingBlock;
             if (!createdBlocks.containsKey(typingBlockName)) {

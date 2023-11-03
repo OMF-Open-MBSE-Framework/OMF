@@ -61,7 +61,7 @@ public abstract class NamedElementBuilder extends AGenericBuilder {
     public abstract NamedElementBuilder clone() throws CloneNotSupportedException;
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
         if (this.elementToBuild == null)
             throw new BuilderException("Element has not been initialized", this);
@@ -73,7 +73,7 @@ public abstract class NamedElementBuilder extends AGenericBuilder {
     }
 
     @Override
-    public NamedElement build() throws BuilderException {
+    public NamedElement build() {
         if (this.builderToReuse != null)
             elementToBuild = builderToReuse.getElementToBuild();
 
@@ -100,7 +100,7 @@ public abstract class NamedElementBuilder extends AGenericBuilder {
     }
 
     @Override
-    public NamedElement rebuild() throws BuilderException {
+    public NamedElement rebuild() {
         elementToBuild = null;
         return null;
     }

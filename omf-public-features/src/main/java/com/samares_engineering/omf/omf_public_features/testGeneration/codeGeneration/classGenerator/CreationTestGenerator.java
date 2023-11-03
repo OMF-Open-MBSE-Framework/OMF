@@ -9,9 +9,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.impl.ElementsFactory;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
@@ -158,7 +157,9 @@ public class CreationTestGenerator {
                 .filter(m -> m.getReturnType().equals(this.getTestedElementClass())) // 1 creation class / metaclass, return type is determinist
                 .findFirst();
 
-        if (creationMethod.isEmpty()) OMFErrorHandler.handleException(new OMFException("Can't find a suitable creation method for the provided element.", GenericException.ECriticality.ALERT), true);
+        if (creationMethod.isEmpty()) {
+           throw new OMFException2(new OMFLog().text("Can't find a suitable creation method for the provided element").linkElement(testedElement.getName(), testedElement));
+        }
 
         methodBuilder.addStatement("$T " + this.getTestedElementName() + " = $T.currentProject.getElementsFactory()." + creationMethod.get().getName() + "()", this.getTestedElementClass(), OMFUtils.class);
         methodBuilder.addCode("\n");

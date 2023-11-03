@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.utils;
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ public class GarbageCollector {
                     try {
                         ModelElementsManager.getInstance().removeElement(interfaceType);
                     } catch (ReadOnlyElementException e) {
-                        OMFErrorHandler.handleException(e, false);
+                        throw new OMFException2("Can't delete readonly element in garbage collector", e);
                     }
                 });
     }

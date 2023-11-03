@@ -7,7 +7,7 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
@@ -36,9 +36,7 @@ public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
             ((StereotypesFeature) feature).getRuleUpdater().updateAllRulesBasedOnConfigFiles();
             OMFLogger.getInstance().log("Rules updated based on config files", null, OMFLogLevel.INFO);
         } catch (Exception e) {
-            OMFLogger.getInstance().log("[Error] While parsing, please verify the configuration file and try again", null, OMFLogLevel.ERROR);
-            OMFErrorHandler.handleException(e, false);
+            throw new OMFException2("Error while parsing, please verify the configuration file and try again", e);
         }
     }
-
 }

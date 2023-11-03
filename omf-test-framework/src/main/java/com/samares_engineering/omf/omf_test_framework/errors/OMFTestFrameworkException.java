@@ -7,26 +7,7 @@
 
 package com.samares_engineering.omf.omf_test_framework.errors;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 
-public class OMFTestFrameworkException extends GenericException {
-    public OMFTestFrameworkException(String errorMsg, ECriticality criticality) {
-        this(errorMsg, errorMsg, null, criticality);
-    }
+public class OMFTestFrameworkException extends RuntimeException {
 
-    public OMFTestFrameworkException(String errorMsg, Exception exception, ECriticality criticality) {
-        this(errorMsg, errorMsg, exception, criticality);
-    }
-
-    public OMFTestFrameworkException(String debugMessage, String userMessage, ECriticality criticality) {
-        this(debugMessage, userMessage, null, criticality);
-    }
-
-    public OMFTestFrameworkException(String debugMessage, String userMessage, Exception exception, ECriticality criticality) {
-        super(debugMessage, userMessage, exception, criticality);
-    }
-
-    public OMFTestFrameworkException() {
-        super("[TEST Framework exception]");
-    }
 }
