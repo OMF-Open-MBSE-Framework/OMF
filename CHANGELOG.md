@@ -6,8 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+
+## [1.1.0] - 2023-11-03
 ### Removed
-- The concept of project only features due to limitations with open API rendering the concept unusable.
+- The concept of project only features due to limitations with open API rendering the concept unworkable.
+
+### Added
+- A delimiter option for the Stereotypes feature config files (defaults to `;`).
+- A filter for the clone manager
+
+### Fixed
+- Added better error management for FeatureRegisterer.
+- Error while right-clicking on non element object was returning a list of null elements
+- Null point exception when right clicking in empty space in browser when using the example plugin.
+- Fix issues with registering/unregistering menu actions.
+
+### Changed
+- OMF actions moved to "OMF/OMF Test" parent category to tidy up the example plugin
 
 ## [1.0.60] - 2023-10-05
 ### Added
