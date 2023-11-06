@@ -83,8 +83,7 @@ public class GroupElementHelper {
             newConnectors.add(newConnector);
 
             //Updating the connector to match the new port
-            updateConnectorEndIfNeeded(selectedPorts, ModelHelper.getFirstEnd(connector), newGroupedPort);
-            updateConnectorEndIfNeeded(selectedPorts, ModelHelper.getSecondEnd(connector), newGroupedPort);
+            updateConnectorToMatchNewSourcePort(selectedPorts, newConnector, newGroupedPort);
 
             //Deleting the original connector
             try {
@@ -99,74 +98,38 @@ public class GroupElementHelper {
         return newConnectors;
     }
 
-    
-
-    /**
-     * Update the connector end if necessary: <br>
-     * - If the connector end path contains one of the selected ports <br>
-     * - If the connector end role is one of the selected ports <br>
-     * The connector end is updated to match the new port (Grouped port)
-     * => if the connector is connected to one of the selected ports, its end shall be updated to match the new port (Grouped port)
-     * @param selectedPorts the ports to group
-     * @param connectorEnd the connector end to update
-     * @param newGroupedPort the new port
-     */
-    private void updateConnectorEndIfNeeded(List<Port> selectedPorts, ConnectorEnd connectorEnd, Port newGroupedPort) {
+    private ConnectorEnd updateConnectorEnd(ConnectorEnd connectorEnd, List<Port> selectedPorts, Port newGroupedPort) {
         ConnectableElement role = connectorEnd.getRole();
-        List<Element> propertyPath = Profile._getSysml().elementPropertyPath().getPropertyPath(connectorEnd);
-        
-        boolean shouldUpdateConnectorEnd = selectedPorts.stream().anyMatch(propertyPath::contains) || selectedPorts.contains(role);
-        // Check if the end should be updated
-        if (shouldUpdateConnectorEnd) {
-            applyNestedConnectorEndStereotype(connectorEnd);
-            updatePartWithPortProperty(selectedPorts, connectorEnd, newGroupedPort);
-            updateEndPropertyPath(selectedPorts, connectorEnd, propertyPath, newGroupedPort);
+        List<Element> path = Profile._getSysml().elementPropertyPath().getPropertyPath(connectorEnd);
+
+        boolean isEndConnectedToSelectedPort = selectedPorts.stream().anyMatch(port -> path.contains(port) || port.equals(role));
+        if (isEndConnectedToSelectedPort) {
+            Profile._getSysml().nestedConnectorEnd().apply(connectorEnd); // Apply the nested connector end stereotype
+            if (selectedPorts.contains(role)) {
+                connectorEnd.setPartWithPort(newGroupedPort); // Update the part with port if it's one of the selected ports
+            }
+
+            // Update the end property path
+            int indexToInsert = selectedPorts.stream()
+                    .filter(path::contains)
+                    .findFirst()
+                    .map(path::indexOf)
+                    .orElse(path.size());
+
+            path.add(indexToInsert, newGroupedPort);
+            Profile._getSysml().elementPropertyPath().setPropertyPath(connectorEnd, path);
         }
+        return connectorEnd;
     }
 
-    /**
-     * Apply the nested connector end stereotype
-     * @param connectorEnd the connector end to update
-     */
-    private void applyNestedConnectorEndStereotype(ConnectorEnd connectorEnd) {
-        Profile._getSysml().nestedConnectorEnd().apply(connectorEnd);
-    }
+    private Connector updateConnectorToMatchNewSourcePort(List<Port> selectedPorts, Connector connector, Port newGroupedPort) {
+        ConnectorEnd firstEnd = ModelHelper.getFirstEnd(connector);
+        ConnectorEnd secondEnd = ModelHelper.getSecondEnd(connector);
 
-    /**
-     * Update the part with port property if necessary: <br>
-     * - If the connector end role is one of the selected ports <br>
-     * => if the connector is connected to one of the selected ports, the part with port property is updated to match the new port (Grouped port)
-     * @param selectedPorts the ports to group
-     * @param connectorEnd the connector end to update
-     * @param newGroupedPort the new port
-     */
-    private void updatePartWithPortProperty(List<Port> selectedPorts, ConnectorEnd connectorEnd, Port newGroupedPort) {
-        boolean isOneOfTheSelectedPort = selectedPorts.contains(connectorEnd.getRole());
-        if(isOneOfTheSelectedPort) {
-            connectorEnd.setPartWithPort(newGroupedPort);
-        }
-    }
+        updateConnectorEnd(firstEnd, selectedPorts, newGroupedPort);
+        updateConnectorEnd(secondEnd, selectedPorts, newGroupedPort);
 
-    /**
-     * Update the end property path to match the new port (Grouped port)
-     * => Inset the new port (Grouped port) in the property path at the right index
-     * @param selectedPorts the ports to group
-     * @param connectorEnd the connector end to update
-     * @param propertyPath the property path to update
-     * @param newGroupedPort the new port
-     */
-    private void updateEndPropertyPath(List<Port> selectedPorts, ConnectorEnd connectorEnd, List<Element> propertyPath, Port newGroupedPort) {
-        int indexToInsert = findInsertionIndex(selectedPorts, propertyPath, newGroupedPort);
-        propertyPath.add(indexToInsert, newGroupedPort);
-        Profile._getSysml().elementPropertyPath().setPropertyPath(connectorEnd, propertyPath);
-    }
-
-    private int findInsertionIndex(List<Port> selectedPorts, List<Element> propertyPath, Port newGroupedPort) {
-        return selectedPorts.stream()
-                .filter(propertyPath::contains)
-                .findFirst()
-                .map(propertyPath::indexOf)
-                .orElse(propertyPath.size());
+        return connector; // Assuming the connectorEnd changes are reflected in the connector itself
     }
 
 
