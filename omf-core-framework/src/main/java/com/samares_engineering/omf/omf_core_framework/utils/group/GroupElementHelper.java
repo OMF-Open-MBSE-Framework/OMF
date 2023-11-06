@@ -83,7 +83,8 @@ public class GroupElementHelper {
             newConnectors.add(newConnector);
 
             //Updating the connector to match the new port
-            updateConnectorToMatchNewSourcePort(selectedPorts, newConnector, newGroupedPort);
+            updateConnectorEndIfNeeded(selectedPorts, ModelHelper.getFirstEnd(connector), newGroupedPort);
+            updateConnectorEndIfNeeded(selectedPorts, ModelHelper.getSecondEnd(connector), newGroupedPort);
 
             //Deleting the original connector
             try {
@@ -98,41 +99,76 @@ public class GroupElementHelper {
         return newConnectors;
     }
 
+    
+
     /**
-     * Actual update of the connector to match the new port:
-     * - We determine which end of the connector is the one to update (the one connected to the other port)
-     * - We update the connector to match the new port by replacing the attribute with the original one
-     * @param selectedMICPorts the ports to group
-     * @param connector the connector to update
+     * Update the connector end if necessary: <br>
+     * - If the connector end path contains one of the selected ports <br>
+     * - If the connector end role is one of the selected ports <br>
+     * The connector end is updated to match the new port (Grouped port)
+     * => if the connector is connected to one of the selected ports, its end shall be updated to match the new port (Grouped port)
+     * @param selectedPorts the ports to group
+     * @param connectorEnd the connector end to update
      * @param newGroupedPort the new port
-     * @return the updated connector
      */
-    private Connector updateConnectorToMatchNewSourcePort(List<Port> selectedMICPorts, Connector connector, Port newGroupedPort) {
-        //We determine which end of the connector is the one to update (the one connected to the other port)
-        ConnectorEnd endToUpdate = ModelHelper.getFirstEnd(connector);
-        ConnectableElement roleToUpdate = endToUpdate.getRole();
-        List<Element> pathEnd = Profile._getSysml().elementPropertyPath().getPropertyPath(endToUpdate);
-
-        boolean isSelectedPortInPropertyPath = selectedMICPorts.stream().anyMatch(pathEnd::contains);
-        if (!isSelectedPortInPropertyPath && !selectedMICPorts.contains(roleToUpdate)){
-            endToUpdate = ModelHelper.getSecondEnd(connector);
-            roleToUpdate = endToUpdate.getRole();
-            pathEnd = new ArrayList<>(Profile._getSysml().elementPropertyPath().getPropertyPath(endToUpdate));
+    private void updateConnectorEndIfNeeded(List<Port> selectedPorts, ConnectorEnd connectorEnd, Port newGroupedPort) {
+        ConnectableElement role = connectorEnd.getRole();
+        List<Element> propertyPath = Profile._getSysml().elementPropertyPath().getPropertyPath(connectorEnd);
+        
+        boolean shouldUpdateConnectorEnd = selectedPorts.stream().anyMatch(propertyPath::contains) || selectedPorts.contains(role);
+        // Check if the end should be updated
+        if (shouldUpdateConnectorEnd) {
+            applyNestedConnectorEndStereotype(connectorEnd);
+            updatePartWithPortProperty(selectedPorts, connectorEnd, newGroupedPort);
+            updateEndPropertyPath(selectedPorts, connectorEnd, propertyPath, newGroupedPort);
         }
-        Profile._getSysml().nestedConnectorEnd().apply(endToUpdate); //As the connector is now nested, we need to apply the nested connector end stereotype
-        boolean isOneOfTheSelectedPort = selectedMICPorts.contains(roleToUpdate);
-        if(isOneOfTheSelectedPort) { //Else it is set with a port, and we don't need to update it
-            endToUpdate.setPartWithPort(newGroupedPort);
-        }
-
-        //Updating the end property path
-        List<Element> finalPathEnd = pathEnd;
-        int indexToInsert = selectedMICPorts.stream().filter(port -> finalPathEnd.contains(port)).findFirst().map(pathEnd::indexOf).orElse(-1);
-        indexToInsert = indexToInsert == -1 ? pathEnd.size() : indexToInsert;
-        pathEnd.add(indexToInsert, newGroupedPort);
-        Profile._getSysml().elementPropertyPath().setPropertyPath(endToUpdate, pathEnd);
-        return connector;
     }
+
+    /**
+     * Apply the nested connector end stereotype
+     * @param connectorEnd the connector end to update
+     */
+    private void applyNestedConnectorEndStereotype(ConnectorEnd connectorEnd) {
+        Profile._getSysml().nestedConnectorEnd().apply(connectorEnd);
+    }
+
+    /**
+     * Update the part with port property if necessary: <br>
+     * - If the connector end role is one of the selected ports <br>
+     * => if the connector is connected to one of the selected ports, the part with port property is updated to match the new port (Grouped port)
+     * @param selectedPorts the ports to group
+     * @param connectorEnd the connector end to update
+     * @param newGroupedPort the new port
+     */
+    private void updatePartWithPortProperty(List<Port> selectedPorts, ConnectorEnd connectorEnd, Port newGroupedPort) {
+        boolean isOneOfTheSelectedPort = selectedPorts.contains(connectorEnd.getRole());
+        if(isOneOfTheSelectedPort) {
+            connectorEnd.setPartWithPort(newGroupedPort);
+        }
+    }
+
+    /**
+     * Update the end property path to match the new port (Grouped port)
+     * => Inset the new port (Grouped port) in the property path at the right index
+     * @param selectedPorts the ports to group
+     * @param connectorEnd the connector end to update
+     * @param propertyPath the property path to update
+     * @param newGroupedPort the new port
+     */
+    private void updateEndPropertyPath(List<Port> selectedPorts, ConnectorEnd connectorEnd, List<Element> propertyPath, Port newGroupedPort) {
+        int indexToInsert = findInsertionIndex(selectedPorts, propertyPath, newGroupedPort);
+        propertyPath.add(indexToInsert, newGroupedPort);
+        Profile._getSysml().elementPropertyPath().setPropertyPath(connectorEnd, propertyPath);
+    }
+
+    private int findInsertionIndex(List<Port> selectedPorts, List<Element> propertyPath, Port newGroupedPort) {
+        return selectedPorts.stream()
+                .filter(propertyPath::contains)
+                .findFirst()
+                .map(propertyPath::indexOf)
+                .orElse(propertyPath.size());
+    }
+
 
     public List<Connector> getRefactoredConnectors() {
         return refactoredConnectors;

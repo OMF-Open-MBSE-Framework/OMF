@@ -36,6 +36,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InternalDiagramManagement {
     private InternalDiagramManagement() {}
@@ -521,8 +522,8 @@ public class InternalDiagramManagement {
     }
 
     public static void deleteRepresentationElement(Port port, DiagramPresentationElement diagramPE) {
-        PresentationElement presentationElement = diagramPE.findPresentationElement(port, PortView.class);
-        deletePresentationElement(presentationElement);
+        diagramPE.findPresentationElementsForPathConnecting(port, PortView.class)
+                .forEach(InternalDiagramManagement::deletePresentationElement);
     }
 
     public static void deleteRepresentationElement(Connector connector, DiagramPresentationElement diagramPE) {
