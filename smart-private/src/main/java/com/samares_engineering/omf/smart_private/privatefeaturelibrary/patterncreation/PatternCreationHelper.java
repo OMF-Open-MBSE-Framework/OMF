@@ -10,7 +10,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.exception.NoPatternFoundOnTemplateElementException;
@@ -79,7 +79,7 @@ public class PatternCreationHelper {
         try {
             Refactoring.Replacing.replace(createdElement, copiedTemplateElement, new ConvertElementInfo(createdElement.getClass()));
         } catch (ReadOnlyElementException e) {
-            throw new OMFException2("Cannot replace element with generated pattern, the element "
+            throw new OMFCriticalException2("Cannot replace element with generated pattern, the element "
                     + createdElement.getHumanName() + " is read only", e);
         }
     }
@@ -183,7 +183,7 @@ public class PatternCreationHelper {
             Refactoring.Replacing.replace(srcOwner, patternTemplateOwner, new ConvertElementInfo(srcOwner.getClass()));
             return patternTemplateOwner; //srcOwner is now the pattern structure element
         } catch (ReadOnlyElementException e) {
-            throw new OMFException2("Cannot replace element with generated pattern, the element "
+            throw new OMFCriticalException2("Cannot replace element with generated pattern, the element "
                     + srcOwner.getHumanName() + " is read only", e);
         }
     }

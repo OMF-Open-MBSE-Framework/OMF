@@ -16,7 +16,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdbasicbehaviors.Behavior;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
@@ -91,7 +91,7 @@ public class StereotypesRuleUtils {
     public static void instantiationBehavior(PropertyChangeEvent evt, String strInstance) {
         Stereotype stereotype = getStereotypeFromAnyProfile(strInstance);
         if (stereotype == null) {
-            throw new OMFException2("Can't find stereotype " + strInstance + " in project profiles");
+            throw new OMFCriticalException2("Can't find stereotype " + strInstance + " in project profiles");
         }
         Element elementToStereotype = (Element) evt.getSource();
         removeRedundantStereotypes(stereotype, elementToStereotype);

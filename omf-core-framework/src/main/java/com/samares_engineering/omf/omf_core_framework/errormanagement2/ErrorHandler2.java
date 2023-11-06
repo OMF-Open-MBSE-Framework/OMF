@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2;
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
@@ -36,7 +36,7 @@ public class ErrorHandler2 {
      * Case where the framework user threw the OMF runtime exception to signal to the framework that an unrecoverable
      * error occurred
      */
-    public void handleException(OMFException2 exception, MDFeature impactedFeature) {
+    public void handleException(OMFCriticalException2 exception, MDFeature impactedFeature) {
         exception.printStackTrace();
         if (!exception.isSilent()) {
             OMFLogger2.logToConsole(exception.getUiMessage(), ERROR, impactedFeature);
@@ -54,7 +54,7 @@ public class ErrorHandler2 {
      * error occurred
      * <br><b>Call the version of the method with the impacted feature if possible.</b>
      */
-    public void handleException(OMFException2 exception) {
+    public void handleException(OMFCriticalException2 exception) {
         exception.printStackTrace();
         if (!exception.isSilent()) {
             OMFLogger2.logToConsole(exception.getUiMessage(), ERROR);
@@ -68,7 +68,7 @@ public class ErrorHandler2 {
     }
 
     /**
-     * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFException2.
+     * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      */
     public void handleException(RuntimeException exception, MDFeature impactedFeature) {
@@ -80,7 +80,7 @@ public class ErrorHandler2 {
     }
 
     /**
-     * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFException2.
+     * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      * <br><b>Call the version of the method with the impacted feature if possible.</b>
      */

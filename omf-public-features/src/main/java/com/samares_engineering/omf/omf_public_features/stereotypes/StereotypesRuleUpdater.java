@@ -13,13 +13,9 @@ import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activit
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.CSVParseUtils;
@@ -205,10 +201,10 @@ public class StereotypesRuleUpdater {
         try {
             lines = CSVParseUtils.getParsedLines(csvConfigFilePath, delimiter);
         } catch (FileNotFoundException e) {
-            throw new OMFException2("Can't find .csv config file " + csvConfigFilePath + ", make sure the path defined in " +
+            throw new OMFCriticalException2("Can't find .csv config file " + csvConfigFilePath + ", make sure the path defined in " +
                             "environment options is correct", e);
         } catch (OMFException e) {
-            throw new OMFException2("Error while loading csv config file " + csvConfigFilePath, e);
+            throw new OMFCriticalException2("Error while loading csv config file " + csvConfigFilePath, e);
         }
         if (!lines.isEmpty()) {
             // Skip first line which contains header info

@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.utils;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_example_plugin.OMFExamplePlugin;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
@@ -20,7 +20,7 @@ public class TestUtils {
 
     public static OMFPropertyOptionsGroup getEnvOptions() {
         return getOpenMBSEFrameworkPlugin().getEnvironmentOptionsGroup()
-                    .orElseThrow(() -> new OMFException2("No environment options groups have been declared" +
+                    .orElseThrow(() -> new OMFCriticalException2("No environment options groups have been declared" +
                     "for this plugin"));
     }
 }

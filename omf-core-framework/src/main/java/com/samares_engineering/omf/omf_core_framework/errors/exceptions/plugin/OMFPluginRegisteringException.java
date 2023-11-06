@@ -1,35 +1,26 @@
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin;
 
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.BaseOMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
-public class OMFPluginRegisteringException extends OMFException {
+public class OMFPluginRegisteringException extends BaseOMFException {
 
-    APlugin currentPlugin;
 
-    public OMFPluginRegisteringException(String errorMsg, APlugin plugin, ECriticality criticality) {
-        super(errorMsg, criticality);
-        currentPlugin = plugin;
+    public OMFPluginRegisteringException(String message) {
+        super(message);
     }
 
-    public OMFPluginRegisteringException(String errorMsg, Exception exception, APlugin plugin, ECriticality criticality) {
-        super(errorMsg, exception, criticality);
-        currentPlugin = plugin;
+    public OMFPluginRegisteringException(OMFLog2 message) {
+        super(message);
     }
 
-    public OMFPluginRegisteringException(String debugMessage, String userMessage, APlugin plugin, ECriticality criticality) {
-        super(debugMessage, userMessage, criticality);
-        currentPlugin = plugin;
+    public OMFPluginRegisteringException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public OMFPluginRegisteringException(String debugMessage, String userMessage, Exception exception, APlugin plugin, ECriticality criticality) {
-        super(debugMessage, userMessage, exception, criticality);
-        currentPlugin = plugin;
-    }
-
-    private String getDefaultUserMessage(){
-        String pluginName = currentPlugin == null? "?": currentPlugin.getDescriptor().getName();
-
-        return "An Error Occurred on On Plugin registering: " + pluginName + " , contact your provider";
+    public OMFPluginRegisteringException(OMFLog2 message, Throwable cause) {
+        super(message, cause);
     }
 }

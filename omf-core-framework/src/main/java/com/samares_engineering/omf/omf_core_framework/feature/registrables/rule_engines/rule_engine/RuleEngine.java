@@ -8,7 +8,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.IRule;
@@ -105,7 +105,7 @@ public class RuleEngine implements IRuleEngine {
         matchingRules.forEach(rule -> {
             try {
                 rule.process(evt);
-            } catch (OMFException2 e) {
+            } catch (OMFCriticalException2 e) {
                 ErrorHandler2.getInstance().handleException(e, getFeature());
             } catch (RuntimeException e) {
                 ErrorHandler2.getInstance().handleException(e, getFeature());

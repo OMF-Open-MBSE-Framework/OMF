@@ -40,14 +40,10 @@ public class FeaturesDeactivationFeature extends AFeature {
     }
 
     @Override
-    public void onRegistering() {
-        super.onRegistering();
-        Application.getInstance().insertActivityAfterStartup(() -> {
-            boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();
-            if(!featureShallBeRegistered)
-                activateDeactivateAllFeatures(false);
-
-        });
+    protected void onMagicdrawStartup() {
+        boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();
+        if(!featureShallBeRegistered)
+            activateDeactivateAllFeatures(false);
     }
 
     @Override

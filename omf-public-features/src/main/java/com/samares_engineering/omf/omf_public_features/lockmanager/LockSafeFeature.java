@@ -39,23 +39,10 @@ public class LockSafeFeature extends AFeature {
     }
 
     @Override
-    public void onRegistering() {
-        try {
-            super.onRegistering();
-            Application.getInstance().insertActivityAfterStartup(() -> {
-                try {
-                    LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
-                    restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
-                    restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());
-                } catch (Exception e) {
-                    OMFErrorHandler.handleException(new OMFFeatureException("Error while configuring LockManagerFeature",
-                            this, e, GenericException.ECriticality.ALERT), false);
-                }
-            });
-        } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFeatureException("Error while registering LockManagerFeature",
-                    this, e, GenericException.ECriticality.ALERT), false);
-        }
+    protected void onMagicdrawStartup() {
+        LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
+        restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
+        restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());
     }
 
     @Override
@@ -109,6 +96,4 @@ public class LockSafeFeature extends AFeature {
     protected List<IOption> initProjectOnlyOptions() {
         return Collections.emptyList();
     }
-
-
 }

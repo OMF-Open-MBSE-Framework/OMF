@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_public_features.testGeneration.utils;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.AbstractPropertyOptionsGroup;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class OptionsUtils {
                     .getProperties();
         }
         catch (Exception e) {
-            throw new OMFException2("Unable to find the \"" + groupId + "\" group.", e);
+            throw new OMFCriticalException2("Unable to find the \"" + groupId + "\" group.", e);
         }
     }
 
@@ -38,7 +38,7 @@ public class OptionsUtils {
                     .getProperty(propertyId);
         }
         catch (Exception e) {
-            throw new OMFException2("Unable to find the \"" + groupId + "\" group or the \"" + propertyId + "\" property.", e);
+            throw new OMFCriticalException2("Unable to find the \"" + groupId + "\" group or the \"" + propertyId + "\" property.", e);
         }
     }
 

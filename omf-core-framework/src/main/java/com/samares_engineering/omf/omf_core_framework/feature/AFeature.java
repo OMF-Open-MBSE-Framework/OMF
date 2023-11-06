@@ -149,28 +149,54 @@ public abstract class AFeature implements MDFeature {
      Lifecycle hooks
      */
 
+    public final void triggerOnRegisteringHook() {
+        onRegistering();
+    }
+
+    public final void triggerOnUnregisteringHook() {
+        onUnregistering();
+    }
+
+    public final void triggerOnProjectOpenHook() {
+        onProjectOpen();
+    }
+
+    public final void triggerOnProjectCloseHook() {
+        onProjectClose();
+    }
+
+    public final void triggerOnMagicdrawStartupHook() {
+        onMagicdrawStartup();
+    }
+
     /**
      * Override this to inject code to be run on feature activation
      */
-    public void onRegistering() {
+    protected void onRegistering() {
     }
 
     /**
      * Override this to inject code to be run on feature deactivation
      */
-    public void onUnregistering() {
+    protected void onUnregistering() {
     }
 
     /**
      * Override this to inject code to be run on project opening
      */
-    public void onProjectOpen() {
+    protected void onProjectOpen() {
     }
 
     /**
      * Override this to inject code to be run on project closing
      */
-    public void onProjectClose() {
+    protected void onProjectClose() {
+    }
+
+    /**
+     * Override this to inject code to be run on MagicDraw startup
+     */
+    protected void onMagicdrawStartup() {
     }
 
     /*
@@ -227,9 +253,9 @@ public abstract class AFeature implements MDFeature {
         this.isRegistered = isRegistered;
         // Call corresponding lifecycle hook (code to be executed on registering/unregistering)
         if (isRegistered) {
-            onRegistering();
+            triggerOnRegisteringHook();
         } else {
-            onUnregistering();
+            triggerOnUnregisteringHook();
         }
     }
 

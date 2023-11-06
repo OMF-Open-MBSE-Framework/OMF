@@ -201,7 +201,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
     private static void openProjectFeatureTrigger(List<MDFeature> registeredFeatures) {
         for (MDFeature registeredFeature : registeredFeatures) {
             try {
-                registeredFeature.onProjectOpen();
+                registeredFeature.triggerOnProjectOpenHook();
             }catch (Exception exception) {
                 OMFErrorHandler.handleException(
                         new OMFFeatureException("Error occurred during Feature ProjectOpen trigger",
@@ -255,7 +255,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
     private static void onProjectCloseFeatureTrigger(List<MDFeature> registeredFeatures) {
         for (MDFeature registeredFeature : registeredFeatures) {
             try {
-                registeredFeature.onProjectClose();
+                registeredFeature.triggerOnProjectCloseHook();
             }catch (Exception exception) {
                 OMFErrorHandler.handleException(
                         new OMFFeatureException("Error occurred during Feature ProjectClose trigger",

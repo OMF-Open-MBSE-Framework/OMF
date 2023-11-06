@@ -19,7 +19,7 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
@@ -141,7 +141,7 @@ public abstract class AUIAction implements UIAction {
             SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
                 try {
                     actionToPerform(selectedElements);
-                } catch (OMFException2 e) {
+                } catch (OMFCriticalException2 e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 } catch (RuntimeException e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
@@ -165,7 +165,7 @@ public abstract class AUIAction implements UIAction {
             SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
                 try {
                     actionToPerform(selectedElements);
-                } catch (OMFException2 e) {
+                } catch (OMFCriticalException2 e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 } catch (RuntimeException e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
@@ -189,7 +189,7 @@ public abstract class AUIAction implements UIAction {
             SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
                 try {
                     actionToPerform(selectedElements);
-                } catch (OMFException2 e) {
+                } catch (OMFCriticalException2 e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 } catch (RuntimeException e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());

@@ -4,35 +4,35 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 
 import java.util.Set;
 
-public class OMFException2 extends BaseOMFException {
+public class OMFCriticalException2 extends BaseOMFException {
     private Set<OMFExceptionModifier2> modifiers;
 
 
     /**
      * Exception without a cause... and a simple message.
      */
-    public OMFException2(String message, OMFExceptionModifier2... modifiers) {
+    public OMFCriticalException2(String message, OMFExceptionModifier2... modifiers) {
         this(new OMFLog2().text(message), modifiers);
     }
 
     /**
      * Just an exception without a cause...
      */
-    public OMFException2(OMFLog2 message, OMFExceptionModifier2... modifiers) {
+    public OMFCriticalException2(OMFLog2 message, OMFExceptionModifier2... modifiers) {
         this(message, null, modifiers);
     }
 
     /**
      * Simple message
      */
-    public OMFException2(String message, Throwable cause, OMFExceptionModifier2... modifiers) {
+    public OMFCriticalException2(String message, Throwable cause, OMFExceptionModifier2... modifiers) {
         this(new OMFLog2().text(message), cause, modifiers);
     }
 
     /**
      * Full constructor wrapping causing exception
      */
-    public OMFException2(OMFLog2 message, Throwable cause, OMFExceptionModifier2... modifiers) {
+    public OMFCriticalException2(OMFLog2 message, Throwable cause, OMFExceptionModifier2... modifiers) {
         super(message.toString(), cause);
         OMFLog = message;
         this.modifiers = Set.of(modifiers);

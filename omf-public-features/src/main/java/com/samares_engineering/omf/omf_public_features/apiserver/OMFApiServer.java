@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_public_features.apiserver;
 
 import com.nomagic.magicdraw.plugins.Plugin;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
@@ -90,12 +90,12 @@ public class OMFApiServer extends AbstractHandler {
             ColorPrinter.status("API Server started on port " + port);
             getURI();
         }catch (BindException portAlreadyUsedException){
-            throw new OMFException2("Error while starting API server, the port " + port + " is already used." +
+            throw new OMFCriticalException2("Error while starting API server, the port " + port + " is already used." +
                     "You can change the port in the OMF Environment options then restart the server using Advanced Menu " +
                     "-> Restart API Server." +
                     "\nPlease contact the plugin: " + getPluginName() + " provider",  portAlreadyUsedException);
         }catch (Exception e){
-            throw new OMFException2("Error while starting API server, this will strongly impact features using API Server." +
+            throw new OMFCriticalException2("Error while starting API server, this will strongly impact features using API Server." +
                     "\nPlease contact the plugin: " + getPluginName() + " provider", e);
         }
     }
@@ -104,7 +104,7 @@ public class OMFApiServer extends AbstractHandler {
         try {
             server.stop();
         } catch (Exception e) {
-            throw new OMFException2("Error while stopping API server, this will strongly impact features using API Server." +
+            throw new OMFCriticalException2("Error while stopping API server, this will strongly impact features using API Server." +
                     "\nPlease try to use the dedicated Action in OMF Advanced Menu, and contact the plugin: " + getPluginName() + " provider", e);
         }
     }

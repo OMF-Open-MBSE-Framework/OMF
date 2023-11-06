@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
@@ -103,7 +103,7 @@ public class GenerateCreationTest extends AUIAction {
         Element parent = e.getOwner();
 
         if (parent == null) {
-            throw new OMFException2("The selected element must be contained (directly or not) by a package stereotyped <<TestPackage>>.");
+            throw new OMFCriticalException2("The selected element must be contained (directly or not) by a package stereotyped <<TestPackage>>.");
         }
 
         // If parent is a package stereotyped <<TestPackage>>
