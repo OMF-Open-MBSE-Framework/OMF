@@ -220,9 +220,9 @@ public class CloneManager {
         clonedElements = CopyPasting.copyPasteElements(listElementToClone, owner);
         buildClonedElementMap();
 
+        setSuffix(clonedElements);
         setOwnerCopiedElementOwnerShip();
 
-        setSuffix(clonedElements);
         return clonedElements;
     }
 
@@ -231,7 +231,15 @@ public class CloneManager {
      * As the CopyPasting.copyPasteElements() method put each copied element in a given owner, this method will reset the ownership
      */
     public void setOwnerCopiedElementOwnerShip() {
-        clonedElements.forEach(element -> element.setOwner(retrieveOriginalElement(element).getOwner()));
+        clonedElements.forEach(element -> {
+            Element originalElement = retrieveOriginalElement(element);
+            Element newOwner = originalElement.getOwner();
+            if(retrieveClonedElement(newOwner) != null) {//If parent was copied, set the new owner to the copied one
+                newOwner = retrieveClonedElement(newOwner);
+            }
+
+            element.setOwner(newOwner);
+        });
     }
 
     /**
