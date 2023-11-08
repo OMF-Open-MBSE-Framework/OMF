@@ -15,6 +15,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -84,12 +85,12 @@ public class StereotypesRuleUpdater {
 
             if (Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, instanceStereotype) == null) {
                 OMFLogger2.logToConsole("[InstanceCreator] While parsing file configuration." +
-                        "\n instanceStereotype: \"" + instanceStereotype + "\" unknown", WARNING, feature);
+                        "\n instanceStereotype: \"" + instanceStereotype + "\" unknown", OMFLogLevel2.WARNING, feature);
                 continue;
             }
             if (Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, typeStereotype) == null) {
                 OMFLogger2.logToConsole("[InstanceCreator] While parsing file configuration." +
-                        "\n typeStereotype: \"" + typeStereotype + "\" unknown", WARNING, feature);
+                        "\n typeStereotype: \"" + typeStereotype + "\" unknown", OMFLogLevel2.WARNING, feature);
                 continue;
             }
 
@@ -108,7 +109,7 @@ public class StereotypesRuleUpdater {
                     break;
                 default:
                     OMFLogger2.logToConsole("[InstanceCreator] While parsing file configuration." +
-                            "\n typeListener: \"" + typeListener + "\" unknown", WARNING, feature);
+                            "\n typeListener: \"" + typeListener + "\" unknown", OMFLogLevel2.WARNING, feature);
                     break;
             }
         }
@@ -128,12 +129,12 @@ public class StereotypesRuleUpdater {
 
             if (isStereotypeExistingByName(instance)) {
                 OMFLogger2.logToConsole("While parsing file configuration." +
-                        "\n instance: \"" + instance + "\" unknown", WARNING, feature);
+                        "\n instance: \"" + instance + "\" unknown", OMFLogLevel2.WARNING, feature);
                 continue;
             }
             if (isStereotypeExistingByName(definition)) {
                 OMFLogger2.logToConsole("[TypeCreator] While parsing file configuration." +
-                        "\n definition: \"" + definition + "\" unknown", WARNING, feature);
+                        "\n definition: \"" + definition + "\" unknown", OMFLogLevel2.WARNING, feature);
 
                 continue;
             }
@@ -147,7 +148,7 @@ public class StereotypesRuleUpdater {
                     break;
                 default:
                     OMFLogger2.logToConsole("[TypeCreator] While parsing file configuration." +
-                            "\n typeListener: \"" + typeListener + "\" unknown", WARNING, feature);
+                            "\n typeListener: \"" + typeListener + "\" unknown", OMFLogLevel2.WARNING, feature);
                     break;
             }
         }
@@ -167,7 +168,7 @@ public class StereotypesRuleUpdater {
 
             if (isStereotypeExistingByName(createdElementStereotype)) {
                 OMFLogger2.logToConsole("[Organizer] While parsing file configuration." +
-                        "\n CreatedElementStereotype: \"" + createdElementStereotype + "\" unknown", WARNING, feature);
+                        "\n CreatedElementStereotype: \"" + createdElementStereotype + "\" unknown", OMFLogLevel2.WARNING, feature);
                 continue;
             }
 
@@ -176,7 +177,7 @@ public class StereotypesRuleUpdater {
                 classElementCreated = String2Class.valueOf(classOfElement.toUpperCase()).getClassValue();
             } catch (Exception e) {
                 OMFLogger2.logToConsole("[Organizer] While parsing file configuration." +
-                        "\n classOfElement: \"" + classOfElement + "\" unknown", WARNING, feature);
+                        "\n classOfElement: \"" + classOfElement + "\" unknown", OMFLogLevel2.WARNING, feature);
                 continue;
             }
 
@@ -185,7 +186,7 @@ public class StereotypesRuleUpdater {
                 storageClass = String2Class.valueOf(classOfAMTid.toUpperCase()).getClassValue();
             } catch (Exception e) {
                 OMFLogger2.logToConsole("[Organizer] While parsing file configuration." +
-                        "\n classOfAMT_id: \"" + classOfAMTid + "\" unknown", WARNING, feature);
+                        "\n classOfAMT_id: \"" + classOfAMTid + "\" unknown", OMFLogLevel2.WARNING, feature);
                 continue;
             }
 
@@ -212,9 +213,9 @@ public class StereotypesRuleUpdater {
         }
         if (lines.isEmpty()) {
             OMFLogger2.logToConsole("No info parsed from config file " + csvConfigFilePath + " ",
-                    WARNING, feature);
+                    OMFLogLevel2.WARNING, feature);
         } else {
-            OMFLogger2.logToConsole(lines.size() + " rules parsed from config file " + csvConfigFilePath + " ", INFO, feature);
+            OMFLogger2.logToConsole(lines.size() + " rules parsed from config file " + csvConfigFilePath + " ", OMFLogLevel2.INFO, feature);
         }
         return lines;
     }

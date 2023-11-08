@@ -16,6 +16,7 @@ import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
@@ -240,7 +241,7 @@ public abstract class APlugin extends Plugin {
         try {
             List<MDFeature> featureInstances = this.initFeatures();
             if (featureInstances == null) {
-                OMFLogger2.logToConsole("No feature to registered in the plugin", WARNING);
+                OMFLogger2.logToConsole("No feature to registered in the plugin", OMFLogLevel2.WARNING);
                 return;
             }
 

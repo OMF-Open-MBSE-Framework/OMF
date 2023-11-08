@@ -1,12 +1,15 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2;
 
+import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import static com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel.ERROR;
 
@@ -39,7 +42,7 @@ public class ErrorHandler2 {
     public void handleException(OMFCriticalException2 exception, MDFeature impactedFeature) {
         exception.printStackTrace();
         if (!exception.isSilent()) {
-            OMFLogger2.logToConsole(exception.getUiMessage(), ERROR, impactedFeature);
+            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR, impactedFeature);
         }
         if (exception.isRollbackChanges()) {
             rollbackChanges();
@@ -57,7 +60,7 @@ public class ErrorHandler2 {
     public void handleException(OMFCriticalException2 exception) {
         exception.printStackTrace();
         if (!exception.isSilent()) {
-            OMFLogger2.logToConsole(exception.getUiMessage(), ERROR);
+            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR);
         }
         if (exception.isRollbackChanges()) {
             rollbackChanges();
@@ -73,8 +76,7 @@ public class ErrorHandler2 {
      */
     public void handleException(RuntimeException exception, MDFeature impactedFeature) {
         exception.printStackTrace();
-        OMFLogger2.logToConsole("An unexpected error occurred during plugin execution: " + exception.getMessage(),
-                ERROR, impactedFeature);
+        OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR, impactedFeature);
         rollbackChanges();
         unregisterFeature(impactedFeature);
     }
@@ -86,25 +88,22 @@ public class ErrorHandler2 {
      */
     public void handleException(RuntimeException exception) {
         exception.printStackTrace();
-        OMFLogger2.logToConsole("An unexpected error occurred during plugin execution: " + exception.getMessage(), ERROR);
+        OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR);
         rollbackChanges();
-    }
-
-    public void handleException(CoreException2 exception) {
-        exception.printStackTrace();
-        OMFLogger2.logToConsole("An internal OMF error occurred. " + exception.getMessage(), ERROR);
     }
 
     private static void unregisterFeature(MDFeature impactedFeature) {
         new OMFLog2().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
                 .text("You can reactivate it in the environment options.")
-                .logToConsole(ERROR);
+                .logToConsole(OMFLogLevel2.ERROR);
         impactedFeature.getPlugin().getFeatureRegister().unregisterFeature(impactedFeature);
     }
 
     private static void rollbackChanges() {
-        new OMFLog2().text("Rolling back action's changes after encountering critical error")
-                .logToConsole(ERROR);
-        throw new RollbackException2();
+        //new OMFLog2().text("Rolling back action's changes after encountering critical error")
+        //        .logToConsole(OMFLogLevel2.ERROR);
+        if (SessionManager.getInstance().isSessionCreated(OMFUtils.currentProject)) {
+            throw new RollbackException2();
+        }
     }
 }

@@ -6,8 +6,6 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMF
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 public class OMFPluginRegisteringException extends BaseOMFException {
-
-
     public OMFPluginRegisteringException(String message) {
         super(message);
     }

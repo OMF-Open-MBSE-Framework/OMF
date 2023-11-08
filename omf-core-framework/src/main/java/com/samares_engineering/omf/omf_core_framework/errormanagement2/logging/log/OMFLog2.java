@@ -2,7 +2,6 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.utils.ElementAction;
 
@@ -45,6 +44,20 @@ public class OMFLog2 {
         return text("<A>" + linkText + "</A>");
     }
 
+    public OMFLog2 linkElementAndParent(Element elementToLink) {
+        String linkElementName = "";
+        String linkOwnerElementName = "DELETED";
+        if (elementToLink != null) {
+            linkElementName = elementToLink.getHumanName();
+            linkActionMapping.put(linkElementName, new ElementAction(elementToLink)::selectInBrowser);
+            if (elementToLink.getOwner() != null) {
+                linkOwnerElementName = elementToLink.getOwner().getHumanName();
+                linkActionMapping.put(linkOwnerElementName, new ElementAction(elementToLink.getOwner())::selectInBrowser);
+            }
+        }
+        return text("<A>" + linkElementName + "</A> -> <A>" + linkOwnerElementName + "</A>");
+    }
+
     public OMFLog2 link(String linkText, String url) {
         return text("<A href=" + url + ">" + linkText + "</A>");
     }
@@ -58,36 +71,43 @@ public class OMFLog2 {
      * Log message formatting
      */
 
-    public String toHTMLFormat(OMFLogLevel logLevel) {
-        return "<font color=" + getMessageColor(logLevel) + ">" +
-                    getLogLevelPrefix(logLevel) + " " + toString(" ") +
-                "</font>";
+    public String toHTMLFormat(OMFLogLevel2 logLevel) {
+        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel)
+                + " " + toString(" ") + "</font>";
     }
 
-    public String toHTMLFormat(OMFLogLevel logLevel, String pluginName) {
-        return "<font color=" + getMessageColor(logLevel) + ">" + getLogLevelPrefix(logLevel)+ "[" + pluginName + "]"
-                + " " + toString(" ") +
-                "</font>";
+    public String toHTMLFormat(OMFLogLevel2 logLevel, String pluginName) {
+        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName)
+                + " " + toString(" ") + "</font>";
     }
-    public String toHTMLFormat(OMFLogLevel logLevel, String pluginName, String featureName) {
-        return "<font color=" + getMessageColor(logLevel) + ">" + getLogLevelPrefix(logLevel) + "[" + pluginName + "]"
-                + "[" + featureName + "]" + " " + toString(" ") +
-                "</font>";
+    public String toHTMLFormat(OMFLogLevel2 logLevel, String pluginName, String featureName) {
+        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName, featureName)+ " "
+                + toString(" ") + "</font>";
     }
 
-    private static String getLogLevelPrefix(OMFLogLevel logLevel) {
+    public static String getPrefix(OMFLogLevel2 logLevel) {
+        return "[" + getLogLevelPrefix(logLevel) + "]";
+    }
+    public static String getPrefix(OMFLogLevel2 logLevel, String pluginName) {
+        return getPrefix(logLevel) + "[" + pluginName + "]";
+    }
+    public static String getPrefix(OMFLogLevel2 logLevel, String pluginName, String featureName) {
+        return getPrefix(logLevel, pluginName) + "[" + featureName + "]";
+    }
+
+    private static String getLogLevelPrefix(OMFLogLevel2 logLevel) {
         switch (logLevel) {
             case WARNING:
-                return "[Warning] ";
+                return "Warning";
             case ERROR:
-                return "[Error] ";
+                return "Error";
             case INFO:
             default:
-                return "[Info] ";
+                return "Info";
         }
     }
 
-    private static String getMessageColor(OMFLogLevel logLevel) {
+    private static String getMessageColor(OMFLogLevel2 logLevel) {
         switch (logLevel) {
             case WARNING:
                 return OMFColors2.WARN;
@@ -114,12 +134,12 @@ public class OMFLog2 {
      * Syntaxic sugar to reduced boilerplate of logging
      */
 
-    public OMFLog2 logToConsole(OMFLogLevel logLevel) {
+    public OMFLog2 logToConsole(OMFLogLevel2 logLevel) {
         OMFLogger2.logToConsole(this, logLevel);
         return this;
     }
 
-    public void logToConsole(OMFLogLevel logLevel, MDFeature feature) {
+    public void logToConsole(OMFLogLevel2 logLevel, MDFeature feature) {
         OMFLogger2.logToConsole(this, logLevel, feature);
     }
 
