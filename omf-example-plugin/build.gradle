@@ -49,9 +49,9 @@ repositories {
 dependencies {
     if (localMagicdrawArchive != '') {
         mdApplicationArchive files(localMagicdrawArchive)
-    } else if (mdVersionShort == "2021x_Refresh1") {
+    } else if (mdVersionShort == "2021x_R1") {
         mdApplicationArchive "com.nomagic.magicdraw:MagicDraw:2021x_RF1@zip"
-    } else if (mdVersionShort == "2021x_Refresh2") {
+    } else if (mdVersionShort == "2021x_R2") {
         mdApplicationArchive "com.nomagic:mcse:2021x_Refresh2_HF2@zip"
     } else {
         throw new GradleException("MagicDraw version not supported: $mdVersionShort")
