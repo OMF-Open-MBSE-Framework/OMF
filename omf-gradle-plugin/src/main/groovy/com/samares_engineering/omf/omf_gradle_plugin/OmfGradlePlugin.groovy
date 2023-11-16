@@ -283,7 +283,7 @@ class OmfGradlePlugin implements Plugin<Project> {
             myPackage = mdPluginBuild.myTestPackage
             myPluginName = mdPluginBuild.myTestPluginName
             myPluginId = mdPluginBuild.myTestPluginId
-            resolvedArtifacts = project.configurations.testPluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+            resolvedArtifacts = project.configurations.testPluginLibrary.toSet()
 
             pluginUnderTestId = mdPluginBuild.myPluginId
             pluginUnderTestName = mdPluginBuild.myPluginName
@@ -305,7 +305,7 @@ class OmfGradlePlugin implements Plugin<Project> {
             myPackage = mdPluginBuild.myPackage
             myPluginName = mdPluginBuild.myPluginName
             myPluginId = mdPluginBuild.myPluginId
-            resolvedArtifacts = project.configurations.pluginLibrary.resolvedConfiguration.resolvedArtifacts.file
+            resolvedArtifacts = project.configurations.pluginLibrary.toSet()
         }
     }
 
