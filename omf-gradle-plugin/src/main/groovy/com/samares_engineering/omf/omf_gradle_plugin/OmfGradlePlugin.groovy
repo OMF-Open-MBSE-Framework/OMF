@@ -36,11 +36,11 @@ class OmfGradlePlugin implements Plugin<Project> {
          */
 
         project.configurations {
-            mdApplicationArchive.extendsFrom(implementation)
+            mdApplicationArchive
+            zippedMDPlugin
             testImplementation.extendsFrom(testPluginLibrary)
             implementation.extendsFrom(pluginLibrary)
             implementation.extendsFrom(mdLibrary)
-            zippedMDPlugin
             compileOnly.extendsFrom(otherMDPluginLibrary)
         }
 
@@ -319,10 +319,15 @@ class OmfGradlePlugin implements Plugin<Project> {
             // order to delete it properly
 
             doFirst {
-
                 // TODO : Would be nice to also delete any "zippedMdPlugin" installed as well
-                delete 'build/install/plugins/' + mdPluginBuild.myPackage.get(),
-                        'build/install/plugins/' + mdPluginBuild.myTestPackage.get()
+                final pluginPkg = mdPluginBuild.myPackage.get()
+                if (!pluginPkg.isEmpty() && !pluginPkg.isBlank() && !pluginPkg.isAllWhitespace()) {
+                    delete 'build/install/plugins/' + pluginPkg
+                }
+                final testPluginPkg = mdPluginBuild.myTestPackage.get()
+                if (!testPluginPkg.isEmpty() && !testPluginPkg.isBlank() && !testPluginPkg.isAllWhitespace()) {
+                    delete 'build/install/plugins/' + testPluginPkg
+                }
             }
         }
     }

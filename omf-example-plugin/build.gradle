@@ -47,12 +47,12 @@ repositories {
     of the plugin in Gradle to be able to compile the code.
  */
 dependencies {
-    if (localMagicdrawArchive != '') {
-        mdApplicationArchive files(localMagicdrawArchive)
-    } else if (mdVersionShort == "2021x_R1") {
+    if (mdVersionShort == "2021x_R1") {
         mdApplicationArchive "com.nomagic.magicdraw:MagicDraw:2021x_RF1@zip"
     } else if (mdVersionShort == "2021x_R2") {
         mdApplicationArchive "com.nomagic:mcse:2021x_Refresh2_HF2@zip"
+    } else if (mdVersionShort == "local" && localMagicdrawArchive != '') {
+        mdApplicationArchive files(localMagicdrawArchive)
     } else {
         throw new GradleException("MagicDraw version not supported: $mdVersionShort")
     }
@@ -60,7 +60,7 @@ dependencies {
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
-    pluginLibrary files(":omf-core-framework")
+    pluginLibrary project(":omf-core-framework")
     pluginLibrary project(':omf-public-features')
     pluginLibrary project(':smart-private')
 
