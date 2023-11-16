@@ -60,7 +60,7 @@ dependencies {
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
-    pluginLibrary files("libs/omf-core-framework-1.1.0.jar")
+    pluginLibrary files(":omf-core-framework")
     pluginLibrary project(':omf-public-features')
     pluginLibrary project(':smart-private')
 
