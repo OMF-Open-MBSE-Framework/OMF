@@ -197,7 +197,7 @@ class OmfGradlePlugin implements Plugin<Project> {
             group = "_dev"
             description = "Run MagicDraw with the plugin installed. If using IntelliJ you can also run in debug mode. If" +
                     " using Eclipse use the dedicated 'debugPlugin' task"
-            dependsOn 'installPlugin', 'installTestPlugin'
+            dependsOn 'installPlugin'
         }
     }
 
@@ -206,7 +206,7 @@ class OmfGradlePlugin implements Plugin<Project> {
             group = "_dev_eclipse"
             description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)." +
                     " Connect with a remote debugger on port 5005 (default)"
-            dependsOn 'installPlugin', 'installTestPlugin'
+            dependsOn 'installPlugin'
 
             jvmArgs += [
                     "-Xdebug",
@@ -317,7 +317,6 @@ class OmfGradlePlugin implements Plugin<Project> {
             description = "Deletes the currently installed plugin and test plugin."
             // We need the packagePlugin task to run first so that we know the file structure of the plugin package in
             // order to delete it properly
-            dependsOn "packagePlugin", "packageTestPlugin"
 
             doFirst {
 
@@ -343,6 +342,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerRunTestsTask(Project project) {
         project.tasks.register('runTests', RunTests) {
+            dependsOn "installTestPlugin", "installPlugin"
             group = "_dev"
             description = "Run functional tests with verbose output."
 
@@ -352,6 +352,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerDebugTestsTask(Project project) {
         project.tasks.register('debugTests', RunTests) {
+            dependsOn "installTestPlugin", "installPlugin"
             group = "_dev_eclipse"
             description = "Run functional tests with verbose output in debug mode (needed to debug when using Eclipse)." +
                     " Connect with a remote debugger on port 5005 (default)"
@@ -366,6 +367,7 @@ class OmfGradlePlugin implements Plugin<Project> {
 
     private void registerRunTestsNoLogTask(Project project) {
         project.tasks.register('runTestsNoLog', RunTests) {
+            dependsOn "installTestPlugin", "installPlugin"
             group = "_dev"
             description = "Run functional tests without MagicDraw logs (much faster)."
 
