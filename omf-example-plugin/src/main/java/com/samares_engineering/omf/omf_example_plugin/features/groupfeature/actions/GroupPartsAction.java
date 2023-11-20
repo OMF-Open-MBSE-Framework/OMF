@@ -58,7 +58,7 @@ public class GroupPartsAction extends AUIAction {
 
 
     protected void groupSelectedPorts(List<Property> selectedParts) {
-        DiagramPresentationElement diagram = OMFUtils.currentProject.getActiveDiagram();
+        DiagramPresentationElement diagram = OMFUtils.getProject().getActiveDiagram();
         Property firstSelectedMICPart =  selectedParts.get(0);
 
         Element newBlockOwner = firstSelectedMICPart.getType().getOwner();
@@ -75,7 +75,7 @@ public class GroupPartsAction extends AUIAction {
     }
 
     private PresentationElement findPresentationElement(Property property) {
-        DiagramPresentationElement diagram = OMFUtils.currentProject.getActiveDiagram();
+        DiagramPresentationElement diagram = OMFUtils.getProject().getActiveDiagram();
         return diagram.findPresentationElement(property, PartView.class);
     }
 

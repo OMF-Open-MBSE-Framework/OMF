@@ -27,7 +27,7 @@ public class SaveToLocalMDA extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null)
+        if(OMFUtils.getProject() == null)
             return false;
         return true;
     }
@@ -38,8 +38,8 @@ public class SaveToLocalMDA extends AUIAction {
     public void actionToPerform(List<Element> selectedElements) {
         if(selectedElements == null || selectedElements.size() !=1) return;
 
-        File save = new File("c:/TMP/"+ OMFUtils.currentProject.getName() + ".mdzip");
-        EsiUtils.convertToLocal(OMFUtils.currentProject, save);
+        File save = new File("c:/TMP/"+ OMFUtils.getProject().getName() + ".mdzip");
+        EsiUtils.convertToLocal(OMFUtils.getProject(), save);
 
     }
 

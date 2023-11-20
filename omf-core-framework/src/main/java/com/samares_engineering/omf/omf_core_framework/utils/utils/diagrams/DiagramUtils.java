@@ -17,7 +17,7 @@ public class DiagramUtils {
     private DiagramUtils() {}
 
     public static Diagram getOpenedDiagram() {
-        DiagramPresentationElement diagramPresentationElement = Objects.requireNonNull(OMFUtils.currentProject, "Can't " +
+        DiagramPresentationElement diagramPresentationElement = Objects.requireNonNull(OMFUtils.getProject(), "Can't " +
                         "get open diagram as project is null")
                 .getActiveDiagram();
 
@@ -27,7 +27,7 @@ public class DiagramUtils {
     }
 
     public static DiagramPresentationElement getDiagram(Diagram diagram) {
-        return Objects.requireNonNull(OMFUtils.currentProject, "Can't get diagram as project is null")
+        return Objects.requireNonNull(OMFUtils.getProject(), "Can't get diagram as project is null")
                 .getDiagram(diagram);
     }
 }

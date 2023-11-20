@@ -48,7 +48,7 @@ public class T3_InstanceMetamorphtToFctPart_InFunction extends AModelComparatorT
     }
 
     private void triggerRefreshStereotypesRulesBasedOnConfigFiles() {
-        triggerBrowserAction(OMFUtils.currentProject.getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
+        triggerBrowserAction(OMFUtils.getProject().getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
     }
 
     private void createPart() {

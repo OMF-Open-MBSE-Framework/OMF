@@ -27,7 +27,7 @@ public class UMLUtils {
 
     public static boolean isStereotypeMetaClassMatchClass(Stereotype str, java.lang.Class clazz) {
         return getStereotypeMetaClass(str).stream()
-                .anyMatch(metaClass -> metaClass == StereotypesHelper.getMetaClassByClass(OMFUtils.currentProject, clazz));
+                .anyMatch(metaClass -> metaClass == StereotypesHelper.getMetaClassByClass(OMFUtils.getProject(), clazz));
     }
 
     public static boolean isInstanceOfMetaClass(Element type, java.lang.Class metaClass) throws OMFException {

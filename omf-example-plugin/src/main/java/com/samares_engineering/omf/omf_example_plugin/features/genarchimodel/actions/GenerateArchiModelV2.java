@@ -23,7 +23,7 @@ public class GenerateArchiModelV2 extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null)
+        if(OMFUtils.getProject() == null)
             return false;
         if(selectedElements.isEmpty()) return false;
 
@@ -197,7 +197,7 @@ public class GenerateArchiModelV2 extends AUIAction {
 //    }
 //    private Package createPackage(String packageName, Package parentPackage) {
 //        // Créer un descripteur de package pour le package à créer
-//        Package createdPackage = OMFUtils.currentProject.getElementsFactory().createPackageInstance();
+//        Package createdPackage = OMFUtils.getProject().getElementsFactory().createPackageInstance();
 //        createdPackage.setName(packageName);
 //        createdPackage.setOwner(parentPackage);
 //        return createdPackage;

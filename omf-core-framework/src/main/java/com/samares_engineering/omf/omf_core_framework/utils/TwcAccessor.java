@@ -128,7 +128,7 @@ public class TwcAccessor
     public void saveFromTwcToLocal(String projectName, String localPath) throws OMFException {
         openProject(projectName);
         File file = new File(localPath, projectName + ".mdzip");
-        EsiUtils.convertToLocal(OMFUtils.currentProject, file);
+        EsiUtils.convertToLocal(OMFUtils.getProject(), file);
     }
 
     /**

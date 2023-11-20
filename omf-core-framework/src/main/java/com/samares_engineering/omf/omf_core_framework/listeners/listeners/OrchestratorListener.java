@@ -39,16 +39,16 @@ public class OrchestratorListener extends AElementListener implements Transactio
 
     @Override
     public void addingListener() {
-        OMFUtils.currentProject.getRepository().getTransactionManager()
+        OMFUtils.getProject().getRepository().getTransactionManager()
                 .addTransactionCommitListener(this);
     }
 
     @Override
     public void removingListener() {
-        final boolean isListenerRemovable = (null != OMFUtils.currentProject);
+        final boolean isListenerRemovable = (null != OMFUtils.getProject());
         if (isListenerRemovable) {
             try {
-                OMFUtils.currentProject.getRepository().getTransactionManager().removeTransactionCommitListener(this);
+                OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);
             } catch (Exception e) {
                 System.err.println("[RemoveListener]");
             }

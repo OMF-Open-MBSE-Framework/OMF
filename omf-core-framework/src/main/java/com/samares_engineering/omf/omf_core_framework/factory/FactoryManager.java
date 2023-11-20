@@ -21,7 +21,7 @@ public class FactoryManager {
     ));
 
     public static void initAllFactories(){
-        initAllFactories(OMFUtils.currentProject);
+        initAllFactories(OMFUtils.getProject());
     }
 
     public static void initAllFactories(Project project){

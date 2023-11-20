@@ -64,7 +64,7 @@ public class ImportFromGPT extends AUIAction {
 
         // Get the diagram name and create a new BDD
         String diagramName = json.getString("diagramName");
-        Project project = OMFUtils.currentProject;
+        Project project = OMFUtils.getProject();
 
         Package parentPackage = project.getElementsFactory().createPackageInstance();
         parentPackage.setName(diagramName);

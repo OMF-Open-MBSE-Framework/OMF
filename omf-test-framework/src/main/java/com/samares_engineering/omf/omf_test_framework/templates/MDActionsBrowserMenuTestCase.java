@@ -41,8 +41,8 @@ public abstract class MDActionsBrowserMenuTestCase extends AModelComparatorTestC
         setNameActionToTest(actionToTestName);
         setNameMDActionCategoryToTest(mdActionsCategoryName);
 
-        ActionsManager actionManager = ActionsProvider.getContainmentBrowserContextActions(OMFUtils.currentProject.getBrowser().getContainmentTree());
-        ContainmentTree tree = OMFUtils.currentProject.getBrowser().getContainmentTree();
+        ActionsManager actionManager = ActionsProvider.getContainmentBrowserContextActions(OMFUtils.getProject().getBrowser().getContainmentTree());
+        ContainmentTree tree = OMFUtils.getProject().getBrowser().getContainmentTree();
         tree.setSelectedNodes(new Node[]{new Node(element, ElementIcon.getIcon(element))});
 
         List<BrowserContextAMConfigurator> browserMenuConfigurators = getBrowserMenus();

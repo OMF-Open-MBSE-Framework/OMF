@@ -40,7 +40,7 @@ public class LockerManager {
     }
 
     public static LockerManager getInstance(){
-        return getInstance(OMFUtils.currentProject);
+        return getInstance(OMFUtils.getProject());
     }
 
     public static LockerManager getInstance(Project project){

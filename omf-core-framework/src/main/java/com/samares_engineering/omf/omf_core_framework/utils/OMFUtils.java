@@ -28,8 +28,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class OMFUtils {
-    public static Project currentProject = null;
-
+    public static Project getProject() {
+        return Application.getInstance().getProject();
+    }
+    
     /**
      * Split a String with regex given as parameter
      *
@@ -156,7 +158,7 @@ public class OMFUtils {
      * @throws NoElementFoundException if the element is not found
      */
     public static void selectElementInContainmentTree(String id) throws NoElementFoundException {
-        BaseElement element = OMFUtils.currentProject.getElementByID(id);
+        BaseElement element = OMFUtils.getProject().getElementByID(id);
         if(element == null)
             throw new NoElementFoundException("[API SELECT ELEMENT] ELEMENT NOT FOUND WITH ID: " + id);
 
@@ -178,6 +180,4 @@ public class OMFUtils {
                     e, GenericException.ECriticality.ALERT), false);
         }
     }
-
-
 }

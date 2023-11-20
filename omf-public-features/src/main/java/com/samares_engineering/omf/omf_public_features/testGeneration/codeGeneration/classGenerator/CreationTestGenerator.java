@@ -136,7 +136,7 @@ public class CreationTestGenerator {
         methodBuilder.addCode("$T owner = findTestedElementByID(\"" + ownerID + "\");" + comment + "\n", Element.class);
 
         // Open the current diagram if any
-        DiagramPresentationElement activeDiagram = OMFUtils.currentProject.getActiveDiagram();
+        DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
         if (activeDiagram != null) {
             //TODO: reuse if possible findTestedElementByID
             Diagram diagram = activeDiagram.getDiagram();
@@ -152,7 +152,7 @@ public class CreationTestGenerator {
     }
 
     private void addElementCreation(MethodSpec.Builder methodBuilder) {
-        ElementsFactory factory = OMFUtils.currentProject.getElementsFactory();
+        ElementsFactory factory = OMFUtils.getProject().getElementsFactory();
 
         Optional<Method> creationMethod = Arrays.stream(factory.getClass().getMethods())
                 .filter(m -> m.getReturnType().equals(this.getTestedElementClass())) // 1 creation class / metaclass, return type is determinist

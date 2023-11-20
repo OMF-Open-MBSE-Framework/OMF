@@ -33,7 +33,7 @@ public class ClonePart extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.currentProject != null
+        return OMFUtils.getProject() != null
                 && !selectedElements.isEmpty()
                 && selectedElements.stream()
                 .filter(Profile._getSysmlAdditionalStereotypes().partProperty()::is)
@@ -46,7 +46,7 @@ public class ClonePart extends AUIAction {
     @Override
     public void actionToPerform(List<Element> selectedElements) {
         try {
-            DiagramPresentationElement activeDiagram = OMFUtils.currentProject.getActiveDiagram();
+            DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
             CloneManager cloneManager = new CloneManager();
             cloneManager.addMetaClassesToFilter(DataType.class, Signal.class);
             selectedElements.stream()

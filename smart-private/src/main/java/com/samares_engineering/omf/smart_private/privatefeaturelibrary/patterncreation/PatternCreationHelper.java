@@ -126,7 +126,7 @@ public class PatternCreationHelper {
     private static Element copyPattern(Element createdPatternElement, Element templateElementOwner, boolean isTemplateOwner) {
         // Copying the pattern structure, putting in a temp place to allow the refactoring.replace to work without losing all elements
         Element srcOwner = getSourceOwner(createdPatternElement);
-        Element patternTemplateImpl = copyPatternFromTemplateOwner(templateElementOwner, OMFUtils.currentProject.getPrimaryModel());
+        Element patternTemplateImpl = copyPatternFromTemplateOwner(templateElementOwner, OMFUtils.getProject().getPrimaryModel());
 
         Element patternTemplateOwner;
         if (isTemplateOwner) {
@@ -223,7 +223,7 @@ public class PatternCreationHelper {
     private static Element getSourceOwner(Element createdPatternElement) {
         Element srcOwner = createdPatternElement.getOwner();
 
-        boolean isOwnerRootModel = srcOwner.equals(OMFUtils.currentProject.getPrimaryModel());
+        boolean isOwnerRootModel = srcOwner.equals(OMFUtils.getProject().getPrimaryModel());
         if(isOwnerRootModel){
             srcOwner = SysMLFactory.getInstance().createPackage(((NamedElement) createdPatternElement).getName(), srcOwner); //TODO it's a fix, but the package shall not stay in the end?
         }

@@ -35,7 +35,7 @@ public class GenerateCreationTest extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null)
+        if(OMFUtils.getProject() == null)
             return false;
 
         if(selectedElements.isEmpty())

@@ -28,7 +28,7 @@ import java.util.Set;
 public class GenerateTemplateFromElement extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null) return false;
+        if(OMFUtils.getProject() == null) return false;
         if(selectedElements.size() != 1) return false;
         if(!PatternCreatorProfile.getInstance().patternInstance().is(selectedElements.get(0))) return false;
        return true;

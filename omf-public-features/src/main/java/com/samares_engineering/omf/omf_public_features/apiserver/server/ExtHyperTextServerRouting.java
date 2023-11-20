@@ -75,7 +75,7 @@ public class ExtHyperTextServerRouting {
 
                 handleProjectOpening(projectPath);
 
-                successAnswer("Project " + OMFUtils.currentProject.getName() + " Opened", target, baseRequest, request, response);
+                successAnswer("Project " + OMFUtils.getProject().getName() + " Opened", target, baseRequest, request, response);
             }
         };
     }
@@ -87,7 +87,7 @@ public class ExtHyperTextServerRouting {
         ProjectDescriptor projectDescriptor = ProjectDescriptorsFactory.createProjectDescriptor(file.toURI());
         projectsManager.loadProject(projectDescriptor, false);
 
-        return OMFUtils.currentProject;
+        return OMFUtils.getProject();
     }
 
 
@@ -106,7 +106,7 @@ public class ExtHyperTextServerRouting {
                 } catch (OMFException e) {
                     throw new RuntimeException(e);
                 }
-                successAnswer("Project " + OMFUtils.currentProject.getName() + " Opened", target, baseRequest, request, response);
+                successAnswer("Project " + OMFUtils.getProject().getName() + " Opened", target, baseRequest, request, response);
             }
         };
     }
@@ -116,7 +116,7 @@ public class ExtHyperTextServerRouting {
     }
 
     public void handleElement(String id){
-        BaseElement elem = OMFUtils.currentProject.getElementByID(id);
+        BaseElement elem = OMFUtils.getProject().getElementByID(id);
         Hyperlink hypertext = HyperlinkUtils.createHyperlink("TEST", elem);
         Application.getInstance().getMainFrame().getBrowser().getActiveTree().openNode(elem);
 //        hypertext.

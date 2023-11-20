@@ -56,7 +56,7 @@ public class PatternCreatorProfile extends ProfileImplementation
     }
 
     public static PatternCreatorProfile getInstance() {
-        return getInstance(OMFUtils.currentProject);
+        return getInstance(OMFUtils.getProject());
     }
 
     public OnCreationStereotype onCreation()

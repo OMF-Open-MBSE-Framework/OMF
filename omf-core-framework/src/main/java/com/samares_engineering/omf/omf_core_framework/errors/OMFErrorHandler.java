@@ -137,7 +137,7 @@ public class OMFErrorHandler {
     }
 
     private static void handleRollBack(GenericException exception, boolean cancelSession) {
-        boolean isSessionCreated = SessionManager.getInstance().isSessionCreated(OMFUtils.currentProject);
+        boolean isSessionCreated = SessionManager.getInstance().isSessionCreated(OMFUtils.getProject());
         if (cancelSession && isSessionCreated)
             throw new OMFRollBackException(exception.getMessage());
     }

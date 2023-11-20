@@ -65,11 +65,11 @@ public class TransactionElementListener extends AElementListener implements Tran
 
     @Override
     public void addingListener() {
-        OMFUtils.currentProject.getRepository().getTransactionManager().addTransactionCommitListener(this);
+        OMFUtils.getProject().getRepository().getTransactionManager().addTransactionCommitListener(this);
     }
 
     @Override
     public void removingListener() {
-        OMFUtils.currentProject.getRepository().getTransactionManager().removeTransactionCommitListener(this);
+        OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);
     }
     }

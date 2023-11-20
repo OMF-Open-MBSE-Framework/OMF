@@ -49,7 +49,7 @@ public class T2_InstanceComponentToComponentPart_InBlock extends AModelComparato
     }
 
     private void triggerRefreshStereotypesRulesBasedOnConfigFiles() {
-        triggerBrowserAction(OMFUtils.currentProject.getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
+        triggerBrowserAction(OMFUtils.getProject().getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
     }
 
     private void createPart() {

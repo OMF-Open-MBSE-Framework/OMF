@@ -26,6 +26,6 @@ public class ElementsStoredInTestCase {
     }
 
     public Element getStoredElement(String name) {
-        return (Element) OMFUtils.currentProject.getElementByID(this.elements.get(name));
+        return (Element) OMFUtils.getProject().getElementByID(this.elements.get(name));
     }
 }

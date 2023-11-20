@@ -132,7 +132,7 @@ public abstract class AUIAction implements UIAction {
         if(deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> actionToPerform(selectedElements));
         }catch (OMFRollBackException rollbackException){
             OMFErrorHandler.handleException(rollbackException);
         }catch (Exception uncaughtException){
@@ -149,7 +149,7 @@ public abstract class AUIAction implements UIAction {
         if(deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> actionToPerform(selectedElements));
         }catch (OMFRollBackException rollbackException){
             OMFErrorHandler.handleException(rollbackException);
         }catch (Exception uncaughtException){
@@ -166,7 +166,7 @@ public abstract class AUIAction implements UIAction {
         if(deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.currentProject, getName(), () -> actionToPerform(selectedElements));
+            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> actionToPerform(selectedElements));
         }catch (OMFRollBackException rollbackException){
             OMFErrorHandler.handleException(rollbackException);
         }catch (Exception uncaughtException){
@@ -220,9 +220,9 @@ public abstract class AUIAction implements UIAction {
      * @return selected node list.
      */
     public Node[] getSelectedBrowserNodes() {
-        if(OMFUtils.currentProject == null)
+        if(OMFUtils.getProject() == null)
             return null;
-        Browser browser = OMFUtils.currentProject.getBrowser();
+        Browser browser = OMFUtils.getProject().getBrowser();
         if(browser == null)
             return null;
         ContainmentTree containmentTree = browser.getContainmentTree();
@@ -254,9 +254,9 @@ public abstract class AUIAction implements UIAction {
      * @return selected Presentation Element list.
      */
     public List<PresentationElement> getSelectedDiagramPresentationElements() {
-        if(OMFUtils.currentProject == null)
+        if(OMFUtils.getProject() == null)
             return Collections.emptyList();
-        DiagramPresentationElement activeDiagram = OMFUtils.currentProject.getActiveDiagram();
+        DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
         return Objects.nonNull(activeDiagram)? activeDiagram.getSelected(): new ArrayList<>();
     }
     /**

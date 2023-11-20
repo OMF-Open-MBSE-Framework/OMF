@@ -37,17 +37,18 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     @Override
     public void projectOpened(Project project) {
-        if (OMFUtils.currentProject != project) {
-            openProject(project);
-        }
+        openProject(project);
     }
+
     @Override
     public void projectClosed(Project project) {
         closeProject();
     }
+
     @Override
     public void projectSaved(Project project, boolean b) {
     }
+
     @Override
     public void projectActivated(Project project) {
         openProject(project);
@@ -70,22 +71,18 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     @Override
     public void projectPreClosed(Project project) {
-
     }
 
     @Override
     public void projectPreClosedFinal(Project project) {
-
     }
 
     @Override
     public void projectPreSaved(Project project, boolean b) {
-
     }
 
     @Override
     public void projectPreActivated(Project project) {
-
     }
 
     @Override
@@ -95,24 +92,18 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     @Override
     public void projectOpenedFromGUI(Project project) {
-        if(project != OMFUtils.currentProject ) {
-            openProject(project);
-        }
+        openProject(project);
     }
 
     @Override
     public void projectPreOpenedFromGUI(Project project) {
         ProjectPartLoadedListener.super.projectPreOpenedFromGUI(project);
-        if(project != OMFUtils.currentProject ) {
-            openProject(project);
-        }
+        openProject(project);
     }
 
     @Override
     public void projectActivatedFromGUI(Project project) {
-        if(project != OMFUtils.currentProject ){
-            openProject(project);
-        }
+        openProject(project);
     }
 
     @Override
@@ -128,7 +119,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //        String minVersionRequired = OMFUtils.versionCsvReader();
 //
 //        // We iterate trough every project (profile) associate to find the correct one
-//        for (IAttachedProject iAttachedProject : OMFUtils.currentProject.getPrimaryProject().getProjects()) {
+//        for (IAttachedProject iAttachedProject : OMFUtils.getProject().getPrimaryProject().getProjects()) {
 //            if (iAttachedProject.getName() != null && iAttachedProject.getName().equals(PROFILE_NAME)) {
 //                version = ProjectUtilities.getInternalVersion(iAttachedProject);
 //            }
@@ -167,7 +158,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
      * @return boolean isCurrentProjectIsUsingProfile
      */
     protected boolean doesProjectUseProfile(String profileName){
-        return doesProjectUseProfile(OMFUtils.currentProject, profileName);
+        return doesProjectUseProfile(OMFUtils.getProject(), profileName);
     }
     protected boolean doesProjectUseProfile(Project project, String profileName){
         boolean isCurrentProjectIsUsingProfile = true;
@@ -190,16 +181,10 @@ public class ProjectListener implements ProjectPartLoadedListener {
         coreInitialisation(project);
         listenerInitialisation();
         featureOpenProjectHandling();
-
-
     }
 
     protected void closeProject() {
-        if(OMFUtils.currentProject == null)
-            return;
         coreClosingReInitialisation();
-        OMFUtils.currentProject = null;
-
         featureCloseProjectHandling();
     }
 
@@ -249,7 +234,6 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     private static void coreInitialisation(Project project) {
         try {
-            OMFUtils.currentProject = project;
             FactoryManager.initAllFactories(project);
             Profile.getInstance();
         }catch (Exception exception){
@@ -300,5 +284,4 @@ public class ProjectListener implements ProjectPartLoadedListener {
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }
-
 }

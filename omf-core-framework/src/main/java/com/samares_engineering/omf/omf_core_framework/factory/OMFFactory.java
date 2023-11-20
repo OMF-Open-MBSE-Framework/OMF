@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 public class OMFFactory extends AMagicDrawFactory {
     private OMFFactory() {
-        setProject(OMFUtils.currentProject);
+        setProject(OMFUtils.getProject());
     }
 
     public static OMFFactory getInstance() {
@@ -290,7 +290,7 @@ public class OMFFactory extends AMagicDrawFactory {
 
     //Packages
     public Package getSysMLTypeLibraryPackage() {
-        Model sysmlModel = Finder.byNameRecursively().find(OMFUtils.currentProject, Model.class, OMFConstants.SYSML_PACKAGE_NAME);
+        Model sysmlModel = Finder.byNameRecursively().find(OMFUtils.getProject(), Model.class, OMFConstants.SYSML_PACKAGE_NAME);
         return Finder.byNameRecursively().find(sysmlModel, Package.class, OMFConstants.SYSML_LIBRARY_PACKAGE_NAME);
     }
 

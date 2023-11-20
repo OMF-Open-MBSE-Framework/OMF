@@ -30,13 +30,13 @@ public class DeletionPropertyChangeElementListener extends AElementListener impl
 
     @Override
     public void addingListener() {
-        OMFUtils.currentProject.getRepositoryListenerRegistry().addPropertyChangeListener(this,
+        OMFUtils.getProject().getRepositoryListenerRegistry().addPropertyChangeListener(this,
                 UML2MetamodelConstants.BEFORE_DELETE);
     }
 
     @Override
     public void removingListener() {
-        OMFUtils.currentProject.getRepositoryListenerRegistry().removePropertyChangeListener(this,
+        OMFUtils.getProject().getRepositoryListenerRegistry().removePropertyChangeListener(this,
                 UML2MetamodelConstants.BEFORE_DELETE);
     }
 

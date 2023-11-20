@@ -59,7 +59,7 @@ public class PatternCreationFeature extends SimpleFeature {
     }
 
     public void refreshPatterConfiguration() {
-        configuredSTR= Finder.byTypeRecursively().find(OMFUtils.currentProject, new Class[]{Dependency.class})
+        configuredSTR= Finder.byTypeRecursively().find(OMFUtils.getProject(), new Class[]{Dependency.class})
                 .stream()
                 .filter(PatternCreatorProfile.getInstance().onCreation()::is)
                 .map(Dependency.class::cast)

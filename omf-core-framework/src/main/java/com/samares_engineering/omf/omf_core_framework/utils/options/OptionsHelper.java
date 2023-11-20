@@ -31,7 +31,7 @@ public class OptionsHelper {
      * @return Property option
      */
     public static Optional<Property> getProjectOptionByCategoryName(String category, String optionName){
-        Optional<Property> option = getProjectOptionsByCategory(category, optionName, OMFUtils.currentProject);
+        Optional<Property> option = getProjectOptionsByCategory(category, optionName, OMFUtils.getProject());
         return option;
     }
 
@@ -42,7 +42,7 @@ public class OptionsHelper {
      * @return Property option
      */
     public static Optional<Property> getProjectOptionByOptionName(String optionName) {
-        ProjectOptions options = OMFUtils.currentProject.getOptions();
+        ProjectOptions options = OMFUtils.getProject().getOptions();
         Optional<Property> optOption;
         optOption = Arrays.stream(ProjectOptions.class.getFields())
                 .map(field -> {
@@ -55,7 +55,7 @@ public class OptionsHelper {
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .filter(cat -> !Strings.isNullOrEmpty(cat))
-                .map(cat -> getProjectOptionsByCategory(cat, optionName, OMFUtils.currentProject))
+                .map(cat -> getProjectOptionsByCategory(cat, optionName, OMFUtils.getProject()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst();

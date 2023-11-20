@@ -16,7 +16,7 @@ public class ReInitOptionsBaseline {
   }
 
   private static Element findElementByID(String id) {
-    NamedElement foundElement = (NamedElement) OMFUtils.currentProject.getElementByID(id);
+    NamedElement foundElement = (NamedElement) OMFUtils.getProject().getElementByID(id);
     Assert.assertNotNull(" No element found with ID " + id, foundElement);
     return foundElement;
   }

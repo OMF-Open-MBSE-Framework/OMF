@@ -39,20 +39,20 @@ public class OMFExamplePlugin extends APlugin {
     public List<MDFeature> initFeatures() {
         return List.of(
 //                new FeaturesDeactivationFeature(),
-//                new StereotypesFeature(),
+                new StereotypesFeature(),
                 new CloneElementFeature(),
-                new GroupElementFeature()
-//                new SysMLBasicFeature()
-//                new ErrorManagementFeatureExample(),
-//                new HyperLinkFeature(),
-//                new LockSafeFeature(),
-//                new APIServerFeature("http://localhost", 9850),
-//                new GeneratePluginModelArchi(),
-//                new SysmlGptExploFeature(),
-//                new PatternCreationFeature(),
-//                new CustomizationValidationFeature(),
-//                new TemplateFeature(),
-//                new FeatureActivationFromOptionFeature()
+                new GroupElementFeature(),
+                new SysMLBasicFeature(),
+                new ErrorManagementFeatureExample(),
+                new HyperLinkFeature(),
+                new LockSafeFeature(),
+                new APIServerFeature("http://localhost", 9850),
+                new GeneratePluginModelArchi(),
+                new SysmlGptExploFeature(),
+                new PatternCreationFeature(),
+                new CustomizationValidationFeature(),
+                new TemplateFeature(),
+                new FeatureActivationFromOptionFeature()
         );
     }
 

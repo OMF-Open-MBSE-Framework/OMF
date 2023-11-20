@@ -27,7 +27,7 @@ public class PluginArchitectureProfile extends ProfileImplementation
     private final MethodsStereotype methodsStereotype;
 
     public static PluginArchitectureProfile getInstance(){
-        return getInstance(OMFUtils.currentProject);
+        return getInstance(OMFUtils.getProject());
     }
 
     public static PluginArchitectureProfile getInstance(BaseElement baseElement)

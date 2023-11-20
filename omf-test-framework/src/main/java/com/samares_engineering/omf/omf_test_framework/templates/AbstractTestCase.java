@@ -376,7 +376,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @return Property option
      */
     public Property getProjectOptionByCategoryName(String category, String optionName){
-        Property option = getProjectOptionsByCategory(category, optionName, OMFUtils.currentProject);
+        Property option = getProjectOptionsByCategory(category, optionName, OMFUtils.getProject());
         if(option == null)
             Assert.fail("The project options: " + optionName + " wasn't found in the category: " + category);
         return option;
@@ -388,7 +388,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @return Property option
      */
     public Property getProjectOptionByOptionName(String optionName) {
-        ProjectOptions options = OMFUtils.currentProject.getOptions();
+        ProjectOptions options = OMFUtils.getProject().getOptions();
         Optional<Property> optOption;
         optOption = Arrays.stream(ProjectOptions.class.getFields())
                 .map(field -> {
@@ -401,7 +401,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
                 .filter(String.class::isInstance)
                 .map(String.class::cast)
                 .filter(cat -> !Strings.isNullOrEmpty(cat))
-                .map(cat -> getProjectOptionsByCategory(cat, optionName, OMFUtils.currentProject))
+                .map(cat -> getProjectOptionsByCategory(cat, optionName, OMFUtils.getProject()))
                 .filter(Objects::nonNull)
                 .findFirst();
 
@@ -591,7 +591,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @param actionToTestName action name
      */
     public void triggerDiagramAction(Element selectedElement, String mdActionsCategoryName, String actionToTestName) {
-        DiagramPresentationElement currentDiagramPresentation =  OMFUtils.currentProject.getActiveDiagram();
+        DiagramPresentationElement currentDiagramPresentation =  OMFUtils.getProject().getActiveDiagram();
         if(currentDiagramPresentation == null)
             Assert.fail("No Diagram opened, please open a diagram before using this method");
         Diagram currentDiagram = currentDiagramPresentation.getDiagram();

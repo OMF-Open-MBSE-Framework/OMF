@@ -49,7 +49,7 @@ public class T1_InstanceFunctionToFctPart_InBlock extends AModelComparatorTestCa
     }
 
     private void triggerRefreshStereotypesRulesBasedOnConfigFiles() {
-        triggerBrowserAction(OMFUtils.currentProject.getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
+        triggerBrowserAction(OMFUtils.getProject().getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
     }
 
     private void createPart() {

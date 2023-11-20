@@ -23,7 +23,7 @@ public class GenerateSnapshotTest extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.currentProject != null;
+        return OMFUtils.getProject() != null;
     }
 
     @Override

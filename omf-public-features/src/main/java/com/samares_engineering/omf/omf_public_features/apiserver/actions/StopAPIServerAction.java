@@ -28,7 +28,7 @@ public class StopAPIServerAction extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.currentProject == null) return false;
+        if(OMFUtils.getProject() == null) return false;
         return true;
     }
 

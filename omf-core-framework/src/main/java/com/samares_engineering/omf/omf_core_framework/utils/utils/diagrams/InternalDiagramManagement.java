@@ -170,7 +170,7 @@ public class InternalDiagramManagement {
     }
 
     public static void refreshSinglePortInEveryDiagrams(Port portToRefresh, Property mbsePart) {
-        for (PresentationElement pe : OMFUtils.currentProject.getSymbolElementMap().getAllPresentationElements(mbsePart)) {
+        for (PresentationElement pe : OMFUtils.getProject().getSymbolElementMap().getAllPresentationElements(mbsePart)) {
             Diagram diagram = pe.getDiagramPresentationElement().getDiagram();
             refreshSinglePort(portToRefresh, mbsePart, diagram);
         }
@@ -194,7 +194,7 @@ public class InternalDiagramManagement {
 
     public static void layoutSinglePart(Property mbsePart, Diagram currentDiagram) {
         List<PresentationElement> listPartPresentationElement = new ArrayList<>();
-        List<PresentationElement> allPresentationElementOfThisPart = OMFUtils.currentProject.getSymbolElementMap().getAllPresentationElements(mbsePart);
+        List<PresentationElement> allPresentationElementOfThisPart = OMFUtils.getProject().getSymbolElementMap().getAllPresentationElements(mbsePart);
         PresentationElementsManager manager = PresentationElementsManager.getInstance();
         for (PresentationElement pePart : allPresentationElementOfThisPart) {
             DiagramPresentationElement dpe = pePart.getDiagramPresentationElement();
@@ -371,7 +371,7 @@ public class InternalDiagramManagement {
     public static void displayPath(Collection<PresentationElement> presentationElements){
         String var0 = "CREATE_PATHS";
         if (presentationElements != null && !presentationElements.isEmpty()) {
-            PropertyPathChangeManager.getInstance(OMFUtils.currentProject).executeWithoutUpdatingPropertyPath(() -> {
+            PropertyPathChangeManager.getInstance(OMFUtils.getProject()).executeWithoutUpdatingPropertyPath(() -> {
                 createConnectorPaths(var0, presentationElements);
             });
         }

@@ -56,7 +56,7 @@ public abstract class ATestBatchTWC extends ATestBatch {
             oracleProject = getProjectFromTWC(twcAccessor, projectOracleName);
             twcAccessor.createBranch(projectInitName, branchName, branchDescription);
             twcAccessor.openBranchProject(projectInitName, branchName);
-            initProject = Objects.requireNonNull(OMFUtils.currentProject, "Current project is not set");
+            initProject = Objects.requireNonNull(OMFUtils.getProject(), "Current project is not set");
             Objects.requireNonNull(LockService.getLockService(getInitProject()), "Can't get lock service")
                     .lockElements(Collections.singleton(getInitProject().getPrimaryModel()), true, EmptyProgressStatus.getDefault());
 
@@ -79,7 +79,7 @@ public abstract class ATestBatchTWC extends ATestBatch {
 
     private Project getProjectFromTWC(TwcAccessor twcAccessor, String projectName) throws OMFException {
         twcAccessor.openProject(projectName);
-        return OMFUtils.currentProject;
+        return OMFUtils.getProject();
     }
 
     private void commitProject(){

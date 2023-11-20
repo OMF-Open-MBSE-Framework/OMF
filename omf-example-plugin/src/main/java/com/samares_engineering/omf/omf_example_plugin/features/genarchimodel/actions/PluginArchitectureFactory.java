@@ -12,7 +12,7 @@ public class PluginArchitectureFactory {
     private static ElementsFactory factory;
 
     private PluginArchitectureFactory(){
-        factory = OMFUtils.currentProject.getElementsFactory();
+        factory = OMFUtils.getProject().getElementsFactory();
     }
 
 

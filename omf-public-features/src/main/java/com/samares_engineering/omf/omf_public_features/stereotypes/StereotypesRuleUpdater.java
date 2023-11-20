@@ -77,12 +77,12 @@ public class StereotypesRuleUpdater {
             String ruleId = line.get(5);
             String activated = line.get(6);
 
-            if (Finder.byNameRecursively().find(OMFUtils.currentProject, Stereotype.class, instanceStereotype) == null) {
+            if (Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, instanceStereotype) == null) {
                 OMFErrorHandler.handleException(new OMFException("[InstanceCreator] While parsing file configuration." +
                         "\n instanceStereotype: \"" + instanceStereotype + "\" unknown", OMFException.ECriticality.ALERT), false);
                 continue;
             }
-            if (Finder.byNameRecursively().find(OMFUtils.currentProject, Stereotype.class, typeStereotype) == null) {
+            if (Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, typeStereotype) == null) {
                 OMFErrorHandler.handleException(new OMFException("[InstanceCreator] While parsing file configuration." +
                         "\n typeStereotype: \"" + typeStereotype + "\" unknown", OMFException.ECriticality.ALERT), false);
                 continue;
@@ -220,7 +220,7 @@ public class StereotypesRuleUpdater {
     }
 
     private boolean isStereotypeExistingByName(String instance) {
-        return null == Finder.byNameRecursively().find(OMFUtils.currentProject, Stereotype.class, instance);
+        return null == Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, instance);
     }
 
     public void setOrganizerRuleEngine(IRuleEngine organizerEngine) {

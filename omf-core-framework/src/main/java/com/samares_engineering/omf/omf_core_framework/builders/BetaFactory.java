@@ -16,7 +16,7 @@ public class BetaFactory {
     private static BetaFactory instance = new BetaFactory();
 
     private BetaFactory() {
-        magicDrawFactory = OMFUtils.currentProject.getElementsFactory();
+        magicDrawFactory = OMFUtils.getProject().getElementsFactory();
     }
 
     public static BetaFactory getInstance() {

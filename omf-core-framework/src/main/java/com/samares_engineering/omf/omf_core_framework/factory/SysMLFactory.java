@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 public class SysMLFactory extends AMagicDrawFactory {
     public static SysMLFactory getInstance() {
-        return getInstance(OMFUtils.currentProject);
+        return getInstance(OMFUtils.getProject());
     }
 
     public static SysMLFactory getInstance(Project project) {

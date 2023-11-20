@@ -54,7 +54,7 @@ public class ProjectRetriever implements CommandLineAction {
             Application.getInstance().getProjectsManager().loadProject(projectDescriptor, EmptyProgressStatus.getDefault());
 
             File file = new File(pathToSaveProject, initProjectName + ".mdzip");
-            EsiUtils.convertToLocal(OMFUtils.currentProject, file);
+            EsiUtils.convertToLocal(OMFUtils.getProject(), file);
         }
             return 0;
     }

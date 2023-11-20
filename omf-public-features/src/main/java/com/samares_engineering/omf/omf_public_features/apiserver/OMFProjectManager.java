@@ -33,7 +33,7 @@ public class OMFProjectManager {
 
     public Project openTWCProject(String projectPath) throws OMFException {
         getTWCAccessor().openProject(projectPath);
-        return OMFUtils.currentProject;
+        return OMFUtils.getProject();
     }
 
     private TwcAccessor getTWCAccessor() {

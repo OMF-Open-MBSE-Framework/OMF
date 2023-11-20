@@ -27,7 +27,7 @@ public class Profile {
     }
 
     public static Profile getInstance(){
-        return getInstance(OMFUtils.currentProject);
+        return getInstance(OMFUtils.getProject());
     }
 
     public static Profile getInstance(Project project){

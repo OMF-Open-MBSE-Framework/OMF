@@ -137,16 +137,16 @@ public class RestrictedElementCheckerListener extends AElementListener implement
 
     @Override
     public void addingListener() {
-        TransactionManager transactionManager = OMFUtils.currentProject.getRepository().getTransactionManager();
+        TransactionManager transactionManager = OMFUtils.getProject().getRepository().getTransactionManager();
         transactionManager.addTransactionCommitListenerForExecute(this);
     }
 
     @Override
     public void removingListener() {
-        final boolean isListenerRemovable = (null != OMFUtils.currentProject);
+        final boolean isListenerRemovable = (null != OMFUtils.getProject());
         if (isListenerRemovable) {
             try {
-                OMFUtils.currentProject.getRepository().getTransactionManager().removeTransactionCommitListener(this);
+                OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);
             } catch (Exception e) {
                 OMFErrorHandler.handleException(new OMFException("[RemoveListener] unable to unregister this listener", 
                         GenericException.ECriticality.ALERT));

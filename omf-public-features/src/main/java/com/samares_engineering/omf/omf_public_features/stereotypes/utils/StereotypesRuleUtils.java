@@ -206,7 +206,7 @@ public class StereotypesRuleUtils {
      * @return Stereotype
      */
     public static Stereotype getStereotypeFromAnyProfile(String str){
-        Collection<Profile> profileList = StereotypesHelper.getAllProfiles(OMFUtils.currentProject);
+        Collection<Profile> profileList = StereotypesHelper.getAllProfiles(OMFUtils.getProject());
         Function<Profile, List<Stereotype>> getAllStereotypes = profile -> {
             List<Stereotype> stereotypes = profile.getNestedPackage().stream()
                     .map(Package::getOwnedStereotype)
@@ -224,7 +224,7 @@ public class StereotypesRuleUtils {
 
         Stereotype foundStereotype = optStereotype.isPresent() ?
                 optStereotype.get()
-                : StereotypesHelper.getStereotype(OMFUtils.currentProject, str); //Not optimal but cover stereotype declared inside directly the project
+                : StereotypesHelper.getStereotype(OMFUtils.getProject(), str); //Not optimal but cover stereotype declared inside directly the project
 
         if(foundStereotype != null){
             return foundStereotype;
@@ -241,7 +241,7 @@ public class StereotypesRuleUtils {
      * @return Profile
      */
     public static Profile getProfileByStereotypeName(String str) {
-        Collection<Profile> profileList = StereotypesHelper.getAllProfiles(OMFUtils.currentProject);
+        Collection<Profile> profileList = StereotypesHelper.getAllProfiles(OMFUtils.getProject());
         Optional<Stereotype> optStereotype = profileList.stream().map(Profile::getOwnedStereotype).flatMap(Collection::stream)
                 .filter(Stereotype -> Stereotype.getName().equalsIgnoreCase(str)).findFirst();
         if(optStereotype.isPresent()){

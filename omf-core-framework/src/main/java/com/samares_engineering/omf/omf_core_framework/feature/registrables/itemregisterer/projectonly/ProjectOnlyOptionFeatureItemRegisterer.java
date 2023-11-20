@@ -51,7 +51,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
     public void registerFeatureItem(IOption option) {
         try {
             if (option == null || !option.isActivated()) return;
-            if (option.getKind() == OptionKind.Project && OMFUtils.currentProject == null) return;
+            if (option.getKind() == OptionKind.Project && OMFUtils.getProject() == null) return;
             option.register();
         }catch (Exception e){
             throw new OMFFeatureRegisteringException(

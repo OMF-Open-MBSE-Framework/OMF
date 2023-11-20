@@ -40,7 +40,7 @@ public class TestProfile extends ProfileImplementation
         return profile;
     }
     public static TestProfile getInstanceByProject(){
-        return getInstanceByProject(OMFUtils.currentProject);
+        return getInstanceByProject(OMFUtils.getProject());
     }
     public static TestProfile getInstanceByProject(ElementProject project)
     {

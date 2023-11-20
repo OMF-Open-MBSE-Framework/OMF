@@ -21,7 +21,7 @@ public abstract class AMagicDrawFactory {
     protected Project project;
 
     public void reInitFactory(String className){
-        reInitFactory(className, OMFUtils.currentProject);
+        reInitFactory(className, OMFUtils.getProject());
     }
 
     public void reInitFactory(String className, Project project) {

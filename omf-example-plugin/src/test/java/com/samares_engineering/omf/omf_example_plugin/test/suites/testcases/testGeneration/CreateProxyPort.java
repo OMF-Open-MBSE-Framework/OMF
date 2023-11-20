@@ -35,12 +35,12 @@ public class CreateProxyPort extends AbstractTestCase {
       openDiagram("_2021x_2_302b0611_1670957709771_148945_3383");
     }
 
-    Port p1 = OMFUtils.currentProject.getElementsFactory().createPortInstance();
+    Port p1 = OMFUtils.getProject().getElementsFactory().createPortInstance();
 
     Profile profile;
     Stereotype stereotype;
-    profile = StereotypesHelper.getProfile(OMFUtils.currentProject, "SysML");
-    stereotype = StereotypesHelper.getStereotype(OMFUtils.currentProject, "ProxyPort", profile);
+    profile = StereotypesHelper.getProfile(OMFUtils.getProject(), "SysML");
+    stereotype = StereotypesHelper.getStereotype(OMFUtils.getProject(), "ProxyPort", profile);
     StereotypesHelper.addStereotype(p1, stereotype);
 
     p1.setOwner(owner);

@@ -65,7 +65,7 @@ public abstract class AOption implements IOption {
             Application.getInstance().getEnvironmentOptions().addEnvironmentChangeListener(listener);
     }
     public void addProjectListener(PropertyChangeListener listener){
-            OMFUtils.currentProject.getOptions().addPropertyChangeListener(listener);
+            OMFUtils.getProject().getOptions().addPropertyChangeListener(listener);
     }
     @Override
     public void removeListener(AOptionListener listener){
@@ -78,7 +78,7 @@ public abstract class AOption implements IOption {
         Application.getInstance().getEnvironmentOptions().removeEnvironmentChangeListener(listener);
     }
     public void removeProjectListener(PropertyChangeListener listener){
-        OMFUtils.currentProject.getOptions().removePropertyChangeListener(listener);
+        OMFUtils.getProject().getOptions().removePropertyChangeListener(listener);
     }
     @Override
     public void removeAllListeners(){
@@ -145,11 +145,11 @@ public abstract class AOption implements IOption {
         if(resourceProvider != null)
             property.setResourceProvider(resourceProvider);
         property.setGroup(groupName);
-//        boolean searchExistingOptionCategoryByID = OMFUtils.currentProject != null && optionCategory == null && !Strings.isNullOrEmpty(uriOptions);
+//        boolean searchExistingOptionCategoryByID = OMFUtils.getProject() != null && optionCategory == null && !Strings.isNullOrEmpty(uriOptions);
 //        if(searchExistingOptionCategoryByID)
 //            optionCategory = getOrCreateProjectCategory(uriOptions, categoryName);
-        if(OMFUtils.currentProject != null)
-            OMFUtils.currentProject.getOptions().addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, property);
+        if(OMFUtils.getProject() != null)
+            OMFUtils.getProject().getOptions().addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, property);
         FeatureProjectOptionsConfigurator.getInstance().addOption(this);
 //        optionCategory.addProperty(property);
         listenerToRegister.forEach(this::addListener);

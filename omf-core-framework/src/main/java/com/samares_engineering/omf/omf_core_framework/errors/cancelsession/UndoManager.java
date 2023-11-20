@@ -39,10 +39,10 @@ public class UndoManager {
     /**
      * Will wait for the Session to be closed before triggering Undo.
      * This could be useful to "cancel" an action performed in a session that does not belong to you.
-     * NOTE: Undo will be executed inside the OMFUtils.currentProject
+     * NOTE: Undo will be executed inside the OMFUtils.getProject()
      */
     public void requestRedo(){
-        requestRedo(OMFUtils.currentProject);
+        requestRedo(OMFUtils.getProject());
     }
 
     /**
@@ -54,7 +54,7 @@ public class UndoManager {
         startThead(() -> redoOnSessionClosure(project));
     }
     public void requestUndo(){
-        requestUndo(OMFUtils.currentProject);
+        requestUndo(OMFUtils.getProject());
     }
     private void requestUndo(Project project){
         startThead(() -> undoOnSessionClosure(project));
@@ -64,11 +64,11 @@ public class UndoManager {
      * Will wait for the Session to be closed before triggering Undo.
      * It will also prevent the User to redo the canceled action.
      * This could be useful to "cancel" an action performed in a session that does not belong to you.
-     * NOTE: Undo will be executed inside the OMFUtils.currentProject .
+     * NOTE: Undo will be executed inside the OMFUtils.getProject() .
      * NOTE 2: the redo will still be available but will not do anything.
      */
     public void requestHardUndo() {
-        requestHardUndo(OMFUtils.currentProject);
+        requestHardUndo(OMFUtils.getProject());
     }
 
     /**
@@ -135,7 +135,7 @@ public class UndoManager {
      * Performing directly the undo on the current project
      */
     public static void undo() {
-        undo(OMFUtils.currentProject);
+        undo(OMFUtils.getProject());
     }
     /**
      * Performing directly the undo on the given project
@@ -154,7 +154,7 @@ public class UndoManager {
      * Performing directly the redo on the current project
      */
     public static void redo() {
-        redo(OMFUtils.currentProject);
+        redo(OMFUtils.getProject());
     }
 
     /**
@@ -168,7 +168,7 @@ public class UndoManager {
      * Deactivate the first redo command actions for the current project, it will still be available for the user but will not do anything
      */
     public static void deactivateFirstRedo(){
-        deactivateFirstRedo(OMFUtils.currentProject);
+        deactivateFirstRedo(OMFUtils.getProject());
     }
     /**
      * Deactivate the first redo command actions for the given project, it will still be available for the user but will not do anything
