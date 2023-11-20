@@ -79,6 +79,8 @@ dependencies {
     otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 }
 
+jar.dependsOn(':omf-test-framework:jar', ':omf-core-framework:jar', ':omf-public-features:jar', ':smart-private:jar')
+
 // Samares gradle plugin configuration
 mdPluginBuild {
     humanVersion = version
