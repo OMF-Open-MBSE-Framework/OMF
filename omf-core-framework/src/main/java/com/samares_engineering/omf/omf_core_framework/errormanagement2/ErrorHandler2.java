@@ -102,7 +102,7 @@ public class ErrorHandler2 {
     private static void rollbackChanges() {
         //new OMFLog2().text("Rolling back action's changes after encountering critical error")
         //        .logToConsole(OMFLogLevel2.ERROR);
-        if (SessionManager.getInstance().isSessionCreated(OMFUtils.currentProject)) {
+        if (SessionManager.getInstance().isSessionCreated(OMFUtils.getProject())) {
             throw new RollbackException2();
         }
     }
