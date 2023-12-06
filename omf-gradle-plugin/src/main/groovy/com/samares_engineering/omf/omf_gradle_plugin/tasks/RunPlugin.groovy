@@ -8,6 +8,6 @@ abstract class RunPlugin extends JavaExec {
         workingDir "$project.buildDir/install"
         mainClass = 'com.nomagic.magicdraw.Main'
         args 'DEVELOPER', '-verbose'
-        jvmArgs = ["-Xmx4000M", "-Xss1024K", "-Dmd.development=true", "-Dmd.class.path=" + javaVersion]
+        jvmArgs = ["-Xmx16000M", "-Xss1024K", "-Dmd.development=true", "-Dmd.class.path=" + javaVersion]
     }
 }

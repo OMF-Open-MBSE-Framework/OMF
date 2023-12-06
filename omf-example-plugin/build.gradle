@@ -76,6 +76,7 @@ dependencies {
     pluginLibrary 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
 
     zippedMDPlugin "com.nomagic.magicdraw:devtools:2021x_Refresh2@zip"
+    zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2021x_Refresh2@zip"
     otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 }
 

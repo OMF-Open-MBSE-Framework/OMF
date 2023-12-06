@@ -21,10 +21,13 @@ import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 import java.beans.PropertyChangeEvent;
 
 public class CreateAutoInterface_OnPortCreation extends ARule {
+    /**
+     * Triggered only when a <<ProxyPort>> is created
+     * @param evt event occurred in the model
+     * @return true if the event matches the rule
+     */
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
-        boolean isActivated = ((SysMLBasicOptionHelper) getFeature().getEnvOptionsHelper()).isAutoInterfaceCreationActivated();
-        if(!isActivated) return false;
        return new EventChecker()
                 .isElementCreated()
                 .isPort()
@@ -32,10 +35,15 @@ public class CreateAutoInterface_OnPortCreation extends ARule {
                 .test(evt);
     }
 
+    /**
+     * Will create an InterfaceBlock and a FlowProperty with the same name as the port
+     * @param evt event occurred in the model
+     * @return the event
+     */
     @Override
-    public PropertyChangeEvent process(PropertyChangeEvent e) {
+    public PropertyChangeEvent process(PropertyChangeEvent evt) {
         try {
-            Port port = (Port) e.getSource();
+            Port port = (Port) evt.getSource();
             Class interfaceBlock = SysMLFactory.getInstance().createInterfaceBlock(port.getOwner());
             interfaceBlock.setName("TO RENAME");
             port.setType(interfaceBlock);
@@ -48,12 +56,7 @@ public class CreateAutoInterface_OnPortCreation extends ARule {
             OMFErrorHandler.handleException(uncheckedException);
         }
 
-        return e;
-    }
-
-    @Override
-    public void debug(Object o) {
-
+        return evt;
     }
 
 

@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.SynchAllNameAction;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.SyncAllNameAction;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
 
@@ -35,7 +35,7 @@ public class SysMLBasicFeature extends AFeature {
     public List<UIAction> initFeatureActions() {
         return List.of(
 //             new ResetListeners()
-            new SynchAllNameAction()
+            new SyncAllNameAction()
         );
     }
 
