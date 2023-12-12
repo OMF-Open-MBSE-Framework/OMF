@@ -40,5 +40,4 @@
         <!-- START AUTO-GENERATED -->
         <!-- END AUTO-GENERATED -->
     </installation>
-    <fileName>${plugin.archiveFileName}</fileName>
 </resourceDescriptor>
