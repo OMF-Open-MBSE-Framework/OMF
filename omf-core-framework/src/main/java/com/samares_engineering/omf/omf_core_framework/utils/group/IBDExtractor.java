@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.utils.group;
 
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.uml.ConvertElementInfo;
-import com.nomagic.magicdraw.uml.ModelElementWrapper;
+import com.nomagic.magicdraw.uml.ElementWrapper;
 import com.nomagic.magicdraw.uml.Refactoring;
 import com.nomagic.magicdraw.uml.refactor.extract.*;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
@@ -84,7 +84,7 @@ public class IBDExtractor {
         ExtractRefactorTarget refactorTarget = (ExtractRefactorTarget) extractManager.getExtractTarget();
 
         if(strPartOwnerToApply!= null) {
-            refactorTarget.setElementWrapper(ModelElementWrapper.getWrapper(strPartOwnerToApply));
+            refactorTarget.setElementWrapper(ElementWrapper.getWrapper(strPartOwnerToApply));
         }
         return extractTarget;
     }
