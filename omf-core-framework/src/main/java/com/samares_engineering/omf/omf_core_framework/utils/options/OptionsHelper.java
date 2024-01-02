@@ -17,7 +17,7 @@ import com.nomagic.magicdraw.properties.PropertyManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Optional;

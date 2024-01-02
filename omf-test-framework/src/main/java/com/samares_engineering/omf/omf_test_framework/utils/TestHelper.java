@@ -22,7 +22,7 @@ import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkExc
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.filters.ElementFilter;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.ElementModelComparator;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.junit.Assert.assertNotNull;
 
