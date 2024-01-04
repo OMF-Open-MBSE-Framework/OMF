@@ -19,6 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
+import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.filters.ElementFilter;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.OMFModelComparator;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
@@ -73,18 +74,11 @@ public class TestHelper {
 
         testCase.createNewProjectComparator("./logfile.txt");
         OMFModelComparator comparator = new OMFModelComparator();
-        comparator.addFilter(new ElementFilter());
+        comparator.addFilter(new ElementFilter(testPackage, resultPackage));
 
-        boolean result = false;
+        ElementDiff result = comparator.compareElements(testPackage, resultPackage);
 
-        try{
-            result = comparator.comparePackages(testPackage, resultPackage);
-        }catch (Exception e){
-            logger.err("/!\\ ---- ERROR DURING TEST  ---- /!\\ \n");
-            OMFErrorHandler.handleException(e, false);
-        }
-
-        if(result)
+        if(result.isDiffIdentical())
             logger.success("**** PROJECT COMPARE: PASSED ***" + "\n " +
                     comparator.getDiffInfo());
         else
@@ -94,7 +88,7 @@ public class TestHelper {
         logger.log("PROJECT COMPARE: " + result + "\n " +
                 comparator.getDiffInfo());
 
-        return result;
+        return result.isDiffIdentical();
     }
 
     public static boolean compareStringsNoCaseNoSpace(String s1, String s2) {

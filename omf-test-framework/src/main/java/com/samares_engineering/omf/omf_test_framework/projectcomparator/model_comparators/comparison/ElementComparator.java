@@ -1,11 +1,13 @@
 package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison;
 
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.ExtensionEnd;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.diffmanagement.DiffManager;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.helpers.ComparatorUtils;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.helpers.ElementMatcher;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.propertycomparators.AttributeComparator;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.propertycomparators.ReferenceComparator;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.propertycomparators.TaggedValueComparator;
+import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.DiffKind;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.PropertyDiff;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparatorFilter;
@@ -44,13 +46,13 @@ public class ElementComparator {
             return diffManager.createIdenticalDiff(elementLeft, elementRight);
         }
 
+        ElementDiff diff = diffManager.createDiff(elementLeft, elementRight, DiffKind.IDENTICAL);
         List<PropertyDiff> propertyDiffs = new ArrayList<>();
         propertyDiffs.addAll(attributeComparator.compareAttributes(elementLeft, elementRight));
         propertyDiffs.addAll(referenceComparator.compareReferences(elementLeft, elementRight));
         propertyDiffs.addAll(taggedValueComparator.compareTaggedValues(elementLeft, elementRight));
-
-        return diffManager.createDiff(elementLeft, elementRight, ComparatorUtils.computeElementDiffKind(propertyDiffs))
-                .addPropertyDiffs(propertyDiffs);
+        diff.setDiffKind(ComparatorUtils.computeElementDiffKind(propertyDiffs));
+        return diff.addPropertyDiffs(propertyDiffs);
     }
 
     /**

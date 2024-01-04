@@ -13,6 +13,19 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 public class ElementFilter implements ModelComparatorFilter {
+    private Element scopeA;
+    private Element scopeB;
+
+    public ElementFilter(Element scope) {
+        this.scopeA = scope;
+        this.scopeB = scope;
+    }
+
+    public ElementFilter() {
+        this.scopeA = null;
+        this.scopeB = null;
+    }
+
     @Override
     public boolean needToCompare(Element element) {
         //Each attributes of stereotype
@@ -20,7 +33,24 @@ public class ElementFilter implements ModelComparatorFilter {
             return false;
         if (Profile.getInstance().getMagicDraw().legend().is(element) || Profile.getInstance().getMagicDraw().legend().is(element.getOwner()))
             return false;
+        if (scopeA != null && isInScope(scopeA, element)) {
+            return false;
+        }
+        if (scopeB != null && isInScope(scopeB, element)) {
+            return false;
+        }
         return true;
+    }
+
+    private boolean isInScope(Element scopeA, Element element) {
+        Element ancestor = element;
+        do {
+            if (ancestor == scopeA) {
+                return true;
+            }
+            ancestor = ancestor.getOwner();
+        } while (ancestor.getOwner() != null);
+        return false;
     }
 
     @Override
