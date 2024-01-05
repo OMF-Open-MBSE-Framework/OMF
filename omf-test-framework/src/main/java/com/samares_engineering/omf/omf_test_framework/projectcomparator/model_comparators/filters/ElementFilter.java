@@ -16,9 +16,9 @@ public class ElementFilter implements ModelComparatorFilter {
     private Element scopeA;
     private Element scopeB;
 
-    public ElementFilter(Element scope) {
-        this.scopeA = scope;
-        this.scopeB = scope;
+    public ElementFilter(Element scopeA, Element scopeB) {
+        this.scopeA = scopeA;
+        this.scopeB = scopeB;
     }
 
     public ElementFilter() {
@@ -33,19 +33,16 @@ public class ElementFilter implements ModelComparatorFilter {
             return false;
         if (Profile.getInstance().getMagicDraw().legend().is(element) || Profile.getInstance().getMagicDraw().legend().is(element.getOwner()))
             return false;
-        if (scopeA != null && isInScope(scopeA, element)) {
-            return false;
-        }
-        if (scopeB != null && isInScope(scopeB, element)) {
+        if (scopeA != null && !isInScope(scopeA, element) && scopeB != null && !isInScope(scopeB, element)) {
             return false;
         }
         return true;
     }
 
-    private boolean isInScope(Element scopeA, Element element) {
+    private boolean isInScope(Element scope, Element element) {
         Element ancestor = element;
         do {
-            if (ancestor == scopeA) {
+            if (ancestor == scope) {
                 return true;
             }
             ancestor = ancestor.getOwner();
