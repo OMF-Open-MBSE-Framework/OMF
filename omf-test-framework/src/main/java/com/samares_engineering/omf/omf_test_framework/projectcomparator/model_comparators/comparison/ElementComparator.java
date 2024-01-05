@@ -61,38 +61,7 @@ public class ElementComparator {
      * diffs are created when the unmatched elements are only present in one of the lists (and we can thus be sure they
      * have been created or removed rather than modified beyond our ability to match them).
      */
-//    public List<ElementDiff> compareElementLists(List<Element> elemsLeft, List<Element> elemsRight, List<Map<Element, Element>> alreadyMatched) {
     public List<ElementDiff> compareElementLists(List<Element> elemsLeft, List<Element> elemsRight) {
-
-        // START TO BE TESTED
-////        Set<Element> comparisonsDoneLeftElements = comparisonsDone.stream()
-////                .map(ElementDiff::getElementLeft)
-////                .filter(Optional::isPresent)
-////                .map(Optional::get)
-////                .collect(Collectors.toSet());
-////
-////        elemsLeft.removeAll(comparisonsDoneLeftElements);
-////
-////        Set<Element> comparisonsDoneRightElements = comparisonsDone.stream()
-////                .map(ElementDiff::getElementRight)
-////                .filter(Optional::isPresent)
-////                .map(Optional::get)
-////                .collect(Collectors.toSet());
-////
-////        elemsRight.removeAll(comparisonsDoneRightElements);
-
-//        Set<Element> alreadyMatchedLeftElements = alreadyMatched.stream()
-//                .flatMap(map -> map.keySet().stream())
-//                .collect(Collectors.toSet());
-//
-//        elemsLeft.removeAll(alreadyMatchedLeftElements);
-//
-//        Set<Element> alreadyMatchedRightElements = alreadyMatched.stream()
-//                .flatMap(map -> map.values().stream())
-//                .collect(Collectors.toSet());
-//
-//        elemsRight.removeAll(alreadyMatchedRightElements);
-        // END TO BE TESTED
 
         List<Element> remainingElemsLeft = new ArrayList<>(elemsLeft);
         List<Element> remainingElemsRight = new ArrayList<>(elemsRight);

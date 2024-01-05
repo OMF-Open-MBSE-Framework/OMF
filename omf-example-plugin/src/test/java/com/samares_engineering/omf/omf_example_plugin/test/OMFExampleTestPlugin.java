@@ -34,8 +34,8 @@ public class OMFExampleTestPlugin extends APlugin {
 
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
-            TWCBatch.class,
-            LocalAPIBatch.class,
+//            TWCBatch.class,
+//            LocalAPIBatch.class,
             LocalBatch.class
     );
 

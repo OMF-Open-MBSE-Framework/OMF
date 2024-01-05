@@ -69,6 +69,11 @@ public class StereotypesRuleUpdater {
     private void createInstanceRules(String configFilePath) {
         List<List<String>> linesToParse = getLinesToParseFromConfigFile(configFilePath, delimiter);
         for (List<String> line : linesToParse) {
+            if (line.size() < 7) {
+                continue;
+            }
+
+
             String typeListener = line.get(0);
             String typeStereotype = line.get(1);
             String instanceStereotype = line.get(2);

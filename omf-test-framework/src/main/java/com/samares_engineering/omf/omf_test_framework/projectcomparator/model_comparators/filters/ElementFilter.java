@@ -21,6 +21,11 @@ public class ElementFilter implements ModelComparatorFilter {
         this.scopeB = scope;
     }
 
+    public ElementFilter(Element scopeA, Element scopeB) {
+        this.scopeA = scopeA;
+        this.scopeB = scopeB;
+    }
+
     public ElementFilter() {
         this.scopeA = null;
         this.scopeB = null;
@@ -33,10 +38,10 @@ public class ElementFilter implements ModelComparatorFilter {
             return false;
         if (Profile.getInstance().getMagicDraw().legend().is(element) || Profile.getInstance().getMagicDraw().legend().is(element.getOwner()))
             return false;
-        if (scopeA != null && isInScope(scopeA, element)) {
+        if (scopeA != null && !isInScope(scopeA, element)) {
             return false;
         }
-        if (scopeB != null && isInScope(scopeB, element)) {
+        if (scopeB != null && !isInScope(scopeB, element)) {
             return false;
         }
         return true;

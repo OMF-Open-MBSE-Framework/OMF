@@ -11,31 +11,31 @@ public class DifferencesLogger {
     private final Set<com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.DifferencesLogger.Entry> removed = new HashSet<>();
     private final Map<Element, com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.DifferencesLogger.Diff> changed = new HashMap<>();
 
-    public void logReferencedElements(String refName, Element elemLeft, Element elemRight,
-                                      List<Element> remainingValuesLeft, List<Element> remainingValuesRight) {
-        if (remainingValuesLeft.size() == 1 && remainingValuesRight.size() == 1) {
-            addChange(elemLeft, elemRight, "Changed reference <b>"
-                    + refName + "</b> from " + getFullName(remainingValuesLeft.get(0)) + " to "
-                    + getFullName(remainingValuesRight.get(0)));
-        } else {
-            remainingValuesLeft.forEach(elem ->
-                    addChange(elemLeft, elemRight, "Removed reference <b>"
-                            + refName + "</b> to " + getFullName(elem)));
-            remainingValuesRight.forEach(elem ->
-                    addChange(elemLeft, elemRight, "Added reference <b>"
-                            + refName + "</b> to " + getFullName(elem)));
-        }
-    }
-
-    public void logTaggedValueValuesDiffs(Element elemLeft, Element elemRight, TaggedValue taggedValue1,
-                                          List<Object> remainingValuesOld, List<Object> remainingValuesNew) {
-        int unchangedValuesCount = taggedValue1.getValue().size() - remainingValuesOld.size();
-        String unchangedValuesDescription = unchangedValuesCount > 0 ? unchangedValuesCount + " other values where unchanged." : "";
-        addChange(elemRight, elemLeft, "Changed taggedValue <b>"
-                + taggedValue1.getTagDefinition().getName() + "</b>"
-                + " removed values [" + ComparatorUtils.taggedValueValuesToString(remainingValuesOld) + "] and added values ["
-                + ComparatorUtils.taggedValueValuesToString(remainingValuesNew) + "]. " + unchangedValuesDescription);
-    }
+//    public void logReferencedElements(String refName, Element elemLeft, Element elemRight,
+//                                      List<Element> remainingValuesLeft, List<Element> remainingValuesRight) {
+//        if (remainingValuesLeft.size() == 1 && remainingValuesRight.size() == 1) {
+//            addChange(elemLeft, elemRight, "Changed reference <b>"
+//                    + refName + "</b> from " + getFullName(remainingValuesLeft.get(0)) + " to "
+//                    + getFullName(remainingValuesRight.get(0)));
+//        } else {
+//            remainingValuesLeft.forEach(elem ->
+//                    addChange(elemLeft, elemRight, "Removed reference <b>"
+//                            + refName + "</b> to " + getFullName(elem)));
+//            remainingValuesRight.forEach(elem ->
+//                    addChange(elemLeft, elemRight, "Added reference <b>"
+//                            + refName + "</b> to " + getFullName(elem)));
+//        }
+//    }
+//
+//    public void logTaggedValueValuesDiffs(Element elemLeft, Element elemRight, TaggedValue taggedValue1,
+//                                          List<Object> remainingValuesOld, List<Object> remainingValuesNew) {
+//        int unchangedValuesCount = taggedValue1.getValue().size() - remainingValuesOld.size();
+//        String unchangedValuesDescription = unchangedValuesCount > 0 ? unchangedValuesCount + " other values where unchanged." : "";
+//        addChange(elemRight, elemLeft, "Changed taggedValue <b>"
+//                + taggedValue1.getTagDefinition().getName() + "</b>"
+//                + " removed values [" + ComparatorUtils.taggedValueValuesToString(remainingValuesOld) + "] and added values ["
+//                + ComparatorUtils.taggedValueValuesToString(remainingValuesNew) + "]. " + unchangedValuesDescription);
+//    }
 
     public void logTheTaggedValuesDiffs(Element elemLeft, Element elemRight, List<TaggedValue> unmatchedTaggedValuesLeft,
                                         List<TaggedValue> unmatchedTaggedValuesRight) {

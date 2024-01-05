@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class MicCompareElementFilter implements ModelComparatorFilter {
     @Override
     public boolean needToCompare(Element element) {
-        //TODO
+        if (element instanceof Element) return true;
 //        if (MBSIProfile.getInstance().mic().is(element)) return true;
 //        if (MBSIProfile.getInstance().micPort().is(element)) return true;
 //        if (MBSIProfile.getInstance().micControlInterface().is(element)) return true;
