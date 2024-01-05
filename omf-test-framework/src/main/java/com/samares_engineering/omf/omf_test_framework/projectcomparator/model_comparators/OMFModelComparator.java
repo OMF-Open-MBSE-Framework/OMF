@@ -2,7 +2,6 @@ package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_c
 
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.ElementComparator;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.DifferencesLogger;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparator;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparatorFilter;
@@ -17,7 +16,6 @@ import java.util.List;
 
 public class OMFModelComparator implements ModelComparator {
     private final List<ModelComparatorFilter> filters = new ArrayList<>();
-    private DifferencesLogger differencesLogger = new DifferencesLogger();
 
     //
     // OMFModelComparator API/public methods
@@ -25,7 +23,7 @@ public class OMFModelComparator implements ModelComparator {
 
     @Override
     public String getDiffInfo() {
-        return differencesLogger.getDiffInfo();
+        return ""; //TODO
     }
 
     @Override
@@ -47,7 +45,7 @@ public class OMFModelComparator implements ModelComparator {
      * UNTESTED !
      */
     public boolean comparePackages(Collection<Package> model1Packages, Collection<Package> model2Packages) {
-        ElementComparator elementComparator = new ElementComparator(differencesLogger, filters);
+        ElementComparator elementComparator = new ElementComparator(filters);
         //TODO: areSizeEquals => size of comparable elements (filter(noNeedToCompare))
         if (model1Packages.size() != model2Packages.size()) {
             return false;
@@ -71,7 +69,7 @@ public class OMFModelComparator implements ModelComparator {
     }
 
     public ElementDiff compareElements(Element initPackage, Element oraclePackage) {
-        ElementComparator elementComparator = new ElementComparator(differencesLogger, filters);
+        ElementComparator elementComparator = new ElementComparator(filters);
         return elementComparator.compareElements(initPackage, oraclePackage);
     }
 }

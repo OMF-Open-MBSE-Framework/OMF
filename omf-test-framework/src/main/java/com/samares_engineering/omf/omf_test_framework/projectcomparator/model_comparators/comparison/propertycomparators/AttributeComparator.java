@@ -29,8 +29,6 @@ public class AttributeComparator {
         Object valueLeft = ((AbstractRefObject) elemLeft).get(attributeName);
         Object valueRight = ((AbstractRefObject) elemRight).get(attributeName);
 
-        elemComparator.getDifferencesLogger().logAttributeDiffs(elemLeft, elemRight, attributeName, valueLeft, valueRight);
-
         if (Objects.equals(valueLeft, valueRight)) {
             return new PropertyDiff(attributeName, valueLeft, valueRight, DiffKind.IDENTICAL);
         } else if (valueLeft == null) {

@@ -16,7 +16,6 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import java.util.*;
 
 public class ElementComparator {
-    private final DifferencesLogger differencesLogger;
     private final FilterManager filterManager;
     private final DiffManager diffManager = new DiffManager(this);
     private final AttributeComparator attributeComparator = new AttributeComparator(this);
@@ -24,8 +23,7 @@ public class ElementComparator {
     private final ReferenceComparator referenceComparator = new ReferenceComparator(this);
     private final TaggedValueComparator taggedValueComparator = new TaggedValueComparator(this);
 
-    public ElementComparator(DifferencesLogger differencesLogger, List<ModelComparatorFilter> filters) {
-        this.differencesLogger = differencesLogger;
+    public ElementComparator(List<ModelComparatorFilter> filters) {
         filterManager = new FilterManager(filters);
     }
 
@@ -133,11 +131,6 @@ public class ElementComparator {
     /*
      Getters
      */
-
-    public DifferencesLogger getDifferencesLogger() {
-        return differencesLogger;
-    }
-
     public DiffManager getDiffFactory() {
         return diffManager;
     }

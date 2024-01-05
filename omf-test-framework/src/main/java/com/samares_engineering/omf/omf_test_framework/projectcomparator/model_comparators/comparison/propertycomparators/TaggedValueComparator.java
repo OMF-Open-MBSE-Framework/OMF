@@ -63,8 +63,6 @@ public class TaggedValueComparator {
                 .map(taggedValue -> new PropertyDiff(null, taggedValue, DiffKind.ADDED))
                 .collect(Collectors.toList()));
 
-        elemComparator.getDifferencesLogger().logTheTaggedValuesDiffs(elemLeft, elemRight, unmatchedTaggedValuesLeft, unmatchedTaggedValuesRight);
-
         return taggedValuesPropertyDiffs;
     }
 

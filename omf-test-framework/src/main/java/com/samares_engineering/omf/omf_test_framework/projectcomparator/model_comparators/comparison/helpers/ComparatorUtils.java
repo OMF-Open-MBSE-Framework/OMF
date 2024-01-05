@@ -68,10 +68,10 @@ public class ComparatorUtils {
 
     private static String getNameOfElementOrOwner(Element element) {
         if (element instanceof NamedElement) {
-            return " <b>" + (element).getHumanName() + "</b>";
+            return element.getHumanType() + " \"" + ((NamedElement) element).getName() + "\"";
         } else {
             if (element.getOwner() != null && element.getOwner() instanceof NamedElement) {
-                return " of <b>" + element.getOwner().getHumanName() + "</b>";
+                return "of " + element.getOwner().getHumanName();
             }
         }
         return "";

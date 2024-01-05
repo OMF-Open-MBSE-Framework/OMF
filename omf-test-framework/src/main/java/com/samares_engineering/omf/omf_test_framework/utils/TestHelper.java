@@ -22,6 +22,7 @@ import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkExc
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.filters.ElementFilter;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.OMFModelComparator;
+import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.logger.DifferencesLogger;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import org.apache.commons.lang.StringUtils;
 
@@ -78,15 +79,8 @@ public class TestHelper {
 
         ElementDiff result = comparator.compareElements(testPackage, resultPackage);
 
-        if(result.isDiffIdentical())
-            logger.success("**** PROJECT COMPARE: PASSED ***" + "\n " +
-                    comparator.getDiffInfo());
-        else
-            logger.err("**** PROJECT COMPARE: FAILED ***" + "\n " +
-                    comparator.getDiffInfo());
-
-        logger.log("PROJECT COMPARE: " + result + "\n " +
-                comparator.getDiffInfo());
+        DifferencesLogger differencesLogger = new DifferencesLogger(result);
+        differencesLogger.logResult(logger);
 
         return result.isDiffIdentical();
     }
