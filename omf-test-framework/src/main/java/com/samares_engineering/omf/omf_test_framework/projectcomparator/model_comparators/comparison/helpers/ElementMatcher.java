@@ -35,8 +35,9 @@ public class ElementMatcher {
      * @return
      */
     public Optional<Element> findUniqueElementOfSameType(Element element, List<Element> elementsToMatch) {
+        // We compare IDs as the elements compared might be in different projects
         List<Element> candidateElems = elementsToMatch.stream()
-                .filter(elemToMatch -> StereotypesHelper.getBaseClass(elemToMatch).equals(StereotypesHelper.getBaseClass(element))
+                .filter(elemToMatch -> StereotypesHelper.getBaseClass(elemToMatch).getID().equals(StereotypesHelper.getBaseClass(element).getID())
                         && ComparatorUtils.haveSameStereotypes(element, elemToMatch))
                 .collect(Collectors.toList());
         return candidateElems.size() == 1 ? Optional.of(candidateElems.get(0)) : Optional.empty();

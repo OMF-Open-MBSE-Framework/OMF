@@ -183,7 +183,8 @@ public class ComparatorUtils {
     }
 
     public static boolean haveSameStereotypes(@Nonnull Element element, @Nonnull Element elemToMatch) {
-        return new HashSet<>(element.getAppliedStereotype())
-                .equals(new HashSet<>(elemToMatch.getAppliedStereotype()));
+        // We compare IDs as the elements compared might be in different projects
+        return element.getAppliedStereotype().stream().map(Element::getID).collect(Collectors.toList())
+                .equals(elemToMatch.getAppliedStereotype().stream().map(Element::getID).collect(Collectors.toList()));
     }
 }
