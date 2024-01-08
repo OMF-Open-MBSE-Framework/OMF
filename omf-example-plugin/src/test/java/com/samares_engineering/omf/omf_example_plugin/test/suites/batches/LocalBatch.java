@@ -32,22 +32,22 @@ import org.junit.runners.Suite.SuiteClasses;
 //        T2DeleteBlock.class,
 
         // Tests KOs
-//        T1_KO_wrongBlockName.class,
-//        T2_KO_noCreation.class,
-//        T3_KO_noDeletion.class,
+        T1_KO_wrongBlockName.class,
+        T2_KO_noCreation.class,
+        T3_KO_noDeletion.class,
         T4_KO_wrongInnerElements.class,
 
-//        // BasicSysML
-//        T1_BasicSysML_MultiActionsBlockCreation.class,
-//        T2_BasicSysML_SingleActionBlockCreation.class,
-//        T3CreatePort.class,
-//
-//        // Stereotypes Instance
-//        T1_InstanceFunctionToFctPart_InBlock.class,
-//        T2_InstanceComponentToComponentPart_InBlock.class,
-//        T3_InstanceMetamorphtToFctPart_InFunction.class,
-//        T5_InstanceHWComponantToHWComponentPart_InBlock.class,
-//        T4_InstanceMetamorphtToComponentPart_InComponent.class
+        // BasicSysML
+        T1_BasicSysML_MultiActionsBlockCreation.class,
+        T2_BasicSysML_SingleActionBlockCreation.class,
+        T3CreatePort.class,
+
+        // Stereotypes Instance
+        T1_InstanceFunctionToFctPart_InBlock.class,
+        T2_InstanceComponentToComponentPart_InBlock.class,
+        T3_InstanceMetamorphtToFctPart_InFunction.class,
+        T5_InstanceHWComponantToHWComponentPart_InBlock.class,
+        T4_InstanceMetamorphtToComponentPart_InComponent.class
 })
 public class LocalBatch extends ATestBatchLocal {
 
