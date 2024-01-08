@@ -37,7 +37,9 @@ public class ComparatorUtils {
 
     public static String elementsToString(Collection<Element> elements) {
         return elements.stream()
-                .map(Element::getHumanName)
+                .filter(element -> element instanceof NamedElement)
+                .map(NamedElement.class::cast)
+                .map(NamedElement::getName)
                 .collect(Collectors.joining(", "));
     }
 

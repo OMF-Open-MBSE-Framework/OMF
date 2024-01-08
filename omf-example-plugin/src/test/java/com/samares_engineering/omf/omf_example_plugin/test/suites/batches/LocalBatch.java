@@ -13,6 +13,7 @@ import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basi
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests.T1_KO_wrongBlockName;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests.T2_KO_noCreation;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests.T3_KO_noDeletion;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests.T4_KO_wrongInnerElements;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.stereotypes.*;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatchLocal;
 import org.junit.runner.RunWith;
@@ -31,9 +32,10 @@ import org.junit.runners.Suite.SuiteClasses;
 //        T2DeleteBlock.class,
 
         // Tests KOs
-        T1_KO_wrongBlockName.class,
-        T2_KO_noCreation.class,
-        T3_KO_noDeletion.class,
+//        T1_KO_wrongBlockName.class,
+//        T2_KO_noCreation.class,
+//        T3_KO_noDeletion.class,
+        T4_KO_wrongInnerElements.class,
 
 //        // BasicSysML
 //        T1_BasicSysML_MultiActionsBlockCreation.class,
