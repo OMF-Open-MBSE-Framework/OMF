@@ -7,6 +7,8 @@ import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_co
 import com.samares_engineering.omf.omf_test_framework.utils.TestLogger;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * This class is used to log the differences between two elements
@@ -108,8 +110,8 @@ public class DifferencesLogger {
                             + "\" with value \"" + propertyValueRight + "\" has been added.\n";
         String REMOVED_TEXT = start + "[\"" + propertyDiff.getPropertyName()
                             + "\" with value \"" + propertyValueLeft + "\" has been removed.\n";
-        String EDITED_TEXT = start + "\"" + propertyDiff.getPropertyName() + "\" change from \"" +
-                             propertyValueLeft + "\" to \"" + propertyValueRight + "\".\n";
+        String EDITED_TEXT = start + "\"" + propertyDiff.getPropertyName() + "\" changed" +
+                             logPropertyValuesEdited(propertyValueLeft, propertyValueRight) + "\n";
         switch (propertyDiff.getDiffKind()) {
             case ADDED:
                 return ADDED_TEXT;
@@ -122,6 +124,51 @@ public class DifferencesLogger {
                 if (propertyValueLeft.isEmpty()) return ADDED_TEXT;
                 return EDITED_TEXT;
         }
+    }
+
+    private String logPropertyValuesEdited(String propertyValueLeft, String propertyValueRight) {
+        if (oneIsList(propertyValueLeft, propertyValueRight)) {
+            return displayList(propertyValueLeft, propertyValueRight);
+        }
+
+        return " from \"" + propertyValueLeft + "\" to \"" + propertyValueRight;
+    }
+
+    private boolean oneIsList(String propertyValueLeft, String propertyValueRight) {
+        return propertyValueLeft.contains(",") || propertyValueRight.contains(",");
+    }
+
+    private String displayList(String propertyValueLeft, String propertyValueRight) {
+        List<String> listLeft = stringToList(propertyValueLeft);
+        List<String> listRight = stringToList(propertyValueRight);
+
+        List<String> absentFromRight = findAbsentFromTargetWithCount(listLeft, listRight);
+        List<String> absentFromLeft = findAbsentFromTargetWithCount(listRight, listLeft);
+
+        String stringRemoved = absentFromRight.isEmpty() ? "none" : "\"[" + String.join(", ", absentFromRight) + "]\"";
+        String stringAdded = absentFromLeft.isEmpty() ? "none" : "\"[" + String.join(", ", absentFromLeft) + "]\"";
+
+        return ". Elements added to list " + stringAdded + " and removed " + stringRemoved + ".";
+    }
+
+    private List<String> findAbsentFromTargetWithCount(List<String> sourceList, List<String> targetList) {
+        return sourceList.stream()
+                .collect(Collectors.groupingBy(Function.identity(),
+                        Collectors.counting())) // Get Map<String, Long> with each value and their number of occurrences
+                .entrySet()                      // Set<Map.Entry<String, Long>>
+                .stream()
+                .filter(entry -> entry.getValue() > targetList.stream()
+                        .filter(entry.getKey()::equals)
+                        .count()) // Get entry with occurrences Source > Target
+                .flatMap(entry -> Collections.nCopies((int) (entry.getValue() - targetList.stream()
+                        .filter(entry.getKey()::equals)
+                        .count()), entry.getKey()).stream())// Create a list where count x became x values
+                .collect(Collectors.toList());
+    }
+
+    private List<String> stringToList(String listAsString) {
+        String[] stringList = listAsString.split(",\\s*");
+        return Arrays.asList(stringList);
     }
 
     private String logDifferencesBetweenInnerElements(ElementDiff elementDiff) {
@@ -145,9 +192,9 @@ public class DifferencesLogger {
 
         String ADDED_TEXT = start + "with value " + LoggerUtils.getElementName(elementRight) + " has been added.\n";
         String REMOVED_TEXT = start + "with value " + LoggerUtils.getElementName(elementLeft) + " has been removed.\n";
-        String EDITED_TEXT = start + "change from " + LoggerUtils.getElementName(elementLeft) + " to "
+        String EDITED_TEXT = start + "changed from " + LoggerUtils.getElementName(elementLeft) + " to "
                                    + LoggerUtils.getElementName(elementRight)
-                                   + ". An extra tree will be created to compare them below.\n";
+                                   + ".\n";
 
         switch (elementDiff.getDiffKind()) {
             case EDITED_OWN:

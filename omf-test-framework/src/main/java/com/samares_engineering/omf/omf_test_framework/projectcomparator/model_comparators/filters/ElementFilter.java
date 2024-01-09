@@ -66,6 +66,14 @@ public class ElementFilter implements ModelComparatorFilter {
             case "featuringClassifier":
             case "classifier":
             case "UMLClass":
+            case "member":
+            case "ownedMember":
+            case "packagedElement":
+            case "attribute":
+            case "ownedAttribute":
+            case "feature":
+            case "role":
+            case "nestedClassifier":
                 return false;
             default:
                 return true;

@@ -1,0 +1,28 @@
+package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests;
+
+import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
+
+public class T5_KO_recursivelyOwned  extends AModelComparatorTestCase {/*******************************************************************************
+ * @copyright Copyright (c) 2022-2023 Samares-Engineering
+ * @Licence: EPL 2.0
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since     0.0.0
+ ******************************************************************************/
+@Override
+public void initVariables() {
+    setName("5. Different recursively owned elements");
+    testCaseID = "T5_KO_recursivelyOwned";
+    testPackageName = "5. Different recursively owned elements";
+}
+
+    @Override
+    public void initOptions() {}
+
+    @Override
+    public void testAction() {
+    }
+
+    @Override
+    public void reInitEnvOptions() {}
+
+}
