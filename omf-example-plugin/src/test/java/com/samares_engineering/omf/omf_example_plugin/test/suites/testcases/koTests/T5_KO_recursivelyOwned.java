@@ -1,8 +1,9 @@
 package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests;
 
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
+import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCaseKO;
 
-public class T5_KO_recursivelyOwned  extends AModelComparatorTestCase {/*******************************************************************************
+public class T5_KO_recursivelyOwned  extends AModelComparatorTestCaseKO {/*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
