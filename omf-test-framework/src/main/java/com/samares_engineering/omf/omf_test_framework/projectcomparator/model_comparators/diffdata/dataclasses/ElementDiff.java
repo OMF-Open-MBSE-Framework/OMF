@@ -74,7 +74,7 @@ public class ElementDiff {
     }
 
     /**
-     * @return A unique signature of the diff composed of the concatenation of ids of element left & right in that order, separated by a dash.
+     * @return A unique signature of the diff composed of the concatenation of ids of element left and right in that order, separated by a dash.
      * For a null element we use the string "_" as id.
      */
     public String getSignature() {
