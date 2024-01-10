@@ -75,12 +75,16 @@ public class DifferencesLogger {
             case UNMATCHED:
                 return (elementLeft == null) ?  ADDED_TEXT : REMOVED_TEXT;
         }
+        String elementLeftName = LoggerUtils.getElementName(elementLeft);
+        String elementRightName = LoggerUtils.getElementName(elementRight);
+
+        String displayNamesText = elementLeftName.equals(elementRightName) ?
+                                      "TEST AND ORACLE \"" + elementLeftName + "\"" :
+                                      "TEST \"" +  elementLeftName + "\" AND ORACLE \"" + elementRightName + "\"";
+
 
         // Deal with matched elements
-        stringBuilder.append("\n- [DIFFERENCES BETWEEN TEST \"" +
-                             LoggerUtils.getElementName(elementLeft) +
-                             "\" AND ORACLE \""
-                             + LoggerUtils.getElementName(elementRight) + "\"] \n"
+        stringBuilder.append("\n- [DIFFERENCES BETWEEN " + displayNamesText + "] \n"
         );
 
         stringBuilder.append(logDifferencesBetweenProperties(elementDiff));
@@ -131,7 +135,7 @@ public class DifferencesLogger {
             return displayList(propertyValueLeft, propertyValueRight);
         }
 
-        return " from \"" + propertyValueLeft + "\" to \"" + propertyValueRight;
+        return " from \"" + propertyValueLeft + "\" to \"" + propertyValueRight + "\".";
     }
 
     private boolean oneIsList(String propertyValueLeft, String propertyValueRight) {
@@ -144,11 +148,19 @@ public class DifferencesLogger {
 
         List<String> absentFromRight = findAbsentFromTargetWithCount(listLeft, listRight);
         List<String> absentFromLeft = findAbsentFromTargetWithCount(listRight, listLeft);
+        int numberUnchanged = listLeft.size() - absentFromRight.size();
 
-        String stringRemoved = absentFromRight.isEmpty() ? "none" : "\"[" + String.join(", ", absentFromRight) + "]\"";
-        String stringAdded = absentFromLeft.isEmpty() ? "none" : "\"[" + String.join(", ", absentFromLeft) + "]\"";
 
-        return ". Elements added to list " + stringAdded + " and removed " + stringRemoved + ".";
+        String stringRemoved = absentFromRight.isEmpty() ? "" :
+                                                           " \"["
+                                                           + String.join(", ", absentFromRight)
+                                                           + "]\" were removed from list and ";
+        String stringAdded = absentFromLeft.isEmpty() ? "" :
+                                                        " \"["
+                                                        + String.join(", ", absentFromLeft)
+                                                        + "]\" were added to list and ";
+
+        return ". Element(s) " + stringAdded + stringRemoved + numberUnchanged + " were unchanged.";
     }
 
     private List<String> findAbsentFromTargetWithCount(List<String> sourceList, List<String> targetList) {
