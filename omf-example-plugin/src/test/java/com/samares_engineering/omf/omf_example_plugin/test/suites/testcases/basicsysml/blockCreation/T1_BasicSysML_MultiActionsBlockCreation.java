@@ -39,7 +39,8 @@ public class T1_BasicSysML_MultiActionsBlockCreation extends AModelComparatorTes
     }
 
     private void createClass() {
-        Element owner = findTestedElementByID("_2021x_2_da1032a_1686310024566_293572_2914"); // test package
+        Element owner = findTestedElementByName("1.Create and rename a block in several user actions"); // test package
+//        Element owner = findTestedElementByID("_2021x_2_da1032a_1686310024566_293572_2914"); // test package
         Class myBlock = SysMLFactory.getInstance().createBlock(owner);
         elementsStoredInTestCase.storeElement(myBlock, "createdBlock");
     }

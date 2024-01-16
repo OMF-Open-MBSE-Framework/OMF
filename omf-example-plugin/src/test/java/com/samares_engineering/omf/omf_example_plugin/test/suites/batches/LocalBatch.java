@@ -39,6 +39,8 @@ import org.junit.runners.Suite.SuiteClasses;
         T3_KO_noDeletion.class,
         T4_KO_wrongInnerElements.class,
         T5_KO_recursivelyOwned.class,
+        T6_KO_sameElementNames.class,
+        T7_KO_differentsOwnedElements.class,
 
         // Stereotypes Instance
         T1_InstanceFunctionToFctPart_InBlock.class,

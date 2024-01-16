@@ -59,22 +59,15 @@ public class DifferencesLogger {
     private String logOneElementDifferences(ElementDiff elementDiff) {
         StringBuilder stringBuilder = new StringBuilder();
 
+        // Don't log identical, unmatched, added, deleted elements
+        if (elementDiff.getDiffKind().isSingleElementDiffKind() ||
+            elementDiff.getDiffKind().equals(DiffKind.IDENTICAL)) {
+            return "";
+        }
+
         Element elementLeft = elementDiff.getElementLeft().orElse(null);
         Element elementRight = elementDiff.getElementRight().orElse(null);
 
-        // Deal with non-matched elements
-        String ADDED_TEXT = "[\"" + LoggerUtils.getElementName(elementRight) + "\" HAS BEEN ADDED].\n";
-        String REMOVED_TEXT = "[\"" + LoggerUtils.getElementName(elementLeft) + "  \" HAS BEEN REMOVED].\n";
-        switch (elementDiff.getDiffKind()) {
-            case IDENTICAL:
-                return "";
-            case ADDED:
-                return ADDED_TEXT;
-            case REMOVED:
-                return REMOVED_TEXT;
-            case UNMATCHED:
-                return (elementLeft == null) ?  ADDED_TEXT : REMOVED_TEXT;
-        }
         String elementLeftName = LoggerUtils.getElementName(elementLeft);
         String elementRightName = LoggerUtils.getElementName(elementRight);
 
@@ -83,7 +76,6 @@ public class DifferencesLogger {
                                       "TEST \"" +  elementLeftName + "\" AND ORACLE \"" + elementRightName + "\"";
 
 
-        // Deal with matched elements
         stringBuilder.append("\n- [DIFFERENCES BETWEEN " + displayNamesText + "] \n"
         );
 
@@ -93,12 +85,12 @@ public class DifferencesLogger {
         return stringBuilder.toString();
     }
 
+    ////////// LOG DIFFERENCES BETWEEN PROPERTIES //////////
     private String logDifferencesBetweenProperties(ElementDiff elementDiff) {
         StringBuilder stringBuilder = new StringBuilder();
 
         List<PropertyDiff> propertyDiffs = elementDiff.getPropertyDiffs();
         propertyDiffs.stream()
-                .filter(propertyDiff -> !propertyDiff.getPropertyName().equals("ownedElement"))
                 .filter(propertyDiff -> !propertyDiff.getDiffKind().equals(DiffKind.IDENTICAL))
                 .forEach(propertyDiff -> stringBuilder.append(propertyText(propertyDiff)));
 
@@ -183,6 +175,7 @@ public class DifferencesLogger {
         return Arrays.asList(stringList);
     }
 
+    ////////// LOG DIFFERENCES BETWEEN INNER ELEMENTS //////////
     private String logDifferencesBetweenInnerElements(ElementDiff elementDiff) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -191,40 +184,14 @@ public class DifferencesLogger {
                 .map(PropertyDiff::getReferencedElementDiffs)
                 .flatMap(List::stream)
                 .distinct()
+                .filter(referencedElement -> !referencedElement.getDiffKind().isSingleElementDiffKind() ||
+                                             !referencedElement.getDiffKind().equals(DiffKind.IDENTICAL)) // Don't be redundant with property
                 .sorted(sortByDiffKind())
-                .forEach(elementDifference -> stringBuilder.append(processElementDiff(elementDifference)));
+                .forEach(elementDifference -> addNewDifferenceToCompare(elementDifference));
 
         return stringBuilder.toString();
     }
 
-    private String processElementDiff(ElementDiff elementDiff) {
-        String start = " ---- property \"ownedElement\" ";
-        Element elementLeft = elementDiff.getElementLeft().orElse(null);
-        Element elementRight = elementDiff.getElementRight().orElse(null);
-
-        String ADDED_TEXT = start + "with value " + LoggerUtils.getElementName(elementRight) + " has been added.\n";
-        String REMOVED_TEXT = start + "with value " + LoggerUtils.getElementName(elementLeft) + " has been removed.\n";
-        String EDITED_TEXT = start + "changed from " + LoggerUtils.getElementName(elementLeft) + " to "
-                                   + LoggerUtils.getElementName(elementRight)
-                                   + ".\n";
-
-        switch (elementDiff.getDiffKind()) {
-            case EDITED_OWN:
-            case EDITED_REFERENCE:
-            case EDITED_OWN_AND_REFERENCE:
-                break;
-            case ADDED:
-                return ADDED_TEXT;
-            case REMOVED:
-                return REMOVED_TEXT;
-            case UNMATCHED:
-                return (elementLeft == null) ?  ADDED_TEXT : REMOVED_TEXT;
-            default:
-                return "";
-        }
-        addNewDifferenceToCompare(elementDiff);
-        return EDITED_TEXT;
-    }
 
     private void addNewDifferenceToCompare(ElementDiff elementDiff) {
         if(!this.alreadyLogged.contains(elementDiff)) {

@@ -1,11 +1,9 @@
 package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCaseKO;
 
-public class T2_KO_noCreation extends AModelComparatorTestCaseKO {/*******************************************************************************
+public class T6_KO_sameElementNames extends AModelComparatorTestCaseKO {/*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
@@ -13,9 +11,9 @@ public class T2_KO_noCreation extends AModelComparatorTestCaseKO {/*************
  ******************************************************************************/
 @Override
 public void initVariables() {
-    setName("2. Don't create port block");
-    testCaseID = "T2_KO_noCreation";
-    testPackageName = "2. Don't create port block";
+    setName("6. Get byName when several elements have the same name");
+    testCaseID = "T6_KO_sameElementNames";
+    testPackageName = "6. Get byName when several elements have the same name";
 }
 
     @Override
@@ -23,13 +21,11 @@ public void initVariables() {
 
     @Override
     public void testAction() {
-        Class blockOwner = (Class) findTestedElementByID("_2021x_2_500b0813_1704450434048_389862_2902");
-        Port myPort = SysMLFactory.getInstance().createProxyPort(blockOwner);
-        myPort.setName("myPort");
+        Class bloc = (Class) findTestedElementByName("name");
+        bloc.setName("newName");
     }
 
     @Override
     public void reInitEnvOptions() {}
-
 
 }
