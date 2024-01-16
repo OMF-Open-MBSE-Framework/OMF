@@ -201,11 +201,11 @@ public class DifferencesLogger {
                                          .collect(Collectors.joining(", "));
 
         String stringAdded = addedElements.isEmpty() ? "" :
-                                                       " \"[" + addedElements + "]\" were added from list and ";
+                                                       " \"[" + addedElements + "]\" were added from list \n\t and ";
         String stringRemoved = removedElements.isEmpty() ? "" :
-                                                           " \"[" + removedElements + "]\" were removed from list and ";
+                                                           " \"[" + removedElements + "]\" were removed from list \n\t and ";
         String stringEdited = editedElements.isEmpty() ? "" :
-                                                         " \"[" + editedElements + "]\" were edited and ";
+                                                         " \"[" + editedElements + "]\" were edited \n\t and ";
         long numberUnchanged = propertyDiff.getReferencedElementDiffs().stream()
                                            .filter(elementDiff -> elementDiff.getDiffKind().equals(DiffKind.IDENTICAL))
                                            .count();
