@@ -10,7 +10,7 @@ public class LoggerUtils {
             String type = element.getHumanType();
             String name = ((NamedElement) element).getName();
 
-            return "'" + name + "' (" + type + ")";
+            return "(" + type + ") " + name;
         } else {
             return "";
         }

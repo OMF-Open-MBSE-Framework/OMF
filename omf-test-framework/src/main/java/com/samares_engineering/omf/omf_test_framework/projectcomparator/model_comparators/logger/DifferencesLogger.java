@@ -1,6 +1,8 @@
 package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.logger;
 
+import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.DiffKind;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.PropertyDiff;
@@ -80,7 +82,7 @@ public class DifferencesLogger {
         );
 
         stringBuilder.append(logDifferencesBetweenProperties(elementDiff));
-        stringBuilder.append(logDifferencesBetweenInnerElements(elementDiff));
+        addToCompareListDifferencesBetweenInnerElements(elementDiff);
 
         return stringBuilder.toString();
     }
@@ -99,15 +101,15 @@ public class DifferencesLogger {
 
     private String propertyText(PropertyDiff propertyDiff) {
         String start = " ---- property ";
-        String propertyValueLeft = propertyDiff.getPropertyValueLeft().orElse("");
-        String propertyValueRight = propertyDiff.getPropertyValueRight().orElse("");
+        String propertyValueLeft = getPropertyValuesLeft(propertyDiff);
+        String propertyValueRight = getPropertyValuesRight(propertyDiff);
 
         String ADDED_TEXT = start + "\"" + propertyDiff.getPropertyName()
                             + "\" with value \"" + propertyValueRight + "\" has been added.\n";
         String REMOVED_TEXT = start + "[\"" + propertyDiff.getPropertyName()
                             + "\" with value \"" + propertyValueLeft + "\" has been removed.\n";
-        String EDITED_TEXT = start + "\"" + propertyDiff.getPropertyName() + "\" changed" +
-                             logPropertyValuesEdited(propertyValueLeft, propertyValueRight) + "\n";
+        String EDITED_TEXT = start + "\"" + propertyDiff.getPropertyName() + "\" " +
+                             logPropertyValuesEdited(propertyDiff) + "\n";
         switch (propertyDiff.getDiffKind()) {
             case ADDED:
                 return ADDED_TEXT;
@@ -122,19 +124,103 @@ public class DifferencesLogger {
         }
     }
 
-    private String logPropertyValuesEdited(String propertyValueLeft, String propertyValueRight) {
-        if (oneIsList(propertyValueLeft, propertyValueRight)) {
-            return displayList(propertyValueLeft, propertyValueRight);
+    private String getPropertyValuesLeft(PropertyDiff propertyDiff) {
+        if (propertyDiff.getReferencedElementDiffs().isEmpty()) {
+            return propertyDiff.getPropertyValueLeft().orElse("");
+        }
+        String elementHumanNameValues = propertyDiff.getReferencedElementDiffs().stream()
+                                          .filter(elementDiff -> elementDiff.getElementLeft().isPresent())
+                                          .map(elementDiff -> elementDiff.getElementLeft().get())
+                                          .map(LoggerUtils::getElementName)
+                                          .collect(Collectors.joining(", "));
+
+        return elementHumanNameValues;
+    }
+
+    private String getPropertyValuesRight(PropertyDiff propertyDiff) {
+        if (propertyDiff.getReferencedElementDiffs().isEmpty()) {
+            return propertyDiff.getPropertyValueRight().orElse("");
         }
 
-        return " from \"" + propertyValueLeft + "\" to \"" + propertyValueRight + "\".";
+        String elementHumanNameValues = propertyDiff.getReferencedElementDiffs().stream()
+                .filter(elementDiff -> elementDiff.getElementRight().isPresent())
+                .map(elementDiff -> elementDiff.getElementRight().get())
+                .map(Element::getHumanName)
+                .collect(Collectors.joining(", "));
+
+        return elementHumanNameValues;
     }
 
-    private boolean oneIsList(String propertyValueLeft, String propertyValueRight) {
-        return propertyValueLeft.contains(",") || propertyValueRight.contains(",");
+    private String logPropertyValuesEdited(PropertyDiff propertyDiff) {
+        String propertyValueLeft = getPropertyValuesLeft(propertyDiff);
+        String propertyValueRight = getPropertyValuesRight(propertyDiff);
+
+        if (propertyDiff.getReferencedElementDiffs().size() > 1) {
+            return displayElementList(propertyDiff);
+        }
+
+        if (propertyValueLeft.contains(",") || propertyValueRight.contains(",")) {
+            return displayStringList(propertyValueLeft, propertyValueRight);
+        }
+
+        if (propertyValueLeft.equals(propertyValueRight)) {
+            return "with value \"" + propertyValueRight + "\" has been edited.";
+        }
+
+        return "changed from \"" + propertyValueLeft + "\" to \"" + propertyValueRight + "\".";
     }
 
-    private String displayList(String propertyValueLeft, String propertyValueRight) {
+    private String displayElementList(PropertyDiff propertyDiff) {
+
+        List<ElementDiff> listDiffs = propertyDiff.getReferencedElementDiffs().stream()
+                                                 .filter(elementDiff -> !elementDiff.getDiffKind().equals(DiffKind.IDENTICAL))
+                                                 .collect(Collectors.toList());
+
+
+        String addedElements = listDiffs.stream()
+                                        .filter(elementDiff -> (elementDiff.getDiffKind().equals(DiffKind.ADDED)) ||
+                                                               (elementDiff.getDiffKind().equals(DiffKind.UNMATCHED) &&
+                                                                elementDiff.getElementRight().isPresent()
+                                                               ))
+                                        .map(elementDiff -> elementDiff.getElementRight().get())
+                                        .map(LoggerUtils::getElementName)
+                                        .collect(Collectors.joining(", "));
+
+        String removedElements = listDiffs.stream()
+                                          .filter(elementDiff -> (elementDiff.getDiffKind().equals(DiffKind.REMOVED)) ||
+                                                  (elementDiff.getDiffKind().equals(DiffKind.UNMATCHED) &&
+                                                   elementDiff.getElementLeft().isPresent()
+                                                  ))
+                                          .map(elementDiff -> elementDiff.getElementLeft().get())
+                                          .map(LoggerUtils::getElementName)
+                                          .collect(Collectors.joining(", "));
+
+        String editedElements = listDiffs.stream()
+                                         .filter(elementDiff -> (!elementDiff.getDiffKind().isSingleElementDiffKind()))
+                                         .map(this::getEditedElementString)
+                                         .collect(Collectors.joining(", "));
+
+        String stringAdded = addedElements.isEmpty() ? "" :
+                                                       " \"[" + addedElements + "]\" were added from list and ";
+        String stringRemoved = removedElements.isEmpty() ? "" :
+                                                           " \"[" + removedElements + "]\" were removed from list and ";
+        String stringEdited = editedElements.isEmpty() ? "" :
+                                                         " \"[" + editedElements + "]\" were edited and ";
+        long numberUnchanged = propertyDiff.getReferencedElementDiffs().stream()
+                                           .filter(elementDiff -> elementDiff.getDiffKind().equals(DiffKind.IDENTICAL))
+                                           .count();
+
+        return "changed. Element(s) " + stringAdded + stringRemoved + stringEdited + numberUnchanged + " were unchanged.";
+    }
+
+    private String getEditedElementString(ElementDiff elementDiff) {
+        Element elementLeft = elementDiff.getElementLeft().get();
+        Element elementRight = elementDiff.getElementRight().get();
+
+        return LoggerUtils.getElementName(elementLeft) + " -> " + ((NamedElement) elementRight).getName();
+    }
+
+    private String displayStringList(String propertyValueLeft, String propertyValueRight) {
         List<String> listLeft = stringToList(propertyValueLeft);
         List<String> listRight = stringToList(propertyValueRight);
 
@@ -152,7 +238,7 @@ public class DifferencesLogger {
                                                         + String.join(", ", absentFromLeft)
                                                         + "]\" were added to list and ";
 
-        return ". Element(s) " + stringAdded + stringRemoved + numberUnchanged + " were unchanged.";
+        return "changed. Element(s) " + stringAdded + stringRemoved + numberUnchanged + " were unchanged.";
     }
 
     private List<String> findAbsentFromTargetWithCount(List<String> sourceList, List<String> targetList) {
@@ -176,8 +262,7 @@ public class DifferencesLogger {
     }
 
     ////////// LOG DIFFERENCES BETWEEN INNER ELEMENTS //////////
-    private String logDifferencesBetweenInnerElements(ElementDiff elementDiff) {
-        StringBuilder stringBuilder = new StringBuilder();
+    private void addToCompareListDifferencesBetweenInnerElements(ElementDiff elementDiff) {
 
         elementDiff.getPropertyDiffs().stream()
                 .filter(elementDifference -> !elementDifference.getDiffKind().equals(DiffKind.IDENTICAL))
@@ -187,9 +272,7 @@ public class DifferencesLogger {
                 .filter(referencedElement -> !referencedElement.getDiffKind().isSingleElementDiffKind() ||
                                              !referencedElement.getDiffKind().equals(DiffKind.IDENTICAL)) // Don't be redundant with property
                 .sorted(sortByDiffKind())
-                .forEach(elementDifference -> addNewDifferenceToCompare(elementDifference));
-
-        return stringBuilder.toString();
+                .forEach(this::addNewDifferenceToCompare);
     }
 
 

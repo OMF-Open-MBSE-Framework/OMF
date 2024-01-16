@@ -28,7 +28,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //        //Deletion
 //        T2DeleteBlock.class,
 
-        // BasicSysML
+//        // BasicSysML
         T1_BasicSysML_MultiActionsBlockCreation.class,
         T2_BasicSysML_SingleActionBlockCreation.class,
         T3CreatePort.class,
