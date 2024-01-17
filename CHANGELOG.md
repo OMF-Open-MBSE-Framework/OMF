@@ -6,17 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+
+## [1.2.0] - 2024-01-17
 ### Added
-- New class to deal with KO Test : AModelComparatorTestCaseKO
+- OMFTestFramework : New class to deal with KO Test, AModelComparatorTestCaseKO
 - Add 6 KO tests
 - 2 news function to get test elements by name and human name in AbtractTestCase
 
 ### Changed
-- New comparator logger for OMF Test Framework, not nested anymore but taking the comparator output.
+- OMFTestFramework : New comparator logger for OMF Test Framework, not nested anymore but taking the comparator output.
 
 ### Fixed
-- If Stereotype instance file as empty lines, it will no crash anymore
+- If Stereotype instance file as empty lines, it will not crash anymore
 - Stereotypes Test T1-T5 pass now. With new subcategories feature, StereotypeFeature path to trigger changed
+
 
 ## [1.1.0] - 2023-11-03
 ### Removed
