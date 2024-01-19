@@ -41,7 +41,6 @@ import org.junit.runners.Suite.SuiteClasses;
         T5_KO_recursivelyOwned.class,
         T6_KO_sameElementNames.class,
         T7_KO_differentsOwnedElements.class,
-        T8_BadDeveloperException.class,
 
         // Stereotypes Instance
         T1_InstanceFunctionToFctPart_InBlock.class,
