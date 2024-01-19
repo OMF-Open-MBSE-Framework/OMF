@@ -1,8 +1,8 @@
-package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.helpers;
+package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers;
 
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.DiffKind;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.PropertyDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.PropertyDiff;
 //import com.alliance.magicdraw.mbsi.profiles.MBSIProfile;
 import com.nomagic.uml2.ext.jmi.reflect.AbstractRefObject;
 import com.nomagic.uml2.ext.jmi.reflect.ModelReflection;

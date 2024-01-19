@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.logger;
+package com.samares_engineering.omf.omf_core_framework.model_comparators.logger;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;

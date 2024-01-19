@@ -19,10 +19,10 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.filters.ElementFilter;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.OMFModelComparator;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.logger.DifferencesLogger;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.filters.ElementFilter;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.OMFModelComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.logger.DifferencesLogger;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import org.apache.commons.lang.StringUtils;
 
@@ -80,7 +80,13 @@ public class TestHelper {
         ElementDiff result = comparator.compareElements(testPackage, resultPackage);
 
         DifferencesLogger differencesLogger = new DifferencesLogger(result);
-        differencesLogger.logResult(logger);
+        if(result.isDiffIdentical())
+            logger.success("\n**** PROJECT COMPARE: PASSED ***" + "\n ");
+        else
+            logger.err("\n**** PROJECT COMPARE: FAILED ***" + "\n ");
+
+        logger.log("\nPROJECT COMPARE: " + result + "\n\n "
+                   + differencesLogger.logDifferencesInformation());
 
         return result.isDiffIdentical();
     }

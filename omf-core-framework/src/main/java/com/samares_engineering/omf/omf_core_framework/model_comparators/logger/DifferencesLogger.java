@@ -1,12 +1,10 @@
-package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.logger;
+package com.samares_engineering.omf.omf_core_framework.model_comparators.logger;
 
-import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.DiffKind;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.PropertyDiff;
-import com.samares_engineering.omf.omf_test_framework.utils.TestLogger;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.PropertyDiff;
 
 import java.util.*;
 import java.util.function.Function;
@@ -145,7 +143,7 @@ public class DifferencesLogger {
         String elementHumanNameValues = propertyDiff.getReferencedElementDiffs().stream()
                 .filter(elementDiff -> elementDiff.getElementRight().isPresent())
                 .map(elementDiff -> elementDiff.getElementRight().get())
-                .map(Element::getHumanName)
+                .map(LoggerUtils::getElementName)
                 .collect(Collectors.joining(", "));
 
         return elementHumanNameValues;
@@ -283,15 +281,5 @@ public class DifferencesLogger {
 
     private static Comparator<ElementDiff> sortByDiffKind() {
         return Comparator.comparing(child -> child.getDiffKind().ordinal());
-    }
-
-
-    public void logResult(TestLogger logger) {
-        if(this.rootElementDiff.isDiffIdentical())
-            logger.success("\n**** PROJECT COMPARE: PASSED ***" + "\n ");
-        else
-            logger.err("\n**** PROJECT COMPARE: FAILED ***" + "\n ");
-
-        logger.log("\nPROJECT COMPARE: " + this.rootElementDiff + "\n\n " + logDifferencesInformation());
     }
 }

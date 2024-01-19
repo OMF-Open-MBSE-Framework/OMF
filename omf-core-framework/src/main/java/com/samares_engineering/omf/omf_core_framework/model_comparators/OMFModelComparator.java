@@ -1,7 +1,7 @@
-package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators;
+package com.samares_engineering.omf.omf_core_framework.model_comparators;
 
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.ElementComparator;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.dataclasses.ElementDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparator;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparatorFilter;

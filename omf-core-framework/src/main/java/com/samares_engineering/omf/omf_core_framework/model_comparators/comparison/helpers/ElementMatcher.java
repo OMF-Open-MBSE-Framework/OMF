@@ -1,7 +1,7 @@
-package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.helpers;
+package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers;
 
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.comparison.ElementComparator;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata.DiffKind;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 import com.google.common.base.Strings;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.uml.BaseElement;

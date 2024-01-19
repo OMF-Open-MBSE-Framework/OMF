@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.diffdata;
+package com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata;
 
 public enum DiffKind {
     // Values are ordered by display order
