@@ -18,14 +18,18 @@ import com.samares_engineering.omf.omf_example_plugin.features.errorexample.Erro
 
 import java.beans.PropertyChangeEvent;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class LiveActionErrorExample extends ARule {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
         if (isOptionDeactivated()) return false;
+        Predicate<PropertyChangeEvent> isElementNamedFail = e -> e.getPropertyName().equals("fail");
+
         return new EventChecker()
                 .isElementCreated()
                 .isBlock()
+                .isTrue(isElementNamedFail)
                 .test(evt);
     }
 

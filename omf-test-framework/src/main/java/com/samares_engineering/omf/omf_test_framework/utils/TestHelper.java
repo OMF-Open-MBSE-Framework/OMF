@@ -12,15 +12,17 @@ import com.nomagic.magicdraw.plugins.PluginUtils;
 import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.filters.ElementFilter;
-import com.samares_engineering.omf.omf_test_framework.projectcomparator.model_comparators.ElementModelComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.filters.ElementFilter;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.OMFModelComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.logger.DifferencesLogger;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import org.apache.commons.lang.StringUtils;
 
@@ -34,7 +36,7 @@ public class TestHelper {
         assertNotNull("Not Found Test package in InitProject: " + testPackageName, testPackage);
         assertNotNull("Not Found Test package in oracleProject: " + testPackageName, resultPackage);
 
-        ElementModelComparator comparator = new ElementModelComparator();
+        OMFModelComparator comparator = new OMFModelComparator();
         comparator.addFilter(new ElementFilter());
 
         boolean result = false;
@@ -72,29 +74,21 @@ public class TestHelper {
         assertNotNull("Test package not found in oracleProject: " + testPackageName, resultPackage);
 
         testCase.createNewProjectComparator("./logfile.txt");
-        ElementModelComparator comparator = new ElementModelComparator();
-        comparator.addFilter(new ElementFilter());
+        OMFModelComparator comparator = new OMFModelComparator();
+        comparator.addFilter(new ElementFilter(testPackage, resultPackage));
 
-        boolean result = false;
+        ElementDiff result = comparator.compareElements(testPackage, resultPackage);
 
-        try{
-            result = comparator.comparePackages(testPackage, resultPackage);
-        }catch (Exception e){
-            logger.err("/!\\ ---- ERROR DURING TEST  ---- /!\\ \n");
-            OMFErrorHandler.handleException(e, false);
-        }
-
-        if(result)
-            logger.success("**** PROJECT COMPARE: PASSED ***" + "\n " +
-                    comparator.getDiffInfo());
+        DifferencesLogger differencesLogger = new DifferencesLogger(result);
+        if(result.isDiffIdentical())
+            logger.success("\n**** PROJECT COMPARE: PASSED ***" + "\n ");
         else
-            logger.err("**** PROJECT COMPARE: FAILED ***" + "\n " +
-                    comparator.getDiffInfo());
+            logger.err("\n**** PROJECT COMPARE: FAILED ***" + "\n ");
 
-        logger.log("PROJECT COMPARE: " + result + "\n " +
-                comparator.getDiffInfo());
+        logger.log("\nPROJECT COMPARE: " + result + "\n\n "
+                   + differencesLogger.logDifferencesInformation());
 
-        return result;
+        return result.isDiffIdentical();
     }
 
     public static boolean compareStringsNoCaseNoSpace(String s1, String s2) {

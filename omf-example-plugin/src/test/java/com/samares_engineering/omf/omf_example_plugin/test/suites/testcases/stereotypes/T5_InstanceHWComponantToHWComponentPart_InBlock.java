@@ -48,7 +48,7 @@ public class T5_InstanceHWComponantToHWComponentPart_InBlock extends AModelCompa
     }
 
     private void triggerRefreshStereotypesRulesBasedOnConfigFiles() {
-        triggerBrowserAction(OMFUtils.getProject().getPrimaryModel(), "Stereotypes", "Refresh stereotypes rules based on config files" );
+        triggerBrowserAction(OMFUtils.getProject().getPrimaryModel(), "OMF", "Refresh stereotypes rules based on config files" );
     }
 
     private void createPart() {

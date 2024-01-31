@@ -10,6 +10,7 @@ package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.blockCreation.T1_BasicSysML_MultiActionsBlockCreation;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.blockCreation.T2_BasicSysML_SingleActionBlockCreation;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.basicsysml.portcreation.T3CreatePort;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests.*;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.stereotypes.*;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatchLocal;
 import org.junit.runner.RunWith;
@@ -27,10 +28,19 @@ import org.junit.runners.Suite.SuiteClasses;
 //        //Deletion
 //        T2DeleteBlock.class,
 
-        // BasicSysML
+//        // BasicSysML
         T1_BasicSysML_MultiActionsBlockCreation.class,
         T2_BasicSysML_SingleActionBlockCreation.class,
         T3CreatePort.class,
+
+        // Tests KOs
+        T1_KO_wrongBlockName.class,
+        T2_KO_noCreation.class,
+        T3_KO_noDeletion.class,
+        T4_KO_wrongInnerElements.class,
+        T5_KO_recursivelyOwned.class,
+        T6_KO_sameElementNames.class,
+        T7_KO_differentsOwnedElements.class,
 
         // Stereotypes Instance
         T1_InstanceFunctionToFctPart_InBlock.class,

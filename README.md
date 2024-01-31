@@ -16,13 +16,19 @@ TODO
 - On the release branch, change the version in `gradle.properties` (remove SNAPSHOT suffix)
 - Commit and push. 
 - Publish to nexus & maven central staging repo => gradle task `publish` (Broken at the moment) The CI/CD will build the plugin and publish it to Nexus & Maven Central staging
+
+** Manual Publish task
+1) Follow the 'First time setup' section of [Our guide on how to release to maven central](https://samaresengineering.atlassian.net/wiki/spaces/ST/pages/2514026503/Publish+to+Maven+Central)
+2) Run the gradle task 'publishing/publishAllPublicationsToMavenCentralRepository'
+**
+
 - If there are validation problems:
   - Fix them on the release branch
   - Commit and push
   - Cherry-pick the fix(es) on `0-DEV`
 - Finalise the deployment to Maven Central by doing a manual release. [Our guide on how to release to maven central](https://samaresengineering.atlassian.net/wiki/spaces/ST/pages/2514026503/Publish+to+Maven+Central)
 - Update the OMF public repo (is this still worth it?)
-- Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch to the next patch version
+- Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch to the next patch version (SNAPSHOT version should be the next patch version, for example if the latest release is 2.1.0 it shoud be 2.1.1-SNAPSHOT)
 - Commit and push
 
 # Naming conventions

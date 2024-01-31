@@ -10,6 +10,7 @@ package com.samares_engineering.omf.omf_test_framework.templates;
 import com.google.common.base.Strings;
 import com.nomagic.actions.ActionsCategory;
 import com.nomagic.actions.ActionsManager;
+import com.nomagic.ci.persistence.local.query.CloseableIterator;
 import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager;
 import com.nomagic.magicdraw.actions.ActionsProvider;
 import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
@@ -35,9 +36,13 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
+import com.samares_engineering.omf.omf_test_framework.errors.AmbiguousElementException;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 import com.samares_engineering.omf.omf_test_framework.utils.TestHelper;
 import com.samares_engineering.omf.omf_test_framework.utils.TestLogger;
@@ -55,6 +60,7 @@ import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public abstract class AbstractTestCase extends MagicDrawTestCase{
@@ -308,11 +314,90 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * @return all element with the given name
      */
     public Collection<Element> findTestedElementByName(String elementName, java.lang.Class<Class> clazz) {
-        com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package testPackage = findTestPackage();
+        Package testPackage = findTestPackage();
         Collection<Element> foundElement = Finder.byNameAllRecursively().find(testPackage, new java.lang.Class[]{clazz}, elementName);
         assertNotNull("No element was found with the name: " + elementName
                 + "\n + inside TestPackage: " + testPackage, foundElement);
         return foundElement;
+    }
+
+//    /**
+//     * Search by Name in the model for elements, trigger an assert error if not found
+//     * @param elementName name of the searched element
+//     * @return found element, trigger an assert error if not found and raise a AmbiguousElementException if several elements are found
+//     */
+//    public Element findTestedElementByName(String elementName) {
+//        Collection<Element> foundElements = findTestedElementByName(elementName, null);
+//        Collection<Element> foundElementsInScope = foundElements.stream()
+//                    .filter(element ->!isInTestPackageScope(element))
+//                    .collect(Collectors.toList());
+//
+//        assertNotNull(" No element found with name " + elementName, foundElementsInScope);
+//        if(foundElementsInScope.size() > 1)
+//            OMFErrorHandler.handleException(new AmbiguousElementException("There is more than one matching element in the specified test package.", GenericException.ECriticality.ALERT), false);
+//
+//        return null;
+//    }
+
+    /**
+     * Search element matching a given condition in the model, trigger an assert error if not found
+     * @param condition condition
+     * @return found element. Trigger an AmbiguousElementException if several elements are found
+     */
+    public Element findElementMatchingCondition(Predicate<Element> condition) throws AmbiguousElementException {
+        Package testPackage = findTestPackage();
+        CloseableIterator<Element> testPackageIterator = Finder.byScope().iterator(testPackage);
+
+        Element foundElement = null;
+        while (testPackageIterator.hasNext() && !testPackageIterator.isClosed()) {
+            Element currentElement = testPackageIterator.next();
+
+            if (condition.test(currentElement)) {
+                if (foundElement != null) {
+                    throw new AmbiguousElementException("There is more than one matching element in the specified test package.");
+                }
+                foundElement = currentElement;
+            }
+        };
+
+        return foundElement;
+    }
+
+    /**
+     * Search element matching a given name (NamedElement::getName) in the model, trigger an assert error if not found
+     * @param elementName name of the searched element
+     * @return found element. Trigger an assert error if not found and an AmbiguousElementException if several elements are found
+     */
+    public Element findTestedElementByName(String elementName) {
+        Predicate<Element> nameCondition = element -> (element instanceof NamedElement) &&
+                                                      (((NamedElement) element).getName().equals(elementName));
+
+        try {
+            Element foundElement = findElementMatchingCondition(nameCondition);
+            assertNotNull("No element was found with name \"" + elementName + "\".", foundElement);
+            return foundElement;
+        } catch (AmbiguousElementException e) {
+            OMFErrorHandler.handleException(e, false);
+        }
+        return null;
+    }
+
+    /**
+     * Search element matching a given name (Element::getHumanName) in the model, trigger an assert error if not found
+     * @param elementName name of the searched element
+     * @return found element. Trigger an assert error if not found and an AmbiguousElementException if several elements are found
+     */
+    public Element findTestedElementByHumanName(String elementName) {
+        Predicate<Element> humanNameCondition = element -> element.getHumanName().equals(elementName);
+
+        try {
+            Element foundElement = findElementMatchingCondition(humanNameCondition);
+            assertNotNull("No element was found with human name \"" + elementName + "\".", foundElement);
+            return foundElement;
+        } catch (AmbiguousElementException e) {
+            OMFErrorHandler.handleException(e, false);
+        }
+        return null;
     }
 
     /**
@@ -322,7 +407,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      */
     public Element findTestedElementByID(String id) {
         NamedElement foundElement = (NamedElement) getInitProject().getElementByID(id);
-        assertNotNull(" no element found with ID " + id, foundElement);
+        assertNotNull(" No element found with ID " + id, foundElement);
 
         Collection<Element> foundElementsWithSameName = findTestedElementByName(foundElement.getName(), foundElement.getClassType());
         assertTrue("No element named : " + foundElement.getName() + " found with ID: " + id + "\n in the package: " + testPackageName,
@@ -338,7 +423,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      */
     public Element findElementByID(String id) {
         NamedElement foundElement = (NamedElement) getInitProject().getElementByID(id);
-        assertNotNull(" no element found with ID " + id, foundElement);
+        assertNotNull(" No element found with ID " + id, foundElement);
         return foundElement;
     }
 
