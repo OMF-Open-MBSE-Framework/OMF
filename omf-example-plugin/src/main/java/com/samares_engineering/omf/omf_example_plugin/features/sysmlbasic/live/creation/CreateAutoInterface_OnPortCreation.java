@@ -22,7 +22,7 @@ import java.beans.PropertyChangeEvent;
 
 public class CreateAutoInterface_OnPortCreation extends ARule {
     /**
-     * Triggered only when a <<ProxyPort>> is created
+     * Triggered only when a ProxyPort is created
      * @param evt event occurred in the model
      * @return true if the event matches the rule
      */
