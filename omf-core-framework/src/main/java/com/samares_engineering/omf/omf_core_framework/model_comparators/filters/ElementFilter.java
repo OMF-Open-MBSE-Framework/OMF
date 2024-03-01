@@ -74,6 +74,7 @@ public class ElementFilter implements ModelComparatorFilter {
             case "feature":
             case "role":
             case "nestedClassifier":
+            case "visibility":
                 return false;
             default:
                 return true;
