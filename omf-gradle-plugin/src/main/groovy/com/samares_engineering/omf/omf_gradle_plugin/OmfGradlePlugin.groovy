@@ -115,7 +115,8 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerPackageTestPluginTask(project)
         registerInstallMagicDrawTask(project)
         registerZipPluginLocallyTask(project)
-        registerDeliverLocallyTask(project)
+        registerDeliverPluginLocallyTask(project)
+        registerDeliverTestPluginLocallyTask(project)
         registerZipTestPluginLocallyTask(project)
         registerCleanMagicDrawTask(project)
         registerRunTestsTask(project)
@@ -126,17 +127,30 @@ class OmfGradlePlugin implements Plugin<Project> {
         registerSourceJarTask(project)
     }
 
-    private void registerDeliverLocallyTask(Project project) {
-        project.tasks.register('deliverLocally', Copy) {
+    private void registerDeliverPluginLocallyTask(Project project) {
+        project.tasks.register('deliverPluginLocally', Copy) {
             group = "_delivery"
             description = "Deliver the plugin to the local file system"
-            dependsOn 'zipPluginLocally', 'zipTestPluginLocally'
+            dependsOn 'zipPluginLocally'
 
             from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.pluginDeliveryName.get()}.zip"
-            from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.testPluginDeliveryName.get()}.zip"
             into mdPluginBuild.localDeliveryDirectory.get()
             doLast {
                 print "Plugin delivered to file:///${mdPluginBuild.localDeliveryDirectory.get()}"
+            }
+        }
+    }
+
+    private void registerDeliverTestPluginLocallyTask(Project project) {
+        project.tasks.register('deliverTestPluginLocally', Copy) {
+            group = "_delivery"
+            description = "Deliver the test plugin to the local file system"
+            dependsOn 'zipTestPluginLocally'
+
+            from "$project.buildDir/builtPlugin/$project.version/${mdPluginBuild.testPluginDeliveryName.get()}.zip"
+            into mdPluginBuild.localDeliveryDirectory.get()
+            doLast {
+                print "Test plugin delivered to file:///${mdPluginBuild.localDeliveryDirectory.get()}"
             }
         }
     }
@@ -276,17 +290,14 @@ class OmfGradlePlugin implements Plugin<Project> {
             dependsOn 'testJar', 'packagePlugin'
 
             humanVersion = mdPluginBuild.humanVersion
-            pluginDeliveryName = mdPluginBuild.testPluginDeliveryName
-
             pluginPackageFolderName = project.testPluginPackageFolderName
             myPluginMainClass = mdPluginBuild.myTestPluginMainClass
             myPackage = mdPluginBuild.myTestPackage
             myPluginName = mdPluginBuild.myTestPluginName
             myPluginId = mdPluginBuild.myTestPluginId
-            resolvedArtifacts = project.configurations.testPluginLibrary.toSet()
-
             pluginUnderTestId = mdPluginBuild.myPluginId
             pluginUnderTestName = mdPluginBuild.myPluginName
+            resolvedArtifacts = project.configurations.testPluginLibrary.toSet()
         }
     }
 
@@ -298,8 +309,6 @@ class OmfGradlePlugin implements Plugin<Project> {
             dependsOn "jar"
 
             humanVersion = mdPluginBuild.humanVersion
-            pluginDeliveryName = mdPluginBuild.pluginDeliveryName
-
             pluginPackageFolderName = project.pluginPackageFolderName
             myPluginMainClass = mdPluginBuild.myPluginMainClass
             myPackage = mdPluginBuild.myPackage

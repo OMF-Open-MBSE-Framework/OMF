@@ -86,7 +86,7 @@ jar.dependsOn(':omf-test-framework:jar', ':omf-core-framework:jar', ':omf-public
 mdPluginBuild {
     humanVersion = version
     myPluginName = pluginName
-    myPackage = "${omfPackage}.plugin"
+    myPackage = omfPackage
     myPluginId = pluginId
     myPluginMainClass = pluginMainClass
     localDeliveryDirectory = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
