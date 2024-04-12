@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2021. Samares-Engineering for Renault.
- * All rights reserved and granted to Renault.
- */
 
 package com.samares_engineering.omf.omf_example_plugin.features.groupfeature.actions;
 

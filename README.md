@@ -5,7 +5,7 @@ This project contains a framework for the development of Magicdraw plugins. As s
 
 ### Importing the project into Eclipse
 
-- Make sure the root project folder is called "renault_mbsi_plugin"
+- Make sure the root project folder name is the same as the root project name defined in setting.gradle
 - Import the project into Eclipse as an existing Gradle project
 - Check that eclipse uses a JVM 11 for gradle in *Project -> Properties -> Gradle -> Java Home*
 - Check that the java compiler used is a JVM 11 in *Project -> Properties -> Java -> Compiler*
