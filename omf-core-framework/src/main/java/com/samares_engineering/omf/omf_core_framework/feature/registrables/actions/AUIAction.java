@@ -172,7 +172,7 @@ public abstract class AUIAction implements UIAction {
                 }
             });
         } catch (RollbackException2 rollbackException) {
-            //OMFErrorHandler.handleException(rollbackException);
+//            OMFErrorHandler.handleException(rollbackException);
         }
     }
 

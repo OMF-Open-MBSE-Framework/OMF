@@ -23,6 +23,9 @@ pluginManagement {
 
     // Use the gradle plugin from the local repository to allow testing changes without having to publish the plugin
     includeBuild 'omf-gradle-plugin'
+    plugins {
+        id 'org.jetbrains.kotlin.jvm' version '1.9.23'
+    }
 }
 
 rootProject.name = 'open-mbse-framework'

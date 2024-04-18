@@ -19,6 +19,9 @@ public class OMFLog2 {
         return this;
     }
 
+    public OMFLog2 breakLine() {
+        return text("<BR>");
+    }
     public OMFLog2 bold(String string) {
         return text("<B>" + string + "</B>");
     }
@@ -37,6 +40,15 @@ public class OMFLog2 {
 
     public OMFLog2 color(String string, String color) {
         return text("<font color=" + color + ">" + string + "</font>");
+    }
+    public OMFLog2 warn(String string) {
+        return color(string, OMFColors2.WARN);
+    }
+    public OMFLog2 info(String string) {
+        return color(string, OMFColors2.INFO);
+    }
+    public OMFLog2 err(String string) {
+        return color(string, OMFColors2.ERROR);
     }
 
     public OMFLog2 linkElement(String linkText, Element elementToLink) {
@@ -150,4 +162,11 @@ public class OMFLog2 {
     public Map<String, Runnable> getLinkActionMapping() {
         return linkActionMapping;
     }
+
+    public OMFLog2 replaceNewLinesWithBreaks() {
+        messageComponents.replaceAll(s -> s.replaceAll("\n", "<BR>"));
+        return this;
+    }
+
+
 }

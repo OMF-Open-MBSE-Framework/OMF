@@ -3,6 +3,7 @@ plugins {
     id 'com.kncept.junit.reporter' version '2.1.0'
     id 'com.samares-engineering.omf.omf-gradle-plugin'
     id 'signing'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 group omfPackage + '.' + mdVersionShort
@@ -78,6 +79,7 @@ dependencies {
     zippedMDPlugin "com.nomagic.magicdraw:devtools:2021x_Refresh2@zip"
     zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2021x_Refresh2@zip"
     otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 jar.dependsOn(':omf-test-framework:jar', ':omf-core-framework:jar', ':omf-public-features:jar', ':smart-private:jar')

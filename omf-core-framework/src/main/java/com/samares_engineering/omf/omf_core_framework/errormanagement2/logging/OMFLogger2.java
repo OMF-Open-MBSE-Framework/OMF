@@ -34,7 +34,8 @@ public class OMFLogger2 {
     }
 
     public static void logToConsole(OMFLog2 logMessage, OMFLogLevel2 logLevel) {
-        if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
+        if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) { //if the log level is higher than the current log level
+            logMessage.replaceNewLinesWithBreaks();
             String formattedLog = logMessage.toHTMLFormat(logLevel, getInstance().plugin.getName());
             Application.getInstance().getGUILog().addHyperlinkedText(formattedLog, logMessage.getLinkActionMapping());
         }
@@ -60,7 +61,7 @@ public class OMFLogger2 {
             NotificationManager.getInstance().showNotification(new Notification(
                     "[Plugin Error]", //id (not sure what is does)
                     OMFLog2.getPrefix(logLevel, getInstance().plugin.getName(), feature.getName()), //title
-                    logMessage.toString(),
+                    logMessage.replaceNewLinesWithBreaks().toString(),
                     getNotificationSeverity(logLevel))
             );
         }
@@ -71,18 +72,18 @@ public class OMFLogger2 {
             NotificationManager.getInstance().showNotification(new Notification(
                     "[Plugin Error]", //id (not sure what is does)
                     OMFLog2.getPrefix(logLevel, getInstance().plugin.getName()), //title
-                    logMessage.toString(),
+                    logMessage.replaceNewLinesWithBreaks().toString(),
                     getNotificationSeverity(logLevel))
             );
         }
     }
 
     public static void logToNotification(String message, OMFLogLevel2 logLevel, MDFeature feature) {
-            logToNotification(new OMFLog2().text(message), logLevel, feature);
+            logToNotification(new OMFLog2().text(message).replaceNewLinesWithBreaks(), logLevel, feature);
     }
 
     public static void logToNotification(String message, OMFLogLevel2 logLevel) {
-        logToNotification(new OMFLog2().text(message), logLevel);
+        logToNotification(message, logLevel, null);
     }
 
     private static NotificationSeverity getNotificationSeverity(OMFLogLevel2 logLevel) {

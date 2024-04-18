@@ -54,27 +54,23 @@ public class Profile {
 
     public StandardProfile getStandard() {
         try{return StandardProfile.getInstanceByProject(project);}
-        catch (Exception e){OMFErrorHandler.handleException(new OMFException("Standard profile not found", e, GenericException.ECriticality.CRITICAL));}
-        return null;
+        catch (Exception e){throw new CoreException2("Standard profile not found", e);}
     }
 
     public SysMLProfile getSysml() {
         try{ return SysMLProfile.getInstanceByProject(project);}
-        catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysML profile not found", e, GenericException.ECriticality.CRITICAL));}
-        return null;
+        catch (Exception e){throw new CoreException2("SysML profile not found", e);}
     }
 
     public MDCustomizationForSysMLProfile getMDCustomSysml() {
          try{return MDCustomizationForSysMLProfile.getInstanceByProject(project);}
-         catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysMLCustomization profile not found", e, GenericException.ECriticality.CRITICAL));}
-         return null;
+         catch (Exception e){throw new CoreException2("SysMLCustomization profile not found", e);}
     }
 
 
     public MDCustomizationForSysMLProfile getSysmlAdditionalStereotypes() {
          try{return MDCustomizationForSysMLProfile.getInstanceByProject(project);}
-         catch (Exception e){OMFErrorHandler.handleException(new OMFException("SysMLCustomization profile not found", e, GenericException.ECriticality.CRITICAL));}
-         return null;
+         catch (Exception e){throw new CoreException2("SysMLCustomization profile not found", e);}
     }
 
     public static SysMLProfile _getSysml() {return getInstance().getSysml();}

@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptio
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 
 /**
- * Used for critical exceptions inside of the framework.
+ * Used for critical exceptions inside the framework.
  */
 public class CoreException2 extends BaseOMFException {
     public CoreException2(String message) {
