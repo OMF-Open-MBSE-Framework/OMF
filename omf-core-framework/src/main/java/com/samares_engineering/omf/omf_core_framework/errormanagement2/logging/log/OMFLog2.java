@@ -147,12 +147,12 @@ public class OMFLog2 {
      */
 
     public OMFLog2 logToConsole(OMFLogLevel2 logLevel) {
-        OMFLogger2.logToConsole(this, logLevel);
+        OMFLogger2.logToUIConsole(this, logLevel);
         return this;
     }
 
     public void logToConsole(OMFLogLevel2 logLevel, MDFeature feature) {
-        OMFLogger2.logToConsole(this, logLevel, feature);
+        OMFLogger2.logToUIConsole(this, logLevel, feature);
     }
 
     /*

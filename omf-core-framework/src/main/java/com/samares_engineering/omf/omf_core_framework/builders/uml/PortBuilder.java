@@ -18,8 +18,6 @@ import com.samares_engineering.omf.omf_core_framework.builders.exceptions.Builde
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
 
 import java.util.Collection;
 
@@ -182,7 +180,7 @@ public class PortBuilder extends PropertyBuilder {
         if (elementToBuildHasNoOwner)
             throw new BuilderException("port: " + name + " owner is null", this);
         if (getTypeBuilder().getOwner() == null) {
-            OMFLogger2.logToConsole("TypeBuilder of port: " + name + " owner is null, default owner is set", WARNING);
+            OMFLogger2.logToUIConsole("TypeBuilder of port: " + name + " owner is null, default owner is set", WARNING);
             getTypeBuilder().owner(owner);
         }
     }

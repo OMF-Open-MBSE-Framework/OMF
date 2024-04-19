@@ -9,7 +9,8 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -176,7 +177,7 @@ public abstract class AFeature implements MDFeature {
     public final void triggerOnRegisteringHook() {
         try {
             onRegistering();
-        } catch (OMFCriticalException2 e) {
+        } catch (OMFDevException e) {
             ErrorHandler2.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
             ErrorHandler2.getInstance().handleException(e, this);
@@ -186,7 +187,7 @@ public abstract class AFeature implements MDFeature {
     public final void triggerOnUnregisteringHook() {
         try {
             onUnregistering();
-        } catch (OMFCriticalException2 e) {
+        } catch (OMFDevException e) {
             ErrorHandler2.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
             ErrorHandler2.getInstance().handleException(e, this);
@@ -196,7 +197,7 @@ public abstract class AFeature implements MDFeature {
     public final void triggerOnProjectOpenHook() {
         try {
             onProjectOpen();
-        } catch (OMFCriticalException2 e) {
+        } catch (OMFDevException e) {
             ErrorHandler2.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
             ErrorHandler2.getInstance().handleException(e, this);
@@ -206,7 +207,7 @@ public abstract class AFeature implements MDFeature {
     public final void triggerOnProjectCloseHook() {
         try {
             onProjectClose();
-        } catch (OMFCriticalException2 e) {
+        } catch (OMFDevException e) {
             ErrorHandler2.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
             ErrorHandler2.getInstance().handleException(e, this);
@@ -216,7 +217,7 @@ public abstract class AFeature implements MDFeature {
     public final void triggerOnMagicdrawStartupHook() {
         try {
             onMagicdrawStartup();
-        } catch (OMFCriticalException2 e) {
+        } catch (OMFDevException e) {
             ErrorHandler2.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
             ErrorHandler2.getInstance().handleException(e, this);
