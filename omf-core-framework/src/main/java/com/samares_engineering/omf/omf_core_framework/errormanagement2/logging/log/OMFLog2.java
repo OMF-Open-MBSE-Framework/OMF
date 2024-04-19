@@ -41,15 +41,16 @@ public class OMFLog2 {
     public OMFLog2 color(String string, String color) {
         return text("<font color=" + color + ">" + string + "</font>");
     }
-    public OMFLog2 warn(String string) {
-        return color(string, OMFColors2.WARN);
-    }
+    public OMFLog2 warn(String string) {return color(string, OMFColors2.WARN);}
+    public OMFLog2 warn(OMFLog2 log) {return warn(log.toString());}
     public OMFLog2 info(String string) {
         return color(string, OMFColors2.INFO);
     }
+    public OMFLog2 info(OMFLog2 log) {return info(log.toString());}
     public OMFLog2 err(String string) {
         return color(string, OMFColors2.ERROR);
     }
+    public OMFLog2 err(OMFLog2 log) {return err(log.toString());}
 
     public OMFLog2 linkElement(String linkText, Element elementToLink) {
         linkActionMapping.put(linkText, new ElementAction(elementToLink)::selectInBrowser);
@@ -147,12 +148,12 @@ public class OMFLog2 {
      */
 
     public OMFLog2 logToConsole(OMFLogLevel2 logLevel) {
-        OMFLogger2.logToConsole(this, logLevel);
+        OMFLogger2.logToUIConsole(this, logLevel);
         return this;
     }
 
     public void logToConsole(OMFLogLevel2 logLevel, MDFeature feature) {
-        OMFLogger2.logToConsole(this, logLevel, feature);
+        OMFLogger2.logToUIConsole(this, logLevel, feature);
     }
 
     /*

@@ -4,10 +4,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 
 import java.util.Set;
 
-public class OMFCriticalException2 extends BaseOMFException {
-    private Set<OMFExceptionModifier2> modifiers;
-
-
+public class OMFCriticalException2 extends OMFDevException {
     /**
      * Exception without a cause... and a simple message.
      */
@@ -38,27 +35,5 @@ public class OMFCriticalException2 extends BaseOMFException {
         this.modifiers = Set.of(modifiers);
     }
 
-    /*
-     * Getters
-     */
 
-    public OMFLog2 getUiMessage() {
-        return OMFLog;
-    }
-
-    public Set<OMFExceptionModifier2> getModifiers() {
-        return modifiers;
-    }
-
-    public boolean isSilent() {
-        return modifiers.contains(OMFExceptionModifier2.SILENT);
-    }
-
-    public boolean isDeactivateFeature() {
-        return modifiers.contains(OMFExceptionModifier2.DEACTIVATE_FEATURE);
-    }
-
-    public boolean isRollbackChanges() {
-        return !modifiers.contains(OMFExceptionModifier2.NO_ROLLBACK);
-    }
 }

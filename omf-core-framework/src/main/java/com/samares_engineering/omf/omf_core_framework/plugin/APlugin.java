@@ -14,12 +14,9 @@ import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin.OMFPluginRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -44,8 +41,6 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
-
-import static com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel.WARNING;
 
 /**
  * TEMPLATE of plugin allowing easily feature registering and development.
@@ -197,7 +192,7 @@ public abstract class APlugin extends Plugin {
             try {
                 List<MDFeature> registeredFeatures = new ArrayList<>(featureRegisterer.getRegisteredFeatures());
                 registeredFeatures.forEach(MDFeature::triggerOnMagicdrawStartupHook);
-            } catch (OMFCriticalException2 e) {
+            } catch (OMFDevException e) {
                 ErrorHandler2.getInstance().handleException(e);
             } catch (RuntimeException e) {
                 ErrorHandler2.getInstance().handleException(e);
@@ -241,7 +236,7 @@ public abstract class APlugin extends Plugin {
         try {
             List<MDFeature> featureInstances = this.initFeatures();
             if (featureInstances == null) {
-                OMFLogger2.logToConsole("No feature to registered in the plugin", OMFLogLevel2.WARNING);
+                OMFLogger2.logToUIConsole("No feature to registered in the plugin", OMFLogLevel2.WARNING);
                 return;
             }
 

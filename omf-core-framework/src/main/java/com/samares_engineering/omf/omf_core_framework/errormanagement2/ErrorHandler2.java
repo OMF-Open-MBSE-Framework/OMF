@@ -1,18 +1,14 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2;
 
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.*;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.CriticalFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-
-import static com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel.ERROR;
 
 public class ErrorHandler2 {
     private static ErrorHandler2 instance;
@@ -36,13 +32,14 @@ public class ErrorHandler2 {
         instance = new ErrorHandler2(plugin);
     }
 
+
     /**
-     * Case where the framework user threw the OMF runtime exception to signal to the framework that an unrecoverable
+     * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
      */
     public void handleException(OMFCriticalException2 exception, MDFeature impactedFeature) {
         exception.printStackTrace();
-        if (!exception.isSilent()) {
+        if (exception.isNotSilent()) {
             OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR, impactedFeature);
         }
         if (exception.isDeactivateFeature()) {
@@ -53,34 +50,30 @@ public class ErrorHandler2 {
         }
     }
     /**
-     * Case where the framework user threw the OMF runtime exception to signal to the framework that an unrecoverable
+     * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
-     * <br><b>Call the version of the method with the impacted feature if possible.</b>
      */
-    public void handleException(OMFCriticalException2 exception) {
+    public void handleException(OMFCriticalException2 exception ) {
         exception.printStackTrace();
-        if (!exception.isSilent()) {
+        if (exception.isNotSilent()) {
             OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR);
         }
         if (exception.isDeactivateFeature()) {
             // We don't have the contextual feature
-            //TODO: log to console
-
+            OMFLogger2.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
         }
         if (exception.isRollbackChanges()) {
-            rollbackChanges();
+            rollbackChanges(); //Throws RollbackException2
         }
     }
-
-
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
      */
-    public void handleException(OMFWarningException exception, MDFeature impactedFeature) {
+    public void handleException(OMFDevException exception, MDFeature impactedFeature) {
         exception.printStackTrace();
-        if (!exception.isSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.WARNING, impactedFeature);
+        if (exception.isNotSilent()) {
+            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR, impactedFeature);
         }
         if (exception.isDeactivateFeature()) {
             unregisterFeature(impactedFeature);
@@ -94,14 +87,14 @@ public class ErrorHandler2 {
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
      */
-    public void handleException(OMFWarningException exception ) {
+    public void handleException(OMFDevException exception ) {
         exception.printStackTrace();
-        if (!exception.isSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.WARNING);
+        if (exception.isNotSilent()) {
+            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR);
         }
         if (exception.isDeactivateFeature()) {
             // We don't have the contextual feature
-            //TODO: log to console
+            OMFLogger2.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
         }
         if (exception.isRollbackChanges()) {
             rollbackChanges(); //Throws RollbackException2
