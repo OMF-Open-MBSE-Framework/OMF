@@ -31,9 +31,9 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
     }
 
     /**
-     * Register  all the 'ProjectOnly' Options of the feature depending on its kind.
+     * Register all the 'ProjectOnly' Options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param options
+     * @param options list of IOptions
      */
     public void registerFeatureItems(List<IOption> options) {
         options.forEach(this::registerFeatureItem);
@@ -42,7 +42,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
     /**
      * unregister all the 'ProjectOnly' options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
-     * @param options
+     * @param options list of IOptions
      */
     public void unregisterFeatureItems(List<IOption> options){
         options.forEach(this::unregisterFeatureItem);

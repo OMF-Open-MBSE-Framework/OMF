@@ -12,11 +12,10 @@ import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectPartLoadedListener;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFCoreException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.factory.FactoryManager;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.ProjectHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -24,15 +23,16 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.VersionUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectListener implements ProjectPartLoadedListener {
     public static final String PROFILE_NAME = "";
     private final APlugin plugin;
+    private final ProjectHookExecutor projectHookExecutor;
 
     public ProjectListener(APlugin plugin){
         this.plugin = plugin;
+        this.projectHookExecutor = new ProjectHookExecutor();
     }
 
     @Override
@@ -47,6 +47,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     @Override
     public void projectSaved(Project project, boolean b) {
+        projectHookExecutor.triggerOnProjectSavedHook();
     }
 
     @Override
@@ -67,6 +68,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
     @Override
     public void projectCreated(Project project) {
         openProject(project);
+        projectHookExecutor.triggerOnProjectCreatedHook(); //Maybe too late, as openProject will trigger openHook, but Core is not yet initialized
     }
 
     @Override
@@ -180,36 +182,38 @@ public class ProjectListener implements ProjectPartLoadedListener {
     protected void openProject(Project project) {
         coreInitialisation(project);
         listenerInitialisation();
-        featureOpenProjectHandling();
+//        featureOpenProjectHandling();//TODO: Delete this line
+        projectHookExecutor.triggerOnProjectOpenHook();
     }
 
     protected void closeProject() {
         coreClosingReInitialisation();
-        featureCloseProjectHandling();
+//        featureCloseProjectHandling(); //TODO: Delete this line
+        projectHookExecutor.triggerOnProjectClosedHook();
     }
 
 
-    private void featureOpenProjectHandling() {
-        FeatureRegisterer featureRegisterer = plugin.getFeatureRegisterer();
-        if(featureRegisterer == null) return;
-        List<MDFeature> registeredFeatures = new ArrayList<>(featureRegisterer.getRegisteredFeatures());
+//    private void featureOpenProjectHandling() {
+//        FeatureRegisterer featureRegisterer = plugin.getFeatureRegisterer();
+//        if(featureRegisterer == null) return;
+//        List<MDFeature> registeredFeatures = new ArrayList<>(featureRegisterer.getRegisteredFeatures());
+//
+//        projectOnlyFeatureRegistering(registeredFeatures);
+//        openProjectFeatureTrigger(registeredFeatures);
+//    }
 
-        projectOnlyFeatureRegistering(registeredFeatures);
-        openProjectFeatureTrigger(registeredFeatures);
-    }
-
-    private static void openProjectFeatureTrigger(List<MDFeature> registeredFeatures) {
-        for (MDFeature registeredFeature : registeredFeatures) {
-            try {
-                registeredFeature.triggerOnProjectOpenHook();
-            }catch (Exception exception) {
-                OMFErrorHandler.handleException(
-                        new OMFFeatureException("Error occurred during Feature ProjectOpen trigger",
-                                registeredFeature,
-                                exception, GenericException.ECriticality.CRITICAL), false);
-            }
-        }
-    }
+//    private static void openProjectFeatureTrigger(List<MDFeature> registeredFeatures) {
+//        for (MDFeature registeredFeature : registeredFeatures) {
+//            try {
+//                registeredFeature.triggerOnProjectOpenHook();
+//            }catch (Exception exception) {
+//                OMFErrorHandler.handleException(
+//                        new OMFFeatureException("Error occurred during Feature ProjectOpen trigger",
+//                                registeredFeature,
+//                                exception, GenericException.ECriticality.CRITICAL), false);
+//            }
+//        }
+//    }
 
     private void projectOnlyFeatureRegistering(List<MDFeature> registeredFeatures) {
         try {
@@ -243,27 +247,27 @@ public class ProjectListener implements ProjectPartLoadedListener {
         }
     }
 
-    private void featureCloseProjectHandling() {
-        FeatureRegisterer featureRegisterer = plugin.getFeatureRegisterer();
-        if (featureRegisterer == null) return;
-        List<MDFeature> registeredFeatures = featureRegisterer.getRegisteredFeatures();
-        projectOnlyFeatureUnRegistering(registeredFeatures);
-
-        onProjectCloseFeatureTrigger(registeredFeatures);
-    }
-
-    private static void onProjectCloseFeatureTrigger(List<MDFeature> registeredFeatures) {
-        for (MDFeature registeredFeature : registeredFeatures) {
-            try {
-                registeredFeature.triggerOnProjectCloseHook();
-            }catch (Exception exception) {
-                OMFErrorHandler.handleException(
-                        new OMFFeatureException("Error occurred during Feature ProjectClose trigger",
-                                registeredFeature,
-                                exception, GenericException.ECriticality.CRITICAL), false);
-            }
-        }
-    }
+//    private void featureCloseProjectHandling() {
+//        FeatureRegisterer featureRegisterer = plugin.getFeatureRegisterer();
+//        if (featureRegisterer == null) return;
+//        List<MDFeature> registeredFeatures = featureRegisterer.getRegisteredFeatures();
+//        projectOnlyFeatureUnRegistering(registeredFeatures);
+//
+//        onProjectCloseFeatureTrigger(registeredFeatures);
+//    }
+//
+//    private static void onProjectCloseFeatureTrigger(List<MDFeature> registeredFeatures) {
+//        for (MDFeature registeredFeature : registeredFeatures) {
+//            try {
+//                registeredFeature.triggerOnProjectCloseHook();
+//            }catch (Exception exception) {
+//                OMFErrorHandler.handleException(
+//                        new OMFFeatureException("Error occurred during Feature ProjectClose trigger",
+//                                registeredFeature,
+//                                exception, GenericException.ECriticality.CRITICAL), false);
+//            }
+//        }
+//    }
 
     private void projectOnlyFeatureUnRegistering(List<MDFeature> registeredFeatures) {
         try {
@@ -284,4 +288,9 @@ public class ProjectListener implements ProjectPartLoadedListener {
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }
+
+    public ProjectHookExecutor getProjectHookExecutor() {
+        return projectHookExecutor;
+    }
+
 }

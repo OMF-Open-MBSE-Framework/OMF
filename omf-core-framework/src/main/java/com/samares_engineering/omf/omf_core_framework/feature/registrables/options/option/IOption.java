@@ -69,8 +69,6 @@ public interface IOption extends RegistrableFeatureItem {
 
     void setDefaultValue(Object defaultValue);
 
-    boolean isActivated();
-
     void setActivated(boolean activated);
 
     /**

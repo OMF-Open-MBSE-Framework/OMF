@@ -1,6 +1,8 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.HookFeatureItem;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.LifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 
@@ -41,4 +43,13 @@ public abstract class SimpleFeature extends AFeature{
     protected List<IOption> initProjectOnlyOptions() {
         return Collections.emptyList();
     }
+
+    @Override
+    protected List<LifeCycleHook> initLifeCycleHooks() {
+        return Collections.emptyList();
+    }
+
+
+
+
 }

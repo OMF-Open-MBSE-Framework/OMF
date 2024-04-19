@@ -63,7 +63,7 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     }
 
     @Override
-    protected void onMagicdrawStartup() {
+    public void onMagicdrawStartup() {
         initSynchroWithEnvOptions();
     }
 

@@ -40,7 +40,7 @@ public class FeaturesDeactivationFeature extends AFeature {
     }
 
     @Override
-    protected void onMagicdrawStartup() {
+    public void onMagicdrawStartup() {
         boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();
         if(!featureShallBeRegistered)
             activateDeactivateAllFeatures(false);
@@ -86,7 +86,7 @@ public class FeaturesDeactivationFeature extends AFeature {
             }
         });
 
-        return Arrays.asList(
+        return List.of(
                 activationDeactivationOption
         );
     }

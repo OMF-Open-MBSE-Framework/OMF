@@ -39,7 +39,7 @@ public class LockSafeFeature extends AFeature {
     }
 
     @Override
-    protected void onMagicdrawStartup() {
+    public void onMagicdrawStartup() {
         LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
         restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
         restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());

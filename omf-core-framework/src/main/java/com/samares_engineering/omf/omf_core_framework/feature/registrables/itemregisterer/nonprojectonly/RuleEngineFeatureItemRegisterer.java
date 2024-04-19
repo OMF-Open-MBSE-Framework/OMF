@@ -69,7 +69,6 @@ public class RuleEngineFeatureItemRegisterer implements FeatureItemRegisterer<IR
         ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
         ruleEngineMap.get(category).add(ruleEngine);
-
     }
 
     /**

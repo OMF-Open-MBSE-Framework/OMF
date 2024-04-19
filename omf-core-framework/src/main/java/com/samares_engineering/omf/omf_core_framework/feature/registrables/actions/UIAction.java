@@ -32,11 +32,4 @@ public interface UIAction extends RegistrableFeatureItem {
 
     void initRegistrableItem(MDFeature mdFeature);
 
-    void activate();
-
-    void deactivate();
-
-    boolean isActivated();
-
-
 }
