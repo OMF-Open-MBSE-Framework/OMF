@@ -11,22 +11,20 @@ package com.samares_engineering.omf.omf_public_features.testGeneration;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
+import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateCreationTest;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateSnapshotTest;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationException;
-import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
-import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class TestGenerationFeature extends AFeature {
+public class TestGenerationFeature extends SimpleFeature {
 
     private final String SERVER_FEATURE_NAME = "APIServer Feature";
 
@@ -53,7 +51,6 @@ public class TestGenerationFeature extends AFeature {
         }
     }
 
-
     /**
      * @return Feature's env option helper cast to the correct subtype
      */
@@ -72,16 +69,6 @@ public class TestGenerationFeature extends AFeature {
                 new GenerateCreationTest(),
                 new GenerateSnapshotTest()
         );
-    }
-
-    @Override
-    public List<IRuleEngine> initLiveActions() {
-        return Collections.EMPTY_LIST;
-    }
-
-    @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
-        return Collections.EMPTY_LIST;
     }
 
     @Override
@@ -113,9 +100,5 @@ public class TestGenerationFeature extends AFeature {
         );
     }
 
-    @Override
-    protected List<IOption> initProjectOnlyOptions() {
-        return Collections.EMPTY_LIST;
-    }
 
 }

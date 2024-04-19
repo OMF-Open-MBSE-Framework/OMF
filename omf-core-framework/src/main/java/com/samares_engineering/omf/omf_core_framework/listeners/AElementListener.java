@@ -6,9 +6,8 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
-import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
@@ -20,7 +19,7 @@ public abstract class AElementListener implements IElementListener {
     private boolean activated;
     private boolean isRegistered;
 
-    private HashMap<String, List<IRuleEngine>> rulesEngines = new HashMap<>();
+    private HashMap<String, List<ILiveAction>> rulesEngines = new HashMap<>();
 
     private int priority = 0;
 
@@ -40,49 +39,49 @@ public abstract class AElementListener implements IElementListener {
     }
 
     @Override
-    public HashMap<String, List<IRuleEngine>> getRuleEngineMap() {
+    public HashMap<String, List<ILiveAction>> getRuleEngineMap() {
         return rulesEngines;
     }
 
     @Override
-    public void setRuleEngineMap(HashMap<String, List<IRuleEngine>> rulesEngines) {
+    public void setRuleEngineMap(HashMap<String, List<ILiveAction>> rulesEngines) {
         this.rulesEngines = rulesEngines;
     }
 
     @Override
     public boolean manageAnalysis(PropertyChangeEvent event) {
-        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.ANALYSE.toString());
+        List<ILiveAction> ruleEngines = getRuleEngineMap().get(RECategoryEnum.ANALYSE.toString());
         return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageCreation(PropertyChangeEvent event) {
-        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.CREATE.toString());
+        List<ILiveAction> ruleEngines = getRuleEngineMap().get(RECategoryEnum.CREATE.toString());
         return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageUpdate(PropertyChangeEvent event) {
-        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.UPDATE.toString());
+        List<ILiveAction> ruleEngines = getRuleEngineMap().get(RECategoryEnum.UPDATE.toString());
         return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageDeletion(PropertyChangeEvent event) {
-        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.DELETE.toString());
+        List<ILiveAction> ruleEngines = getRuleEngineMap().get(RECategoryEnum.DELETE.toString());
         return processAllMatchingRules(ruleEngines, event);
     }
 
     @Override
     public boolean manageAfterAutomation(Collection<PropertyChangeEvent> l_events) {
-        List<IRuleEngine> ruleEngines = getRuleEngineMap().get(RECategoryEnum.AFTER_AUTOMATION.toString());
+        List<ILiveAction> ruleEngines = getRuleEngineMap().get(RECategoryEnum.AFTER_AUTOMATION.toString());
         return l_events.stream().map(event -> processAllMatchingRules(ruleEngines, event)).anyMatch(b -> b);
     }
 
     /**
      * @return true if at least one rule matched
      */
-    private boolean processAllMatchingRules(List<IRuleEngine> ruleEngines, PropertyChangeEvent event) {
+    private boolean processAllMatchingRules(List<ILiveAction> ruleEngines, PropertyChangeEvent event) {
         if(ruleEngines == null) return false;
         boolean hasRulesBeenTriggered = ruleEngines.stream()
                 .map(ruleEngine -> ruleEngine.processAllMatchingRule(event))

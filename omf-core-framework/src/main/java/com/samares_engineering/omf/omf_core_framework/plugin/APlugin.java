@@ -14,7 +14,7 @@ import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin.OMFPluginRegisteringException;
@@ -23,6 +23,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.magicdraw.MagicDrawHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
@@ -74,6 +75,8 @@ public abstract class APlugin extends Plugin {
     private ProjectOnlyRuleEngineFeatureItemRegisterer projectOnlyRuleEngineFeatureItemRegisterer;
     private ProjectOnlyOptionFeatureItemRegisterer projectOnlyOptionFeatureItemRegisterer;
 
+    // MagicDraw Hook Executor
+    private MagicDrawHookExecutor magicDrawHookExecutor;
 
     //------------------------ ELEMENTS TO REGISTER AT INIT -------------------------------------------//
 
@@ -141,6 +144,16 @@ public abstract class APlugin extends Plugin {
      */
     protected abstract IListenerManager initListenerManager();
 
+    /**
+     * Define the MagicDrawHookExecutor to register at plugin Initialization
+     * This HookExecutor will be used for FeatureRegistering with MagicDraw hooks
+     *
+     * @return MagicDrawHookExecutor to register
+     */
+    protected MagicDrawHookExecutor initMagicDrawHookExecutor() {
+        return new MagicDrawHookExecutor();
+    }
+
 
     //------------------------ INITIALIZATION PROCESS-------------------------------------------//
 
@@ -165,13 +178,21 @@ public abstract class APlugin extends Plugin {
     }
 
     /**
-     * Initialize the plugin, and will configure ActionConfigurators, Options, Constants, and will register features.
-     * Override this method to add custom configuration.
-     * Call super.initPlugin() to keep default OMF configuration.
+     * Initialize the plugin, and will configure:
+     * - MagicDrawHookExecutor (for MagicDraw lifecycle hooks) <br>
+     * - ListenerManager (for all the core listeners) <br>
+     * - Actions Configurators (Browser, Diagram, Menu) <br>
+     * - ProjectListener (for project lifecycle automations) <br>
+     * - EnvironmentOptions (allowing Environment option registering) <br>
+     * - ProjectOptions (allowing Project option registering) <br>
+     * - Constants (DEV/TESTER, GUI_REQUIRED, etc.) <br>
+     * Override this method to add custom configuration.<br>
+     * Call super.initPlugin() to keep default OMF configuration.<br>
      */
     public void initPlugin() {
         //        ProjectOptions.addConfigurator();
         //        ProjectOptions.addConfigurator(TestProjectOptionsConfigurator.getInstance())
+        configureMagicDrawHookExecutor();
         configureListenerManager();
         configureActions();
         configureProjectListener();
@@ -182,23 +203,36 @@ public abstract class APlugin extends Plugin {
         configureFeatures();
 
         registerAllFeatures();
-        addOnStartupHookToFeatures();
 
         isInitialized = true;
     }
 
-    private void addOnStartupHookToFeatures() {
-        Application.getInstance().insertActivityAfterStartup(() -> {
-            try {
-                List<MDFeature> registeredFeatures = new ArrayList<>(featureRegisterer.getRegisteredFeatures());
-                registeredFeatures.forEach(MDFeature::triggerOnMagicdrawStartupHook);
-            } catch (OMFDevException e) {
-                ErrorHandler2.getInstance().handleException(e);
-            } catch (RuntimeException e) {
-                ErrorHandler2.getInstance().handleException(e);
-            }
-        });
+    private void configureMagicDrawHookExecutor() {
+        try {
+            this.magicDrawHookExecutor = initMagicDrawHookExecutor();
+            this.magicDrawHookExecutor.init(this);
+        } catch (Exception e) {
+            throw new OMFPluginRegisteringException("Error occurred during MagicDrawHookExecutorConfiguration", e);
+        }
     }
+
+    private void addOnStartupHookToFeatures() {
+        try {
+            Application.getInstance().insertActivityAfterStartup(() -> {
+                try {
+                    magicDrawHookExecutor.triggerOnMagicDrawStartHooks();
+                } catch (CoreException2 coreException) {
+                    ErrorHandler2.getInstance().handleException(coreException);
+                } catch (RuntimeException e) {
+                    ErrorHandler2.getInstance().handleException(new CoreException2("Error occurred during onMagicDrawStart hook execution", e));
+                }
+            });
+        }catch (Exception e){
+            throw new OMFPluginRegisteringException("Error occurred during onStartupHookConfiguration", e);
+        }
+
+    }
+
 
     private void configureFeatureRegisterer() {
         try {
@@ -474,5 +508,9 @@ public abstract class APlugin extends Plugin {
 
     public OptionFeatureItemRegisterer getOptionFeatureItemRegisterer() {
         return optionFeatureItemRegisterer;
+    }
+
+    public MagicDrawHookExecutor getMagicDrawHookExecutor() {
+        return magicDrawHookExecutor;
     }
 }

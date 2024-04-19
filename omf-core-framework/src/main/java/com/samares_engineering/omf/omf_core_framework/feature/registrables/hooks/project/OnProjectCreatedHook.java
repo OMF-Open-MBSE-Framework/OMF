@@ -2,7 +2,6 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem;
 
-public abstract class OnProjectSavedHook extends BaseHookFeatureItem implements IOnProjectSavedHook {
-
+public abstract class OnProjectCreatedHook extends BaseHookFeatureItem implements IOnProjectSavedHook {
 
 }

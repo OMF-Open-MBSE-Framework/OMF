@@ -1,10 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.HookFeatureItem;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.LifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,12 +24,12 @@ public abstract class SimpleFeature extends AFeature{
     }
 
     @Override
-    protected List<IRuleEngine> initLiveActions() {
+    protected List<ILiveAction> initLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
+    protected List<ILiveAction> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 
@@ -45,7 +44,7 @@ public abstract class SimpleFeature extends AFeature{
     }
 
     @Override
-    protected List<LifeCycleHook> initLifeCycleHooks() {
+    protected List<IHook> initLifeCycleHooks() {
         return Collections.emptyList();
     }
 

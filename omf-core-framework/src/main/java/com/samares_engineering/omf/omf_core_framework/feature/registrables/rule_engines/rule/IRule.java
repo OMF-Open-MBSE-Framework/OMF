@@ -6,7 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
 public interface IRule<I, O> {
     boolean matches(I e);
@@ -21,5 +21,5 @@ public interface IRule<I, O> {
 
     boolean isBlocking();
 
-    void setRuleEngine(IRuleEngine ruleEngine);
+    void setRuleEngine(ILiveAction ruleEngine);
 }

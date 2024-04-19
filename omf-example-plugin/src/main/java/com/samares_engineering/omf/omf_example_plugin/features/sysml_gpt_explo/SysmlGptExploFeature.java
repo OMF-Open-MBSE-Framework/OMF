@@ -8,18 +8,15 @@
 package com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo;
 
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.actions.ImportFromGPT;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class SysmlGptExploFeature extends AFeature {
+public class SysmlGptExploFeature extends SimpleFeature {
 
     public static final String GPT_GENERATED_JSON_TO_IMPORT = "GPT generated JSON to import";
 
@@ -28,30 +25,10 @@ public class SysmlGptExploFeature extends AFeature {
     }
 
     @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
-    }
-
-    @Override
     public List<UIAction> initFeatureActions() {
         return List.of(
                 new ImportFromGPT()
         );
-    }
-
-    @Override
-    public List<IRuleEngine> initLiveActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<IOption> initOptions() {
-        return Collections.emptyList();
     }
 
     @Override

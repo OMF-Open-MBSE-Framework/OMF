@@ -4,11 +4,8 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class OMFWarningException extends OMFDevException {
-
 
     /**
      * Exception without a cause... and a simple message.
@@ -30,8 +27,6 @@ public class OMFWarningException extends OMFDevException {
     public OMFWarningException(String message, Throwable cause, OMFExceptionModifier2... modifiers) {
         this(new OMFLog2().warn(message), cause, modifiers);
     }
-
-
 
     /**
      * Full constructor wrapping causing exception

@@ -35,5 +35,4 @@ public class OMFCriticalException2 extends OMFDevException {
         this.modifiers = Set.of(modifiers);
     }
 
-
 }

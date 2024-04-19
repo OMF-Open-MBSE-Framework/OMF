@@ -16,7 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.List;
 import java.util.Optional;
 
-public interface IRuleEngine extends PriorityProvider, RegistrableFeatureItem {
+public interface ILiveAction extends PriorityProvider, RegistrableFeatureItem {
     Optional<IRule> getMatchingRule(PropertyChangeEvent evt);
 
     List<IRule> getAllMatchingRules(PropertyChangeEvent evt);

@@ -7,12 +7,12 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule;
 
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
 import java.beans.PropertyChangeEvent;
 
 public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChangeEvent> {
-    protected IRuleEngine ruleEngine;
+    protected ILiveAction ruleEngine;
     public String id = "";
     public boolean isActivated = true;
 
@@ -47,7 +47,7 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
         return id;
     }
 
-    public void setRuleEngine(IRuleEngine ruleEngine) {
+    public void setRuleEngine(ILiveAction ruleEngine) {
         this.ruleEngine = ruleEngine;
     }
 

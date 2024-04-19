@@ -2,8 +2,11 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptio
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 
+import java.util.Set;
+
 public abstract class BaseOMFException extends RuntimeException {
     protected OMFLog2 OMFLog;
+    protected Set<OMFExceptionModifier2> modifiers;
 
     /**
      * Exception without a cause... and a simple message.
@@ -32,5 +35,29 @@ public abstract class BaseOMFException extends RuntimeException {
     protected BaseOMFException(OMFLog2 message, Throwable cause) {
         super(message.toString(), cause);
         OMFLog = message;
+    }
+
+
+    public OMFLog2 getUiMessage() {
+        return OMFLog;
+    }
+
+    public Set<OMFExceptionModifier2> getModifiers() {
+        return modifiers;
+    }
+
+    public boolean isSilent() {
+        return modifiers.contains(OMFExceptionModifier2.SILENT);
+    }
+    public boolean isNotSilent() {
+        return !isSilent();
+    }
+
+    public boolean isDeactivateFeature() {
+        return modifiers.contains(OMFExceptionModifier2.DEACTIVATE_FEATURE);
+    }
+
+    public boolean isRollbackChanges() {
+        return !modifiers.contains(OMFExceptionModifier2.NO_ROLLBACK);
     }
 }

@@ -10,14 +10,13 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.LifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import java.util.List;
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
  * see {@link UIAction}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
- * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine}
+ * see {@link ILiveAction}
  */
 public abstract class AFeature implements MDFeature {
     protected String name;
@@ -49,14 +48,14 @@ public abstract class AFeature implements MDFeature {
 
     // Registrable items
     private final List<UIAction> mdActions = new ArrayList<>();
-    private final List<IRuleEngine> liveActions = new ArrayList<>();
+    private final List<ILiveAction> liveActions = new ArrayList<>();
     private final List<IOption> options = new ArrayList<>();
-    private final List<LifeCycleHook> lifeCycleHooks = new ArrayList<>();
+    private final List<IHook> hooksHolders = new ArrayList<>();
 
     // Delayed registrable items
     private final List<IOption> projectOnlyOptions = new ArrayList<>();
     private final List<UIAction> projectOnlyMdActions = new ArrayList<>();
-    private final List<IRuleEngine> projectOnlyLiveActions = new ArrayList<>();
+    private final List<ILiveAction> projectOnlyLiveActions = new ArrayList<>();
 
     protected AFeature(String name) {
         this.name = name;
@@ -110,8 +109,8 @@ public abstract class AFeature implements MDFeature {
         }
 
         try {
-            this.lifeCycleHooks.addAll(initLifeCycleHooks());
-            lifeCycleHooks.forEach(this::initRegistrableItem);
+            this.hooksHolders.addAll(initLifeCycleHooks());
+            hooksHolders.forEach(this::initRegistrableItem);
         } catch (Exception e) {
             throw new OMFFeatureRegisteringException("Error while instantiating lifecycle hooks for feature " + name, e);
         }
@@ -166,13 +165,13 @@ public abstract class AFeature implements MDFeature {
      *
      * @return list of IRuleEngine to register
      */
-    protected abstract List<IRuleEngine> initLiveActions();
+    protected abstract List<ILiveAction> initLiveActions();
     /**
      * Define all the project only live actions (RuleEngines) there, it will be automatically registered with the feature.
      *
      * @return list of IRuleEngine to register
      */
-    protected abstract List<IRuleEngine> initProjectOnlyLiveActions();
+    protected abstract List<ILiveAction> initProjectOnlyLiveActions();
 
     /**
      * Define all the feature options (Environment and Project) there, it will be automatically registered with the feature.
@@ -191,7 +190,7 @@ public abstract class AFeature implements MDFeature {
      * Define all the lifecycle hooks there, it will be automatically registered with the feature.
      * @return list of LifeCycleHook to register
      */
-    protected abstract List<LifeCycleHook> initLifeCycleHooks();
+    protected abstract List<IHook> initLifeCycleHooks();
 
     /*
      Lifecycle hooks
@@ -340,7 +339,7 @@ public abstract class AFeature implements MDFeature {
         return options;
     }
     @Override
-    public List<IRuleEngine> getRuleEngines() {
+    public List<ILiveAction> getRuleEngines() {
         return liveActions;
     }
     @Override
@@ -352,7 +351,7 @@ public abstract class AFeature implements MDFeature {
         return projectOnlyOptions;
     }
     @Override
-    public List<IRuleEngine> getProjectOnlyRuleEngines() {
+    public List<ILiveAction> getProjectOnlyRuleEngines() {
         return projectOnlyLiveActions;
     }
     @Override
@@ -365,7 +364,7 @@ public abstract class AFeature implements MDFeature {
     }
 
     @Override
-    public List<LifeCycleHook> getLifeCycleHooks() {
-        return lifeCycleHooks;
+    public List<IHook> getLifeCycleHooks() {
+        return hooksHolders;
     }
 }

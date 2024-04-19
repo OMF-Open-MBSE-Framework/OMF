@@ -15,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMF
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.factory.FactoryManager;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.ProjectHookExecutor;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.project.ProjectHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -33,6 +33,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
     public ProjectListener(APlugin plugin){
         this.plugin = plugin;
         this.projectHookExecutor = new ProjectHookExecutor();
+        this.projectHookExecutor.init(plugin);
     }
 
     @Override
@@ -42,12 +43,12 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     @Override
     public void projectClosed(Project project) {
-        closeProject();
+        closeProject(project);
     }
 
     @Override
     public void projectSaved(Project project, boolean b) {
-        projectHookExecutor.triggerOnProjectSavedHook();
+        projectHookExecutor.triggerOnProjectSavedHooks(project);
     }
 
     @Override
@@ -56,19 +57,19 @@ public class ProjectListener implements ProjectPartLoadedListener {
     }
     @Override
     public void projectDeActivated(Project project) {
-        closeProject();
+        closeProject(project);
     }
 
     @Override
     public void projectReplaced(Project project, Project project1) {
-        closeProject();
+        closeProject(project);
         openProject(project);
     }
 
     @Override
     public void projectCreated(Project project) {
         openProject(project);
-        projectHookExecutor.triggerOnProjectCreatedHook(); //Maybe too late, as openProject will trigger openHook, but Core is not yet initialized
+        projectHookExecutor.triggerOnProjectCreatedHooks(project); //Maybe too late, as openProject will trigger openHook, but Core is not yet initialized
     }
 
     @Override
@@ -89,7 +90,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     @Override
     public void projectPreDeActivated(Project project) {
-        closeProject();
+        closeProject(project);
     }
 
     @Override
@@ -183,13 +184,13 @@ public class ProjectListener implements ProjectPartLoadedListener {
         coreInitialisation(project);
         listenerInitialisation();
 //        featureOpenProjectHandling();//TODO: Delete this line
-        projectHookExecutor.triggerOnProjectOpenHook();
+        projectHookExecutor.triggerOnProjectOpenedHooks(project);
     }
 
-    protected void closeProject() {
+    protected void closeProject(Project project) {
         coreClosingReInitialisation();
 //        featureCloseProjectHandling(); //TODO: Delete this line
-        projectHookExecutor.triggerOnProjectClosedHook();
+        projectHookExecutor.triggerOnProjectClosedHooks(project);
     }
 
 
@@ -205,7 +206,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //    private static void openProjectFeatureTrigger(List<MDFeature> registeredFeatures) {
 //        for (MDFeature registeredFeature : registeredFeatures) {
 //            try {
-//                registeredFeature.triggerOnProjectOpenHook();
+//                registeredFeature.triggerOnProjectOpenHooks();
 //            }catch (Exception exception) {
 //                OMFErrorHandler.handleException(
 //                        new OMFFeatureException("Error occurred during Feature ProjectOpen trigger",
@@ -259,7 +260,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //    private static void onProjectCloseFeatureTrigger(List<MDFeature> registeredFeatures) {
 //        for (MDFeature registeredFeature : registeredFeatures) {
 //            try {
-//                registeredFeature.triggerOnProjectCloseHook();
+//                registeredFeature.triggerOnProjectCloseHooks();
 //            }catch (Exception exception) {
 //                OMFErrorHandler.handleException(
 //                        new OMFFeatureException("Error occurred during Feature ProjectClose trigger",

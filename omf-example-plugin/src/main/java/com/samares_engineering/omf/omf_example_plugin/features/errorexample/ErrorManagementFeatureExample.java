@@ -9,16 +9,14 @@ package com.samares_engineering.omf.omf_example_plugin.features.errorexample;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.CriticalFeatureExampleAction;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.KotlinUIAction;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.UIActionErrorExample;
@@ -26,7 +24,6 @@ import com.samares_engineering.omf.omf_example_plugin.features.errorexample.crea
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ErrorManagementFeatureExample extends SimpleFeature {
@@ -49,8 +46,8 @@ public class ErrorManagementFeatureExample extends SimpleFeature {
     }
 
     @Override
-    public List<IRuleEngine> initLiveActions() {
-        IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
+    public List<ILiveAction> initLiveActions() {
+        ILiveAction creationRE = new LiveAction(RECategoryEnum.CREATE);
         creationRE.addRule(new LiveActionErrorExample());
         return List.of(creationRE);
     }

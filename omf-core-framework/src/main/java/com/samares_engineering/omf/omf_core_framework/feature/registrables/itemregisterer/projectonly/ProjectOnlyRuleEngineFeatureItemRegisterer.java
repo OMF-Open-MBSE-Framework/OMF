@@ -13,7 +13,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.listeners.IElementListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
@@ -27,9 +27,9 @@ import java.util.List;
  * It will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
  * see {@link IListenerManager}
  * see {@link IElementListener}
- * see {@link IRuleEngine}
+ * see {@link ILiveAction}
  */
-public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<IRuleEngine> {
+public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<ILiveAction> {
     /**
      * Use the IListenerManager to get the different listeners (Analyse, Creation, Update, Delete, AfterAutomation).
      */
@@ -44,10 +44,10 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
 
     /**
      * Register all RuleEngines in the ListenerManager
-     * see  {@link #registerFeatureItem(IRuleEngine)}
+     * see  {@link #registerFeatureItem(ILiveAction)}
      * @param ruleEngines
      */
-    public void registerFeatureItems(List<IRuleEngine> ruleEngines) {
+    public void registerFeatureItems(List<ILiveAction> ruleEngines) {
         try {
             ruleEngines.forEach(this::registerFeatureItem);
         }catch (Exception e){
@@ -57,10 +57,10 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
 
     /**
      * Unregister all RuleEngines in the ListenerManager
-     * see {@link #unregisterFeatureItem(IRuleEngine)}
+     * see {@link #unregisterFeatureItem(ILiveAction)}
      * @param ruleEngines
      */
-    public void unregisterFeatureItems(List<IRuleEngine> ruleEngines) {
+    public void unregisterFeatureItems(List<ILiveAction> ruleEngines) {
         try {
             ruleEngines.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
@@ -76,10 +76,10 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
      * @param ruleEngine: The RuleEngine to register
      */
     @Override
-    public void registerFeatureItem(IRuleEngine ruleEngine) {
+    public void registerFeatureItem(ILiveAction ruleEngine) {
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<ILiveAction>> ruleEngineMap = listener.getRuleEngineMap();
 
         ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
@@ -92,10 +92,10 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
      * @param ruleEngine: The RuleEngine to remove
      */
     @Override
-    public void unregisterFeatureItem(IRuleEngine ruleEngine) {
+    public void unregisterFeatureItem(ILiveAction ruleEngine) {
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<ILiveAction>> ruleEngineMap = listener.getRuleEngineMap();
         if (ruleEngineMap.containsKey(category))
             ruleEngineMap.get(category).remove(ruleEngine);
     }
@@ -108,10 +108,10 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
      * @param ruleEngine: The RuleEngine to register
      * @param featurePriority: will help to order the RuleEngine execution by its priority.
      */
-    private void addRuleEngine(IRuleEngine ruleEngine, int featurePriority){
+    private void addRuleEngine(ILiveAction ruleEngine, int featurePriority){
         String category = ruleEngine.getCategory();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<IRuleEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<ILiveAction>> ruleEngineMap = listener.getRuleEngineMap();
 
         ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
@@ -126,7 +126,7 @@ public class ProjectOnlyRuleEngineFeatureItemRegisterer implements ProjectOnlyFe
      * @param ruleEngine: The RuleEngine to register
      * @param featurePriority: The new pr.
      */
-    private void moveRuleEngine(IRuleEngine ruleEngine, int featurePriority){
+    private void moveRuleEngine(ILiveAction ruleEngine, int featurePriority){
         unregisterFeatureItem(ruleEngine);
         addRuleEngine(ruleEngine, featurePriority);
     }

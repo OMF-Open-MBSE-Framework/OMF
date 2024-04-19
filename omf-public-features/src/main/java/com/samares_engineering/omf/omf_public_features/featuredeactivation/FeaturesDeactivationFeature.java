@@ -7,19 +7,18 @@
 
 package com.samares_engineering.omf.omf_public_features.featuredeactivation;
 
-import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,7 +30,7 @@ import java.util.stream.Collectors;
  * By default, the feature List is all the registered features in the plugin.
  * It is possible to override this list by overriding the method getAllFeaturesToRegister() and getAllFeaturesToUnregistered().
  */
-public class FeaturesDeactivationFeature extends AFeature {
+public class FeaturesDeactivationFeature extends SimpleFeature {
 
     private FeatureDeactivationOptionHelper featureDeactivationOptionHelper;
 
@@ -57,19 +56,19 @@ public class FeaturesDeactivationFeature extends AFeature {
     }
 
     @Override
-    public List<IRuleEngine> initLiveActions() {
+    public List<ILiveAction> initLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
+    protected List<ILiveAction> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 
-    @Override
     /**
      * Registering the option and its listener to activate or deactivate all the features.
      */
+    @Override
     public List<IOption> initOptions() {
         featureDeactivationOptionHelper = new FeatureDeactivationOptionHelper(this);
         FeatureDeactivationOptionHelper envOptionsHelper = (FeatureDeactivationOptionHelper) getEnvOptionsHelper();

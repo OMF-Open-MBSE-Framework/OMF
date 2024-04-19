@@ -8,14 +8,24 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.HookFeatureItem;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.LifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.List;
 
+/**
+ * This interface represents a feature that can be registered in the OMF.
+ * A feature is a set of functionalities that can be activated or deactivated.
+ * A feature can be registered in the OMF and can be project specific.
+ * A feature contains FeatureItem such as UI actions, rule engines, options and life cycle hooks.
+ * see {@link RegistrableFeatureItem}
+ * see {@link UIAction}
+ * see {@link ILiveAction}
+ * see {@link IHook}
+ * see {@link IOption}
+ */
 public interface MDFeature{
     String getName();
 
@@ -26,22 +36,20 @@ public interface MDFeature{
 
 
     List<UIAction> getUIActions();
-    List<IRuleEngine> getRuleEngines();
+    List<ILiveAction> getRuleEngines();
     List<IOption> getOptions();
-    List<LifeCycleHook> getLifeCycleHooks();
+    List<IHook> getLifeCycleHooks();
 
     List<UIAction> getProjectOnlyUIActions();
-    List<IRuleEngine> getProjectOnlyRuleEngines();
+    List<ILiveAction> getProjectOnlyRuleEngines();
     List<IOption> getProjectOnlyOptions();
 
     void initFeature(APlugin plugin);
     void initFeatureItems();
-
     void initProjectOnlyFeatureItems();
 
     EnvOptionsHelper getEnvOptionsHelper();
 
     void register();
-
     void unregister();
 }

@@ -1,22 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.api.BaseHookFeatureItem;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem;
 
-public abstract class OnProjectClosedHook extends BaseHookFeatureItem implements TriggerOnProjectClosedHook {
+public abstract class OnProjectClosedHook extends BaseHookFeatureItem implements IOnProjectClosedHook {
 
-    @Override
-    public final void triggerOnProjectClosedHook() {
-        try {
-            onProjectClosed();
-        } catch (OMFCriticalException2 e) {
-            ErrorHandler2.getInstance().handleException(e, getFeature());
-        } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, getFeature());
-        }
-    }
 
-    public abstract void onProjectClosed();
 
 }

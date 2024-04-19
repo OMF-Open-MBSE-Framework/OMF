@@ -40,7 +40,7 @@ public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
             ((StereotypesFeature) feature).getRuleUpdater().updateAllRulesBasedOnConfigFiles();
             OMFLogger.getInstance().log("Rules updated based on config files", null, OMFLogLevel.INFO);
         }catch (OMFWarningException e) {
-            OMFLogger2.logToConsole(new OMFLog2().info(e.getUiMessage()), OMFLogLevel2.WARNING);
+            OMFLogger2.logToUIConsole(new OMFLog2().info(e.getUiMessage()), OMFLogLevel2.WARNING);
         } catch (Exception e) {
             throw new OMFCriticalException2("Error while parsing, please verify the configuration file and try again", e);
         }

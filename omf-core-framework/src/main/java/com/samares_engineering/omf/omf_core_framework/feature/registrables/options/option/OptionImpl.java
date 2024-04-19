@@ -39,4 +39,13 @@ public class OptionImpl extends AOption {
     public static OptionImpl createProjectOption(@CheckForNull Property property, String groupURI,  String categoryName, String groupName){
         return new OptionImpl(property, categoryName, groupURI, groupName, OptionKind.Project);
     }
+
+    @Override
+    public void activate() {
+        isActivated = true;
+    }
+    @Override
+    public void deactivate() {
+        isActivated = false;
+    }
 }

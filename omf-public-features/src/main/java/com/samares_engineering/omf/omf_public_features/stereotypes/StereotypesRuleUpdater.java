@@ -17,7 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.CSVParseUtils;
 import com.samares_engineering.omf.omf_public_features.stereotypes.exceptions.CSVNotFoundException;
@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class StereotypesRuleUpdater {
     private final StereotypesFeature feature;
-    private IRuleEngine organizerEngine;
+    private ILiveAction organizerEngine;
     private char delimiter;
 
     public StereotypesRuleUpdater(StereotypesFeature feature) {
@@ -222,7 +222,7 @@ public class StereotypesRuleUpdater {
         return null == Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, instance);
     }
 
-    public void setOrganizerRuleEngine(IRuleEngine organizerEngine) {
+    public void setOrganizerRuleEngine(ILiveAction organizerEngine) {
         this.organizerEngine = organizerEngine;
     }
 

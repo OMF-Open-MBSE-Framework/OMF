@@ -12,9 +12,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions.GenerateTemplateFromElement;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions.RefreshPatternConfiguration;
@@ -46,8 +46,8 @@ public class PatternCreationFeature extends SimpleFeature {
     }
 
     @Override
-    public List<IRuleEngine> initLiveActions() {
-        IRuleEngine creationRE = new RuleEngine(RECategoryEnum.CREATE);
+    public List<ILiveAction> initLiveActions() {
+        ILiveAction creationRE = new LiveAction(RECategoryEnum.CREATE);
         creationRE.addRule(new ElementCreatorFromPattern());
         return List.of(creationRE);
     }

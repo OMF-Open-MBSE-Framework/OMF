@@ -9,12 +9,12 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.IRuleEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.RestartAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.StopAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.server.ExtHyperTextServerRouting;
@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class APIServerFeature extends AFeature {
+public class APIServerFeature extends SimpleFeature {
     private final String serverURL;
     private final int serverPort;
 
@@ -48,12 +48,12 @@ public class APIServerFeature extends AFeature {
     }
 
     @Override
-    public List<IRuleEngine> initLiveActions() {
+    public List<ILiveAction> initLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
+    protected List<ILiveAction> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 

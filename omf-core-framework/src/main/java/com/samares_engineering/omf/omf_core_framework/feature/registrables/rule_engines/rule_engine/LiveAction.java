@@ -8,7 +8,6 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
@@ -21,27 +20,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RuleEngine implements IRuleEngine {
+public class LiveAction implements ILiveAction {
     private IListenerManager listenerManager;
     private List<IRule> rules = new ArrayList<>();
     private String id = "";
     private int priority = -1;
     private String category = "";
     private MDFeature feature;
+    private boolean activated = true;
 
-    public RuleEngine(RECategoryEnum category){
+    public LiveAction(RECategoryEnum category){
         this(category, -1);
     }
 
-    public RuleEngine(RECategoryEnum category, int priority){
+    public LiveAction(RECategoryEnum category, int priority){
         this(category.toString(), priority);
     }
 
-    public RuleEngine(String category){
+    public LiveAction(String category){
         this(category, -1);
     }
 
-    public RuleEngine(String category, int priority){
+    public LiveAction(String category, int priority){
         this.category = category;
         this.priority = priority;
     }
@@ -50,6 +50,21 @@ public class RuleEngine implements IRuleEngine {
     public void initRegistrableItem(MDFeature feature) {
         this.feature = feature;
         setListenerManager(feature.getPlugin().getListenerManager());
+    }
+
+    @Override
+    public void activate() {
+        this.activated = true;
+    }
+
+    @Override
+    public void deactivate() {
+        this.activated = false;
+    }
+
+    @Override
+    public boolean isActivated() {
+        return activated;
     }
 
     /**
