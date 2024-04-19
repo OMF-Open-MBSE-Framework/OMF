@@ -35,7 +35,6 @@ public class OMFErrorHandler {
         eLock.lockedElements.stream().forEach(lockedElement -> OMFLogger.getInstance().log(eLock.getMessage(), lockedElement, OMFLogLevel.ERROR));
     }
 
-
     public static void handleException(CriticalFeatureException criticalFeatureException) {
         handleException(criticalFeatureException, true);
     }
@@ -54,11 +53,10 @@ public class OMFErrorHandler {
     public static void handleException(OMFRollBackException rollBackException) {
         displayDEVMessage("RollBack requested", rollBackException, OMFLogLevel.INFO);
     }
-
-
     public static void handleException(OMFException omfException) {
         handleException(omfException, true);
     }
+
     public static void handleException(OMFException exception, boolean cancelSession) {
         defaultOMFExceptionHandling(exception, cancelSession);
     }

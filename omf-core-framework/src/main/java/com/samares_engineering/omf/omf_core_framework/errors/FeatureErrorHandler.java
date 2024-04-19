@@ -15,8 +15,5 @@ public class FeatureErrorHandler {
         }catch (OMFFeatureRegisteringException featureNotUnregister) {
            OMFErrorHandler.handleException(featureNotUnregister);
         }
-
     }
-
-
 }

@@ -6,9 +6,15 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine;
 
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.IRule;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
+import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -73,29 +79,18 @@ public class RuleEngine implements IRuleEngine {
                 continue;
             if (rule.matches(evt)) {
                 rulesToExecute.add(rule);
-                if (rule.isBlocking())
+                ColorPrinter.status("Triggered rule: " + rule.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
+                        + " on element: " + ((Element) evt.getSource()).getHumanName());
+                if (rule.isBlocking()) {
+                    ColorPrinter.status("Rule is blocking: stopping rule matching for this event");
                     break;
+                }
             }
-
         }
         return rulesToExecute;
 
     }
 
-    /**
-     * Finds and processes the highest priority rule (if it exists) matching the provided event
-     * @param evt event to process
-     * @return true if a matching rule has been found and processed, false otherwise
-     */
-    @Override
-    public boolean processFirstMatchingRule(PropertyChangeEvent evt) {
-        Optional<IRule> matchingRule = getMatchingRule(evt);
-        matchingRule.ifPresent(rule ->  {
-            listenerManager.deactivateAllListeners();
-            rule.process(evt);
-        });
-        return matchingRule.isPresent();
-    }
     /**
      * Finds and processes the highest priority rule (if it exists) matching the provided event
      * @param evt event to process
@@ -108,9 +103,17 @@ public class RuleEngine implements IRuleEngine {
             return false;
 
         listenerManager.deactivateAllListeners();
-        matchingRules.stream()
-                .forEach(rule -> rule.process(evt));
+        matchingRules.forEach(rule -> {
+            try {
+                rule.process(evt);
+            } catch (OMFDevException e) {
+                ErrorHandler2.getInstance().handleException(e, getFeature());
+            } catch (RuntimeException e) {
+                ErrorHandler2.getInstance().handleException(e, getFeature());
+            }
+        });
 
+        OMFAutomationManager.getInstance().automationTriggered();
         return true;
     }
 

@@ -156,7 +156,7 @@ public class TypeBuilder extends NamedElementBuilder {
     }
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
 //        if (this.elementToBuild == null)
 //            this.elementToBuild = SysMLFactory.getInstance().createBlock();
@@ -168,7 +168,7 @@ public class TypeBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public Type build() throws BuilderException {
+    public Type build() {
 //        preBuild();
         super.build();
         Type type = (Type) this.elementToBuild;
@@ -180,7 +180,7 @@ public class TypeBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public Type rebuild() throws BuilderException {
+    public Type rebuild() {
         return (Type) super.rebuild();
     }
 

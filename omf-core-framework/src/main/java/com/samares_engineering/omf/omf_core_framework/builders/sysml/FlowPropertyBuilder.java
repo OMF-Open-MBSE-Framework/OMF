@@ -15,8 +15,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.uml.PropertyBuilder;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -146,7 +146,7 @@ public class FlowPropertyBuilder extends PropertyBuilder {
     }
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
         if (name == null)
             name = "";
@@ -155,7 +155,7 @@ public class FlowPropertyBuilder extends PropertyBuilder {
             throw new BuilderException("port: " + name + " owner is null", null);
     }
 
-    public Property build() throws BuilderException {
+    public Property build() {
         if (this.createNewElement)
             this.elementToBuild = SysMLFactory.getInstance().createFlowProperty();
         super.build();
@@ -165,7 +165,7 @@ public class FlowPropertyBuilder extends PropertyBuilder {
     }
 
     @Override
-    public Property rebuild() throws BuilderException {
+    public Property rebuild() {
         return super.rebuild();
     }
 

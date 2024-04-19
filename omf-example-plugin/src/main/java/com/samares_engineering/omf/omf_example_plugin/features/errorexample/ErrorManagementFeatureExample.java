@@ -11,6 +11,7 @@ import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -19,6 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RuleEngine;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.CriticalFeatureExampleAction;
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.KotlinUIAction;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.UIActionErrorExample;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.creation.LiveActionErrorExample;
 
@@ -27,7 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ErrorManagementFeatureExample extends AFeature {
+public class ErrorManagementFeatureExample extends SimpleFeature {
     public static String ACTIVATE_ERROR_LIVE_ACTION;
     public static String OMF_ERROR_EXAMPLE;
 
@@ -35,16 +37,13 @@ public class ErrorManagementFeatureExample extends AFeature {
        super("ERROR MANAGEMENT FEATURE");
     }
 
-    @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
-    }
 
     @Override
     public List<UIAction> initFeatureActions() {
         return Arrays.asList(
                 new CriticalFeatureExampleAction(),
-                new UIActionErrorExample()
+                new UIActionErrorExample(),
+                new KotlinUIAction()
         );
 
     }
@@ -56,10 +55,6 @@ public class ErrorManagementFeatureExample extends AFeature {
         return List.of(creationRE);
     }
 
-    @Override
-    protected List<IRuleEngine> initProjectOnlyLiveActions() {
-        return Collections.emptyList();
-    }
 
     @Override
     public List<IOption> initOptions() {
@@ -83,15 +78,11 @@ public class ErrorManagementFeatureExample extends AFeature {
             }
         });
 
-        return Arrays.asList(
+        return List.of(
                 testEnvOption
         );
     }
 
-    @Override
-    protected List<IOption> initProjectOnlyOptions() {
-        return Collections.emptyList();
-    }
 
 
 }

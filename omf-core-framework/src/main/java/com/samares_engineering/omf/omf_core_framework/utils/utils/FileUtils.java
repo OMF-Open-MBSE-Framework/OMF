@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.utils.utils;
 
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +46,7 @@ public class FileUtils {
             //close last ZipEntry
             zis.closeEntry();
         } catch (IOException e) {
-            OMFErrorHandler.handleException(e, false);
+            throw new OMFCriticalException2("Error while unzipping file", e);
         }
     }
 

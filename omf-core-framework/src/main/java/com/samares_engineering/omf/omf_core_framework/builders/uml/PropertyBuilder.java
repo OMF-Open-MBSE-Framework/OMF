@@ -16,8 +16,8 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.NamedElementBuilder;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 
 import java.util.Collection;
@@ -153,7 +153,7 @@ public class PropertyBuilder extends NamedElementBuilder {
 
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
         if (name == null)
             name = "";
@@ -162,7 +162,7 @@ public class PropertyBuilder extends NamedElementBuilder {
             throw new BuilderException("port: " + name + " owner is null", this);
     }
 
-    public Property build() throws BuilderException {
+    public Property build() {
         if(this.createNewElement)
             this.elementToBuild = SysMLFactory.getInstance().createFlowProperty();
         super.build();
@@ -172,7 +172,7 @@ public class PropertyBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public Property rebuild() throws BuilderException {
+    public Property rebuild() {
         return (Property) super.rebuild();
     }
 

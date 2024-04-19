@@ -42,8 +42,6 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
         this.featureRegisteringListener = new FeatureRegisteringListener(this);
     }
 
-
-
     @Override
     protected EnvOptionsHelper initEnvOptionsHelper() {
         return new FeatureActivationFromOption_OptionHelper(this, getFeatureManagerOptionGroup());
@@ -57,13 +55,16 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
      */
     @Override
     public void onRegistering() {
-        super.onRegistering();
         EnvironmentOptions options = Application.getInstance().getEnvironmentOptions();
         if(options.getGroup(featureManagerOptionGroup.ID) == null)
             options.addGroup(featureManagerOptionGroup);
 
-        Application.getInstance().insertActivityAfterStartup(this::initSynchroWithEnvOptions);
 
+    }
+
+    @Override
+    protected void onMagicdrawStartup() {
+        initSynchroWithEnvOptions();
     }
 
     /**

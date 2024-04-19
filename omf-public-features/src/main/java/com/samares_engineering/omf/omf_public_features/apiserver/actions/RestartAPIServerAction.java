@@ -8,9 +8,7 @@
 package com.samares_engineering.omf.omf_public_features.apiserver.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -25,14 +23,11 @@ import java.util.List;
 @DeactivateListener
 @MDAction(actionName = "Restart API Server", category = "OMF.OMF ADVANCED")
 public class RestartAPIServerAction extends AUIAction {
-
-
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(OMFUtils.getProject() == null) return false;
         return true;
     }
-
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
@@ -42,12 +37,8 @@ public class RestartAPIServerAction extends AUIAction {
             int port = APIEnvOptionsHelper.getInstance(getFeature()).getServerPort();
             OMFApiServer.getInstance().startServer(port);
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFeatureException("Error while starting API server, this will strongly impact features using API Server." +
-                    "\nPlease contact the plugin: " + feature.getPlugin().getName() + " provider", getFeature(), e,
-                    GenericException.ECriticality.CRITICAL));
+            throw new OMFCriticalException2("Error while restarting API server, this will strongly impact features using API Server." +
+                    " Please contact the plugin provider.", e);
         }
-
     }
-
-
 }

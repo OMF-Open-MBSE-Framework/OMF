@@ -9,9 +9,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.CloneManager;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.ElementGetter;
@@ -89,9 +87,8 @@ public class GroupElementHelper {
             try {
                 ModelElementsManager.getInstance().removeElement(connector);}
             catch (ReadOnlyElementException e) {
-                OMFErrorHandler.handleException(
-                        new OMFException("Cannot finalize the port grouping due to a ReadOnly Connector",
-                                e, GenericException.ECriticality.CRITICAL), true);
+                throw new OMFCriticalException2("Cannot finalize the port grouping due to a ReadOnly Connector",
+                                e);
             }
         }
 

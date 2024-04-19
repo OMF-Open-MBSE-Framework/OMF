@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions;
@@ -20,6 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.List;
+
 @MenuAction
 @DiagramAction
 @BrowserAction
@@ -46,21 +47,16 @@ public class SyncAllNameAction extends AUIAction {
      */
     public void actionToPerform(List<Element> selectedElements) {
         //OLD CODE
-        try {
-            Port port = (Port) selectedElements.get(0);
+        Port port = (Port) selectedElements.get(0);
 
-            if(port.getType() == null) return;
+        if (port.getType() == null) return;
 
-            port.getType().setName(port.getName());
+        port.getType().setName(port.getName());
 
-            port.getType().getOwnedElement().stream()
-                    .filter(Profile._getSysml().flowProperty()::is)
-                    .map(Property.class::cast)
-                    .forEach(property -> property.setName(port.getName()));
+        port.getType().getOwnedElement().stream()
+                .filter(Profile._getSysml().flowProperty()::is)
+                .map(Property.class::cast)
+                .forEach(property -> property.setName(port.getName()));
 
-        }catch (Exception e){
-            OMFErrorHandler.handleException(e);
-        }
     }
-
 }

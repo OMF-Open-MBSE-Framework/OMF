@@ -71,7 +71,7 @@ public class TestHelper {
                     .filter(pluginClass::isInstance)
                     .findFirst().orElseThrow(Exception::new);
         } catch (Exception e) {
-            throw new OMFTestFrameworkException("Can't find tested plugin", GenericException.ECriticality.CRITICAL);
+            throw new OMFTestFrameworkException("Can't find tested plugin");
         }
     }
 }

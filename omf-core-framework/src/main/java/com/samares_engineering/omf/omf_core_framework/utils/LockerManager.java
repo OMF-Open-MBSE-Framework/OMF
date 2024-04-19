@@ -92,26 +92,19 @@ public class LockerManager {
         projectService.getLockInfo(element);
 
         if(isLockedByOther(element)) {
-//            throw new OMFLockException("[LOCK ERROR] Element is locked by  " + projectService.getLockInfo(element), element);
             OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is locked by  " + lockInfo + "   PLEASE UNDO and resolve this lock issue", element));
             return;
         }
 
         if(!isEditable) {
-//            throw new OMFLockException("[LOCK ERROR] Element is not editable  " + projectService.getLockInfo(element), element);}
             OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is not editable => PLEASE UNDO and check if these elements are accessible (shared and read-only projects, libraries etc)  " + lockInfo, element));
             return;
         }
-//        if(Objects.isNull(projectService.getLockInfo(element)))
-//            return;
+
         if(!projectService.isLocked(element)) {
             OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is not lock. => PLEASE UNDO and lock these element before actions  " + lockInfo, element));
-//            projectService.lockElements(Collections.singleton(element), new MyProgressStatus());
-
             return;
         }
-
-
     }
 
 
@@ -121,19 +114,15 @@ public class LockerManager {
         projectService.getLockInfo(element);
 
         if(isLockedByOther(element)) {
-//            throw new OMFLockException("[LOCK ERROR] Element is locked by  " + projectService.getLockInfo(element), element);
             return new OMFLockException("     [LOCKED BY] " + lockInfo, element);
         }
 
         if(!isEditable) {
-//            throw new OMFLockException("[LOCK ERROR] Element is not editable  " + projectService.getLockInfo(element), element);}
             return new OMFLockException("     [NON EDITABLE]  " + lockInfo, element);
         }
-//        if(Objects.isNull(projectService.getLockInfo(element)))
-//            return;
+
         if(!projectService.isLocked(element)) {
             return new OMFLockException("     [NOT LOCK] " + lockInfo, element);
-//            projectService.lockElements(Collections.singleton(element), new MyProgressStatus());
         }
         return null;
     }
@@ -144,10 +133,10 @@ public class LockerManager {
     }
 
 
-    public Collection<? extends OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public Collection<OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
-    public Collection<? extends OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public Collection<OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
 

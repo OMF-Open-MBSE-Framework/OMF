@@ -9,9 +9,6 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
@@ -95,26 +92,12 @@ public class APIServerFeature extends AFeature {
 
     @Override
     public void onRegistering() {
-        try {
-            OMFApiServer.getInstance(getPlugin()).startServer(serverPort);
-        } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFeatureException("Error while starting API server, this will strongly impact features using API Server." +
-                    "\nPlease try to restart the API Server using OMF Advanced Menu", this, e, GenericException.ECriticality.CRITICAL));
-            return;
-        }
-
+        OMFApiServer.getInstance(getPlugin()).startServer(serverPort);
         registerRouting();
-
-
     }
 
     @Override
     public void onUnregistering() {
-        try {
-            OMFApiServer.getInstance(getPlugin()).stopServer();
-        } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFeatureException("Error while stopping API server, this will strongly impact features using API Server." +
-                    "\nPlease try to restart the API Server using OMF Advanced Menu", this, e, GenericException.ECriticality.CRITICAL));
-        }
+        OMFApiServer.getInstance(getPlugin()).stopServer();
     }
 }

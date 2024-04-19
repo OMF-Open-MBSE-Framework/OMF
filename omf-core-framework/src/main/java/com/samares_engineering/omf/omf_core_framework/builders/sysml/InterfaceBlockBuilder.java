@@ -13,9 +13,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
-import com.samares_engineering.omf.omf_core_framework.builders.uml.PropertyBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.PropertyBuilder;
+import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -142,7 +142,7 @@ public class InterfaceBlockBuilder extends TypeBuilder {
     }
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
         if (name == null)
             name = "";
@@ -152,7 +152,7 @@ public class InterfaceBlockBuilder extends TypeBuilder {
     }
 
     @Override
-    public Type build() throws BuilderException {
+    public Type build() {
         if (this.createNewElement)
             this.elementToBuild = SysMLFactory.getInstance().createInterfaceBlock();
         super.build();
@@ -162,7 +162,7 @@ public class InterfaceBlockBuilder extends TypeBuilder {
     }
 
     @Override
-    public Type rebuild() throws BuilderException {
+    public Type rebuild() {
         return super.rebuild();
     }
 

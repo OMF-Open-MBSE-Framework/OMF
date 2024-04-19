@@ -28,13 +28,8 @@ public class LiveActionExample extends ARule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-//        try {
 //            Class block = (Class) e.getSource();
 //            block.setName("succeed");
-//        }catch (Exception uncheckedException){
-//            OMFErrorHandler.handleException(uncheckedException);
-//        }
-
         return e;
     }
 

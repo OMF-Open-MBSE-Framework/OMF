@@ -15,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMF
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class OMFLockException extends OMFException implements IException {
+public class OMFLockException extends OMFException {
 
     public Collection<Element> lockedElements;
     public Exception exception;

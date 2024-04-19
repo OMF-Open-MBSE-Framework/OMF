@@ -1,14 +1,15 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners.listeners;
 
 import com.nomagic.magicdraw.copypaste.CopyPasteManager;
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
@@ -46,12 +47,8 @@ public class TransactionElementListener extends AElementListener implements Tran
                 }
                 if (stopHandlingThisBatch) return;
             }
-        }
-        catch (OMFRollBackException rollBackException){
+        } catch (RollbackException2 e) {
             UndoManager.getInstance().requestHardUndo();
-        }
-        catch (Exception e){
-            OMFErrorHandler.handleException(e, false);
         }
     }
 
@@ -72,4 +69,4 @@ public class TransactionElementListener extends AElementListener implements Tran
     public void removingListener() {
         OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);
     }
-    }
+}

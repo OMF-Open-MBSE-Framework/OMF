@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.creation;
@@ -10,7 +10,6 @@ package com.samares_engineering.omf.smart_private.privatefeaturelibrary.patternc
 import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
@@ -37,22 +36,15 @@ public class ElementCreatorFromPattern extends ARule {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        try {
-            Set<Stereotype> configuredSTR = ((PatternCreationFeature) getFeature()).getConfiguredSTR();
-            Element createdElement = (Element) e.getSource();
+        Set<Stereotype> configuredSTR = ((PatternCreationFeature) getFeature()).getConfiguredSTR();
+        Element createdElement = (Element) e.getSource();
 
-            List<Dependency> configuredOnCreationDependencies = PatternCreationHelper.getAllOnCreationDependencyFromElement(createdElement, configuredSTR);
+        List<Dependency> configuredOnCreationDependencies = PatternCreationHelper.getAllOnCreationDependencyFromElement(createdElement, configuredSTR);
 
-            PatternCreationHelper.replaceElementWithGeneratedPatterns(createdElement, configuredOnCreationDependencies);
-
-        }catch (Exception uncheckedException){
-            OMFErrorHandler.handleException(uncheckedException);
-        }
+        PatternCreationHelper.replaceElementWithGeneratedPatterns(createdElement, configuredOnCreationDependencies);
 
         return e;
     }
-
-
 
 
     @Override

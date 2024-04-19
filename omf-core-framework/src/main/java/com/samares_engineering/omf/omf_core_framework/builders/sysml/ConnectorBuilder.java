@@ -16,11 +16,10 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
+import com.samares_engineering.omf.omf_core_framework.builders.BetaFactory;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.NamedElementBuilder;
-import com.samares_engineering.omf.omf_core_framework.builders.BetaFactory;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.factory.OMFFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -244,13 +243,13 @@ public class ConnectorBuilder extends NamedElementBuilder {
     }
 
     @Override
-    protected void setOwnedElements() throws BuilderException {
+    protected void setOwnedElements() {
         super.setOwnedElements();
     }
 
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         super.preBuild();
         if (src == null && srcPart != null)
             src = srcPart;
@@ -259,7 +258,7 @@ public class ConnectorBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public Connector build() throws BuilderException {
+    public Connector build() {
         if (this.createNewElement)
             this.elementToBuild = BetaFactory.getInstance().magicDrawFactory.createConnectorInstance();
         super.build();
@@ -303,7 +302,7 @@ public class ConnectorBuilder extends NamedElementBuilder {
                                 .map(Property.class::cast)
                                 .collect(Collectors.toList()));
             } catch (Exception e) {
-                OMFErrorHandler.handleException(new BuilderException("Error during AutomaticEndSetting", this), false);
+                throw new BuilderException("Error during AutomaticEndSetting", this);
             }
         }
 
@@ -312,7 +311,7 @@ public class ConnectorBuilder extends NamedElementBuilder {
     }
 
     @Override
-    public Connector rebuild() throws BuilderException {
+    public Connector rebuild() {
         super.rebuild();
         createNewElement = true;
         return build();

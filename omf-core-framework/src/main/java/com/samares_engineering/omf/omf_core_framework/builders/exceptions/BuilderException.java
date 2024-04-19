@@ -9,22 +9,14 @@ package com.samares_engineering.omf.omf_core_framework.builders.exceptions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.IGenericBuilder;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 
-public class BuilderException extends GenericException {
-    private String message;
-    private Element createdElement;
-
-
+public class BuilderException extends RuntimeException {
     public BuilderException(String message, IGenericBuilder builder) {
         super("[Builder - " + getNameFromBuilder(builder) + "] " + message);
-        this.message = message;
     }
 
     public BuilderException(String message, Element createdElement, String builderName) {
         super("[Builder - " + builderName + "] " + message + "\n on created element: " + createdElement.getHumanName());
-        this.message = message;
-        this.createdElement = createdElement;
     }
 
     private static String getNameFromBuilder(IGenericBuilder builder) {

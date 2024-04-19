@@ -8,7 +8,7 @@ package com.samares_engineering.omf.omf_core_framework.errors;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.utils.SelectInBrowserRunnable;
+import com.samares_engineering.omf.omf_core_framework.utils.ElementAction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +34,10 @@ public class OMFLogger {
     }
 
     public void log(String message, Element elementToLink, OMFLogLevel level) {
-        String link = "";
+        String linkText = "";
         if (elementToLink != null) {
-            link = "Debug: " + elementToLink.getID();
-            callbacks.put(link, new SelectInBrowserRunnable(elementToLink));
+            linkText = "Debug: " + elementToLink.getID();
+            callbacks.put(linkText, new ElementAction(elementToLink)::selectInBrowser);
         }
 
         String color;
@@ -64,7 +64,7 @@ public class OMFLogger {
                 "<font color=" + color + ">" +        //Starting HTML tag and color setting
                    logCategory + message +              //message
                     "</font>" + " - " +                //Ending HTML tag and separator
-                   " <A>" + link + "</A>", callbacks); //link to element if any
+                   " <A>" + linkText + "</A>", callbacks); //link to element if any
 
     }
 
@@ -90,17 +90,15 @@ public class OMFLogger {
         log(message, elementToLink, OMFLogLevel.ERROR);
     }
 
-
-
     public void logWithOwner(String message, Element elementToLink, OMFLogLevel level) {
         String linkElement = "";
         String linkOwnerElement = "DELETED";
         if(elementToLink!=null){
             linkElement = elementToLink.getHumanName();
-            callbacks.put(linkElement, new SelectInBrowserRunnable(elementToLink));
+            callbacks.put(linkElement, new ElementAction(elementToLink)::selectInBrowser);
             if(elementToLink.getOwner() != null) {
                 linkOwnerElement = elementToLink.getOwner().getHumanName();
-                callbacks.put(linkOwnerElement, new SelectInBrowserRunnable(elementToLink.getOwner()));
+                callbacks.put(linkOwnerElement, new ElementAction(elementToLink.getOwner())::selectInBrowser);
             }
         }
         String color;

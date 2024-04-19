@@ -19,10 +19,11 @@ public interface MDFeature {
 
     void setIsRegistered(boolean isRegistered);
     boolean isRegistered();
-    void onRegistering();
-    void onUnregistering();
-    void onProjectOpen();
-    void onProjectClose();
+    void triggerOnRegisteringHook();
+    void triggerOnUnregisteringHook();
+    void triggerOnProjectOpenHook();
+    void triggerOnProjectCloseHook();
+    void triggerOnMagicdrawStartupHook();
 
     APlugin getPlugin();
 

@@ -10,7 +10,6 @@ package com.samares_engineering.omf.omf_core_framework.utils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 
 import java.util.*;
 
@@ -26,12 +25,7 @@ public class AllCreatedElements {
 
 
     public static void registerCreatedElement(Element createdElement) {
-        try {
-
-            ColorPrinter.warn("[AllCreatedElements] Unknown case: " + createdElement.getHumanName());
-        } catch (Exception e) {
-            OMFErrorHandler.handleException(e, false);
-        }
+        ColorPrinter.warn("[AllCreatedElements] Unknown case: " + createdElement.getHumanName());
     }
 
     public static void registerCreatedElements(Collection<Element> createdElements) {

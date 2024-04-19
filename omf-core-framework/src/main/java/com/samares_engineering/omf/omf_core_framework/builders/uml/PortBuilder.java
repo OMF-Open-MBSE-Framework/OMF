@@ -13,13 +13,15 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
+import com.samares_engineering.omf.omf_core_framework.builders.BetaFactory;
 import com.samares_engineering.omf.omf_core_framework.builders.exceptions.BuilderException;
 import com.samares_engineering.omf.omf_core_framework.builders.generic.AGenericBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.uml.metaclasses.TypeBuilder;
-import com.samares_engineering.omf.omf_core_framework.builders.BetaFactory;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 
 import java.util.Collection;
+
+import static com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2.WARNING;
 
 public class PortBuilder extends PropertyBuilder {
     protected boolean createNewElement = false;
@@ -170,7 +172,7 @@ public class PortBuilder extends PropertyBuilder {
     }
 
     @Override
-    protected void preBuild() throws BuilderException {
+    protected void preBuild() {
         //preBuild
         if (name == null)
             name = "";
@@ -178,14 +180,13 @@ public class PortBuilder extends PropertyBuilder {
         if (elementToBuildHasNoOwner)
             throw new BuilderException("port: " + name + " owner is null", this);
         if (getTypeBuilder().getOwner() == null) {
-            OMFErrorHandler.handleException(new BuilderException("TypeBuilder of port: " + name + " owner is null, default owner is set", this), false);
+            OMFLogger2.logToUIConsole("TypeBuilder of port: " + name + " owner is null, default owner is set", WARNING);
             getTypeBuilder().owner(owner);
         }
-
     }
 
     @Override
-    public Port build() throws BuilderException {
+    public Port build() {
         if (this.createNewElement)
             this.elementToBuild = BetaFactory.getInstance().magicDrawFactory.createPortInstance();
         super.build();      //Does it co to this preBuild?
@@ -200,7 +201,7 @@ public class PortBuilder extends PropertyBuilder {
     }
 
     @Override
-    public Port rebuild() throws BuilderException {
+    public Port rebuild() {
         return (Port) super.rebuild();
     }
 

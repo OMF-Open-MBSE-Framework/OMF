@@ -136,13 +136,13 @@ public class PatternCreatorProfile extends ProfileImplementation
         @Override
         public boolean is(@CheckForNull Element element)
         {
-            return element instanceof com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype &&
+            return element instanceof Stereotype &&
                     _p.isTypeOf(element, getStereotype());
         }
 
         public static boolean isInstance(@CheckForNull Element element)
         {
-            if(element instanceof com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype)
+            if(element instanceof Stereotype)
             {
                 PatternCreatorProfile instance = getInstance(element);
                 return instance.isTypeOf(element, instance.patternInstance().getStereotype());
