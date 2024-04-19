@@ -13,6 +13,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener.FeatureRegisteringListener;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationFromOption_OptionHelper;
@@ -63,8 +65,13 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     }
 
     @Override
-    public void onMagicdrawStartup() {
-        initSynchroWithEnvOptions();
+    protected List<IHook> initLifeCycleHooks() {
+        return List.of(new OnMagicDrawStartHook() {
+            @Override
+            public void onMagicDrawStart() {
+                initSynchroWithEnvOptions();
+            }
+        });
     }
 
     /**

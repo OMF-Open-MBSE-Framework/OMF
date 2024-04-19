@@ -41,17 +41,17 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
 
     /**
      *  Register all Project Hooks from its holder in the ProjectListener.
-     * @param ProjectLifeCycleHook hookHolder to register
+     * @param hook hookHolder to register
      */
     @Override
-    public void registerFeatureItem(ProjectLifeCycleHook ProjectLifeCycleHook) {
+    public void registerFeatureItem(ProjectLifeCycleHook hook) {
         try {
-            if(ProjectLifeCycleHook == null || !ProjectLifeCycleHook.isActivated()) return;
-            projectListener.getProjectHookExecutor().addHook(ProjectLifeCycleHook);
+            if(hook == null || !hook.isActivated()) return;
+            projectListener.getProjectHookExecutor().addHook(hook);
         }catch (Exception e) {
             throw new OMFFeatureRegisteringException(
-                    "[Feature] Could not register hookHolder: " + ProjectLifeCycleHook.getClass().getSimpleName()
-                            + " for mdFeature: " + ProjectLifeCycleHook.getFeature().getName());
+                    "[Feature] Could not register hookHolder: " + hook.getClass().getSimpleName()
+                            + " for mdFeature: " + hook.getFeature().getName());
         }
     }
 

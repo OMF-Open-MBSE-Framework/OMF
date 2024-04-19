@@ -216,35 +216,6 @@ public abstract class AFeature implements MDFeature {
         }
     }
 
-    public final void triggerOnProjectOpenHook() {
-        try {
-            onProjectOpen();
-        } catch (OMFDevException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
-        } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
-        }
-    }
-
-    public final void triggerOnProjectCloseHook() {
-        try {
-            onProjectClose();
-        } catch (OMFDevException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
-        } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
-        }
-    }
-
-    public final void triggerOnMagicdrawStartupHook() {
-        try {
-            onMagicdrawStartup();
-        } catch (OMFDevException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
-        } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
-        }
-    }
 
     /**
      * Override this to inject code to be run on feature activation

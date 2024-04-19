@@ -8,7 +8,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class BaseHookFeatureItem implements IHook {
     private MDFeature feature;
-    private boolean activated;
+    private boolean activated = true;
 
     public MDFeature getFeature() {
         return feature;
