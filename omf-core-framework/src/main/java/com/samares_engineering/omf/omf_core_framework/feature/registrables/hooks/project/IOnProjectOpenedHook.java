@@ -2,14 +2,14 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.nomagic.magicdraw.core.Project;
 
-public interface IOnProjectOpenedHook extends ProjectLifeCycleHook {
+public interface IOnProjectOpenedHook extends IProjectLifeCycleHook {
 
     /**
      * NOTE: This method is called by the framework, do not call it directly or override it.
      * This method is used to trigger the hook when a project is opened.
      * @param project the project that was opened
      */
-    default void triggerOnProjectOpenHook(Project project) {
+    default void triggerOnProjectOpenedHook(Project project) {
         executeHook(() -> onProjectOpened(project), "onProjectOpened");
     }
 

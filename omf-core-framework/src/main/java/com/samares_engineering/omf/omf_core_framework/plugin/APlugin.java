@@ -26,11 +26,12 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.magicdraw.MagicDrawHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonMagicDrawonly.MagicDrawLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.ProjectLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.RuleEngineFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.UIActionFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.FeatureLifeCycleHookFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.MagicDrawLifeCycleHookFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.ProjectLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyUIActionFeatureItemRegisterer;
@@ -78,6 +79,7 @@ public abstract class APlugin extends Plugin {
     private ProjectOnlyOptionFeatureItemRegisterer projectOnlyOptionFeatureItemRegisterer;
     private ProjectLifeCycleHookFeatureItemRegisterer projectLifeCycleHookFeatureItemRegisterer;
     private MagicDrawLifeCycleHookFeatureItemRegisterer magicDrawLifeCycleHookFeatureItemRegisterer;
+    private FeatureLifeCycleHookFeatureItemRegisterer featureLifeCycleHookFeatureItemRegisterer;
 
     // MagicDraw Hook Executor
     private MagicDrawHookExecutor magicDrawHookExecutor;
@@ -250,13 +252,15 @@ public abstract class APlugin extends Plugin {
             this.projectOnlyOptionFeatureItemRegisterer = new ProjectOnlyOptionFeatureItemRegisterer();
             this.projectLifeCycleHookFeatureItemRegisterer = new ProjectLifeCycleHookFeatureItemRegisterer();
             this.magicDrawLifeCycleHookFeatureItemRegisterer = new MagicDrawLifeCycleHookFeatureItemRegisterer();
+            this.featureLifeCycleHookFeatureItemRegisterer = new FeatureLifeCycleHookFeatureItemRegisterer();
 
             List<FeatureItemRegisterer> defaultFeatureRegisterer = List.of(
                     uiActionFeatureItemRegisterer,
                     ruleEngineFeatureItemRegisterer,
                     optionFeatureItemRegisterer,
                     projectLifeCycleHookFeatureItemRegisterer,
-                    magicDrawLifeCycleHookFeatureItemRegisterer
+                    magicDrawLifeCycleHookFeatureItemRegisterer,
+                    featureLifeCycleHookFeatureItemRegisterer
                     );
 
             List<ProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
@@ -527,6 +531,10 @@ public abstract class APlugin extends Plugin {
 
     public ProjectLifeCycleHookFeatureItemRegisterer getProjectLifeCycleHookFeatureItemRegisterer() {
         return projectLifeCycleHookFeatureItemRegisterer;
+    }
+
+    public FeatureLifeCycleHookFeatureItemRegisterer getFeatureLifeCycleHookFeatureItemRegisterer() {
+        return featureLifeCycleHookFeatureItemRegisterer;
     }
 
     public MagicDrawHookExecutor getMagicDrawHookExecutor() {

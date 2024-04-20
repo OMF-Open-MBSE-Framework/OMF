@@ -4,6 +4,7 @@ import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class BaseHookFeatureItem implements IHook {
@@ -28,6 +29,10 @@ public class BaseHookFeatureItem implements IHook {
 
     public boolean isActivated() {
         return activated;
+    }
+
+    public APlugin getPlugin() {
+        return getFeature().getPlugin();
     }
 
     @Override

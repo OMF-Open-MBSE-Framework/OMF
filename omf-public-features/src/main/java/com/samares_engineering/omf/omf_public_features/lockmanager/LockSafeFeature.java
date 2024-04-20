@@ -7,8 +7,13 @@
 
 package com.samares_engineering.omf.omf_public_features.lockmanager;
 
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
+import com.nomagic.magicdraw.core.Project;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IOnMagicDrawStartHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectClosedHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.RestrictedElementCheckerListener;
@@ -32,32 +37,8 @@ public class LockSafeFeature extends SimpleFeature {
     }
 
     @Override
-    public void onMagicdrawStartup() {
-        LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
-        restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
-        restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());
-    }
-
-    @Override
-    public void onUnregistering() {
-        super.onUnregistering();
-    }
-
-    @Override
-    public void onProjectOpen() {
-        super.onProjectOpen();
-        getPlugin().getListenerManager().addCoreListener(restrictedElementListener);
-    }
-
-    @Override
-    public void onProjectClose() {
-        super.onUnregistering();
-        getPlugin().getListenerManager().removeCoreListener(restrictedElementListener);
-    }
-
-    @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return new LockerManagerOptionHelper(this);
+    protected List<IHook> initLifeCycleHooks() {
+        return List.of(new FeatureConfigurationHooks(this));
     }
 
 
@@ -68,5 +49,41 @@ public class LockSafeFeature extends SimpleFeature {
         OptionImpl rollbackOption = envOptionsHelper.rollbackOption(restrictedElementListener);
         return Arrays.asList(twcSafeModeOption, rollbackOption);
     }
+
+    /**
+     * Hooks to register for the feature to configure the feature on project open and close and MagicDraw start.
+     */
+    private static class FeatureConfigurationHooks extends BaseHookFeatureItem implements
+            IOnProjectOpenedHook,
+            IOnProjectClosedHook,
+            IOnMagicDrawStartHook {
+
+        private final LockSafeFeature lockSafeFeature;
+
+        public FeatureConfigurationHooks(LockSafeFeature feature) {
+            super();
+            this.lockSafeFeature = feature;
+        }
+
+        @Override
+        public void onMagicDrawStart() {
+            LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) lockSafeFeature.getEnvOptionsHelper();
+            lockSafeFeature.restrictedElementListener.setActivated(envOptionsHelper.isLockManagerEnabled());
+            lockSafeFeature.restrictedElementListener.setRollBackEnabling(envOptionsHelper.isRollbackAutoEnabled());
+
+        }
+
+        @Override
+        public void onProjectClosed(Project project) {
+            getPlugin().getListenerManager().removeCoreListener(lockSafeFeature.restrictedElementListener);
+
+        }
+
+        @Override
+        public void onProjectOpened(Project project) {
+            getPlugin().getListenerManager().addCoreListener(lockSafeFeature.restrictedElementListener);
+        }
+    }
+
 
 }

@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw;
 
-public interface IOnMagicDrawStartHook extends MagicdrawLifeCycleHook {
+public interface IOnMagicDrawStartHook extends IMagicdrawLifeCycleHook {
 
     /**
      * NOTE: This method is called by the framework, do not call it directly or override it.

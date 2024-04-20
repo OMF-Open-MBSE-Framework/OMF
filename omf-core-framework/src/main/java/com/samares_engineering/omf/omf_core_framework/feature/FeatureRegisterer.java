@@ -11,6 +11,9 @@ import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFrameworkException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.feature.FeatureHookExecutor;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IFeatureLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.FeatureRegisteringEventHandler;
@@ -28,6 +31,7 @@ public class FeatureRegisterer {
 
     private List<MDFeature> registeredFeatures = new ArrayList<>();
     private final APlugin plugin;
+    private HookExecutor<IFeatureLifeCycleHook> featureHookExecutor;
 
     //TODO: Create a class regrouping all Configurators
     public FeatureRegisterer(APlugin plugin) {
@@ -35,6 +39,7 @@ public class FeatureRegisterer {
         this.featureItemRegisters = new ArrayList<>();
         this.projectOnlyFeatureItemRegisters = new ArrayList<>();
         this.eventHandler = new FeatureRegisteringEventHandler(this);
+        this.featureHookExecutor = new FeatureHookExecutor(this);
     }
 
     /**
@@ -301,5 +306,9 @@ public class FeatureRegisterer {
 
     public FeatureRegisteringEventHandler getEventHandler() {
         return eventHandler;
+    }
+
+    public HookExecutor<IFeatureLifeCycleHook> getFeatureHookExecutor() {
+        return featureHookExecutor;
     }
 }

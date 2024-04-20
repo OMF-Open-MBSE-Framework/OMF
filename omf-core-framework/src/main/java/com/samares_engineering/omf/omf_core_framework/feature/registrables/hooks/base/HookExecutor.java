@@ -37,7 +37,6 @@ public abstract class HookExecutor<H extends IHook> {
         this.hooksHolders = new ArrayList<>();
     }
 
-
     public APlugin getPlugin() {
         return plugin;
     }

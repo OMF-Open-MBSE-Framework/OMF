@@ -2,5 +2,5 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 
-public interface MagicdrawLifeCycleHook extends IHook {
+public interface IMagicdrawLifeCycleHook extends IHook {
 }

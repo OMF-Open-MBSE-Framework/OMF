@@ -6,7 +6,7 @@ import com.nomagic.magicdraw.core.Project;
  * This interface is used to define a hook that is triggered when a project is saved.
  * Developers should implement this interface to add custom logic that should be executed when a project is saved.
  */
-public interface IOnProjectSavedHook extends ProjectLifeCycleHook {
+public interface IOnProjectSavedHook extends IProjectLifeCycleHook {
 
     /**
      * NOTE: This method is called by the framework, do not call it directly or override it.

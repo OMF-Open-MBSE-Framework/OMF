@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.nomagic.magicdraw.core.Project;
 
-public interface IOnProjectCreatedHook extends ProjectLifeCycleHook {
+public interface IOnProjectCreatedHook extends IProjectLifeCycleHook {
 
     /**
      * NOTE: This method is called by the framework, do not call it directly or override it.

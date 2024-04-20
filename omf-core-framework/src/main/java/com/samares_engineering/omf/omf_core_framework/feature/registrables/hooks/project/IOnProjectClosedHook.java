@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.nomagic.magicdraw.core.Project;
 
-public interface IOnProjectClosedHook extends ProjectLifeCycleHook {
+public interface IOnProjectClosedHook extends IProjectLifeCycleHook {
     /**
      * NOTE: This method is called by the framework, do not call it directly or override it.
      * Trigger the hook when the project is closed.

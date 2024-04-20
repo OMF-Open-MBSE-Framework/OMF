@@ -227,24 +227,11 @@ public abstract class AFeature implements MDFeature {
      */
     public void onUnregistering() {}
 
-    /**
-     * Override this to inject code to be run on project opening
-     */
-    public void onProjectOpen() {}
 
-    /**
-     * Override this to inject code to be run on project closing
-     */
-    public void onProjectClose() {}
-    /**
-     * Override this to inject code to be run on MagicDraw startup
-     */
-    public void onMagicdrawStartup() {}
 
     /*
     Helpers
      */
-
     protected OptionImpl createEnvOption(Property property, String groupName) {
         return new OptionImpl(
                 property,
