@@ -1,6 +1,7 @@
 package com.samares_engineering.omf.omf_example_plugin.features.hooks
 
 import com.nomagic.magicdraw.core.Project
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
@@ -12,10 +13,14 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectOpenedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IOnMagicDrawStartHook
 
-class HookExampleFeature : SimpleFeature("Hook Example Feature" ){
+class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
 
     override fun initLifeCycleHooks(): MutableList<IHook> {
         return mutableListOf(OnProjectHookExample())
+    }
+
+    override fun onRegistering() {
+        super.onRegistering()
     }
 
     class OnProjectHookExample : BaseHookFeatureItem(),
@@ -38,6 +43,9 @@ class HookExampleFeature : SimpleFeature("Hook Example Feature" ){
         }
 
         override fun onFeatureRegistering(feature: MDFeature?) {
+            if(feature == getFeature()){
+                return
+            }
             OMFLogger2.warnToSystemConsole("Feature registering: ${feature?.name}")
         }
 

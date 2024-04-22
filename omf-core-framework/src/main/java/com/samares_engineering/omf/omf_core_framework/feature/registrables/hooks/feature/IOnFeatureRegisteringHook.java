@@ -8,7 +8,7 @@ public interface IOnFeatureRegisteringHook extends IFeatureLifeCycleHook {
      * NOTE: This method is called by the framework, do not call it directly or override it.
      * This method is used to trigger the hook when the feature is registered.
      */
-    default void triggerOnMagicDrawStartHook(MDFeature feature) {
+    default void triggerOnFeatureRegisteringHook(MDFeature feature) {
         executeHook(() -> onFeatureRegistering(feature), "onFeatureRegistering");
     }
 

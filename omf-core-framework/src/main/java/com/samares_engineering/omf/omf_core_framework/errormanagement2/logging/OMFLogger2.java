@@ -142,8 +142,32 @@ public class OMFLogger2 {
         logToUIConsole(message, OMFLogLevel2.WARNING);
     }
 
-    public static void errorToConsole(String message) {
+    public static void warnToNotification(OMFLog2 message) {
+        logToNotification(message, OMFLogLevel2.WARNING);
+    }
+
+    public static void errorToNotification(OMFLog2 message) {
+        logToNotification(message, OMFLogLevel2.ERROR);
+    }
+
+    public static void infoToNotification(OMFLog2 message) {
+        logToNotification(message, OMFLogLevel2.INFO);
+    }
+
+    public static void warnToConsole(OMFLog2 message) {
+        logToUIConsole(message, OMFLogLevel2.WARNING);
+    }
+
+    public static void errorToUIConsole(String message) {
         logToUIConsole(message, OMFLogLevel2.ERROR);
+    }
+
+    public static void errorToUIConsole(OMFLog2 message) {
+        logToUIConsole(message, OMFLogLevel2.ERROR);
+    }
+
+    public static void infoToUIConsole(OMFLog2 message) {
+        logToUIConsole(message, OMFLogLevel2.INFO);
     }
 
     public static void infoToUIConsole(String message) {
@@ -159,6 +183,18 @@ public class OMFLogger2 {
     }
 
     public static void infoToSystemConsole(String message) {
+        logToSystemConsole(message, OMFLogLevel2.INFO);
+    }
+
+    public static void warnToSystemConsole(OMFLog2 message) {
+        logToSystemConsole(message, OMFLogLevel2.WARNING);
+    }
+
+    public static void errorToSystemConsole(OMFLog2 message) {
+        logToSystemConsole(message, OMFLogLevel2.ERROR);
+    }
+
+    public static void infoToSystemConsole(OMFLog2 message) {
         logToSystemConsole(message, OMFLogLevel2.INFO);
     }
 

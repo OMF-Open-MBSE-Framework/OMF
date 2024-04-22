@@ -8,6 +8,7 @@
 package com.samares_engineering.omf.omf_public_features.lockmanager;
 
 import com.nomagic.magicdraw.core.Project;
+import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
@@ -35,11 +36,16 @@ public class LockSafeFeature extends SimpleFeature {
         super("LockManager Feature");
         restrictedElementListener = new RestrictedElementCheckerListener();
     }
+    @Override
+    protected EnvOptionsHelper initEnvOptionsHelper() {
+        return new LockerManagerOptionHelper(this);
+    }
 
     @Override
     protected List<IHook> initLifeCycleHooks() {
         return List.of(new FeatureConfigurationHooks(this));
     }
+
 
 
     @Override

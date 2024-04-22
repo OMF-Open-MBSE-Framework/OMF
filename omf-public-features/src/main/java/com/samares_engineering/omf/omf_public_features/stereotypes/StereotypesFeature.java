@@ -7,11 +7,14 @@
 
 package com.samares_engineering.omf.omf_public_features.stereotypes;
 
+import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
@@ -109,12 +112,16 @@ public class StereotypesFeature extends SimpleFeature {
 
         return options;
     }
-
     @Override
-    public void onProjectOpen() {
-        // We delegate management of rules to OrganizeListenerConfig
-        ruleUpdater.setOrganizerRuleEngine(getRuleEngines().get(0));
-        ruleUpdater.initAllRulesBasedOnConfigFiles();
+    protected List<IHook> initLifeCycleHooks() {
+        return List.of(new OnProjectOpenedHook() {
+            @Override
+            public void onProjectOpened(Project project) {
+                // We delegate management of rules to OrganizeListenerConfig
+                ruleUpdater.setOrganizerRuleEngine(getRuleEngines().get(0));
+                ruleUpdater.initAllRulesBasedOnConfigFiles();
+            }
+        });
     }
 
     public StereotypesRuleUpdater getRuleUpdater() {

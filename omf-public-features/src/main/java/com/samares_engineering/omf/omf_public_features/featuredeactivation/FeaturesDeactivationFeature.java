@@ -14,6 +14,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -39,10 +41,15 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
     }
 
     @Override
-    public void onMagicdrawStartup() {
-        boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();
-        if(!featureShallBeRegistered)
-            activateDeactivateAllFeatures(false);
+    protected List<IHook> initLifeCycleHooks() {
+        return List.of(new OnMagicDrawStartHook() {
+            @Override
+            public void onMagicDrawStart() {
+                boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();
+                if(!featureShallBeRegistered)
+                    activateDeactivateAllFeatures(false);
+            }
+        });
     }
 
     @Override

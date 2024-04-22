@@ -7,11 +7,14 @@
 
 package com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation;
 
+import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction;
@@ -30,11 +33,16 @@ public class PatternCreationFeature extends SimpleFeature {
         super("PATTERN CREATION FEATURE");
         configuredSTR = new HashSet<>();
     }
-
+    
     @Override
-    public void onProjectOpen() {
-        super.onProjectOpen();
-        refreshPatterConfiguration();
+    protected List<IHook> initLifeCycleHooks() {
+        return List.of(new OnProjectOpenedHook() {
+            @Override
+            public void onProjectOpened(Project project) {
+                // We delegate management of rules to OrganizeListenerConfig
+                refreshPatterConfiguration();
+            }
+        });
     }
 
     @Override
