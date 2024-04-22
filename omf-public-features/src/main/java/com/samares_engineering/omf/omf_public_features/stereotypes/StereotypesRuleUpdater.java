@@ -13,7 +13,10 @@ import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activit
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
@@ -59,10 +62,21 @@ public class StereotypesRuleUpdater {
      * not been created yet, so we fetch the corresponding default values directly.
      */
     public void initAllRulesBasedOnConfigFiles(){
-        organizerEngine.removeAllRules();
-        createInstanceRules(StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
-        createTypeRules(StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
-        createOrganizerRules(StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
+       try {
+           organizerEngine.removeAllRules();
+           createInstanceRules(StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
+           createTypeRules(StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
+           createOrganizerRules(StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
+       }catch (OMFWarningException warningException){
+           ErrorHandler2.getInstance().handleException(
+                   new RequestFeatureDeactivationException(warningException.getMessage()
+                           + " The feature will be deactivated.",
+                           warningException,
+                           OMFExceptionModifier2.SILENT
+                   ));
+
+           OMFLogger2.defaultWarningException(warningException);
+       }
     }
 
     private void createInstanceRules(String configFilePath) {

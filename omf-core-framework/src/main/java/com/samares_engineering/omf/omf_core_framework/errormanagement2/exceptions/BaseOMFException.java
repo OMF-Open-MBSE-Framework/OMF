@@ -60,4 +60,6 @@ public abstract class BaseOMFException extends RuntimeException {
     public boolean isRollbackChanges() {
         return !modifiers.contains(OMFExceptionModifier2.NO_ROLLBACK);
     }
+
+
 }

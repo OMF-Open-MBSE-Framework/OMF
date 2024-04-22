@@ -5,6 +5,7 @@ import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -138,7 +139,7 @@ public class OMFLogger2 {
         logToNotification(message, OMFLogLevel2.INFO);
     }
 
-    public static void warnToConsole(String message) {
+    public static void warnToUIConsole(String message) {
         logToUIConsole(message, OMFLogLevel2.WARNING);
     }
 
@@ -154,7 +155,7 @@ public class OMFLogger2 {
         logToNotification(message, OMFLogLevel2.INFO);
     }
 
-    public static void warnToConsole(OMFLog2 message) {
+    public static void warnToUIConsole(OMFLog2 message) {
         logToUIConsole(message, OMFLogLevel2.WARNING);
     }
 
@@ -199,5 +200,9 @@ public class OMFLogger2 {
     }
 
 
-
+    public static void defaultWarningException(OMFWarningException warningException) {
+        warnToNotification(warningException.getUiMessage());
+        warnToUIConsole(warningException.getUiMessage());
+        warnToSystemConsole(warningException.getUiMessage());
+    }
 }
