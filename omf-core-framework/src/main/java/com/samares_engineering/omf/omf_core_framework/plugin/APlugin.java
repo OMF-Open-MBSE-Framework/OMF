@@ -240,7 +240,6 @@ public abstract class APlugin extends Plugin {
 
     }
 
-
     private void configureFeatureRegisterer() {
         try {
             this.featureRegisterer = new FeatureRegisterer(this);

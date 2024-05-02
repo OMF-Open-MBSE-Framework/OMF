@@ -13,15 +13,12 @@ import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -52,25 +49,6 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
         });
     }
 
-    @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
-    }
-
-    @Override
-    public List<UIAction> initFeatureActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public List<ILiveAction> initLiveActions() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    protected List<ILiveAction> initProjectOnlyLiveActions() {
-        return Collections.emptyList();
-    }
 
     /**
      * Registering the option and its listener to activate or deactivate all the features.
@@ -133,10 +111,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
         return getPlugin().getFeatures();
     }
 
-    @Override
-    protected List<IOption> initProjectOnlyOptions() {
-        return Collections.emptyList();
-    }
+
 
     @Override
     public EnvOptionsHelper getEnvOptionsHelper() {

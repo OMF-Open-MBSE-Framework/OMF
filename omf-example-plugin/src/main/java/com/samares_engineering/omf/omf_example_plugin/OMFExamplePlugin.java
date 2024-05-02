@@ -20,10 +20,10 @@ import com.samares_engineering.omf.omf_example_plugin.features.errorexample.Erro
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.hooks.HookExampleFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sandbox.SandboxFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.hooks.HookExampleFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
@@ -38,7 +38,7 @@ public class OMFExamplePlugin extends APlugin {
     @Override
     public List<MDFeature> initFeatures() {
         return List.of(
-//                new FeaturesDeactivationFeature(),
+//                new FeaturesDeactivationFeature(), // Don't know what this is but it's always commented out
                 new StereotypesFeature(),
                 new CloneElementFeature(),
                 new GroupElementFeature(),

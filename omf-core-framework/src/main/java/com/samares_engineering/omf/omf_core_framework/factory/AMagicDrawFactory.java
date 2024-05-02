@@ -33,6 +33,7 @@ public abstract class AMagicDrawFactory {
     public void removeElement(Element element) {
         try {
             ModelElementsManager.getInstance().removeElement(element);
+
         } catch (ReadOnlyElementException e) {
             throw new RuntimeException(e);
         }

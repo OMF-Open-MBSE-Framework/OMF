@@ -19,7 +19,6 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
@@ -68,21 +67,31 @@ public abstract class AUIAction implements UIAction {
         this.name = name;
 
         deactivateListenerOnTrigger = hasDeactivateListenerAnnotation();
-        this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
+        initTreeActions();
+        initDiagramActions();
+        initMenuActions();
+
+    }
+
+    private void initMenuActions() {
+        this.menuAction = new com.nomagic.magicdraw.actions.MDAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
                 init();
-                executeBrowserAction(browserSelectedElements);
+                executeMenuAction(browserSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }
 
             @Override
             public void updateState() {
                 super.updateState();
-                setEnabled(checkBrowserAvailability());
+                setEnabled(checkMenuAvailability());
             }
         };
+    }
+
+    private void initDiagramActions() {
         this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
@@ -99,22 +108,24 @@ public abstract class AUIAction implements UIAction {
                 setEnabled(checkDiagramAvailability());
             }
         };
-        this.menuAction = new com.nomagic.magicdraw.actions.MDAction("", getName(), getKeyStroke(), null) {
+    }
+
+    private void initTreeActions() {
+        this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
                 super.actionPerformed(actionEvent);
                 init();
-                executeMenuAction(browserSelectedElements);
+                executeBrowserAction(browserSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }
 
             @Override
             public void updateState() {
                 super.updateState();
-                setEnabled(checkMenuAvailability());
+                setEnabled(checkBrowserAvailability());
             }
         };
-
     }
 
     public AUIAction init() {
