@@ -178,7 +178,7 @@ public abstract class AUIAction implements UIAction {
                 try {
                     actionToPerform(selectedElements);
                 } catch (OMFDevException e) {
-                    ErrorHandler2.getInstance().handleException((OMFDevException) e, getFeature());
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
                 } catch (RuntimeException e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 }

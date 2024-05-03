@@ -3,83 +3,71 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
- ******************************************************************************/
+ */
+package com.samares_engineering.omf.omf_example_plugin.features.errorexample
 
-package com.samares_engineering.omf.omf_example_plugin.features.errorexample;
+import com.nomagic.magicdraw.properties.BooleanProperty
+import com.nomagic.magicdraw.properties.Property
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.CriticalFeatureExampleAction
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.HandlingErrorUIAction
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.ShieldedErrorUIAction
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.UIActionErrorExample
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.creation.LiveActionErrorExample
+import java.beans.PropertyChangeEvent
+import java.util.*
 
-import com.nomagic.magicdraw.properties.BooleanProperty;
-import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction;
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.CriticalFeatureExampleAction;
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.KotlinUIAction;
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.UIActionErrorExample;
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.creation.LiveActionErrorExample;
+class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT FEATURE") {
+    public override fun initFeatureActions(): List<UIAction> {
+        return Arrays.asList<UIAction>(
+            CriticalFeatureExampleAction(),
+            UIActionErrorExample(),
+            HandlingErrorUIAction(),
+            ShieldedErrorUIAction()
+        )
+    }
 
-import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
-import java.util.List;
-
-public class ErrorManagementFeatureExample extends SimpleFeature {
-    public static String ACTIVATE_ERROR_LIVE_ACTION;
-    public static String OMF_ERROR_EXAMPLE;
-
-    public ErrorManagementFeatureExample(){
-       super("ERROR MANAGEMENT FEATURE");
+    public override fun initLiveActions(): List<ILiveAction> {
+        val creationRE: ILiveAction = LiveAction(RECategoryEnum.CREATE)
+        creationRE.addRule(LiveActionErrorExample())
+        return java.util.List.of(creationRE)
     }
 
 
-    @Override
-    public List<UIAction> initFeatureActions() {
-        return Arrays.asList(
-                new CriticalFeatureExampleAction(),
-                new UIActionErrorExample(),
-                new KotlinUIAction()
-        );
-
-    }
-
-    @Override
-    public List<ILiveAction> initLiveActions() {
-        ILiveAction creationRE = new LiveAction(RECategoryEnum.CREATE);
-        creationRE.addRule(new LiveActionErrorExample());
-        return List.of(creationRE);
-    }
+    public override fun initOptions(): List<IOption> {
+        ACTIVATE_ERROR_LIVE_ACTION = "[TEST ERROR] Activate Live Action:"
+        OMF_ERROR_EXAMPLE = "OMF Errors Example"
+        val testEnvOption = createEnvOption(
+            BooleanProperty(ACTIVATE_ERROR_LIVE_ACTION, false),
+            OMF_ERROR_EXAMPLE
+        )
 
 
-    @Override
-    public List<IOption> initOptions() {
-        ACTIVATE_ERROR_LIVE_ACTION = "[TEST ERROR] Activate Live Action:";
-        OMF_ERROR_EXAMPLE = "OMF Errors Example";
-        OptionImpl testEnvOption = createEnvOption(
-                new BooleanProperty(ACTIVATE_ERROR_LIVE_ACTION, false),
-                OMF_ERROR_EXAMPLE
-        );
-
-
-        testEnvOption.addListenerToRegister(new AOptionListener() {
-            @Override
-            public void updateByEnvironmentProperties(List<Property> list) {
-                super.updateByEnvironmentProperties(list);
+        testEnvOption.addListenerToRegister(object : AOptionListener() {
+            override fun updateByEnvironmentProperties(list: List<Property>) {
+                super.updateByEnvironmentProperties(list)
             }
 
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                super.propertyChange(evt);
+            override fun propertyChange(evt: PropertyChangeEvent) {
+                super.propertyChange(evt)
             }
-        });
+        })
 
-        return List.of(
-                testEnvOption
-        );
+        return java.util.List.of<IOption>(
+            testEnvOption
+        )
     }
 
 
-
+    companion object {
+        @JvmField
+        var ACTIVATE_ERROR_LIVE_ACTION: String? = null
+        var OMF_ERROR_EXAMPLE: String? = null
+    }
 }

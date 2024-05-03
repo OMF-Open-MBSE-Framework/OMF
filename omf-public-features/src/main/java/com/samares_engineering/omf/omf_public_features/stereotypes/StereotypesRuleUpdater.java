@@ -75,7 +75,7 @@ public class StereotypesRuleUpdater {
                            OMFExceptionModifier2.SILENT
                    ));
 
-           OMFLogger2.defaultWarningException(warningException);
+           OMFLogger2.warnException(warningException);
        }
     }
 
