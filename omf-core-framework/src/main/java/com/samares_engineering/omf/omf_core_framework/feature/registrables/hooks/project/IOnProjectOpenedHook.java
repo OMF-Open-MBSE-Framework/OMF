@@ -14,7 +14,7 @@ public interface IOnProjectOpenedHook extends IProjectLifeCycleHook {
     }
 
     /**
-     * This method is called when a project is opened. </br>
+     * This method is called when a project is opened. <br>
      * Developers should implement this method to add custom logic.
      * @param project the project that was opened
      */

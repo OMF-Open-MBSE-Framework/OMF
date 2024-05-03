@@ -11,7 +11,7 @@ public interface IOnMagicDrawStartHook extends IMagicdrawLifeCycleHook {
     }
 
     /**
-     * This method is called when magicdraw is started. </br>
+     * This method is called when magicdraw is started.<br>
      * Developers should implement this method to add custom logic.
      */
      void onMagicDrawStart();

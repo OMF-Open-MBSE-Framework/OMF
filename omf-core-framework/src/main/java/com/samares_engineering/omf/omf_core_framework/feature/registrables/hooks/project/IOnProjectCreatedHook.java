@@ -14,7 +14,7 @@ public interface IOnProjectCreatedHook extends IProjectLifeCycleHook {
     }
 
     /**
-     * This method is called when a project is created. </br>
+     * This method is called when a project is created. <br>
      * Developers should implement this method to add custom logic.
      * @param project the project that was created
      */

@@ -13,7 +13,7 @@ public interface IOnProjectClosedHook extends IProjectLifeCycleHook {
     }
 
     /**
-     * This method is called when a project is closed. </br>
+     * This method is called when a project is closed. <br>
      * Developers should implement this method to add custom logic.
      * @param project the project that was closed
      */

@@ -25,7 +25,7 @@ class HandlingErrorUIAction : AUIAction(){
         try {
             failMethod()
         } catch (e: Exception) {
-            OMFLogger2.warnException(OMFWarningException("this error has been well handled", e))
+            OMFLogger2.warn(OMFWarningException("this error has been well handled", e))
         }
     }
 
