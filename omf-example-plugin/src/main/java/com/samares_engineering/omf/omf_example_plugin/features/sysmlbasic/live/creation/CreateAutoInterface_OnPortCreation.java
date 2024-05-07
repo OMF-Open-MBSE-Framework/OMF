@@ -15,7 +15,6 @@ import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
 
 import java.beans.PropertyChangeEvent;
 
@@ -40,8 +39,8 @@ public class CreateAutoInterface_OnPortCreation extends ARule {
      * @return the event
      */
     @Override
-    public PropertyChangeEvent process(PropertyChangeEvent e) {
-        Port port = (Port) e.getSource();
+    public PropertyChangeEvent process(PropertyChangeEvent evt) {
+        Port port = (Port) evt.getSource();
         Class interfaceBlock = SysMLFactory.getInstance().createInterfaceBlock(port.getOwner());
         interfaceBlock.setName("TO RENAME");
         port.setType(interfaceBlock);
@@ -50,7 +49,7 @@ public class CreateAutoInterface_OnPortCreation extends ARule {
         flowProperty.setName("TO RENAME");
         Profile._getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
 
-        return e;
+        return evt;
     }
 
     @Override
