@@ -86,7 +86,7 @@ public class OMFLogger2 {
     }
 
     public static void logToNotification(String message, OMFLogLevel2 logLevel) {
-        logToNotification(message, logLevel, null);
+        logToNotification(new OMFLog2().text(message), logLevel);
     }
 
     public static void logToSystemConsole(OMFLog2 logMessage, OMFLogLevel2 logLevel) {
