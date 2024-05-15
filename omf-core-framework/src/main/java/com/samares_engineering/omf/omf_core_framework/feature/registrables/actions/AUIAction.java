@@ -147,14 +147,19 @@ public abstract class AUIAction implements UIAction {
      * @param selectedElements selected elements
      */
     protected void executeDiagramAction(List<Element> selectedElements) {
+        executeAUIActionWithinBarrier((() -> actionToPerform(selectedElements)));
+    }
+
+
+    public void executeAUIActionWithinBarrier(Runnable runnable) {
         if (deactivateListenerOnTrigger)
             ListenerManager.getInstance().deactivateAllListeners();
         try {
             SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
                 try {
-                    actionToPerform(selectedElements);
+                    runnable.run();
                 } catch (OMFDevException e) {
-                    ErrorHandler2.getInstance().handleException((OMFDevException) e, getFeature());
+                    ErrorHandler2.getInstance().handleException(e, getFeature());
                 } catch (RuntimeException e) {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 }
@@ -171,21 +176,7 @@ public abstract class AUIAction implements UIAction {
      * @param selectedElements selected elements
      */
     protected void executeBrowserAction(List<Element> selectedElements) {
-        if (deactivateListenerOnTrigger)
-            ListenerManager.getInstance().deactivateAllListeners();
-        try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
-                try {
-                    actionToPerform(selectedElements);
-                } catch (OMFDevException e) {
-                    ErrorHandler2.getInstance().handleException(e, getFeature());
-                } catch (RuntimeException e) {
-                    ErrorHandler2.getInstance().handleException(e, getFeature());
-                }
-            });
-        } catch (RollbackException2 rollbackException) {
-//            OMFErrorHandler.handleException(rollbackException);
-        }
+       executeAUIActionWithinBarrier(() -> actionToPerform(selectedElements));
     }
 
     /**
@@ -195,21 +186,7 @@ public abstract class AUIAction implements UIAction {
      * @param selectedElements selected elements
      */
     protected void executeMenuAction(List<Element> selectedElements) {
-        if (deactivateListenerOnTrigger)
-            ListenerManager.getInstance().deactivateAllListeners();
-        try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
-                try {
-                    actionToPerform(selectedElements);
-                } catch (OMFDevException e) {
-                    ErrorHandler2.getInstance().handleException((OMFDevException) e, getFeature());
-                } catch (RuntimeException e) {
-                    ErrorHandler2.getInstance().handleException(e, getFeature());
-                }
-            });
-        } catch (RollbackException2 rollbackException) {
-            //OMFErrorHandler.handleException(rollbackException);
-        }
+       executeAUIActionWithinBarrier(() -> actionToPerform(selectedElements));
     }
 
     /**
@@ -432,5 +409,21 @@ public abstract class AUIAction implements UIAction {
     @Override
     public void initRegistrableItem(MDFeature feature) {
         this.feature = feature;
+    }
+
+    public Node[] getBrowserSelectedNodes() {
+        return browserSelectedNodes;
+    }
+
+    public List<Element> getBrowserSelectedElements() {
+        return browserSelectedElements;
+    }
+
+    public List<PresentationElement> getDiagramSelectedPresentationElements() {
+        return diagramSelectedPresentationElements;
+    }
+
+    public List<Element> getDiagramSelectedElements() {
+        return diagramSelectedElements;
     }
 }
