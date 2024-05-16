@@ -43,7 +43,7 @@ public class OptionsBaseline {
 
     /**
      * Set option environment value according to given values
-     * @param initBaseline
+     * @param initBaseline the values to set
      */
     public static void initBaseline(Map<String, List<OptionsBaseline>> initBaseline) {
         OptionsBaseline.editEnvOptions(initBaseline);

@@ -12,7 +12,7 @@ public class CodeGenerationUtils {
 
     /**
      * Write the class provided by a class builder to a file
-     * @param classBuilder
+     * @param classBuilder : class to write
      * @param generationPathRoot : Root path where to generate the file (then the package folder will be added)
      * @param classPackage : package of the generated class
      *
@@ -33,8 +33,8 @@ public class CodeGenerationUtils {
 
     /**
      * Transform a string to a camelCase formatted string
-     * @param str
-     * @return
+     * @param str : string to transform
+     * @return the camelCase formatted string
      *
      * Example: from "this is an example" to "thisIsAnExample"
      */

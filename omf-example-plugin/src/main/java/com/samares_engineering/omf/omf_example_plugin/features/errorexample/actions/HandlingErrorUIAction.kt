@@ -14,7 +14,7 @@ import org.apache.commons.collections4.CollectionUtils
 @DiagramAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "OMF HANDLING ERROR EXAMPLE", category = "OMF.ERROR Example")
+@MDAction(actionName = "HANDLING ERROR", category = "Example.Error")
 class HandlingErrorUIAction : AUIAction(){
 
     override fun checkAvailability(selectedElements: MutableList<Element>?): Boolean {

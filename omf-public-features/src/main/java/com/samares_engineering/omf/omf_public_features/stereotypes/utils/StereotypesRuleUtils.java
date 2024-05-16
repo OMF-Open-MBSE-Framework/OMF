@@ -102,8 +102,8 @@ public class StereotypesRuleUtils {
 
     /**
      * Check if the stereotype or a generalized version of it is applied to the element, and remove them.
-     * @param stereotype
-     * @param elementToStereotype
+     * @param stereotype Stereotype to remove
+     * @param elementToStereotype Element to remove the stereotype from
      */
     public static void removeRedundantStereotypes(Stereotype stereotype, Element elementToStereotype) {
         ModelHelper.getGeneralClassifiersRecursively(stereotype)//Removing all redundant stereotypes of the same type (using generalization)

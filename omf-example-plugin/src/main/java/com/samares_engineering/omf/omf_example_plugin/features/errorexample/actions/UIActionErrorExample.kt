@@ -19,7 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 @DiagramAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "OMF ERROR EXAMPLE", category = "OMF.ERROR Example")
+@MDAction(actionName = "ERROR Logging", category = "Example.Error")
 class UIActionErrorExample : AUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return true

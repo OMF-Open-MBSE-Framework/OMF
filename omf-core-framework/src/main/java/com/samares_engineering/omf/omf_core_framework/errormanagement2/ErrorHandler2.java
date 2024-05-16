@@ -1,11 +1,13 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2;
 
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.*;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.CriticalFeatureException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -109,8 +111,8 @@ public class ErrorHandler2 {
     public void handleException(RuntimeException exception, MDFeature impactedFeature) {
         exception.printStackTrace();
         OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR, impactedFeature);
-        rollbackChanges();
         unregisterFeature(impactedFeature);
+        rollbackChanges();
     }
 
     /**

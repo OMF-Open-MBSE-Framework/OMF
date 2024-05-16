@@ -13,25 +13,21 @@ import org.apache.commons.collections4.CollectionUtils
 @DiagramAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "SHIELD HANDLING ERROR", category = "Example.Error")
-class ShieldedErrorUIAction : AUIAction(){
+@MDAction(actionName = "NOT HANDLED ERROR", category = "Example.Error")
+class NotHandledException : AUIAction(){
 
     override fun checkAvailability(selectedElements: MutableList<Element>?): Boolean {
         return OMFUtils.getProject() != null && !CollectionUtils.isEmpty(selectedElements)
     }
 
     override fun actionToPerform(selectedElements: MutableList<Element>?) {
-        try {
-            failMethod()
-        } catch (e: Exception) {
-            throw OMFCriticalException2("this error has been thrown to OMF Shield", e)
-        }
+        failMethod()
     }
 
     private fun failMethod() {
         val block = SysMLFactory.getInstance().createBlock();
         block.name = "SHOULD NOT BE CREATED";
-        throw OMFCriticalException2("This is a critical exception")
+        throw RuntimeException("This is a critical exception")
     }
 
 

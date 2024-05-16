@@ -20,7 +20,7 @@ import static com.samares_engineering.omf.omf_core_framework.errormanagement2.ex
 @DiagramAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "OMF CRITICAL ERROR EXAMPLE", category = "OMF.ACTION CATEGORY NAME")
+@MDAction(actionName = "CRITICAL ERROR", category = "Example.Error")
 public class CriticalFeatureExampleAction extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

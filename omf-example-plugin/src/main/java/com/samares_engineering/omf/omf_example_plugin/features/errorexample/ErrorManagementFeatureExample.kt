@@ -15,10 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.CriticalFeatureExampleAction
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.HandlingErrorUIAction
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.ShieldedErrorUIAction
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.UIActionErrorExample
+import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.*
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.creation.LiveActionErrorExample
 import java.beans.PropertyChangeEvent
 import java.util.*
@@ -29,6 +26,7 @@ class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT FEATURE") 
             CriticalFeatureExampleAction(),
             UIActionErrorExample(),
             HandlingErrorUIAction(),
+            NotHandledException(),
             ShieldedErrorUIAction()
         )
     }

@@ -32,14 +32,10 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.uml.symbols.shapes.AbstractHeaderShapeView;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
+import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.errors.AmbiguousElementException;
@@ -231,6 +227,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Allow to test several actions in different session
      * WARNING : executed in place of testAction() if redefined
      * Example: open a wizard, creating an element, click on a button, etc.
+     * @return List of actions to test
      */
     public List<Runnable> testActions() {
         return Collections.emptyList();
@@ -611,9 +608,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Search for the envvironment option and will set the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param groupName
-     * @param optionName
-     * @param value
+     * @param groupName the Option group name
+     * @param optionName the Option name
+     * @param value the value to set
      */
     public void setEnvironmentOptionValueByGroupName(String groupName, String optionName, Object value){
         setOptionValue(getEnvironmentOptionByGroupName(groupName, optionName), value);
@@ -623,9 +620,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Search for the environment option searching by Environment ID, then set the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOptionByID for more detail
-     * @param group
-     * @param optionName
-     * @param value
+     * @param group the Option group ID
+     * @param optionName the Option name
+     * @param value the value to set
      */
     public void setEnvironmentOptionValueByID(String group, String optionName, Object value){
         setOptionValue(getEnvironmentOptionByGroupName(group, optionName), value);

@@ -37,8 +37,7 @@ public class FeatureDeactivationOptionHelper extends EnvOptionsHelper{
     }
 
     /**
-     * return true if the automations shall be activated, false otherwise
-     * @return
+     * @return true if the automations shall be activated, false otherwise
      */
     public boolean isActivateAutomationValue() {
         BooleanProperty p = (BooleanProperty) Objects.requireNonNull(getPropertyByName(ID_ACTIVATE_AUTOMATION), "");

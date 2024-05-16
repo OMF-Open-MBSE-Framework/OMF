@@ -11,8 +11,8 @@ public class OptionsUtils {
 
     /**
      * Return all the property related to a given group id in environment option
-     * @param groupId
-     * @return
+     * @param groupId the id of the Option group
+     * @return the options as a list of properties
      */
     public static List<Property> getEnvOptionProperties(String groupId) {
         try {
