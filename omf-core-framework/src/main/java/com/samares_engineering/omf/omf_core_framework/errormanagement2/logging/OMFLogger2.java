@@ -213,4 +213,17 @@ public class OMFLogger2 {
         errorToUIConsole(devException.getUiMessage());
         errorToSystemConsole(devException.getUiMessage());
     }
+    public static void warn(Exception devException) {
+        devException.printStackTrace();
+        warnToNotification(devException.getMessage());
+        warnToUIConsole(devException.getMessage());
+        warnToSystemConsole(devException.getMessage());
+    }
+
+    public static void err(Exception devException) {
+        devException.printStackTrace();
+        errorToNotification(devException.getMessage());
+        errorToUIConsole(devException.getMessage());
+        errorToSystemConsole(devException.getMessage());
+    }
 }

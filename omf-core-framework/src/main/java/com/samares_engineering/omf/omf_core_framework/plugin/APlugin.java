@@ -160,6 +160,14 @@ public abstract class APlugin extends Plugin {
         return new MagicDrawHookExecutor();
     }
 
+    /**
+     * Define the FeatureRegisterer to register at plugin Initialization
+     * This FeatureRegisterer will be used for FeatureRegistering with all features
+     *
+     * @return FeatureRegisterer to register
+     */
+    protected FeatureRegisterer initFeatureRegisterer() {return new FeatureRegisterer(this);}
+
 
     //------------------------ INITIALIZATION PROCESS-------------------------------------------//
 
@@ -242,7 +250,7 @@ public abstract class APlugin extends Plugin {
 
     private void configureFeatureRegisterer() {
         try {
-            this.featureRegisterer = new FeatureRegisterer(this);
+            this.featureRegisterer = initFeatureRegisterer();
             this.uiActionFeatureItemRegisterer = new UIActionFeatureItemRegisterer(this);
             this.ruleEngineFeatureItemRegisterer = new RuleEngineFeatureItemRegisterer();
             this.optionFeatureItemRegisterer = new OptionFeatureItemRegisterer();

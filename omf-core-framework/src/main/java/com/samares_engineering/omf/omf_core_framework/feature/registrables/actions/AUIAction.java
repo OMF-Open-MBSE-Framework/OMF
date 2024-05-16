@@ -22,6 +22,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHand
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
@@ -164,7 +165,7 @@ public abstract class AUIAction implements UIAction {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 }
             });
-        } catch (RollbackException2 rollbackException) {
+        } catch (OMFRollBackException | RollbackException2 rollbackException){
             OMFErrorHandler.handleException(rollbackException);
         }
     }

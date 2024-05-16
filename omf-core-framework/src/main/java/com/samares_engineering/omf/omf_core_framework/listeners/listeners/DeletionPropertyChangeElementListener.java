@@ -9,6 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.listeners.listeners;
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -28,7 +29,7 @@ public class DeletionPropertyChangeElementListener extends AElementListener impl
         if (isInstanceDeleted) {
             try {
                 manageDeletion(evt);
-            } catch (RollbackException2 e) {
+            } catch (OMFRollBackException | RollbackException2 e){
                 UndoManager.getInstance().requestHardUndo();
             }
         }

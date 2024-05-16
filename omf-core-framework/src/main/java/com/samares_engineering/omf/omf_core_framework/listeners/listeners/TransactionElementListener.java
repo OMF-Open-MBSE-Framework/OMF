@@ -47,7 +47,7 @@ public class TransactionElementListener extends AElementListener implements Tran
                 }
                 if (stopHandlingThisBatch) return;
             }
-        } catch (RollbackException2 e) {
+        }catch (OMFRollBackException | RollbackException2 e){
             UndoManager.getInstance().requestHardUndo();
         }
     }
