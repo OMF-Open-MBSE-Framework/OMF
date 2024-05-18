@@ -34,6 +34,8 @@ import com.nomagic.magicdraw.uml.symbols.shapes.AbstractHeaderShapeView;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -261,8 +263,10 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         //Action to test
         try {
             SessionManager.getInstance().executeInsideSession(initProject,"Executing test case - " + getClass().getSimpleName(),  runnable);
-        }catch (OMFRollBackException rollbackException){
+        } catch (OMFRollBackException rollbackException){
             OMFErrorHandler.handleException(rollbackException);
+        } catch (RollbackException2 rollbackException){
+            ErrorHandler2.getInstance().handleException(rollbackException);
         }catch (Exception uncaughtException){
             OMFErrorHandler.handleException(uncaughtException, false);
         }
