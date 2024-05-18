@@ -165,8 +165,10 @@ public abstract class AUIAction implements UIAction {
                     ErrorHandler2.getInstance().handleException(e, getFeature());
                 }
             });
-        } catch (OMFRollBackException | RollbackException2 rollbackException){
+        } catch (OMFRollBackException rollbackException){
             OMFErrorHandler.handleException(rollbackException);
+        } catch (RollbackException2 rollbackException){
+            ErrorHandler2.getInstance().handleException(rollbackException);
         }
     }
 

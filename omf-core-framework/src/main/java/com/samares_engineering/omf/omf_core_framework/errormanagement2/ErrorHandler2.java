@@ -103,7 +103,6 @@ public class ErrorHandler2 {
         }
     }
 
-
     /**
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
@@ -125,6 +124,16 @@ public class ErrorHandler2 {
         OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR);
         rollbackChanges();
     }
+    /**
+     * Handle Core RollBackException: Will do nothing the rollback is already requested.
+     * REMEMBER: Rollback are handled by the framework, you should not throw them yourself.
+     * - In UI Action/LiveAction: throw any exception you want, the framework will handle the rollback.
+     * @param rollBackException the exception to handle
+     */
+    public void handleException(RollbackException2 rollBackException) {
+        OMFLogger2.infoToSystemConsole("RollBack requested");
+    }
+
 
     private static void unregisterFeature(MDFeature impactedFeature) {
         new OMFLog2().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")

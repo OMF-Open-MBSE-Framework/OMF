@@ -243,7 +243,7 @@ public abstract class APlugin extends Plugin {
                 }
             });
         }catch (Exception e){
-            throw new OMFPluginRegisteringException("Error occurred during onStartupHookConfiguration", e);
+            throw new OMFPluginRegisteringException("Error occurred during onStartupHookConfiguration: \n" + e.getMessage(), e);
         }
 
     }
