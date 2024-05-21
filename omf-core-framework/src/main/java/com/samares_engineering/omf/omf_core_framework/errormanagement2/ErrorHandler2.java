@@ -124,6 +124,19 @@ public class ErrorHandler2 {
         OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR);
         rollbackChanges();
     }
+
+    /**
+     * Handle Core RollBackException for unexpected exceptions inside the framework.
+     * Will log the exception and display a generic error to the user.
+     * TODO shall log the exception in a dedicated log file.
+     */
+    public void handleException(CoreException2 exception) {
+        exception.printStackTrace();
+        OMFLogger2.errorToNotification("An internal Core error occurred during plugin execution: " + exception.getMessage());
+        OMFLogger2.errorToSystemConsole("An internal Core error occurred during plugin execution: " + exception.getMessage());
+    }
+
+
     /**
      * Handle Core RollBackException: Will do nothing the rollback is already requested.
      * REMEMBER: Rollback are handled by the framework, you should not throw them yourself.

@@ -19,6 +19,7 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
@@ -169,6 +170,8 @@ public abstract class AUIAction implements UIAction {
             OMFErrorHandler.handleException(rollbackException);
         } catch (RollbackException2 rollbackException){
             ErrorHandler2.getInstance().handleException(rollbackException);
+        }catch (Exception e){
+            ErrorHandler2.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", e));
         }
     }
 
