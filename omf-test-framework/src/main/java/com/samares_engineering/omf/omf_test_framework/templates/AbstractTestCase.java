@@ -35,6 +35,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
@@ -263,12 +264,18 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         //Action to test
         try {
             SessionManager.getInstance().executeInsideSession(initProject,"Executing test case - " + getClass().getSimpleName(),  runnable);
-        } catch (OMFRollBackException rollbackException){
+        } catch (OMFRollBackException rollbackException){ //2021x, OMF < 2.0
             OMFErrorHandler.handleException(rollbackException);
-        } catch (RollbackException2 rollbackException){
+        } catch (RollbackException2 rollbackException){ // 2021x error handling system
             ErrorHandler2.getInstance().handleException(rollbackException);
         }catch (Exception uncaughtException){
-            OMFErrorHandler.handleException(uncaughtException, false);
+            Throwable cause = uncaughtException.getCause();
+            if(cause instanceof OMFRollBackException)   //2022x, OMF >= 2.0
+                OMFErrorHandler.handleException((OMFRollBackException) cause);
+            else if(cause instanceof RollbackException2) // 2022x error handling system
+                ErrorHandler2.getInstance().handleException((RollbackException2) cause);
+            else
+                ErrorHandler2.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
         }
 
         closeSession();

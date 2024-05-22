@@ -9,7 +9,6 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 
 import com.google.common.base.Strings;
-import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction;
 import com.nomagic.magicdraw.ui.browser.Browser;
 import com.nomagic.magicdraw.ui.browser.ContainmentTree;
@@ -18,17 +17,12 @@ import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
-import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import javax.annotation.CheckForNull;
@@ -144,7 +138,7 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Execute the behavior defined for DiagramAction, listener will be deactivated during the action, and it will be executed inside a session.
-     * By default the actionToPerfom() method. Override it if there is a need to distinguish DiagramAction of the other
+     * By default, the actionToPerfom() method. Override it if there is a need to distinguish DiagramAction of the other
      *
      * @param selectedElements selected elements
      */
@@ -153,31 +147,20 @@ public abstract class AUIAction implements UIAction {
     }
 
 
-    public void executeAUIActionWithinBarrier(Runnable runnable) {
-        if (deactivateListenerOnTrigger)
-            ListenerManager.getInstance().deactivateAllListeners();
-        try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), getName(), () -> {
-                try {
-                    runnable.run();
-                } catch (OMFDevException e) {
-                    ErrorHandler2.getInstance().handleException(e, getFeature());
-                } catch (RuntimeException e) {
-                    ErrorHandler2.getInstance().handleException(e, getFeature());
-                }
-            });
-        } catch (OMFRollBackException rollbackException){
-            OMFErrorHandler.handleException(rollbackException);
-        } catch (RollbackException2 rollbackException){
-            ErrorHandler2.getInstance().handleException(rollbackException);
-        }catch (Exception e){
-            ErrorHandler2.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", e));
-        }
+    /**
+     * Executes the provided Runnable within a barrier. This method is used to ensure that the UI action
+     * is executed within a controlled environment where certain conditions are met before and after execution.
+     * The barrier controls the execution of the action, handles exceptions, and manages the state of the action.
+     *
+     * @param runnable The Runnable representing the UI action to be executed.
+     */
+    protected void executeAUIActionWithinBarrier(Runnable runnable) {
+        OMFBarrierExecutor.executeAUIActionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
     }
 
     /**
      * Execute the behavior defined for BrowserAction, listener will be deactivated during the action, and it will be executed inside a session.
-     * By default the actionToPerform() method. Override it if there is a need to distinguish BrowserAction of the other
+     * By default, the actionToPerform() method. Override it if there is a need to distinguish BrowserAction of the other
      *
      * @param selectedElements selected elements
      */
@@ -187,7 +170,7 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Execute the behavior defined for Menu Action, listener will be deactivated during the action, and it will be executed inside a session.
-     * By default the actionToPerform() method. Override it if there is a need to distinguish Menu Action of the other
+     * By default, the actionToPerform() method. Override it if there is a need to distinguish Menu Action of the other
      *
      * @param selectedElements selected elements
      */

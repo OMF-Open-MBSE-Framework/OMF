@@ -1,11 +1,10 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base;
 
-import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class BaseHookFeatureItem implements IHook {
     private MDFeature feature;
@@ -47,12 +46,6 @@ public class BaseHookFeatureItem implements IHook {
     }
     @Override
     public void executeInSessionHook(Runnable runnable, String event) {
-        try {
-            SessionManager.getInstance().executeInsideSession(OMFUtils.getProject(), "Hook call", runnable);
-        } catch (OMFCriticalException2 cause) {
-            ErrorHandler2.getInstance().handleException(new HookExecutionException(event, cause), getFeature());
-        } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, getFeature());
-        }
+        OMFBarrierExecutor.executeAUIActionWithinBarrier(runnable, event, getFeature());
     }
 }

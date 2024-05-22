@@ -12,6 +12,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
+import javax.annotation.CheckForNull;
+
 public class ErrorHandler2 {
     private static ErrorHandler2 instance;
     private final APlugin plugin;
@@ -40,49 +42,23 @@ public class ErrorHandler2 {
      * error occurred
      */
     public void handleException(OMFCriticalException2 exception, MDFeature impactedFeature) {
-        exception.printStackTrace();
-        if (exception.isNotSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR, impactedFeature);
-        }
-        if (exception.isDeactivateFeature()) {
-            unregisterFeature(impactedFeature);
-        }
-        if (exception.isRollbackChanges()) {
-            rollbackChanges(); //Throws RollbackException2
-        }
+        defaultHandlingDevException(exception, impactedFeature, OMFLogLevel2.ERROR);
     }
+
+
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
      */
     public void handleException(OMFCriticalException2 exception ) {
-        exception.printStackTrace();
-        if (exception.isNotSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR);
-        }
-        if (exception.isDeactivateFeature()) {
-            // We don't have the contextual feature
-            OMFLogger2.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
-        }
-        if (exception.isRollbackChanges()) {
-            rollbackChanges(); //Throws RollbackException2
-        }
+        defaultHandlingDevException(exception, null, OMFLogLevel2.ERROR);
     }
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
      */
     public void handleException(OMFDevException exception, MDFeature impactedFeature) {
-        exception.printStackTrace();
-        if (exception.isNotSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR, impactedFeature);
-        }
-        if (exception.isDeactivateFeature()) {
-            unregisterFeature(impactedFeature);
-        }
-        if (exception.isRollbackChanges()) {
-            rollbackChanges(); //Throws RollbackException2
-        }
+        defaultHandlingDevException(exception, impactedFeature, OMFLogLevel2.ERROR);
     }
 
     /**
@@ -90,17 +66,7 @@ public class ErrorHandler2 {
      * error occurred
      */
     public void handleException(OMFDevException exception ) {
-        exception.printStackTrace();
-        if (exception.isNotSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), OMFLogLevel2.ERROR);
-        }
-        if (exception.isDeactivateFeature()) {
-            // We don't have the contextual feature
-            OMFLogger2.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
-        }
-        if (exception.isRollbackChanges()) {
-            rollbackChanges(); //Throws RollbackException2
-        }
+        defaultHandlingDevException(exception, null, OMFLogLevel2.ERROR);
     }
 
     /**
@@ -145,6 +111,35 @@ public class ErrorHandler2 {
      */
     public void handleException(RollbackException2 rollBackException) {
         OMFLogger2.infoToSystemConsole("RollBack requested");
+    }
+
+
+    /**
+     * This method handles the default behavior for developer exceptions in the application.
+     * It logs the exception, checks if the exception should be silent or not, and performs
+     * necessary actions based on the properties of the exception.
+     * <br>Throws a RollbackException2 if the exception requires a rollback.
+     *
+     * @param exception The developer exception that needs to be handled.
+     * @param impactedFeature The feature that was impacted by the exception. This can be null.
+     * @param logLevel The level at which the exception should be logged.
+     */
+    private static void defaultHandlingDevException(OMFDevException exception, @CheckForNull MDFeature impactedFeature, OMFLogLevel2 logLevel) {
+        exception.printStackTrace();
+        if (exception.isNotSilent()) {
+            OMFLogger2.logToNotification(exception.getUiMessage(), logLevel, impactedFeature);
+        }
+
+        if (exception.isDeactivateFeature()) {
+            if (impactedFeature != null) {
+                unregisterFeature(impactedFeature);
+            }else {
+                OMFLogger2.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
+            }
+        }
+        if (exception.isRollbackChanges()) {
+            rollbackChanges(); //Throws RollbackException2
+        }
     }
 
 
