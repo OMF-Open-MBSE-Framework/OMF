@@ -18,7 +18,7 @@ import org.apache.commons.collections4.CollectionUtils
 class HandlingErrorUIAction : AUIAction(){
 
     override fun checkAvailability(selectedElements: MutableList<Element>?): Boolean {
-        return OMFUtils.getProject() != null && !CollectionUtils.isEmpty(selectedElements)
+        return isProjectOpened() && !CollectionUtils.isEmpty(selectedElements)
     }
 
     override fun actionToPerform(selectedElements: MutableList<Element>?) {

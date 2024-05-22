@@ -23,7 +23,7 @@ import java.util.List;
 public class ExampleMDAction3 extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.getProject() != null && selectedElements.size() == 1;
+        return isProjectOpened() && selectedElements.size() == 1;
     }
 
     @Override

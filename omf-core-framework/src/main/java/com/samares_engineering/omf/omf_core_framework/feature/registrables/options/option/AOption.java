@@ -25,6 +25,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class representing an OMF Option.<br>
+ * Options could be of two kinds: Environment or Project.<br>
+ * This class provides the basic functionality for registering, unregister,
+ * finding option in magicdraw, and getting and setting various properties of the option.
+ * Listeners can be added to the option to listen to changes in the option.
+ */
 public abstract class AOption implements IOption {
     String groupName;
     String uriOptions;
@@ -36,23 +43,42 @@ public abstract class AOption implements IOption {
     boolean isActivated;
     OptionKind kind;
 
+    private final List<AOptionListener> registeredListener = new ArrayList<>();
+    private final List<AOptionListener> listenerToRegister = new ArrayList<>();
     private MDFeature feature;
 
+
+    /**
+     * Initializes the registrable item with the provided feature.
+     *
+     * @param feature The feature to initialize the registrable item with.
+     */
     public void initRegistrableItem(MDFeature feature) {
         this.feature = feature;
     }
 
-    private final List<AOptionListener> registeredListener = new ArrayList<>();
-    private final List<AOptionListener> listenerToRegister = new ArrayList<>();
-
+    /**
+     * Adds a listener to the list of listeners to be registered.
+     *
+     * @param listener The listener to add.
+     */
     public void addListenerToRegister(AOptionListener listener) {
         listenerToRegister.add(listener);
     }
 
+    /**
+     * Gets the registered property of the option.
+     *
+     * @return The registered property of the option.
+     */
     public Property getRegisteredProperty() {
         return optionCategory.getProperty(property.getID());
     }
-
+    /**
+     * Adds a listener to the option. The type of listener added depends on the kind of the option.
+     *
+     * @param listener The listener to be added.
+     */
     @Override
     public void addListener(AOptionListener listener){
         if(kind == OptionKind.Environment)
@@ -61,12 +87,29 @@ public abstract class AOption implements IOption {
             addProjectListener(listener);
     }
 
+    /**
+     * Adds an environment change listener to the environment options.
+     *
+     * @param listener The environment change listener to be added.
+     */
     public void addEnvironmentListener(EnvironmentOptions.EnvironmentChangeListener listener){
             Application.getInstance().getEnvironmentOptions().addEnvironmentChangeListener(listener);
     }
+
+    /**
+     * Adds a property change listener to the project options.
+     *
+     * @param listener The property change listener to be added.
+     */
     public void addProjectListener(PropertyChangeListener listener){
             OMFUtils.getProject().getOptions().addPropertyChangeListener(listener);
     }
+
+    /**
+     * Removes a listener from the option. The type of listener removed depends on the kind of the option.
+     *
+     * @param listener The listener to be removed.
+     */
     @Override
     public void removeListener(AOptionListener listener){
         if(kind == OptionKind.Environment)
@@ -74,63 +117,126 @@ public abstract class AOption implements IOption {
         if(kind == OptionKind.Project)
             removeProjectListener(listener);
     }
+
+    /**
+     * Removes an environment change listener from the environment options.
+     *
+     * @param listener The environment change listener to be removed.
+     */
     public void removeEnvironmentListener(EnvironmentOptions.EnvironmentChangeListener listener){
         Application.getInstance().getEnvironmentOptions().removeEnvironmentChangeListener(listener);
     }
+
+    /**
+     * Removes a property change listener from the project options.
+     *
+     * @param listener The property change listener to be removed.
+     */
     public void removeProjectListener(PropertyChangeListener listener){
         OMFUtils.getProject().getOptions().removePropertyChangeListener(listener);
     }
+
+    /**
+     * Removes all listeners from the option and clears the list of registered listeners.
+     */
     @Override
     public void removeAllListeners(){
         registeredListener.forEach(this::removeListener);
         registeredListener.clear();
     }
 
+    /**
+     * Gets the list of registered listeners for the option.
+     *
+     * @return The list of registered listeners.
+     */
     @Override
     public List<AOptionListener> getRegisteredListener(){
         return registeredListener;
     }
 
+    /**
+     * Gets the resource provider for the option.
+     *
+     * @return The resource provider for the option.
+     */
     @Override
     public PropertyResourceProvider getResourceProvider() {
         return resourceProvider;
     }
 
+    /**
+     * Sets the resource provider for the option.
+     *
+     * @param resourceProvider The resource provider to be set.
+     */
     @Override
     public void setResourceProvider(PropertyResourceProvider resourceProvider) {
         this.resourceProvider = resourceProvider;
     }
 
+    /**
+     * Gets the default value for the option.
+     *
+     * @return The default value for the option.
+     */
     @Override
     public Object getDefaultValue() {
         return defaultValue;
     }
-
+    /**
+     * Sets the default value for the option.
+     *
+     * @param defaultValue The default value to be set for the option.
+     */
     @Override
     public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
     }
 
+    /**
+     * Checks if the option is activated.
+     *
+     * @return True if the option is activated, false otherwise.
+     */
     @Override
     public boolean isActivated() {
         return isActivated;
     }
 
+    /**
+     * Sets the activation status of the option.
+     *
+     * @param activated The activation status to be set for the option.
+     */
     @Override
     public void setActivated(boolean activated) {
         isActivated = activated;
     }
 
+    /**
+     * Retrieves the kind of the option.
+     *
+     * @return The kind of the option.
+     */
     @Override
     public OptionKind getKind() {
         return kind;
     }
 
+    /**
+     * Sets the kind of the option.
+     *
+     * @param kind The kind to be set for the option.
+     */
     @Override
     public void setKind(OptionKind kind) {
         this.kind = kind;
     }
 
+    /**
+     * Registers the option. The method of registration depends on the kind of the option.
+     */
     @Override
     public void register(){
         if(kind == OptionKind.Environment)
@@ -139,22 +245,24 @@ public abstract class AOption implements IOption {
             registerProjectOption();
     }
 
+    /**
+     * Registers the option as a project option.
+     */
     private void registerProjectOption() {
         if(defaultValue != null)
             property.setValue(defaultValue);
         if(resourceProvider != null)
             property.setResourceProvider(resourceProvider);
         property.setGroup(groupName);
-//        boolean searchExistingOptionCategoryByID = OMFUtils.getProject() != null && optionCategory == null && !Strings.isNullOrEmpty(uriOptions);
-//        if(searchExistingOptionCategoryByID)
-//            optionCategory = getOrCreateProjectCategory(uriOptions, categoryName);
-        if(OMFUtils.getProject() != null)
+        if(OMFUtils.isProjectOpened())
             OMFUtils.getProject().getOptions().addProperty(ProjectOptions.PROJECT_GENERAL_PROPERTIES, property);
         FeatureProjectOptionsConfigurator.getInstance().addOption(this);
-//        optionCategory.addProperty(property);
         listenerToRegister.forEach(this::addListener);
     }
 
+    /**
+     * Registers the option as an environment option.
+     */
     private void registerEnvOption() {
         if(defaultValue != null)
             property.setValue(defaultValue);
@@ -172,11 +280,25 @@ public abstract class AOption implements IOption {
         listenerToRegister.forEach(this::addListener);
     }
 
+    /**
+     * Retrieves or creates an environment category.
+     *
+     * @param uriOptions The URI of the options.
+     * @param categoryName The name of the category.
+     * @return The environment category.
+     */
     private AbstractPropertyOptionsGroup getOrCreateEnvCategory(String uriOptions, String categoryName) {
         AbstractPropertyOptionsGroup category = getOptionGroupFromURI(uriOptions);
         return category != null? category: createNewEnvOptionCategory(uriOptions, categoryName);
     }
 
+    /**
+     * Creates a new environment option category.
+     *
+     * @param URI The URI of the category.
+     * @param categoryName The name of the category.
+     * @return The new environment option category.
+     */
     private OMFPropertyOptionsGroup createNewEnvOptionCategory(String URI, String categoryName) {
         OMFPropertyOptionsGroup envCategory = new OMFPropertyOptionsGroup(URI, categoryName);
         Application.getInstance().getEnvironmentOptions()
@@ -184,6 +306,9 @@ public abstract class AOption implements IOption {
         return envCategory;
     }
 
+    /**
+     * Unregisters the option.
+     */
     @Override
     public void unregister(){
         if(optionCategory == null)
@@ -192,64 +317,130 @@ public abstract class AOption implements IOption {
         registeredListener.forEach(this::removeListener);
     }
 
+    /**
+     * Retrieves the group name of the option.
+     *
+     * @return The group name of the option.
+     */
     @Override
     public String getGroupName() {
         return groupName;
     }
 
+    /**
+     * Sets the group name of the option.
+     *
+     * @param groupName The group name to be set for the option.
+     */
     @Override
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
 
+    /**
+     * Retrieves the URI of the options.
+     *
+     * @return The URI of the options.
+     */
     @Override
     public String getUriOptions() {
         return uriOptions;
     }
 
+    /**
+     * Sets the URI of the options.
+     *
+     * @param uriOptions The URI to be set for the options.
+     */
     @Override
     public void setUriOptions(String uriOptions) {
         this.uriOptions = uriOptions;
     }
 
+    /**
+     * Retrieves the property of the option.
+     *
+     * @return The property of the option.
+     */
     @Override
     public Property getProperty() {
         return property;
     }
 
+    /**
+     * Sets the property of the option.
+     *
+     * @param property The property to be set for the option.
+     */
     @Override
     public void setProperty(Property property) {
         this.property = property;
     }
 
+    /**
+     * Retrieves the option category.
+     *
+     * @return The option category.
+     */
     @Override
     public OptionsGroup getOptionCategory() {
         return optionCategory;
     }
 
+    /**
+     * Sets the option category.
+     *
+     * @param optionCategory The option category to be set.
+     */
     @Override
     public void setOptionCategory(AbstractPropertyOptionsGroup optionCategory) {
         this.optionCategory = optionCategory;
     }
 
+    /**
+     * Retrieves the list of listeners to be registered.
+     *
+     * @return The list of listeners to be registered.
+     */
     public List<AOptionListener> getListenerToRegister() {
         return listenerToRegister;
     }
 
+    /**
+     * Retrieves the category name of the option.
+     *
+     * @return The category name of the option.
+     */
     @Override
     public String getCategoryName() {
         return categoryName;
     }
 
+    /**
+     * Sets the category name of the option.
+     *
+     * @param categoryName The category name to be set for the option.
+     */
     @Override
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
 
+    /**
+     * Retrieves the option group from the URI.
+     *
+     * @param uri The URI of the option group.
+     * @return The option group.
+     */
     public static AbstractPropertyOptionsGroup getOptionGroupFromURI(String uri){
         return (AbstractPropertyOptionsGroup) Application.getInstance().getEnvironmentOptions().getGroup(uri);
     }
 
+    /**
+     * Retrieves the feature of the option.
+     *
+     * @return The feature of the option.
+     */
     @Override
     public MDFeature getFeature() {
         return feature;

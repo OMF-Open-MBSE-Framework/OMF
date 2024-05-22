@@ -27,7 +27,7 @@ public class CloneType extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.getProject() != null
+        return isProjectOpened()
                 && !selectedElements.isEmpty()
                 && selectedElements.stream().allMatch(Type.class::isInstance);
     }

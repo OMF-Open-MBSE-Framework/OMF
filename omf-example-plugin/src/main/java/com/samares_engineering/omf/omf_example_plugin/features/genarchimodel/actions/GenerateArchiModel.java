@@ -41,7 +41,7 @@ import static com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ParameterDirection
 public class GenerateArchiModel extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.getProject() == null)
+        if(isProjectVoid())
             return false;
         if(selectedElements.isEmpty()) return false;
 

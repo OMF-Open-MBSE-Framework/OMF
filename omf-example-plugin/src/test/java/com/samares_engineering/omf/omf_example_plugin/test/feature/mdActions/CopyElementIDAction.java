@@ -27,7 +27,7 @@ import java.util.List;
 public class CopyElementIDAction extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.getProject() != null;
+        return isProjectOpened();
     }
     
     @Override

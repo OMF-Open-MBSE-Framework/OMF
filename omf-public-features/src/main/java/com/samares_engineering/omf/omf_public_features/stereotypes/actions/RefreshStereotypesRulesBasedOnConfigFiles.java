@@ -30,7 +30,7 @@ public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.getProject() != null;
+        return isProjectOpened();
     }
 
     @Override

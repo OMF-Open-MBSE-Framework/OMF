@@ -574,9 +574,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     /**
      * Compare the option actual value with the given value.
-     * @param option
-     * @param value
-     * @return
+     * @param option the option
+     * @param value the value to compare
+     * @return true if the value is the same
      */
     public boolean compareOptionValue(Property option, Object value){
         return option.getValue().equals(value);
@@ -586,9 +586,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Search for the environment option and compare it with the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param group
-     * @param optionName
-     * @param value
+     * @param group the Option group name
+     * @param optionName the Option name
+     * @param value the value to compare
      */
     public boolean compareOptionValueByCategoryName(String group, String optionName, Object value){
         return getEnvironmentOptionByGroupName(group, optionName).getValue().equals(value);
@@ -598,9 +598,9 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
      * Search for the environment option and compare it with the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param group
-     * @param optionName
-     * @param value
+     * @param group the Option group name
+     * @param optionName the Option name
+     * @param value the value to compare
      */
     public boolean compareOptionValueByGroupID(String group, String optionName, Object value){
         return getEnvironmentOptionByGroupName(group, optionName).getValue().equals(value);
@@ -608,8 +608,8 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
 
     /**
      * Set a new value to the given property
-     * @param option
-     * @param value
+     * @param option the option
+     * @param value the value to set
      */
     public void setOptionValue(Property option, Object value){
         option.setValue(value);

@@ -25,7 +25,7 @@ import java.util.List;
 public class RestartAPIServerAction extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.getProject() == null) return false;
+        if(isProjectVoid()) return false;
         return true;
     }
 

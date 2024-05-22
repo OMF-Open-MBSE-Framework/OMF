@@ -9,6 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 
 import com.google.common.base.Strings;
+import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction;
 import com.nomagic.magicdraw.ui.browser.Browser;
 import com.nomagic.magicdraw.ui.browser.ContainmentTree;
@@ -232,7 +233,7 @@ public abstract class AUIAction implements UIAction {
      * @return selected node list.
      */
     public Node[] getSelectedBrowserNodes() {
-        if(OMFUtils.getProject() == null)
+        if(isProjectVoid())
             return null;
         Browser browser = OMFUtils.getProject().getBrowser();
         if(browser == null)
@@ -268,7 +269,7 @@ public abstract class AUIAction implements UIAction {
      * @return selected Presentation Element list.
      */
     public List<PresentationElement> getSelectedDiagramPresentationElements() {
-        if(OMFUtils.getProject() == null)
+        if(isProjectVoid())
             return Collections.emptyList();
         DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
         return Objects.nonNull(activeDiagram)? activeDiagram.getSelected(): new ArrayList<>();
@@ -415,4 +416,33 @@ public abstract class AUIAction implements UIAction {
     public List<Element> getDiagramSelectedElements() {
         return diagramSelectedElements;
     }
+
+    /**
+     * Retrieves the current project instance.
+     *
+     * @return The current Project instance.
+     */
+    public Project getProject() {
+        return OMFUtils.getProject();
+    }
+
+    /**
+     * Checks if the current project is void.
+     *
+     * @return True if the project is void, false otherwise.
+     */
+    public boolean isProjectVoid() {
+        return OMFUtils.isProjectVoid();
+    }
+
+    /**
+     * Checks if the current project is opened.
+     *
+     * @return True if the project is opened, false otherwise.
+     */
+    public boolean isProjectOpened() {
+        return OMFUtils.isProjectOpened();
+    }
+    
+
 }

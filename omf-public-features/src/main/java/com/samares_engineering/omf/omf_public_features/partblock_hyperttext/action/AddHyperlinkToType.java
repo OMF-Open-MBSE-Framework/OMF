@@ -28,7 +28,7 @@ public class AddHyperlinkToType extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.getProject() == null) return false;
+        if(isProjectVoid()) return false;
         if(selectedElements.size() != 1) return false;
         if(!selectedElements.stream().allMatch(Profile._getSysmlAdditionalStereotypes().partProperty()::is)) return false;
         return true;

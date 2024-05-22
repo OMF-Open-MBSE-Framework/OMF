@@ -29,7 +29,16 @@ public class OMFUtils {
     public static Project getProject() {
         return Application.getInstance().getProject();
     }
-    
+
+    public static boolean isProjectVoid() {
+        return Application.getInstance().getProject() == null;
+    }
+
+
+    public static boolean isProjectOpened() {
+        return Application.getInstance().getProject() != null;
+    }
+
     /**
      * Split a String with regex given as parameter
      *

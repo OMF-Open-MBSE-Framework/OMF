@@ -58,7 +58,7 @@ public class FeatureRegisterer {
             feature.register();
 
             registerFeatureItems(feature);
-            if (OMFUtils.getProject() != null) {
+            if (OMFUtils.isProjectOpened()) {
                 registerProjectOnlyFeatureItems(feature);
             }
             registeredFeatures.add(feature);

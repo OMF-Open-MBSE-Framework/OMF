@@ -26,7 +26,7 @@ import java.util.List;
 public class ClonePort extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        return OMFUtils.getProject() != null
+        return isProjectOpened()
                 && !selectedElements.isEmpty()
                 && selectedElements.stream().allMatch(Port.class::isInstance);
     }

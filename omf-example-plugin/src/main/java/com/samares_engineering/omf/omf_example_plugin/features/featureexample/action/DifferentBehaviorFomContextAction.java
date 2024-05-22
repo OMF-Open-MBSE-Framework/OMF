@@ -64,7 +64,7 @@ public class DifferentBehaviorFomContextAction extends AUIAction {
 
     @Override
     public boolean checkMenuAvailability() {
-        return isActivated() && OMFUtils.getProject() != null;
+        return isActivated() && isProjectOpened();
     }
 
     @Override

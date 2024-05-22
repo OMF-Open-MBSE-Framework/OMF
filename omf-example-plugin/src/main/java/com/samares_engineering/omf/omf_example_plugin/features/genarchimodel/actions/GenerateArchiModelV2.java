@@ -23,7 +23,7 @@ public class GenerateArchiModelV2 extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if(OMFUtils.getProject() == null)
+        if(isProjectVoid())
             return false;
         if(selectedElements.isEmpty()) return false;
 
