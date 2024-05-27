@@ -23,6 +23,11 @@ dependencies {
 
     implementation 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
     implementation 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
+    implementation 'com.github.javaparser:javaparser-core:3.25.4'
+    implementation 'org.jdom:jdom2:2.0.6'
+    compileOnly fileTree(dir: 'build/install/plugins', include: ['**/*.jar'])
+
+
 
     implementation 'com.squareup:javapoet:1.13.0'
 }
