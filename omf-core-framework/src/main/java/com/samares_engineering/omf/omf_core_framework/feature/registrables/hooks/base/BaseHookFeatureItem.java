@@ -46,6 +46,6 @@ public class BaseHookFeatureItem implements IHook {
     }
     @Override
     public void executeInSessionHook(Runnable runnable, String event) {
-        OMFBarrierExecutor.executeAUIActionWithinBarrier(runnable, event, getFeature());
+        OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, event, getFeature());
     }
 }

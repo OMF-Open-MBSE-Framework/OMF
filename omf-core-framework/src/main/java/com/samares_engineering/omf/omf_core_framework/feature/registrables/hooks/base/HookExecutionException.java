@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 public class HookExecutionException extends OMFCriticalException2 {
 
 
-    public HookExecutionException(String event, Throwable cause) {
+    public HookExecutionException(String event, Exception cause) {
         super(new OMFLog2().err("[HookExecution - " + event +"] Error while executing hook, due to: " + cause.getMessage()), cause);
     }
 }

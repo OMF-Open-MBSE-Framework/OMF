@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * It will create the options and update the feature status according to the option value
  */
 public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
-
     public static final String MANAGE_FEATURE_ACTIVATION = "Manage Feature Activation:";
     public static final String ACTIVATE_FEATURE_ = "Activate ";
 

@@ -11,22 +11,38 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_
 
 import java.beans.PropertyChangeEvent;
 
+/**
+ * Abstract class for a rule, contains the basic methods for a LiveAction rule.
+ */
 public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChangeEvent> {
     protected ILiveAction ruleEngine;
     public String id = "";
     public boolean isActivated = true;
 
-    public ARule(){}
+    public ARule(){id = getClass().getSimpleName();}
 
     public ARule(String id){
         this.id = id;
     }
 
+    /**
+     * Check if the event matches the rule, and if the rule is activated.
+     * This method is executed within a barrier that will catch any exception and rethrow it as an ErrorWhileEvaluationRuleException.
+     * @param evt the event to match
+     * @return true if the event matches the rule, false otherwise
+     */
     @Override
     public final boolean matches(PropertyChangeEvent evt) {
         return isActivated && eventMatches(evt);
     }
 
+    /**
+     * Implement the check for the rule here.
+     * This method checks if the event matches the rule, thus if the rule should be executed.
+     * This method is executed within a barrier that will catch any exception and rethrow it as an ErrorWhileEvaluationRuleException.
+     * @param evt the event to check
+     * @return true if the event matches the rule, false otherwise
+     */
     protected abstract boolean eventMatches(PropertyChangeEvent evt);
 
     @Deprecated
@@ -47,8 +63,15 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
         return id;
     }
 
+    @Override
     public void setRuleEngine(ILiveAction ruleEngine) {
         this.ruleEngine = ruleEngine;
+    }
+
+
+    @Override
+    public ILiveAction getRuleEngine() {
+        return ruleEngine;
     }
 
     public MDFeature getFeature() {

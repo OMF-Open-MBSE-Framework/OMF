@@ -76,7 +76,7 @@ public class GroupElementHelper {
         for (Connector connector : allConnectorsFromPorts) {
             //Cloning the connector
             CloneManager cloneManager = new CloneManager("");
-            cloneManager.clonedConnector(connector);
+            cloneManager.cloneConnector(connector);
             Connector newConnector = (Connector) cloneManager.retrieveClonedElement(connector);
             newConnectors.add(newConnector);
 

@@ -24,6 +24,7 @@ class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT FEATURE") 
     public override fun initFeatureActions(): List<UIAction> {
         return Arrays.asList<UIAction>(
             CriticalFeatureExampleAction(),
+            ErrorInAvailabilityCheck(),
             UIActionErrorExample(),
             HandlingErrorUIAction(),
             NotHandledException(),

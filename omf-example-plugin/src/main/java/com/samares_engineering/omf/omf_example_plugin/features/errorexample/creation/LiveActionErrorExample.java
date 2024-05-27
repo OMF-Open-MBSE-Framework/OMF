@@ -9,7 +9,6 @@ package com.samares_engineering.omf.omf_example_plugin.features.errorexample.cre
 
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
@@ -41,9 +40,7 @@ public class LiveActionErrorExample extends ARule {
                 : "NOT FOUND";
 
         Optional<Property> optOption = OptionsHelper.getEnvironmentOptionByID(optionGroupID, ErrorManagementFeatureExample.ACTIVATE_ERROR_LIVE_ACTION);
-        if(optOption.isEmpty()) return true;
-        if (!(boolean) optOption.get().getValue()) return true;
-        return false;
+        return optOption.map(property -> !(boolean) property.getValue()).orElse(true);
     }
 
 

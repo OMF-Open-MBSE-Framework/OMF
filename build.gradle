@@ -18,6 +18,7 @@ group omfPackage + '.' + mdVersionShort
 //    }
 //}
 
+
 sonarqube {
     properties {
         property "sonar.projectName", "OpenMBSEFramework_" + mdVersionShort

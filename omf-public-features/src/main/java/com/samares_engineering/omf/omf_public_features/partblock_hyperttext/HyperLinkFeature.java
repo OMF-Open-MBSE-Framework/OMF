@@ -9,9 +9,7 @@ package com.samares_engineering.omf.omf_public_features.partblock_hyperttext;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
@@ -21,8 +19,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.creation.HyperlinkPartToBlockLA;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class HyperLinkFeature extends SimpleFeature {
@@ -32,26 +28,10 @@ public class HyperLinkFeature extends SimpleFeature {
     }
 
     @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
-    }
-
-    @Override
-    public List<UIAction> initFeatureActions() {
-        return Arrays.asList(
-        );
-    }
-
-    @Override
     public List<ILiveAction> initLiveActions() {
         ILiveAction creationRE = new LiveAction(RECategoryEnum.AFTER_AUTOMATION);
         creationRE.addRule(new HyperlinkPartToBlockLA());
         return List.of(creationRE);
-    }
-
-    @Override
-    protected List<ILiveAction> initProjectOnlyLiveActions() {
-        return Collections.emptyList();
     }
 
     @Override
@@ -72,14 +52,7 @@ public class HyperLinkFeature extends SimpleFeature {
             }
         });
 
-        return Arrays.asList(
-                testEnvOption
-        );
-    }
-
-    @Override
-    protected List<IOption> initProjectOnlyOptions() {
-        return Collections.emptyList();
+        return List.of(testEnvOption);
     }
 
 

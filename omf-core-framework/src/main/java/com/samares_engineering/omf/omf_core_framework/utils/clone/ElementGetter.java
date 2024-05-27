@@ -80,30 +80,24 @@ public class ElementGetter {
         return traceability;
     }
 
-    /**
-     * Get all the connected nested ports from the port using Interfaces
-     * @param port the port to get the nested ports from
-     * @return the nested ports
-     */
-    public List<Port> getAllNestedPortFromPort(Port port) {
-        List<Port> allPortFromInterface = new ArrayList<>();
-        getAllNestedPortFromPort(port, allPortFromInterface);
-        allPortFromInterface.add(port);
-        return allPortFromInterface;
-    }
 
     /**
-     * Get all the nested ports from the port using Interfaces, and add them to the list
+     * Get all the nested ports from the port using Interfaces, and return them as a new list.
      * @param port the port to get the nested ports from
-     * @param portList the list of nested ports
+     * @return a new list containing all nested ports
      */
-    public void getAllNestedPortFromPort(Port port, List<Port> portList){
+    public List<Port> getAllNestedPortFromPort(Port port){
+        List<Port> portList = new ArrayList<>();
         Class type = (Class) port.getType();
-        if(type == null) return;
-        type.getOwnedPort()
-                .stream()
-                .forEach(ownedPort  ->{ portList.add(ownedPort); getAllNestedPortFromPort(ownedPort, portList);});
+        if (type == null) return portList;
 
+        type.getOwnedPort()
+                .forEach(ownedPort -> {
+                    portList.add(ownedPort);
+                    portList.addAll(getAllNestedPortFromPort(ownedPort));
+                });
+
+        return portList;
     }
 
 

@@ -12,13 +12,12 @@ import com.nomagic.magicdraw.plugins.PluginUtils;
 import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.legacy_comparator.LegacyElementModelComparator;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.filters.ElementFilter;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.junit.Assert.assertNotNull;
 

@@ -8,9 +8,11 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.exceptions.ErrorWhileEvaluationRuleException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.IRule;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
@@ -22,7 +24,7 @@ import java.util.Optional;
 
 public class LiveAction implements ILiveAction {
     private IListenerManager listenerManager;
-    private List<IRule> rules = new ArrayList<>();
+    private List<IRule<PropertyChangeEvent, PropertyChangeEvent>> rules = new ArrayList<>();
     private String id = "";
     private int priority = -1;
     private String category = "";
@@ -69,30 +71,29 @@ public class LiveAction implements ILiveAction {
 
     /**
      * Find the highest priority rule (if it exists) matching the provided event
+     *
      * @param evt event to process
      * @return the rule found
      */
     @Override
-    public Optional<IRule> getMatchingRule(PropertyChangeEvent evt){
+    public Optional<IRule<PropertyChangeEvent, PropertyChangeEvent>> getMatchingRule(PropertyChangeEvent evt){
         if (skipRules(evt)) {
             return Optional.empty();
         }
         return rules.stream()
-                .filter(rule -> rule.isActivated() && rule.matches(evt))
+                .filter(rule -> isRuleMatching(evt, rule))
                 .findFirst();
     }
 
     @Override
-    public List<IRule> getAllMatchingRules(PropertyChangeEvent evt){
+    public List<IRule<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingRules(PropertyChangeEvent evt){
         if (skipRules(evt))
             return new ArrayList<>();
 
-        List<IRule> rulesToExecute = new ArrayList<>();
+        List<IRule<PropertyChangeEvent, PropertyChangeEvent>> rulesToExecute = new ArrayList<>();
 
-        for (IRule rule : rules) {  //return all matching rules until the first Blocking rule is found
-            if(!rule.isActivated())
-                continue;
-            if (rule.matches(evt)) {
+        for (IRule<PropertyChangeEvent, PropertyChangeEvent> rule : rules) {  //return all matching rules until the first Blocking rule is found
+            if(isRuleMatching(evt, rule)){
                 rulesToExecute.add(rule);
                 ColorPrinter.status("Triggered rule: " + rule.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
                         + " on element: " + ((Element) evt.getSource()).getHumanName());
@@ -106,14 +107,27 @@ public class LiveAction implements ILiveAction {
 
     }
 
+    private boolean isRuleMatching(PropertyChangeEvent evt, IRule<PropertyChangeEvent, PropertyChangeEvent> rule) {
+        OMFBarrierExecutor.executeWithinBarrier(() -> {
+            try {
+                return rule.isActivated() && rule.matches(evt);
+            } catch (Exception e) {
+                throw new ErrorWhileEvaluationRuleException(rule, e);
+            }
+        },getFeature());
+        return false;
+    }
+
     /**
      * Finds and processes the highest priority rule (if it exists) matching the provided event
+     * In case of a blocking rule, the processing stops after the first blocking rule has been processed
+     * In case of error, the error is handled by the ErrorHandler2, which may throw a RollbackException
      * @param evt event to process
      * @return true if a matching rule has been found and processed, false otherwise
      */
     @Override
     public boolean processAllMatchingRule(PropertyChangeEvent evt) {
-        List<IRule> matchingRules = getAllMatchingRules(evt);
+        List<IRule<PropertyChangeEvent, PropertyChangeEvent>> matchingRules = getAllMatchingRules(evt);
         if(matchingRules.isEmpty())
             return false;
 
@@ -122,9 +136,9 @@ public class LiveAction implements ILiveAction {
             try {
                 rule.process(evt);
             } catch (OMFDevException e) {
-                ErrorHandler2.getInstance().handleException(e, getFeature());
+                ErrorHandler2.getInstance().handleException(e, getFeature()); //Could throw a RollbackException
             } catch (RuntimeException e) {
-                ErrorHandler2.getInstance().handleException(e, getFeature());
+                ErrorHandler2.getInstance().handleException(e, getFeature());//Throw a RollbackException
             }
         });
 
@@ -158,19 +172,25 @@ public class LiveAction implements ILiveAction {
         return false;
     }
 
-    public void addRule(IRule rule) {
+    @Override
+    public void addRule(IRule<PropertyChangeEvent, PropertyChangeEvent> rule) {
         rule.setRuleEngine(this);
         this.rules.add(rule);
     }
-    public void addAllRules(List<IRule> lRules){
+
+    @Override
+    public void addAllRules(List<IRule<PropertyChangeEvent, PropertyChangeEvent>> lRules){
         lRules.forEach(this::addRule);
     }
-    public void removeRule(IRule rule){
+    @Override
+    public void removeRule(IRule<PropertyChangeEvent, PropertyChangeEvent> rule){
         this.rules.remove(rule);
     }
-    public void removeRules(List<IRule> lRules){
+    @Override
+    public void removeRules(List<IRule<PropertyChangeEvent, PropertyChangeEvent>> lRules){
         this.rules.removeAll(lRules);
     }
+    @Override
     public void removeAllRules(){
         this.rules.clear();
     }
@@ -182,10 +202,10 @@ public class LiveAction implements ILiveAction {
         this.id = id;
     }
 
-    public List<IRule> getRules() {
+    public List<IRule<PropertyChangeEvent, PropertyChangeEvent>> getRules() {
         return rules;
     }
-    public void setRules(List<IRule> rules) {
+    public void setRules(List<IRule<PropertyChangeEvent,PropertyChangeEvent>> rules) {
         this.rules = rules;
     }
 

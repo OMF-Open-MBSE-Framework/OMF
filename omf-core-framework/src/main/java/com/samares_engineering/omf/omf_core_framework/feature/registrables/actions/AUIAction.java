@@ -30,6 +30,7 @@ import javax.annotation.CheckForNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -156,7 +157,7 @@ public abstract class AUIAction implements UIAction {
      * @param runnable The Runnable representing the UI action to be executed.
      */
     protected void executeAUIActionWithinBarrier(Runnable runnable) {
-        OMFBarrierExecutor.executeAUIActionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
+        OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
     }
 
     /**
@@ -189,33 +190,35 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Browser action configurator.
-     * If there is a need to distinguish check from different action type, override the according function.
-     *
+     * If there is a need to distinguish check from different action type, override the according function but do not forget to call the checkWithinOMFBarrier method.
+     * see: {@link #checkWithinOMFBarrier(Callable)}
      * @return isAvailable
      */
     public boolean checkBrowserAvailability() {
-        return isActivated() && checkAvailability(getSelectedBrowserElements());
+        return checkWithinOMFBarrier(() -> isActivated() && checkAvailability(getSelectedBrowserElements()));
     }
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Diagram action configurator.
-     * If there is a need to distinguish check from different action type, override the according function.
+     * If there is a need to distinguish check from different action type, override the according function but do not forget to call the checkWithinOMFBarrier method.
+     * see: {@link #checkWithinOMFBarrier(Callable)}
      *
      * @return isAvailable
      */
     public boolean checkDiagramAvailability() {
-        return isActivated() && checkAvailability(getSelectedDiagramElements());
+        return checkWithinOMFBarrier(() -> isActivated() && checkAvailability(getSelectedDiagramElements()));
     }
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Menu action configurator.
-     * If there is a need to distinguish check from different action type, override the according function.
+     * If there is a need to distinguish check from different action type, override the according function but do not forget to call the checkWithinOMFBarrier method.
+     * see: {@link #checkWithinOMFBarrier(Callable)}
      *
      * @return isAvailable
      */
     public boolean checkMenuAvailability() {
-        return isActivated() && checkAvailability(Stream.of(getSelectedBrowserElements(), getSelectedDiagramElements())
-                .flatMap(Collection::stream).collect(Collectors.toList()));
+        return checkWithinOMFBarrier(() -> isActivated() && checkAvailability(Stream.of(getSelectedBrowserElements(), getSelectedDiagramElements())
+                .flatMap(Collection::stream).collect(Collectors.toList())));
     }
 
     /**
@@ -225,6 +228,16 @@ public abstract class AUIAction implements UIAction {
      * @return isAvailable
      */
     public abstract boolean checkAvailability(List<Element> selectedElements);
+
+    /**
+     * Check if the action is available within the OMF Barrier. <br>
+     * Use this method if you override the XXXCheckAvailability method (Browser, Diagram, Menu).
+     * @param checkAvailability The Callable to check the availability of the action.
+     * @return True if the action is available, false otherwise.
+     */
+    public boolean checkWithinOMFBarrier(Callable<Boolean> checkAvailability) {
+        return Boolean.TRUE.equals(OMFBarrierExecutor.<Boolean>executeWithinBarrier(checkAvailability, getName(), getFeature(), isDeactivateListenerOnTrigger()));
+    }
 
     /**
      * Get the selected Nodes inside the Containment Tree.

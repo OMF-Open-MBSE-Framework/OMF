@@ -3,37 +3,39 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
- ******************************************************************************/
+ */
+package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions
 
-package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions;
-
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
-
-import java.util.List;
-
-import static com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2.*;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction
 
 @BrowserAction
 @DiagramAction
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "CRITICAL ERROR", category = "Example.Error")
-public class CriticalFeatureExampleAction extends AUIAction {
-    @Override
-    public boolean checkAvailability(List<Element> selectedElements) {
-        return true;
+class CriticalFeatureExampleAction : AUIAction() {
+    override fun checkAvailability(selectedElements: List<Element?>?): Boolean {
+        return true
     }
 
-    @Override
-    public void actionToPerform(List<Element> selectedElements) {
-        throw new OMFCriticalException2("TESTING Framework CRITICAL FEATURE ERROR", NO_ROLLBACK, SILENT, DEACTIVATE_FEATURE);
+    override fun actionToPerform(selectedElements: List<Element?>?) {
+        throw OMFCriticalException2(
+            "TESTING Framework CRITICAL FEATURE ERROR",
+            OMFExceptionModifier2.NO_ROLLBACK,
+            OMFExceptionModifier2.SILENT,
+            OMFExceptionModifier2.DEACTIVATE_FEATURE
+        )
     }
 
-    @Override
-    protected void executeDiagramAction(List<Element> selectedElements) {
-        super.executeDiagramAction(selectedElements);
+    override fun executeDiagramAction(selectedElements: List<Element?>?) {
+        super.executeDiagramAction(selectedElements)
     }
 }

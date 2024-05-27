@@ -34,10 +34,10 @@ public class CloneManager {
     private List<Element> allStereotypes;
     private Map<Element, Element> orignialClonedMap;
     private Map<Element, Element> reversedMap;
-    private int iTaggedElement;
+    private int iTaggedElement; //Incremental index to tag the elements with the stereotypes (to map the original and the cloned elements)
     private List<Element> clonedElements;
-    private List<java.lang.Class> metaClassToFilter;
-    private List<Stereotype> stereotypeToFilter;
+    private final List<java.lang.Class<? extends Element>> metaClassToFilter;
+    private final List<Stereotype> stereotypeToFilter;
 
     private ElementGetter elementGetter;
 
@@ -91,14 +91,14 @@ public class CloneManager {
         setOriginalElementToClone(port);
         addAllElementsToCopy(getPortElementToCopy(port));
 
-
         List<Port> list = elementGetter.getAllNestedPortFromPort(port);
         List<Connector> connectorList = elementGetter.getAllConnectorsFromPorts(list);
         addAllElementsToCopy(connectorList);
         addAllElementsToCopy(elementGetter.getAllRelationFromConnectors(connectorList));
 
-        cloneElements(port.getOwner());
         removeAllFilteredElements();
+
+        cloneElements(port.getOwner());
 
         fixAllCopiedConnectors();
 
@@ -155,16 +155,41 @@ public class CloneManager {
      * Remove all the elements according to the filters: metaClassToFilter and stereotypeToFilter.
      */
     public void removeAllFilteredElements() {
+        elementsToCopy = new HashSet<>(filterElements(elementsToCopy));
+    }
+
+    /**
+     * Remove all the elements according to the filters: metaClassToFilter and stereotypeToFilter.
+     * @param elements the elements to filter
+     * @return the filtered elements
+     */
+    private List<Element> filterElements(Collection<Element> elements) {
         Predicate<Element> hasMetaClassToFilter = element -> metaClassToFilter.stream()
                 .noneMatch(metaClass -> metaClass.isInstance(element));
 
         Predicate<Element> hasStereotypeToFilter = element -> stereotypeToFilter.stream().noneMatch(stereotype ->
                 StereotypesHelper.hasStereotypeOrDerived(element, stereotype));
 
-        elementsToCopy = new ArrayList<>(elementsToCopy).stream()
+        return elements.stream()
                 .filter(hasMetaClassToFilter)
                 .filter(hasStereotypeToFilter)
-                .collect(Collectors.toSet());
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Remove all the elements according to the filters: metaClassToFilter and stereotypeToFilter.
+     * @param elementToCheck the element to check
+     * @return true if the element is not filtered, false otherwise
+     */
+    private boolean isNOTFilteredElement(Element elementToCheck) {
+        Predicate<Element> hasMetaClassToFilter = element -> metaClassToFilter.stream()
+                .noneMatch(metaClass -> metaClass.isInstance(element));
+
+        Predicate<Element> hasStereotypeToFilter = element -> stereotypeToFilter.stream().noneMatch(stereotype ->
+                StereotypesHelper.hasStereotypeOrDerived(element, stereotype));
+
+        return hasMetaClassToFilter.and(hasStereotypeToFilter).test(elementToCheck);
     }
 
     /**
@@ -178,6 +203,8 @@ public class CloneManager {
             reset();
             setOriginalElementToClone(type);
             addAllElementsToCopy(getTypeElementsToCopy(type));
+
+            removeAllFilteredElements();
 
             cloneElements(type.getOwner());
 
@@ -194,10 +221,12 @@ public class CloneManager {
      * @param connector the connector to copy
      * @return the map between the original elements and the cloned elements
      */
-    public Map<Element, Element> clonedConnector(Connector connector) {
+    public Map<Element, Element> cloneConnector(Connector connector) {
         reset();
         setOriginalElementToClone(connector);
         addElementToCopy(connector);
+        removeAllFilteredElements();
+
         addAllElementsToCopy(elementGetter.getAllRelationFromConnector(connector));
 
         cloneElements(connector.getOwner());
@@ -211,6 +240,7 @@ public class CloneManager {
 
     /**
      * Clone all the Elements inside the owner, and rename them with the PREFIX_CLONE
+     * Careful, the cloned elements are not yet fixed (ownership, property path, ...), and filtered (metaClassToFilter, stereotypeToFilter) are not applied
      * @param owner the owner of the elements
      * @return the list of copied elements
      */
@@ -295,10 +325,13 @@ public class CloneManager {
         Set<Connector> collect = type.getOwnedElement().stream()
                 .filter(Port.class::isInstance)
                 .map(Port.class::cast)
+                .filter(this::isNOTFilteredElement)
                 .map(elementGetter::getAllNestedPortFromPort)
                 .flatMap(Collection::stream)
+                .filter(this::isNOTFilteredElement)
                 .map(elementGetter::getAllConnectorsFromPort)
                 .flatMap(Collection::stream)
+                .filter(this::isNOTFilteredElement)
                 .collect(Collectors.toSet());
         addAllElementsToCopy(collect);
 
@@ -311,8 +344,7 @@ public class CloneManager {
      * @param part the part to get the elements from
      * @return the part elements
      */
-    public List<Element> getPartElementToCopy(Property part) {
-        return getPropertyElementToCopy(part);
+    public List<Element> getPartElementToCopy(Property part) {return filterElements(getPropertyElementToCopy(part));
     }
 
     /**
@@ -322,7 +354,7 @@ public class CloneManager {
      * @return the property elements
      */
     public List<Element> getPropertyElementToCopy(Property property) {
-        List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(property));
+        List<Element> elementsToCopy = filterElements(elementGetter.getRelationshipsFromElement(property));
         elementsToCopy.add(property);
         Type type = property.getType();
         if (type == null) return elementsToCopy;
@@ -338,7 +370,7 @@ public class CloneManager {
      * @return the classifier elements
      */
     public List<Element> getPortElementToCopy(Port port) {
-        List<Element> elementsToCopy = new ArrayList<>(elementGetter.getRelationshipsFromElement(port));
+        List<Element> elementsToCopy = filterElements(elementGetter.getRelationshipsFromElement(port));
         elementsToCopy.add(port);
         Type type = port.getType();
         if (type == null) return elementsToCopy;
@@ -357,19 +389,24 @@ public class CloneManager {
         Set<Element> deepCopyElements = Stream.concat(
                         ownedElement.stream()
                                 .filter(TypedElement.class::isInstance)
+                                .filter(this::isNOTFilteredElement)
                                 .map(TypedElement.class::cast)
                                 .map(TypedElement::getType)
                                 .filter(Objects::nonNull)
+                                .filter(this::isNOTFilteredElement)
                                 .map(this::getDeepCopyClassifier)
                                 .flatMap(Collection::stream),
                         ownedElement.stream()
                                 .map(elementGetter::getRelationshipsFromElement)
                                 .flatMap(Collection::stream))
+                                .filter(this::isNOTFilteredElement)
                 .collect(Collectors.toSet());
-        deepCopyElements.addAll(elementGetter.getRelationshipsFromElement(type));
+        deepCopyElements.addAll(filterElements(elementGetter.getRelationshipsFromElement(type)));
         deepCopyElements.add(type);
         return deepCopyElements;
     }
+
+
 
 
     //------------------------------------ FIXING CLONED ELEMENTS ------------------------------------------------------
@@ -417,7 +454,7 @@ public class CloneManager {
      * if a port is copied with its connector, the property path of the connector will be set to the copied port: OK.
      * But if there is a nested port from the same interface with the destination,
      * the destination propertyPathWill be affected, thus the connector will be broken
-     * @param clonedConnector
+     * @param clonedConnector the cloned connector to fix
      */
     public void fixClonedConnector(Connector clonedConnector) {
         Connector originalConnector = (Connector) retrieveOriginalElement(clonedConnector);
@@ -513,7 +550,6 @@ public class CloneManager {
     }
 
     private Element getNextElementToTag(List<Element> elementsToTagRef) {
-
         return elementsToTagRef.get(iTaggedElement++);
     }
 
@@ -577,11 +613,11 @@ public class CloneManager {
     }
 
     /**
-     * Add the element to the copy list
-     * @param element the element to add
+     * Add the element to the copy list, if it is not filtered by the metaClassToFilter and stereotypeToFilter
+     * @param elementToCopy the element to add
      */
-    public void addElementToCopy(Element element) {
-        elementsToCopy.add(element);
+    public void addElementToCopy(Element elementToCopy) {
+        if(isNOTFilteredElement(elementToCopy)) elementsToCopy.add(elementToCopy);
     }
 
     /**
@@ -693,7 +729,7 @@ public class CloneManager {
         this.allStereotypes = allStereotypes;
     }
 
-    public void setOrignialClonedMap(Map<Element, Element> orignialClonedMap) {
+    public void setOriginalClonedMap(Map<Element, Element> orignialClonedMap) {
         this.orignialClonedMap = orignialClonedMap;
     }
 
@@ -705,11 +741,11 @@ public class CloneManager {
         this.reversedMap = reversedMap;
     }
 
-    public int getiTaggedElement() {
+    public int getITaggedElement() {
         return iTaggedElement;
     }
 
-    public void setiTaggedElement(int iTaggedElement) {
+    public void setITaggedElement(int iTaggedElement) {
         this.iTaggedElement = iTaggedElement;
     }
 

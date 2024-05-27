@@ -24,10 +24,6 @@ public class HyperlinkPartToBlockLA extends ARule {
                 .test(evt);
     }
 
-    @Override
-    public void debug(Object o) {
-
-    }
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {

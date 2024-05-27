@@ -17,23 +17,23 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ILiveAction extends PriorityProvider, RegistrableFeatureItem {
-    Optional<IRule> getMatchingRule(PropertyChangeEvent evt);
+    Optional<IRule<PropertyChangeEvent, PropertyChangeEvent>> getMatchingRule(PropertyChangeEvent evt);
 
-    List<IRule> getAllMatchingRules(PropertyChangeEvent evt);
+    List<IRule<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingRules(PropertyChangeEvent evt);
 
     boolean processAllMatchingRule(PropertyChangeEvent evt);
 
     boolean skipRules(PropertyChangeEvent evt);
 
-    void addRule(IRule rule);
+    void addRule(IRule<PropertyChangeEvent, PropertyChangeEvent> rule);
 
-    void addAllRules(List<IRule> lRules);
+    void addAllRules(List<IRule<PropertyChangeEvent, PropertyChangeEvent>> lRules);
 
-    List<IRule> getRules();
+    List<IRule<PropertyChangeEvent, PropertyChangeEvent>> getRules();
 
-    void removeRule(IRule rule);
+    void removeRule(IRule<PropertyChangeEvent, PropertyChangeEvent> rule);
 
-    void removeRules(List<IRule> lRules);
+    void removeRules(List<IRule<PropertyChangeEvent, PropertyChangeEvent>> lRules);
 
     void removeAllRules();
 
