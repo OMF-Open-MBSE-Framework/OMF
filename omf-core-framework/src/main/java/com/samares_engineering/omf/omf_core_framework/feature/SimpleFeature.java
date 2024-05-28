@@ -14,11 +14,6 @@ public abstract class SimpleFeature extends AFeature{
     }
 
     @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return null;
-    }
-
-    @Override
     protected List<UIAction> initFeatureActions() {
         return Collections.emptyList();
     }
@@ -47,8 +42,6 @@ public abstract class SimpleFeature extends AFeature{
     protected List<IHook> initLifeCycleHooks() {
         return Collections.emptyList();
     }
-
-
 
 
 }

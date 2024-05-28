@@ -7,7 +7,6 @@
 
 package com.samares_engineering.omf.omf_example_plugin.features.groupfeature;
 
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.actions.GroupPartsAction;
@@ -22,7 +21,7 @@ public class GroupElementFeature extends SimpleFeature {
     }
 
     @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
+    protected SysMLBasicOptionHelper initEnvOptionsHelper() {
         return new SysMLBasicOptionHelper(this);
     }
 

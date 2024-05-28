@@ -1,14 +1,12 @@
-package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options;
+package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options
 
-import com.nomagic.magicdraw.properties.BooleanProperty;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
-
-import java.util.List;
+import com.nomagic.magicdraw.properties.BooleanProperty
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException
+import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper
+import com.samares_engineering.omf.omf_core_framework.feature.MDFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind
 
 /**
  * This class is used to manage the options of the SysML Basic feature
@@ -17,49 +15,56 @@ import java.util.List;
  * And all getters and setters to manage these options:
  * - isAutoInterfaceCreationActivated()
  */
-public class SysMLBasicOptionHelper extends EnvOptionsHelper {
+class SysMLBasicOptionHelper(feature: MDFeature?) : EnvOptionsHelper(feature) {
+    private val GROUP = "SysML Basics Features"
 
-    public static final String ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION = "Activate auto InterfaceBlock creation when port created :";
-    public static final String ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION = "Activate live name propagation within ports/interface/flowProperty :";
-    private String GROUP = "SysML Basics Features";
-
-    public SysMLBasicOptionHelper(MDFeature feature) {
-        super(feature);
-    }
-
-
-    public List<IOption> getAllOptions() {
-        BooleanProperty isInterfaceCreationActivated = new BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, false);
-        OptionImpl isInterfaceCreationActivatedOption = new OptionImpl(
+    val allOptions: List<IOption>
+        get() {
+            val isInterfaceCreationActivated = BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, false)
+            val isInterfaceCreationActivatedOption = OptionImpl(
                 isInterfaceCreationActivated,
                 GROUP,
-                getFeature().getPlugin().getEnvironmentOptionsGroup()
-                        .orElseThrow(() -> new OMFFeatureRegisteringException("Environment options group not registered" +
-                                "for plugin")),
+                feature.plugin.environmentOptionsGroup
+                    .orElseThrow {
+                        OMFFeatureRegisteringException(
+                            "Environment options group not registered" +
+                                    "for plugin"
+                        )
+                    },
                 OptionKind.Environment
-        );
+            )
 
-        BooleanProperty isNameLivePropagationActivated = new BooleanProperty(ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION, false);
-        OptionImpl isNameLivePropagationActivatedOption = new OptionImpl(
+            val isNameLivePropagationActivated = BooleanProperty(ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION, false)
+            val isNameLivePropagationActivatedOption = OptionImpl(
                 isNameLivePropagationActivated,
                 GROUP,
-                getFeature().getPlugin().getEnvironmentOptionsGroup()
-                        .orElseThrow(() -> new OMFFeatureRegisteringException("Environment options group not registered" +
-                                "for plugin")),
+                feature.plugin.environmentOptionsGroup
+                    .orElseThrow {
+                        OMFFeatureRegisteringException(
+                            "Environment options group not registered" +
+                                    "for plugin"
+                        )
+                    },
                 OptionKind.Environment
-        );
-        return List.of(
+            )
+            return java.util.List.of<IOption>(
                 isInterfaceCreationActivatedOption,
-                isNameLivePropagationActivatedOption);
-    }
+                isNameLivePropagationActivatedOption
+            )
+        }
 
-    public boolean isAutoInterfaceCreationActivated() {
-        return (boolean) getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).getValue();
-    }
-    public boolean isLiveNamePropagationActivated() {
-        return (boolean) getPropertyByName(ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION).getValue();
-    }
-    public void setAutoInterfaceCreationActivated(boolean value) {
-        getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).setValue(value);
+    var isAutoInterfaceCreationActivated: Boolean
+        get() = getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).value as Boolean
+        set(value) {
+            getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).value = value
+        }
+    val isLiveNamePropagationActivated: Boolean
+        get() = getPropertyByName(ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION).value as Boolean
+
+    companion object {
+        const val ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION: String =
+            "Activate auto InterfaceBlock creation when port created :"
+        const val ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION: String =
+            "Activate live name propagation within ports/interface/flowProperty :"
     }
 }

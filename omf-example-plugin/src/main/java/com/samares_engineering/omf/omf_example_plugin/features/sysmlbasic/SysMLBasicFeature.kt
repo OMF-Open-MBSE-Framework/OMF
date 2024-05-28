@@ -3,55 +3,49 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
- ******************************************************************************/
+ */
+package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic
 
-package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic;
+import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.SyncAllNameAction
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper
 
-import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.SyncAllNameAction;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper;
-
-import java.util.List;
-
-public class SysMLBasicFeature extends SimpleFeature {
-    public SysMLBasicFeature() {
-        super( "SysML Basic");
+class SysMLBasicFeature : SimpleFeature("SysML Basic") {
+    override fun initEnvOptionsHelper(): EnvOptionsHelper {
+        return SysMLBasicOptionHelper(this)
     }
 
-    @Override
-    protected EnvOptionsHelper initEnvOptionsHelper() {
-        return new SysMLBasicOptionHelper(this);
+    override fun getEnvOptionsHelper(): SysMLBasicOptionHelper {
+        return super.getEnvOptionsHelper() as SysMLBasicOptionHelper
     }
 
-    @Override
-    public List<UIAction> initFeatureActions() {
-        return List.of(
-//             new ResetListeners()
-            new SyncAllNameAction()
-        );
+    public override fun initFeatureActions(): List<UIAction> {
+        return java.util.List.of<UIAction>( //             new ResetListeners()
+            SyncAllNameAction()
+        )
     }
 
-    @Override
-    public List<ILiveAction> initLiveActions() {
-        LiveAction creationRE = new LiveAction(RECategoryEnum.CREATE);
-        creationRE.addRule(new CreateAutoInterface_OnPortCreation());
+    public override fun initLiveActions(): List<ILiveAction> {
+        val creationRE = LiveAction(RECategoryEnum.CREATE)
+        creationRE.addRule(CreateAutoInterface_OnPortCreation())
 
-        return List.of(
+        val modificationRE = LiveAction(RECategoryEnum.UPDATE)
+        modificationRE.addRule(CreateAutoInterface_OnPortCreation())
+
+        return java.util.List.of<ILiveAction>(
             creationRE
-        );
+        )
     }
 
 
-    @Override
-    public List<IOption> initOptions() {
-        return ((SysMLBasicOptionHelper) getEnvOptionsHelper()).getAllOptions();
+    public override fun initOptions(): List<IOption> {
+        return envOptionsHelper.allOptions
     }
-
 }
