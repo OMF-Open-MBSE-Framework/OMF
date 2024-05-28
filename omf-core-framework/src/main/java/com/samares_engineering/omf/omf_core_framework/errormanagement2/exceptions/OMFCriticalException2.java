@@ -25,11 +25,17 @@ public class OMFCriticalException2 extends OMFDevException {
     public OMFCriticalException2(String message, Exception cause, OMFExceptionModifier2... modifiers) {
         this(new OMFLog2().text(message), cause, modifiers);
     }
+    /**
+     * Simple message
+     */
+    public OMFCriticalException2(String message, Throwable cause, OMFExceptionModifier2... modifiers) {
+        this(new OMFLog2().text(message), cause, modifiers);
+    }
 
     /**
      * Full constructor wrapping causing exception
      */
-    public OMFCriticalException2(OMFLog2 message, Exception cause, OMFExceptionModifier2... modifiers) {
+    public OMFCriticalException2(OMFLog2 message, Throwable cause, OMFExceptionModifier2... modifiers) {
         super(message.toString(), cause);
         OMFLog = message;
         this.modifiers = Set.of(modifiers);

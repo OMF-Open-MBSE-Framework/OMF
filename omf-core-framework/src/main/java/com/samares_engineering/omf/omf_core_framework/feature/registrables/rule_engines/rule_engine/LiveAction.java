@@ -108,14 +108,14 @@ public class LiveAction implements ILiveAction {
     }
 
     private boolean isRuleMatching(PropertyChangeEvent evt, IRule<PropertyChangeEvent, PropertyChangeEvent> rule) {
-        OMFBarrierExecutor.executeWithinBarrier(() -> {
+        Boolean isMatching = OMFBarrierExecutor.executeWithinBarrier(() -> {
             try {
                 return rule.isActivated() && rule.matches(evt);
             } catch (Exception e) {
                 throw new ErrorWhileEvaluationRuleException(rule, e);
             }
-        },getFeature());
-        return false;
+        }, getFeature());
+        return isMatching != null && isMatching;
     }
 
     /**

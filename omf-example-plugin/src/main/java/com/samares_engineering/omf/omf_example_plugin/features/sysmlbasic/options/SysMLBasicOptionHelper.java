@@ -20,7 +20,8 @@ import java.util.List;
 public class SysMLBasicOptionHelper extends EnvOptionsHelper {
 
     public static final String ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION = "Activate auto InterfaceBlock creation when port created :";
-    private String GROUP = "OMF Features";
+    public static final String ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION = "Activate live name propagation within ports/interface/flowProperty :";
+    private String GROUP = "SysML Basics Features";
 
     public SysMLBasicOptionHelper(MDFeature feature) {
         super(feature);
@@ -29,7 +30,6 @@ public class SysMLBasicOptionHelper extends EnvOptionsHelper {
 
     public List<IOption> getAllOptions() {
         BooleanProperty isInterfaceCreationActivated = new BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, false);
-
         OptionImpl isInterfaceCreationActivatedOption = new OptionImpl(
                 isInterfaceCreationActivated,
                 GROUP,
@@ -38,10 +38,28 @@ public class SysMLBasicOptionHelper extends EnvOptionsHelper {
                                 "for plugin")),
                 OptionKind.Environment
         );
-        return List.of(isInterfaceCreationActivatedOption);
+
+        BooleanProperty isNameLivePropagationActivated = new BooleanProperty(ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION, false);
+        OptionImpl isNameLivePropagationActivatedOption = new OptionImpl(
+                isNameLivePropagationActivated,
+                GROUP,
+                getFeature().getPlugin().getEnvironmentOptionsGroup()
+                        .orElseThrow(() -> new OMFFeatureRegisteringException("Environment options group not registered" +
+                                "for plugin")),
+                OptionKind.Environment
+        );
+        return List.of(
+                isInterfaceCreationActivatedOption,
+                isNameLivePropagationActivatedOption);
     }
 
     public boolean isAutoInterfaceCreationActivated() {
         return (boolean) getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).getValue();
+    }
+    public boolean isLiveNamePropagationActivated() {
+        return (boolean) getPropertyByName(ACTIVATE_LIVE_INTERFACE_NAME_PROPAGATION).getValue();
+    }
+    public void setAutoInterfaceCreationActivated(boolean value) {
+        getPropertyByName(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION).setValue(value);
     }
 }

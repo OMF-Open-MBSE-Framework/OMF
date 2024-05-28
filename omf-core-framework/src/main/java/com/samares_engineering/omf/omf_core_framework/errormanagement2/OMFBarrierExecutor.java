@@ -31,27 +31,23 @@ public class OMFBarrierExecutor {
     }
 
     public static Object executeWithinBarrier(Runnable runnable, String sessionName, @CheckForNull MDFeature feature) {
-        return executeWithinBarrier(runnable, sessionName, feature, true);
+        return executeWithinBarrier(runnable, feature, true);
     }
 
-    public static Object executeWithinBarrier(Runnable runnable, String sessionName, @CheckForNull MDFeature feature, boolean deactivateListener) {
-        return executeWithinBarrier(() ->{runnable.run(); return null;}, sessionName, feature, deactivateListener);
+    public static Object executeWithinBarrier(Runnable runnable, @CheckForNull MDFeature feature, boolean deactivateListener) {
+        return executeWithinBarrier(() ->{runnable.run(); return null;}, feature, deactivateListener);
     }
 
     public static <V> V executeWithinBarrier(Callable<V> callable) {
-        return executeWithinBarrier(callable, "Action performed by the plugin", null);
+        return executeWithinBarrier(callable, null);
     }
 
-    public static <V> V executeWithinBarrier(Callable<V> callable, MDFeature feature) {
-        return executeWithinBarrier(callable, feature.getName() + " action", feature);
-    }
-
-    public static <V> V executeWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull MDFeature feature) {
-        return executeWithinBarrier(callable, sessionName, feature, true);
+    public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull MDFeature feature) {
+        return executeWithinBarrier(callable, feature, false);
     }
 
 
-    public static <V> V executeWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull MDFeature feature, boolean deactivateListener) {
+    public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull MDFeature feature, boolean deactivateListener) {
         if (deactivateListener)
             ListenerManager.getInstance().deactivateAllListeners();
 

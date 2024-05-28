@@ -10,9 +10,13 @@ import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
 import com.nomagic.magicdraw.ui.browser.Tree;
 import com.nomagic.magicdraw.utils.PriorityProvider;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
+
+import java.util.ArrayList;
 
 /**
  * BrowserConfigurator: In charge of registering MDActions(right click menu) for browser.
@@ -28,16 +32,22 @@ public class OMFBrowserConfigurator extends AUIActionConfigurator implements Bro
 
     @Override
     public void configure(ActionsManager actionsManager, Tree tree) {
-        registeredActions.stream()
+        new ArrayList<>(registeredActions).stream()
                 .filter(UIAction::isBrowserAction)
                 .filter(UIAction::checkBrowserAvailability)
                 .forEach(action -> this.registerBrowserAction(actionsManager, action));
     }
 
+
     /**
      * Register an action into the category, if the category doesn't exist it will register it.
      */
     private void registerBrowserAction(ActionsManager actionsManager, UIAction action) {
-        UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getBrowserAction());
+        try {
+            UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getBrowserAction());
+        }catch (Exception e){
+            String actionName = action != null? action.getClass().getSimpleName(): "Unknown";
+            ErrorHandler2.getInstance().handleException(new CoreException2("Error while registering browser action: " + actionName, e));
+        }
     }
 }

@@ -69,10 +69,9 @@ public class StereotypesRuleUpdater {
            createOrganizerRules(StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
        }catch (OMFWarningException warningException){
            ErrorHandler2.getInstance().handleException(
-                   new RequestFeatureDeactivationException(warningException.getMessage()
+                   new OMFCriticalException2(warningException.getMessage()
                            + " The feature will be deactivated.",
-                           warningException,
-                           OMFExceptionModifier2.SILENT
+                           warningException, OMFExceptionModifier2.DEACTIVATE_FEATURE
                    ));
 
            OMFLogger2.warn(warningException);

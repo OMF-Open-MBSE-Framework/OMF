@@ -161,7 +161,10 @@ public class ErrorHandler2 {
     private static void defaultHandlingDevException(OMFDevException exception, @CheckForNull MDFeature impactedFeature, OMFLogLevel2 logLevel) {
         exception.printStackTrace();
         if (exception.isNotSilent()) {
-            OMFLogger2.logToNotification(exception.getUiMessage(), logLevel, impactedFeature);
+            if (impactedFeature != null)
+                OMFLogger2.logToNotification(exception.getUiMessage(), logLevel, impactedFeature);
+            else
+                OMFLogger2.logToNotification(exception.getUiMessage(), logLevel);
         }
 
         if (exception.isDeactivateFeature()) {

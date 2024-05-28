@@ -10,13 +10,13 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.utils.PriorityProvider;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AMConfigurator {
     @Override
@@ -41,13 +41,18 @@ public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AM
     }
 
     public void registerMenuActions(ActionsManager actionsManager) {
-        registeredActions.stream()
+        new ArrayList<>(registeredActions).stream() //new ArrayList<>(registeredActions) is used to avoid concurrent modification, as when actions are failing we remove them from the list.
                 .filter(UIAction::isMenuAction)
                 .forEach(action -> registerMenuAction(actionsManager, action));
     }
 
     private void registerMenuAction(ActionsManager actionsManager, UIAction menuAction) {
-        UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction).addAction(menuAction.getMenuAction());
+        try {
+            UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction).addAction(menuAction.getMenuAction());
+        }catch (Exception e){
+            String actionName = menuAction != null? menuAction.getClass().getSimpleName(): "Unknown";
+            ErrorHandler2.getInstance().handleException(new CoreException2("Error while registering Menu action: " + actionName, e));
+        }
     }
 
     @Override

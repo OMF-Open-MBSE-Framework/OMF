@@ -22,7 +22,7 @@ import java.util.List;
 
 public class SysMLBasicFeature extends SimpleFeature {
     public SysMLBasicFeature() {
-        super( "Dev");
+        super( "SysML Basic");
     }
 
     @Override

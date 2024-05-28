@@ -19,6 +19,8 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2;
 import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -236,7 +238,13 @@ public abstract class AUIAction implements UIAction {
      * @return True if the action is available, false otherwise.
      */
     public boolean checkWithinOMFBarrier(Callable<Boolean> checkAvailability) {
-        return Boolean.TRUE.equals(OMFBarrierExecutor.<Boolean>executeWithinBarrier(checkAvailability, getName(), getFeature(), isDeactivateListenerOnTrigger()));
+        return Boolean.TRUE.equals(OMFBarrierExecutor.<Boolean>executeWithinBarrier(() ->{
+            try {
+                return checkAvailability.call();
+            }catch (Exception e){
+                throw new OMFCriticalException2("Error while checking the availability of the action: " + getName(), e, OMFExceptionModifier2.DEACTIVATE_FEATURE);
+            }
+        }, getFeature()));
     }
 
     /**
