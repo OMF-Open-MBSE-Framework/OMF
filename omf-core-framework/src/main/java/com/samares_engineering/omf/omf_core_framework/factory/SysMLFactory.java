@@ -10,11 +10,9 @@ import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activity;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
@@ -197,7 +195,6 @@ public class SysMLFactory extends AMagicDrawFactory {
     /*
     Connector
      */
-
     public Connector createConnector() {
         return getMagicDrawFactory().createConnectorInstance();
     }
@@ -239,4 +236,72 @@ public class SysMLFactory extends AMagicDrawFactory {
         connectorEnd.set_connectorOfEnd(connector);
         return connectorEnd;
     }
+
+    /* Literals */
+
+    /**
+     * Create a LiteralBoolean with the given value
+     * @param b the value of the LiteralBoolean
+     * @return the created LiteralBoolean
+     */
+    private LiteralBoolean createLiteralBoolean(boolean b) {
+        LiteralBoolean literalBoolean = getMagicDrawFactory().createLiteralBooleanInstance();
+        literalBoolean.setValue(b);
+        return literalBoolean;
+    }
+
+    /**
+     * Create a LiteralBoolean with the given value
+     * @param b the value of the LiteralBoolean
+     * @return the created LiteralBoolean
+     */
+    public LiteralBoolean createLiteralBoolean(Element owner, boolean b) {
+        LiteralBoolean literalBoolean = createLiteralBoolean(b);
+        literalBoolean.setOwner(owner);
+        return literalBoolean;
+    }
+
+    /**
+     * Create a LiteralInteger with the given value
+     * @param i the value of the LiteralInteger
+     * @return the created LiteralInteger
+     */
+    private LiteralInteger createLiteralInteger(int i) {
+        LiteralInteger literalInteger = getMagicDrawFactory().createLiteralIntegerInstance();
+        literalInteger.setValue(i);
+        return literalInteger;
+    }
+
+    /**
+     * Create a LiteralInteger with the given value
+     * @param i the value of the LiteralInteger
+     * @return the created LiteralInteger
+     */
+    public LiteralInteger createLiteralInteger(Element owner, int i) {
+        LiteralInteger literalInteger = createLiteralInteger(i);
+        literalInteger.setOwner(owner);
+        return literalInteger;
+    }
+    /**
+     * Create a LiteralString with the given value
+     * @param s the value of the LiteralString
+     * @return the created LiteralString
+     */
+    private LiteralString createLiteralString(String s) {
+        LiteralString literalString = getMagicDrawFactory().createLiteralStringInstance();
+        literalString.setValue(s);
+        return literalString;
+    }
+
+    /**
+     * Create a LiteralString with the given value
+     * @param s the value of the LiteralString
+     * @return the created LiteralString
+     */
+    public LiteralString createLiteralString(Element owner, String s) {
+        LiteralString literalString = createLiteralString(s);
+        literalString.setOwner(owner);
+        return literalString;
+    }
 }
+

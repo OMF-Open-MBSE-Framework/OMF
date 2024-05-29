@@ -102,6 +102,12 @@ public abstract class AUIAction implements UIAction {
                 OMFAutomationManager.getInstance().automationTriggered();
             }
 
+            @CheckForNull
+            @Override
+            public DiagramPresentationElement getDiagram() {
+                return super.getDiagram() == null ? OMFUtils.getActiveDiagram() : super.getDiagram();
+            }
+
             @Override
             public void updateState() {
                 super.updateState();
@@ -445,6 +451,15 @@ public abstract class AUIAction implements UIAction {
      */
     public Project getProject() {
         return OMFUtils.getProject();
+    }
+
+    /**
+     * Retrieves the active diagram instance.
+     *
+     * @return The active Diagram instance.
+     */
+    public DiagramPresentationElement getDiagram() {
+        return OMFUtils.getActiveDiagram();
     }
 
     /**

@@ -43,5 +43,8 @@ public abstract class SimpleFeature extends AFeature{
         return Collections.emptyList();
     }
 
+    @Override
+    protected EnvOptionsHelper initEnvOptionsHelper() {return null;}
+
 
 }

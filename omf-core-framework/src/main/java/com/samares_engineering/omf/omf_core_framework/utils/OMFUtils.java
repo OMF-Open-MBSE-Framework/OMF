@@ -11,10 +11,9 @@ import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.magicdraw.ui.browser.BrowserTabTree;
 import com.nomagic.magicdraw.uml.BaseElement;
+import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
@@ -184,5 +183,9 @@ public class OMFUtils {
         }catch (Exception e){
             throw new OMFCriticalException2("SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible", e);
         }
+    }
+
+    public static DiagramPresentationElement getActiveDiagram() {
+        return getProject().getActiveDiagram();
     }
 }
