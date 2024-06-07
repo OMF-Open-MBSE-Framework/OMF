@@ -78,10 +78,10 @@ class OmfGradlePlugin implements Plugin<Project> {
                 // Don't delete build dir and sub Dir
                 delete = []
                 // Delete those specific dir :
-                delete 'build/classes', 'build/distributions', 'build/generated',
+                delete 'build/distributions',
                         "build/${project.pluginPackageFolderName}", 'build/libs',
                         'build/reports', "build/${project.testPluginPackageFolderName}",
-                        'build/tmp', 'build/test-reports', 'build/resources'
+                        'build/test-reports', 'build/resources'
             }
         }
 
