@@ -11,12 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - IntelliJ install info in README
 
 ### Changed
+- Feature hooks are now generic feature items
+- Error management & logging 2.0 
 - OMF Comparator was moved from omf-test-framework to omf-core-framework, and dependencies from omf-test were removed
 - Revert to using the legacy comparator/test logger in the OMF Test Framework as the new one was causing issues
 
 ### Fixed
 - Cleaned some legacy code & unused resources
-
 
 ## [1.2.0] - 2024-01-17
 ### Added
