@@ -7,15 +7,15 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.exceptions.ErrorWhileEvaluationRuleException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.IRule;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -136,9 +136,9 @@ public class LiveAction implements ILiveAction {
             try {
                 rule.process(evt);
             } catch (OMFDevException e) {
-                ErrorHandler2.getInstance().handleException(e, getFeature()); //Could throw a RollbackException
+                ErrorHandler.getInstance().handleException(e, getFeature()); //Could throw a RollbackException
             } catch (RuntimeException e) {
-                ErrorHandler2.getInstance().handleException(e, getFeature());//Throw a RollbackException
+                ErrorHandler.getInstance().handleException(e, getFeature());//Throw a RollbackException
             }
         });
 

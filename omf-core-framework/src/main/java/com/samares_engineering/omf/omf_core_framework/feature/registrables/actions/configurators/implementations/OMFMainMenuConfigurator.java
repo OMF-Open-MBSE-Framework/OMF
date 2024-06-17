@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.utils.PriorityProvider;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
@@ -51,7 +51,7 @@ public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AM
             UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, menuAction).addAction(menuAction.getMenuAction());
         }catch (Exception e){
             String actionName = menuAction != null? menuAction.getClass().getSimpleName(): "Unknown";
-            ErrorHandler2.getInstance().handleException(new CoreException2("Error while registering Menu action: " + actionName, e));
+            ErrorHandler.getInstance().handleException(new CoreException2("Error while registering Menu action: " + actionName, e));
         }
     }
 

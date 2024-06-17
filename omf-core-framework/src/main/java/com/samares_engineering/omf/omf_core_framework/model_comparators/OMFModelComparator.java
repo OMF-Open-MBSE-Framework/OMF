@@ -1,13 +1,12 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators;
 
-import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
-import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparator;
 import com.nomagic.magicdraw.tests.common.comparators.ModelComparatorFilter;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-
+import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
 
 import java.util.ArrayList;
 import java.util.Collection;

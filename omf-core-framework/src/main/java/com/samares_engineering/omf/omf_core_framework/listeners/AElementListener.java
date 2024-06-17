@@ -6,8 +6,8 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;

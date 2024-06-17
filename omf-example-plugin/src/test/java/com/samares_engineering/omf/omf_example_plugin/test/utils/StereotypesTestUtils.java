@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.utils;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
@@ -36,7 +36,7 @@ public class StereotypesTestUtils {
      */
     public static StereotypesFeature getStereotypesFeature() {
         return (StereotypesFeature) TestUtils.getOpenMBSEFrameworkPlugin().getFeatureByName(StereotypesFeature.FEATURE_NAME)
-                .orElseThrow(() -> new OMFCriticalException2("No feature named " + StereotypesFeature.FEATURE_NAME
+                .orElseThrow(() -> new OMFCriticalException("No feature named " + StereotypesFeature.FEATURE_NAME
                         + " has been found in the plugin"));
     }
 }

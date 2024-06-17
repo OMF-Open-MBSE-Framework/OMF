@@ -14,11 +14,11 @@ import com.nomagic.magicdraw.teamwork2.locks.ILockProjectService;
 import com.nomagic.magicdraw.teamwork2.locks.LockService;
 import com.nomagic.task.EmptyProgressStatus;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_test_framework.projectmanager.TestCloseProjects;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.TwcAccessor;
+import com.samares_engineering.omf.omf_test_framework.projectmanager.TestCloseProjects;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +61,7 @@ public abstract class ATestBatchTWC extends ATestBatch {
                     .lockElements(Collections.singleton(getInitProject().getPrimaryModel()), true, EmptyProgressStatus.getDefault());
 
         } catch (OMFException e) {
-            OMFErrorHandler.handleException(e, true);
+            LegacyErrorHandler.handleException(e, true);
         }
     }
 

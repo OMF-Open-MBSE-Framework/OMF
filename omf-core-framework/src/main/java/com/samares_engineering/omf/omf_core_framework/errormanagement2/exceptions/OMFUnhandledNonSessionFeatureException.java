@@ -1,6 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 
 import java.util.HashSet;
@@ -10,59 +11,59 @@ import java.util.Set;
 /**
  * Exception for non-handled errors insides features, which should not be rolled back.
  */
-public class OMFUnhandledNonSessionFeatureException extends OMFCriticalException2 {
+public class OMFUnhandledNonSessionFeatureException extends OMFCriticalException {
     /**
      * Exception without a cause... and a simple message.
      */
-    public OMFUnhandledNonSessionFeatureException(String message, OMFExceptionModifier2... modifiers) {
-        this(new OMFLog2().text(message), modifiers);
+    public OMFUnhandledNonSessionFeatureException(String message, OMFExceptionModifier... modifiers) {
+        this(new OMFLog().text(message), modifiers);
     }
 
     /**
      * Just an exception without a cause...
      */
-    public OMFUnhandledNonSessionFeatureException(OMFLog2 message, OMFExceptionModifier2... modifiers) {
+    public OMFUnhandledNonSessionFeatureException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, OMFExceptionModifier... modifiers) {
         this(message, null, modifiers);
     }
 
 
     public OMFUnhandledNonSessionFeatureException(Exception uncauchtException) {
-        this(new OMFLog2().text("Unhandled exception in feature: Unknown"), uncauchtException);
+        this(new OMFLog().text("Unhandled exception in feature: Unknown"), uncauchtException);
     }
     public OMFUnhandledNonSessionFeatureException(MDFeature feature, Exception uncauchtException) {
-        this(new OMFLog2().text("Unhandled exception in feature: " + feature.getName()), uncauchtException);
+        this(new OMFLog().text("Unhandled exception in feature: " + feature.getName()), uncauchtException);
     }
 
-    public OMFUnhandledNonSessionFeatureException(OMFDevException devException, Set<OMFExceptionModifier2> modifiers) {
-        this(new OMFLog2().text("Unhandled exception in feature: Unknown"), devException, modifiers);
+    public OMFUnhandledNonSessionFeatureException(OMFDevException devException, Set<OMFExceptionModifier> modifiers) {
+        this(new OMFLog().text("Unhandled exception in feature: Unknown"), devException, modifiers);
     }
 
-    public OMFUnhandledNonSessionFeatureException(MDFeature feature, OMFDevException devException, Set<OMFExceptionModifier2> modifiers) {
-        this(new OMFLog2().text("Unhandled exception in feature: " + feature.getName()), devException, modifiers);
+    public OMFUnhandledNonSessionFeatureException(MDFeature feature, OMFDevException devException, Set<OMFExceptionModifier> modifiers) {
+        this(new OMFLog().text("Unhandled exception in feature: " + feature.getName()), devException, modifiers);
     }
     /**
      * Simple message
      */
-    public OMFUnhandledNonSessionFeatureException(String message, Exception cause, OMFExceptionModifier2... modifiers) {
-        this(new OMFLog2().text(message), cause, modifiers);
+    public OMFUnhandledNonSessionFeatureException(String message, Exception cause, OMFExceptionModifier... modifiers) {
+        this(new OMFLog().text(message), cause, modifiers);
     }
 
     /**
      * Simple message
      */
-    public OMFUnhandledNonSessionFeatureException(OMFLog2 message, Exception cause, Set<OMFExceptionModifier2> modifiers) {
-        this(message, cause, modifiers.toArray(new OMFExceptionModifier2[0]));
+    public OMFUnhandledNonSessionFeatureException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, Exception cause, Set<OMFExceptionModifier> modifiers) {
+        this(message, cause, modifiers.toArray(new OMFExceptionModifier[0]));
     }
 
 
     /**
      * Full constructor wrapping causing exception
      */
-    public OMFUnhandledNonSessionFeatureException(OMFLog2 message, Exception cause, OMFExceptionModifier2... modifiers) {
+    public OMFUnhandledNonSessionFeatureException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, Exception cause, OMFExceptionModifier... modifiers) {
         super(message.toString(), cause);
         OMFLog = message;
         this.modifiers = new HashSet<>(List.of(modifiers));
-        this.modifiers.add(OMFExceptionModifier2.NO_ROLLBACK);
+        this.modifiers.add(OMFExceptionModifier.NO_ROLLBACK);
     }
 
 

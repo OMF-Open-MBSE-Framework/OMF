@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options
 
 import com.nomagic.magicdraw.properties.BooleanProperty
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
@@ -26,9 +26,9 @@ class SysMLBasicOptionHelper(feature: MDFeature?) : EnvOptionsHelper(feature) {
                 GROUP,
                 feature.plugin.environmentOptionsGroup
                     .orElseThrow {
-                        OMFFeatureRegisteringException(
-                            "Environment options group not registered" +
-                                    "for plugin"
+                        FeatureRegisteringException(
+                                "Environment options group not registered" +
+                                        "for plugin"
                         )
                     },
                 OptionKind.Environment
@@ -40,9 +40,9 @@ class SysMLBasicOptionHelper(feature: MDFeature?) : EnvOptionsHelper(feature) {
                 GROUP,
                 feature.plugin.environmentOptionsGroup
                     .orElseThrow {
-                        OMFFeatureRegisteringException(
-                            "Environment options group not registered" +
-                                    "for plugin"
+                        FeatureRegisteringException(
+                                "Environment options group not registered" +
+                                        "for plugin"
                         )
                     },
                 OptionKind.Environment

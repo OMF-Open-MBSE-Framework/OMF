@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses;
 
-import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

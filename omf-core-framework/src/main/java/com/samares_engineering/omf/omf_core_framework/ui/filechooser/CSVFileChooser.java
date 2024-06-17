@@ -7,7 +7,7 @@
 package com.samares_engineering.omf.omf_core_framework.ui.filechooser;
 
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.CSVParseUtils;
 
 import javax.swing.*;
@@ -43,7 +43,7 @@ public class CSVFileChooser {
                 this.selectedFile = null;
             }
         } catch (HeadlessException e) {
-            throw new OMFCriticalException2("Keyboard and Mouse Required", e);
+            throw new OMFCriticalException("Keyboard and Mouse Required", e);
         }
     }
 

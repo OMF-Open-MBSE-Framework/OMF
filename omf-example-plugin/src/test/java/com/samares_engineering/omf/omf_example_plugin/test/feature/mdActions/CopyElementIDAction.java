@@ -12,7 +12,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;

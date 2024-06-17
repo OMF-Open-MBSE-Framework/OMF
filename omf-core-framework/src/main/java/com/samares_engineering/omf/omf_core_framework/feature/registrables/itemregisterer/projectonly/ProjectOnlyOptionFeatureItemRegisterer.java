@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
@@ -54,7 +54,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
             if (option.getKind() == OptionKind.Project && OMFUtils.isProjectVoid()) return;
             option.register();
         }catch (Exception e){
-            throw new OMFFeatureRegisteringException(
+            throw new FeatureRegisteringException(
                     "[Feature] Could not register " + option.getKind().toString()
                     + " option for mdFeature: " + option.getFeature().getName());
         }
@@ -65,7 +65,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
             if (option == null) return;
             option.unregister();
         }catch (Exception e){
-            throw new OMFFeatureRegisteringException(
+            throw new FeatureRegisteringException(
                     "[Feature] Could not unregister " + option.getKind().toString() + " option from mdFeature: " +
                             option.getFeature().getName(), e);
         }

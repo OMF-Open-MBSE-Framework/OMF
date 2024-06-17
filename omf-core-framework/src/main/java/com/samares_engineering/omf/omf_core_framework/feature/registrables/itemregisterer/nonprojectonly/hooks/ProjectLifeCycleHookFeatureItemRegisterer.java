@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IProjectLifeCycleHook;
@@ -25,7 +25,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
         setFeatureRegisterer(featureRegisterer);
         projectListener = featureRegisterer.getPlugin().getProjectListener();
         if(projectListener == null) {
-            throw new OMFFeatureRegisteringException("ProjectListener is null, cannot register project lifecycle hooks." +
+            throw new FeatureRegisteringException("ProjectListener is null, cannot register project lifecycle hooks." +
                     "Please register the ProjectListener in the main plugin class.");
         }
     }
@@ -49,7 +49,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
             if(hook == null || !hook.isActivated()) return;
             projectListener.getProjectHookExecutor().addHook(hook);
         }catch (Exception e) {
-            throw new OMFFeatureRegisteringException(
+            throw new FeatureRegisteringException(
                     "[Feature] Could not register HookExecutor: " + hook.getClass().getSimpleName()
                             + " for mdFeature: " + hook.getFeature().getName());
         }
@@ -74,7 +74,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
             if(hook == null) return;
             projectListener.getProjectHookExecutor().removeHook(hook);
         }catch (Exception e) {
-            throw new OMFFeatureRegisteringException(
+            throw new FeatureRegisteringException(
                     "[Feature] Could not unregister hook: " + hook.getClass().getSimpleName()
                             + " for mdFeature: " + hook.getFeature().getName());
         }

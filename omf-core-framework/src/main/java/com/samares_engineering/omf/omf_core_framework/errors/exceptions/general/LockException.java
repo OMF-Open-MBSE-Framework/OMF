@@ -7,41 +7,38 @@
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.IException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class OMFLockException extends OMFException {
-
+public class LockException extends OMFException {
     public Collection<Element> lockedElements;
     public Exception exception;
     public GenericException.ECriticality criticality;
 
-    public OMFLockException(String msg){
+    public LockException(String msg){
         super(msg, GenericException.ECriticality.CRITICAL);
     }
-    public OMFLockException(com.nomagic.esi.api.messages.exceptions.LockException e, Collection<Element> lockedElements) {
+    public LockException(com.nomagic.esi.api.messages.exceptions.LockException e, Collection<Element> lockedElements) {
         super(e.getMessage(), GenericException.ECriticality.CRITICAL);
         exception = e;
         this.lockedElements = lockedElements;
     }
-    public OMFLockException(com.nomagic.esi.api.messages.exceptions.LockException e, Element lockedElement) {
+    public LockException(com.nomagic.esi.api.messages.exceptions.LockException e, Element lockedElement) {
         super(e.getMessage(), GenericException.ECriticality.CRITICAL);
         exception = e;
         lockedElements = new ArrayList<>();
         lockedElements.add(lockedElement);
     }
-    public OMFLockException(String message, Element lockedElement) {
+    public LockException(String message, Element lockedElement) {
         super(message, GenericException.ECriticality.CRITICAL);
         lockedElements = new ArrayList<>();
         lockedElements.add(lockedElement);
     }
-
-
 
     @Override
     public void displayUserMessage(){
@@ -51,6 +48,7 @@ public class OMFLockException extends OMFException {
             logLevel = OMFLogLevel.ERROR;
 
         OMFLogLevel finalLogLevel = logLevel;
-        lockedElements.forEach(element -> OMFLogger.getInstance().logWithOwner(getMessage(), element, finalLogLevel));
+        lockedElements.forEach(element ->
+                new OMFLog().text(getMessage(), finalLogLevel).linkElementAndParent(element).logToUiConsole(finalLogLevel));
     }
 }

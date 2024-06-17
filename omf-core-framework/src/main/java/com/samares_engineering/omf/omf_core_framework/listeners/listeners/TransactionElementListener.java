@@ -9,10 +9,8 @@ package com.samares_engineering.omf.omf_core_framework.listeners.listeners;
 import com.nomagic.magicdraw.copypaste.CopyPasteManager;
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -47,7 +45,7 @@ public class TransactionElementListener extends AElementListener implements Tran
                 }
                 if (stopHandlingThisBatch) return;
             }
-        }catch (OMFRollBackException | RollbackException2 e){
+        }catch (RollbackException e){
             UndoManager.getInstance().requestHardUndo();
         }
     }

@@ -1,11 +1,11 @@
 package com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener;
 
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFUserSilentException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OptionNotFound;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OptionNotFound;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.RegisteringPropertyChangeListener;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
@@ -38,7 +38,7 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
             if(optionProperty == null) throw new OptionNotFound(feature.getName());
             optionProperty.setValue(false);
         }catch (OptionNotFound e) {
-            OMFErrorHandler.handleException(new OMFUserSilentException("Cannot actualize :" + feature.getName() + ". The related option was not found...", e, GenericException.ECriticality.ALERT), false);
+            LegacyErrorHandler.handleException(new CoreException("Cannot actualize :" + feature.getName() + ". The related option was not found...", e, GenericException.ECriticality.ALERT), false);
         }
     }
 

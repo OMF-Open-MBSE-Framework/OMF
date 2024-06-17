@@ -6,7 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.core;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 
 public class OMFException extends GenericException {
 

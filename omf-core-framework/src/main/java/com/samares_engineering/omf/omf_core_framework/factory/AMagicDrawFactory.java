@@ -12,7 +12,7 @@ import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.impl.ElementsFactory;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.Objects;

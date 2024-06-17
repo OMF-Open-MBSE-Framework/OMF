@@ -7,8 +7,8 @@
 
 package com.samares_engineering.omf.omf_core_framework.utils.utils;
 
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class VersionUtils {
                 versionPluginList.put(name, version);
             }
         } catch (IOException e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
         if (versionPluginList.containsKey("plugin_version")) {
             return versionPluginList.get("plugin_version");

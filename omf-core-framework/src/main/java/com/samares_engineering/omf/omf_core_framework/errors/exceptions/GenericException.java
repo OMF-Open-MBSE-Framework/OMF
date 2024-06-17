@@ -5,16 +5,13 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions;
 
 import com.google.common.base.Strings;
-import com.nomagic.magicdraw.ui.notification.Notification;
-import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.IException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 
 public class GenericException extends Exception implements IException {
@@ -73,15 +70,8 @@ public class GenericException extends Exception implements IException {
         if (criticality == ECriticality.CRITICAL)
             logLevel = OMFLogLevel.ERROR;
 
-        OMFLogger.getInstance().log(userMessage, null, logLevel);
-
-        String defaultTitle = "[" + getClass().getSimpleName() + "]";
-        boolean containsATag = getUserMessage().startsWith("[") && getUserMessage().contains("]");
-        String title = containsATag ? getUserMessage().split("]")[0] : defaultTitle;
-        NotificationManager.getInstance().showNotification(new Notification(
-                "[Plugin Error]", //id or something
-                title,//title: TODO REPLACE WITH GENERIC EXCEPTION TAG
-                "" + getUserMessage(), getNotificationSeverity(getCriticality())));
+        OMFLogger.logToUIConsole(userMessage, logLevel);
+        OMFLogger.logToNotification(getUserMessage(), logLevel);
     }
 
     @Override
@@ -89,10 +79,8 @@ public class GenericException extends Exception implements IException {
         displayDevMessage();
         if(!isDebugModeActivated() && criticality != ECriticality.SILENT)
             displayUserMessage();
-
         super.printStackTrace();
     }
-
 
     @Override
     public String getMessage() {

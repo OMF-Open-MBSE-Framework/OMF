@@ -2,27 +2,27 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2;
 
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import javax.annotation.CheckForNull;
 
-public class ErrorHandler2 {
-    private static ErrorHandler2 instance;
+public class ErrorHandler {
+    private static ErrorHandler instance;
     private final APlugin plugin;
 
-    private ErrorHandler2(APlugin plugin) {
+    private ErrorHandler(APlugin plugin) {
         this.plugin = plugin;
     }
 
-    public static ErrorHandler2 getInstance() {
+    public static ErrorHandler getInstance() {
         if (instance.plugin == null) {
             throw new CoreException2("The ErrorHandler has not been initialized yet. Please call the init() method first.");
         }
@@ -33,7 +33,7 @@ public class ErrorHandler2 {
         if (instance != null) {
             throw new CoreException2("Can't initialize the ErrorHandler has it has already been initialized.");
         }
-        instance = new ErrorHandler2(plugin);
+        instance = new ErrorHandler(plugin);
     }
 
 
@@ -43,8 +43,8 @@ public class ErrorHandler2 {
      * @param exception the exception to handle
      * @param impactedFeature the feature that was impacted by the exception
      */
-    public void handleException(OMFCriticalException2 exception, MDFeature impactedFeature) {
-        defaultHandlingDevException(exception, impactedFeature, OMFLogLevel2.ERROR);
+    public void handleException(OMFCriticalException exception, MDFeature impactedFeature) {
+        defaultHandlingDevException(exception, impactedFeature, OMFLogLevel.ERROR);
     }
 
 
@@ -53,8 +53,8 @@ public class ErrorHandler2 {
      * error occurred
      * @param exception the exception to handle
      */
-    public void handleException(OMFCriticalException2 exception ) {
-        defaultHandlingDevException(exception, null, OMFLogLevel2.ERROR);
+    public void handleException(OMFCriticalException exception ) {
+        defaultHandlingDevException(exception, null, OMFLogLevel.ERROR);
     }
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
@@ -63,7 +63,7 @@ public class ErrorHandler2 {
      * @param impactedFeature the feature that was impacted by the exception
      */
     public void handleException(OMFDevException exception, MDFeature impactedFeature) {
-        defaultHandlingDevException(exception, impactedFeature, OMFLogLevel2.ERROR);
+        defaultHandlingDevException(exception, impactedFeature, OMFLogLevel.ERROR);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ErrorHandler2 {
      * @param exception the exception to handle
      */
     public void handleException(OMFDevException exception ) {
-        defaultHandlingDevException(exception, null, OMFLogLevel2.ERROR);
+        defaultHandlingDevException(exception, null, OMFLogLevel.ERROR);
     }
 
     /**
@@ -83,7 +83,7 @@ public class ErrorHandler2 {
      */
     public void handleException(RuntimeException exception, MDFeature impactedFeature) {
         exception.printStackTrace();
-        OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR, impactedFeature);
+        OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR, impactedFeature);
         unregisterFeature(impactedFeature);
         rollbackChanges();
     }
@@ -96,7 +96,7 @@ public class ErrorHandler2 {
      */
     public void handleException(RuntimeException exception) {
         exception.printStackTrace();
-        OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR);
+        OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR);
         rollbackChanges();
     }
     /**
@@ -107,7 +107,7 @@ public class ErrorHandler2 {
      */
     public void handleException(Exception exception, MDFeature impactedFeature) {
         exception.printStackTrace();
-        OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR, impactedFeature);
+        OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR, impactedFeature);
         unregisterFeature(impactedFeature);
         rollbackChanges();
     }
@@ -120,7 +120,7 @@ public class ErrorHandler2 {
      */
     public void handleException(Exception exception) {
         exception.printStackTrace();
-        OMFLogger2.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel2.ERROR);
+        OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR);
         rollbackChanges();
     }
 
@@ -132,8 +132,8 @@ public class ErrorHandler2 {
      */
     public void handleException(CoreException2 exception) {
         exception.printStackTrace();
-        OMFLogger2.errorToNotification("An internal Core error occurred during plugin execution: " + exception.getMessage());
-        OMFLogger2.errorToSystemConsole("An internal Core error occurred during plugin execution: " + exception.getMessage());
+        OMFLogger.errorToNotification("An internal Core error occurred during plugin execution: " + exception.getMessage());
+        OMFLogger.errorToSystemConsole("An internal Core error occurred during plugin execution: " + exception.getMessage());
     }
 
 
@@ -143,8 +143,8 @@ public class ErrorHandler2 {
      * - In UI Action/LiveAction: throw any exception you want, the framework will handle the rollback.
      * @param rollBackException the exception to handle
      */
-    public void handleException(RollbackException2 rollBackException) {
-        OMFLogger2.infoToSystemConsole("RollBack requested");
+    public void handleException(RollbackException rollBackException) {
+        OMFLogger.infoToSystemConsole("RollBack requested");
     }
 
 
@@ -152,46 +152,46 @@ public class ErrorHandler2 {
      * This method handles the default behavior for developer exceptions in the application.
      * It logs the exception, checks if the exception should be silent or not, and performs
      * necessary actions based on the properties of the exception.
-     * <br>Throws a RollbackException2 if the exception requires a rollback.
+     * <br>Throws a RollbackException if the exception requires a rollback.
      *
      * @param exception The developer exception that needs to be handled.
      * @param impactedFeature The feature that was impacted by the exception. This can be null.
      * @param logLevel The level at which the exception should be logged.
      */
-    private static void defaultHandlingDevException(OMFDevException exception, @CheckForNull MDFeature impactedFeature, OMFLogLevel2 logLevel) {
+    private static void defaultHandlingDevException(OMFDevException exception, @CheckForNull MDFeature impactedFeature, OMFLogLevel logLevel) {
         exception.printStackTrace();
         if (exception.isNotSilent()) {
             if (impactedFeature != null)
-                OMFLogger2.logToNotification(exception.getUiMessage(), logLevel, impactedFeature);
+                OMFLogger.logToNotification(exception.getUiMessage(), logLevel, impactedFeature);
             else
-                OMFLogger2.logToNotification(exception.getUiMessage(), logLevel);
+                OMFLogger.logToNotification(exception.getUiMessage(), logLevel);
         }
 
         if (exception.isDeactivateFeature()) {
             if (impactedFeature != null) {
                 unregisterFeature(impactedFeature);
             }else {
-                OMFLogger2.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
+                OMFLogger.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
             }
         }
         if (exception.isRollbackChanges()) {
-            rollbackChanges(); //Throws RollbackException2
+            rollbackChanges(); //Throws RollbackException
         }
     }
 
 
     private static void unregisterFeature(MDFeature impactedFeature) {
-        new OMFLog2().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
+        new OMFLog().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
                 .text("You can reactivate it in the environment options.")
-                .logToConsole(OMFLogLevel2.ERROR);
+                .logToUiConsole(OMFLogLevel.ERROR);
         impactedFeature.getPlugin().getFeatureRegister().unregisterFeature(impactedFeature);
     }
 
     private static void rollbackChanges() {
         //new OMFLog2().text("Rolling back action's changes after encountering critical error")
-        //        .logToConsole(OMFLogLevel2.ERROR);
+        //        .logToConsole(OMFLogLevel.ERROR);
         if (SessionManager.getInstance().isSessionCreated(OMFUtils.getProject())) {
-            throw new RollbackException2();
+            throw new RollbackException();
         }
     }
 }

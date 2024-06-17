@@ -8,12 +8,11 @@
 package com.samares_engineering.omf.omf_public_features.apiserver.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
 
@@ -37,7 +36,7 @@ public class RestartAPIServerAction extends AUIAction {
             int port = APIEnvOptionsHelper.getInstance(getFeature()).getServerPort();
             OMFApiServer.getInstance().startServer(port);
         } catch (Exception e) {
-            throw new OMFCriticalException2("Error while restarting API server, this will strongly impact features using API Server." +
+            throw new OMFCriticalException("Error while restarting API server, this will strongly impact features using API Server." +
                     " Please contact the plugin provider.", e);
         }
     }

@@ -3,13 +3,12 @@ package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
@@ -103,7 +102,7 @@ public class GenerateCreationTest extends AUIAction {
         Element parent = e.getOwner();
 
         if (parent == null) {
-            throw new OMFCriticalException2("The selected element must be contained (directly or not) by a package stereotyped <<TestPackage>>.");
+            throw new OMFCriticalException("The selected element must be contained (directly or not) by a package stereotyped <<TestPackage>>.");
         }
 
         // If parent is a package stereotyped <<TestPackage>>

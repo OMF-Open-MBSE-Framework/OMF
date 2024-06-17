@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_test_framework.formatter;
 
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import org.apache.tools.ant.BuildException;

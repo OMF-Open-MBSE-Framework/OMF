@@ -1,8 +1,8 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison;
 
-import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers.ComparatorUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers.ComparatorUtils;
 
 import java.util.*;
 

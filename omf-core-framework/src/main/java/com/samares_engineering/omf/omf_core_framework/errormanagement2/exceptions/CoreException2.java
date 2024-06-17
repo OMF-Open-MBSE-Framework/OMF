@@ -1,7 +1,5 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
-
 /**
  * Used for critical exceptions inside the framework.
  */
@@ -10,7 +8,7 @@ public class CoreException2 extends BaseOMFException {
         super(message);
     }
 
-    public CoreException2(OMFLog2 message) {
+    public CoreException2(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message) {
         super(message);
     }
 
@@ -18,7 +16,7 @@ public class CoreException2 extends BaseOMFException {
         super(message, cause);
     }
 
-    public CoreException2(OMFLog2 message, Throwable cause) {
+    public CoreException2(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, Throwable cause) {
         super(message, cause);
     }
 }

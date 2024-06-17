@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks;
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IMagicdrawLifeCycleHook;
@@ -50,7 +50,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
             if(MagicdrawLifeCycleHook == null || !MagicdrawLifeCycleHook.isActivated()) return;
             plugin.getMagicDrawHookExecutor().addHook(MagicdrawLifeCycleHook);
         }catch (Exception e) {
-            throw new OMFFeatureRegisteringException(
+            throw new FeatureRegisteringException(
                     "[Feature] Could not register hook: " + MagicdrawLifeCycleHook.getClass().getSimpleName()
                             + " for mdFeature: " + MagicdrawLifeCycleHook.getFeature().getName());
         }
@@ -75,7 +75,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
             if(hook == null) return;
             plugin.getMagicDrawHookExecutor().removeHook(hook);
         }catch (Exception e) {
-            throw new OMFFeatureRegisteringException(
+            throw new FeatureRegisteringException(
                     "[Feature] Could not unregister hook: " + hook.getClass().getSimpleName()
                             + " for mdFeature: " + hook.getFeature().getName());
         }

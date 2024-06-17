@@ -7,9 +7,9 @@
 
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFrameworkException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
 
 import java.beans.PropertyChangeEvent;
@@ -108,7 +108,7 @@ public interface IElementListener {
             setIsRegistered(true);
         }catch (Exception e){
             deactivate();
-            OMFErrorHandler.handleException(new OMFFrameworkException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
+            LegacyErrorHandler.handleException(new OMFException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
         }
     }
 
@@ -122,7 +122,7 @@ public interface IElementListener {
             removingListener();
             setIsRegistered(false);
         }catch (Exception e){
-            OMFErrorHandler.handleException(new OMFFrameworkException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
+            LegacyErrorHandler.handleException(new OMFException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
         }
     }
 

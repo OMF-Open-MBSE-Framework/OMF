@@ -19,9 +19,9 @@ import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
@@ -165,6 +165,7 @@ public abstract class AUIAction implements UIAction {
      * @param runnable The Runnable representing the UI action to be executed.
      */
     protected void executeAUIActionWithinBarrier(Runnable runnable) {
+
         OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
     }
 
@@ -248,7 +249,7 @@ public abstract class AUIAction implements UIAction {
             try {
                 return checkAvailability.call();
             }catch (Exception e){
-                throw new OMFCriticalException2("Error while checking the availability of the action: " + getName(), e, OMFExceptionModifier2.DEACTIVATE_FEATURE);
+                throw new OMFCriticalException("Error while checking the availability of the action: " + getName(), e, OMFExceptionModifier.DEACTIVATE_FEATURE);
             }
         }, getFeature()));
     }
@@ -356,7 +357,7 @@ public abstract class AUIAction implements UIAction {
         if (getClass().isAnnotationPresent(MDAction.class))
             return;
 
-        OMFErrorHandler.handleException(new DevelopmentException(
+        LegacyErrorHandler.handleException(new DevelopmentException(
                 "Annotation " + MDAction.class.getSimpleName()
                         + " present in the class: " + getClass().getSimpleName()
                         + ", which is mandatory to register actions"));

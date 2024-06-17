@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.plugins.PluginUtils;
 import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.legacy_comparator.LegacyElementModelComparator;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.filters.ElementFilter;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -44,7 +44,7 @@ public class TestHelper {
             result = comparator.comparePackages(testPackage, resultPackage);
         }catch (Exception e){
             logger.err("/!\\ ---- ERROR DURING TEST  ---- /!\\ \n");
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
 
         if(result)

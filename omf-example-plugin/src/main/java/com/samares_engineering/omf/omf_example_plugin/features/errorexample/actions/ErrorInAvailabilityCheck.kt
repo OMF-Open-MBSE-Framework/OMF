@@ -1,13 +1,12 @@
 package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
-import org.apache.commons.collections4.CollectionUtils
 
 @BrowserAction
 @DiagramAction
@@ -24,14 +23,14 @@ class ErrorInAvailabilityCheck : AUIAction(){
         try {
             failMethod()
         } catch (e: Exception) {
-            OMFLogger2.warn(OMFWarningException("this error has been well handled", e))
+            OMFLogger.warn(OMFWarningException("this error has been well handled", e))
         }
     }
 
     private fun failMethod() {
         val block = SysMLFactory.getInstance().createBlock();
         block.name = "SHOULD NOT BE CREATED";
-        throw OMFCriticalException2("This is a critical exception")
+        throw OMFCriticalException("This is a critical exception")
     }
 
 

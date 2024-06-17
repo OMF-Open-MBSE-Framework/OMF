@@ -7,7 +7,7 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.rules.organizer;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
@@ -56,7 +56,7 @@ public class OrganizerRule extends ARule {
     public PropertyChangeEvent process(PropertyChangeEvent evt) {
         owner = StereotypesEnvOptionsHelper.getInstance(getFeature()).getOwnerPropertyOption(idOption);
         if (owner == null) {
-            throw new OMFCriticalException2("Storage element for: \"" + idOption + "\" is not defined");
+            throw new OMFCriticalException("Storage element for: \"" + idOption + "\" is not defined");
         }
         StereotypesRuleUtils.organizeOwner(evt, owner);
         return evt;

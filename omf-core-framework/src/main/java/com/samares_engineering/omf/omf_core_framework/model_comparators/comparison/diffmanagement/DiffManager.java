@@ -1,9 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.diffmanagement;
 
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;

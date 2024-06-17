@@ -7,8 +7,8 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly;
 
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -43,7 +43,7 @@ public class RuleEngineFeatureItemRegisterer implements FeatureItemRegisterer<IL
         try {
             ruleEngines.forEach(this::registerFeatureItem);
         }catch (Exception e){
-            throw new OMFFeatureRegisteringException("Unable to register LiveActions", e);
+            throw new FeatureRegisteringException("Unable to register LiveActions", e);
         }
     }
 
@@ -51,7 +51,7 @@ public class RuleEngineFeatureItemRegisterer implements FeatureItemRegisterer<IL
         try {
             ruleEngines.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
-            throw new OMFFeatureRegisteringException(" Unable to unregister liveActions", e);
+            throw new FeatureRegisteringException(" Unable to unregister liveActions", e);
         }
     }
 
@@ -134,7 +134,7 @@ public class RuleEngineFeatureItemRegisterer implements FeatureItemRegisterer<IL
             case AFTER_AUTOMATION:
                 return listenerManager.getAfterAutomationListener();
             default:
-                OMFErrorHandler.handleException(new DevelopmentException("No Listener found for this category"));
+                LegacyErrorHandler.handleException(new DevelopmentException("No Listener found for this category"));
                 return null;
         }
     }

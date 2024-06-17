@@ -8,8 +8,7 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
-import java.lang.Override;
-import java.lang.String;
+
 import java.util.List;
 import java.util.Map;
 

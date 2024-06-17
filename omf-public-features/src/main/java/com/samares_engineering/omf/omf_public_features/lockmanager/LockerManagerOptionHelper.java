@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_public_features.lockmanager;
 
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
@@ -33,7 +33,7 @@ public class LockerManagerOptionHelper extends EnvOptionsHelper {
                 rollbackWhenFailing,
                 "OMF Features",
                 getFeature().getPlugin().getEnvironmentOptionsGroup()
-                        .orElseThrow(() -> new OMFFeatureRegisteringException(
+                        .orElseThrow(() -> new FeatureRegisteringException(
                                 "No environment options groups have been declared for this plugin")),
                 OptionKind.Environment
         );
@@ -60,7 +60,7 @@ public class LockerManagerOptionHelper extends EnvOptionsHelper {
                 twcSafeMode,
                 "OMF Features",
                 getFeature().getPlugin().getEnvironmentOptionsGroup()
-                        .orElseThrow(() -> new OMFFeatureRegisteringException(
+                        .orElseThrow(() -> new FeatureRegisteringException(
                                 "No environment options groups have been declared for this plugin")),
                 OptionKind.Environment
         );

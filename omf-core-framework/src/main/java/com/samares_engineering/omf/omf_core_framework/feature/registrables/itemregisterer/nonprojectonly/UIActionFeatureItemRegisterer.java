@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
@@ -51,12 +51,12 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     @Override
     public void registerFeatureItems(List<UIAction> actions) {
         if (actions == null) {
-            throw new OMFFeatureRegisteringException("Trying to register actions but passed action list is null");
+            throw new FeatureRegisteringException("Trying to register actions but passed action list is null");
         }
         try {
             actions.forEach(this::registerFeatureItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Unable to register MDActions", e);
+            throw new FeatureRegisteringException("Unable to register MDActions", e);
         }
     }
 
@@ -66,12 +66,12 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     @Override
     public void unregisterFeatureItems(List<UIAction> actions) {
         if (actions == null) {
-            throw new OMFFeatureRegisteringException("Trying to unregister actions but passed action list is null");
+            throw new FeatureRegisteringException("Trying to unregister actions but passed action list is null");
         }
         try {
             actions.forEach(this::unregisterFeatureItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Unable to unregister MDActions", e);
+            throw new FeatureRegisteringException("Unable to unregister MDActions", e);
         }
     }
 

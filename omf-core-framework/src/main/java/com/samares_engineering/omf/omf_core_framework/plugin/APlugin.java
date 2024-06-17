@@ -13,11 +13,12 @@ import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin.OMFPluginRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin.PluginRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
@@ -40,7 +41,6 @@ import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -178,16 +178,16 @@ public abstract class APlugin extends Plugin {
     @Override
     public final void init() {
         try {
-            OMFLogger2.init(this);
-            ErrorHandler2.init(this);
+            OMFLogger.init(this);
+            ErrorHandler.init(this);
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during error management initialization", e);
+            throw new PluginRegisteringException("Error occurred during error management initialization", e);
         }
 
         try {
             initPlugin();
         } catch (Exception e) {
-            ErrorHandler2.getInstance().handleException(new OMFPluginRegisteringException("Error occurred during Plugin Initialization", e));
+            ErrorHandler.getInstance().handleException(new PluginRegisteringException("Error occurred during Plugin Initialization", e));
         }
     }
 
@@ -227,7 +227,7 @@ public abstract class APlugin extends Plugin {
             this.magicDrawHookExecutor.init(this);
             addOnStartupHookToFeatures();
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during MagicDrawHookExecutorConfiguration", e);
+            throw new PluginRegisteringException("Error occurred during MagicDrawHookExecutorConfiguration", e);
         }
     }
 
@@ -237,13 +237,13 @@ public abstract class APlugin extends Plugin {
                 try {
                     magicDrawHookExecutor.triggerOnMagicDrawStartHooks();
                 } catch (CoreException2 coreException) {
-                    ErrorHandler2.getInstance().handleException(coreException);
+                    ErrorHandler.getInstance().handleException(coreException);
                 } catch (RuntimeException e) {
-                    ErrorHandler2.getInstance().handleException(new CoreException2("Error occurred during onMagicDrawStart hook execution", e));
+                    ErrorHandler.getInstance().handleException(new CoreException2("Error occurred during onMagicDrawStart hook execution", e));
                 }
             });
         }catch (Exception e){
-            throw new OMFPluginRegisteringException("Error occurred during onStartupHookConfiguration: \n" + e.getMessage(), e);
+            throw new PluginRegisteringException("Error occurred during onStartupHookConfiguration: \n" + e.getMessage(), e);
         }
 
     }
@@ -276,7 +276,7 @@ public abstract class APlugin extends Plugin {
             featureRegisterer.addAllIFeatureItemRegisterer(defaultFeatureRegisterer);
             featureRegisterer.addAllProjectOnlyFeatureItemRegisterer(defaultProjectOnlyFeatureRegisterer);
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during FeatureRegistererConfiguration", e);
+            throw new PluginRegisteringException("Error occurred during FeatureRegistererConfiguration", e);
         }
     }
 
@@ -284,7 +284,7 @@ public abstract class APlugin extends Plugin {
         try {
             this.listenerManager = initListenerManager();
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during ListenerManagerConfiguration", e);
+            throw new PluginRegisteringException("Error occurred during ListenerManagerConfiguration", e);
         }
     }
 
@@ -292,13 +292,13 @@ public abstract class APlugin extends Plugin {
         try {
             List<MDFeature> featureInstances = this.initFeatures();
             if (featureInstances == null) {
-                OMFLogger2.logToUIConsole("No feature to registered in the plugin", OMFLogLevel2.WARNING);
+                OMFLogger.logToUIConsole("No feature to registered in the plugin", OMFLogLevel.WARNING);
                 return;
             }
 
             featureInstances.forEach(f -> {
                 if (features.containsKey(f.getName())) {
-                    throw new OMFPluginRegisteringException("Can't init feature " + f.getName()
+                    throw new PluginRegisteringException("Can't init feature " + f.getName()
                             + " as a feature with the same name has already" +
                             "been instantiated in the plugin");
                 } else {
@@ -306,7 +306,7 @@ public abstract class APlugin extends Plugin {
                 }
             });
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during FeatureConfiguration", e);
+            throw new PluginRegisteringException("Error occurred during FeatureConfiguration", e);
         }
     }
 
@@ -318,7 +318,7 @@ public abstract class APlugin extends Plugin {
         try {
             OMFConstants.GUI_REQUIRED = !Application.runtimeInternal().isTester() || Application.runtimeInternal().isDeveloper();
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during constant configuration " +
+            throw new PluginRegisteringException("Error occurred during constant configuration " +
                     "(JVM args, DEV/TESTER, GUI REQUIRED, etc)", e);
         }
     }
@@ -331,7 +331,7 @@ public abstract class APlugin extends Plugin {
             else
                 ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during ProjectListener configuration", e);
+            throw new PluginRegisteringException("Error occurred during ProjectListener configuration", e);
         }
     }
 
@@ -346,7 +346,7 @@ public abstract class APlugin extends Plugin {
                 actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
             }
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during BrowserAction Registering", e);
+            throw new PluginRegisteringException("Error occurred during BrowserAction Registering", e);
         }
 
 
@@ -358,7 +358,7 @@ public abstract class APlugin extends Plugin {
                 actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM, diagramConfigurator);
             }
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during DiagramAction Registering", e);
+            throw new PluginRegisteringException("Error occurred during DiagramAction Registering", e);
         }
 
         try {
@@ -368,7 +368,7 @@ public abstract class APlugin extends Plugin {
             else
                 actionManager.addMainMenuConfigurator(menuConfigurator);
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during MainMenuAction Registering", e);
+            throw new PluginRegisteringException("Error occurred during MainMenuAction Registering", e);
         }
     }
 
@@ -377,7 +377,7 @@ public abstract class APlugin extends Plugin {
         try {
             featureRegisterer.registerFeatures(getFeatures());
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occured while registering features");
+            throw new PluginRegisteringException("Error occured while registering features");
         }
     }
 
@@ -405,7 +405,7 @@ public abstract class APlugin extends Plugin {
             if (CollectionUtils.isNotEmpty(environmentOptionsListener))
                 environmentOptionsListener.forEach(options::addEnvironmentChangeListener);
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during EnvironmentOptions Configuration", e);
+            throw new PluginRegisteringException("Error occurred during EnvironmentOptions Configuration", e);
         }
 
     }
@@ -421,7 +421,7 @@ public abstract class APlugin extends Plugin {
 
             ProjectOptions.addConfigurator(projectOptionConfigurator);
         } catch (Exception e) {
-            throw new OMFPluginRegisteringException("Error occurred during ProjectOptions Configuration", e);
+            throw new PluginRegisteringException("Error occurred during ProjectOptions Configuration", e);
         }
     }
 

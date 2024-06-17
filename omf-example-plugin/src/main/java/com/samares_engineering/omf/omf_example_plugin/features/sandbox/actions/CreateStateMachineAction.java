@@ -8,7 +8,7 @@ import com.nomagic.uml2.ext.magicdraw.statemachines.mdbehaviorstatemachines.Stat
 import com.nomagic.uml2.ext.magicdraw.statemachines.mdbehaviorstatemachines.StateMachine;
 import com.nomagic.uml2.ext.magicdraw.statemachines.mdbehaviorstatemachines.Transition;
 import com.nomagic.uml2.impl.ElementsFactory;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
@@ -57,7 +57,7 @@ public class CreateStateMachineAction extends AUIAction {
            diagram.setName("New State Machine Diagram");
 
        }catch (Exception e){
-           throw new OMFCriticalException2("Error while creating State Machine", e);
+           throw new OMFCriticalException("Error while creating State Machine", e);
        }
 
 

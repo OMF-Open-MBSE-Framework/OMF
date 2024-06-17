@@ -34,11 +34,10 @@ import com.nomagic.magicdraw.uml.symbols.shapes.AbstractHeaderShapeView;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.errors.AmbiguousElementException;
@@ -264,18 +263,14 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         //Action to test
         try {
             SessionManager.getInstance().executeInsideSession(initProject,"Executing test case - " + getClass().getSimpleName(),  runnable);
-        } catch (OMFRollBackException rollbackException){ //2021x, OMF < 2.0
-            OMFErrorHandler.handleException(rollbackException);
-        } catch (RollbackException2 rollbackException){ // 2021x error handling system
-            ErrorHandler2.getInstance().handleException(rollbackException);
+        } catch (RollbackException rollbackException){ // 2021x error handling system
+            ErrorHandler.getInstance().handleException(rollbackException);
         }catch (Exception uncaughtException){
             Throwable cause = uncaughtException.getCause();
-            if(cause instanceof OMFRollBackException)   //2022x, OMF >= 2.0
-                OMFErrorHandler.handleException((OMFRollBackException) cause);
-            else if(cause instanceof RollbackException2) // 2022x error handling system
-                ErrorHandler2.getInstance().handleException((RollbackException2) cause);
+            if(cause instanceof RollbackException) // 2022x error handling system
+                ErrorHandler.getInstance().handleException((RollbackException) cause);
             else
-                ErrorHandler2.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
+                ErrorHandler.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
         }
 
         closeSession();
@@ -385,7 +380,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             assertNotNull("No element was found with name \"" + elementName + "\".", foundElement);
             return foundElement;
         } catch (AmbiguousElementException e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
         return null;
     }
@@ -403,7 +398,7 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
             assertNotNull("No element was found with human name \"" + elementName + "\".", foundElement);
             return foundElement;
         } catch (AmbiguousElementException e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
         return null;
     }

@@ -6,20 +6,16 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners.listeners;
 
-import com.nomagic.magicdraw.ui.notification.Notification;
-import com.nomagic.magicdraw.ui.notification.NotificationManager;
-import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.transaction.TransactionCommitListener;
 import com.nomagic.uml2.transaction.TransactionManager;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.OMFLockException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
 import com.samares_engineering.omf.omf_core_framework.utils.LockerManager;
@@ -31,6 +27,8 @@ import java.beans.PropertyChangeEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel.ERROR;
+
 public class RestrictedElementCheckerListener extends AElementListener implements TransactionCommitListener {
     private boolean rollbackEnabled = true;
 
@@ -39,7 +37,7 @@ public class RestrictedElementCheckerListener extends AElementListener implement
         lockExceptions = new ArrayList<>();
     }
 
-    List<OMFLockException> lockExceptions;
+    List<LockException> lockExceptions;
 
     @CheckForNull
     @Override
@@ -62,11 +60,11 @@ public class RestrictedElementCheckerListener extends AElementListener implement
             boolean hasUpdatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.CREATION));
             boolean hasCreatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.UPDATE));
 
-            Collection<OMFLockException> deletions = hasDeletedEvent ?
+            Collection<LockException> deletions = hasDeletedEvent ?
                     LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), checkedElements) : Collections.emptyList();
-            Collection<OMFLockException> creations = hasUpdatedEvent ?
+            Collection<LockException> creations = hasUpdatedEvent ?
                     LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), checkedElements) : Collections.emptyList();
-            Collection<OMFLockException> updates = hasCreatedEvent ?
+            Collection<LockException> updates = hasCreatedEvent ?
                     LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), checkedElements) : Collections.emptyList();
 
             deletions.forEach(e -> e.setUserMessage("D]-" + e.getUserMessage()));
@@ -78,7 +76,7 @@ public class RestrictedElementCheckerListener extends AElementListener implement
             lockExceptions.addAll(updates);
 
         } catch (Exception e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
     }
 
@@ -105,26 +103,18 @@ public class RestrictedElementCheckerListener extends AElementListener implement
 
             if (noLockExceptionTriggered) return;
 
-            OMFLogger.getInstance().log("[LOCK ERROR] Errors happened during the transaction," +
-                    " some element are locked by other, are not locked," +
-                    " or are not editable (e.g. project usages access)?", null, OMFLogLevel.ERROR);
+           new OMFLog().err("[LOCK ERROR] Errors happened during the transaction," +
+                   " some element are locked by other, are not locked," +
+                   " or are not editable (e.g. project usages access)?").logToUiConsole(ERROR).logToNotification(ERROR);
 
-            NotificationManager.getInstance().showNotification(new Notification(
-                    "[LOCK/Ownership Error]",
-                    "[LOCK/Ownership Error]",
-                    "[LOCK ERROR] Errors happened during the transaction," +
-                            " some element are locked by other, are not locked," +
-                            " or are not editable (e.g. project usages access)?",
-                    NotificationSeverity.ERROR));
-
-            lockExceptions.forEach(OMFErrorHandler::handleException);
+            lockExceptions.forEach(LegacyErrorHandler::handleException);
             lockExceptions.clear();
 
             if(!isRollbackEnabled()) return;
             UndoManager.getInstance().requestHardUndo();
 
         } catch (Exception e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
     }
 
@@ -143,7 +133,7 @@ public class RestrictedElementCheckerListener extends AElementListener implement
             try {
                 OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);
             } catch (Exception e) {
-                OMFErrorHandler.handleException(new OMFException("[RemoveListener] unable to unregister this listener", 
+                LegacyErrorHandler.handleException(new OMFException("[RemoveListener] unable to unregister this listener",
                         GenericException.ECriticality.ALERT));
             }
         }

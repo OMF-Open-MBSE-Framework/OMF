@@ -7,14 +7,10 @@
 package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
 
 @BrowserAction
 @DiagramAction
@@ -27,11 +23,11 @@ class CriticalFeatureExampleAction : AUIAction() {
     }
 
     override fun actionToPerform(selectedElements: List<Element?>?) {
-        throw OMFCriticalException2(
-            "TESTING Framework CRITICAL FEATURE ERROR",
-            OMFExceptionModifier2.NO_ROLLBACK,
-            OMFExceptionModifier2.SILENT,
-            OMFExceptionModifier2.DEACTIVATE_FEATURE
+        throw OMFCriticalException(
+                "TESTING Framework CRITICAL FEATURE ERROR",
+                OMFExceptionModifier.NO_ROLLBACK,
+                OMFExceptionModifier.SILENT,
+                OMFExceptionModifier.DEACTIVATE_FEATURE
         )
     }
 

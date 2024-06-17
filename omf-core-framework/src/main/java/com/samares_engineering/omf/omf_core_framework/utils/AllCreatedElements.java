@@ -10,6 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.utils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 
 import java.util.*;
 

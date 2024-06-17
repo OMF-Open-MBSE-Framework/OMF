@@ -10,9 +10,9 @@ import com.nomagic.ci.persistence.IAttachedProject;
 import com.nomagic.ci.persistence.IProject;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectPartLoadedListener;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFCoreException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
 import com.samares_engineering.omf.omf_core_framework.factory.FactoryManager;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.project.ProjectHookExecutor;
@@ -220,8 +220,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
         try {
             plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
-            OMFErrorHandler.handleException(
-                    new OMFCoreException("Error occurred during Project opening Feature initialisation",
+            LegacyErrorHandler.handleException(
+                    new CoreException("Error occurred during Project opening Feature initialisation",
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }
@@ -231,8 +231,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
             ListenerManager.getInstance().registerAllListeners();
             ListenerManager.getInstance().activateAllListeners();
         }catch (Exception exception) {
-            OMFErrorHandler.handleException(
-                    new OMFCoreException("Error occurred during Project opening Listener initialisation",
+            LegacyErrorHandler.handleException(
+                    new CoreException("Error occurred during Project opening Listener initialisation",
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }
@@ -242,8 +242,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
             FactoryManager.initAllFactories(project);
             Profile.getInstance();
         }catch (Exception exception){
-            OMFErrorHandler.handleException(
-                    new OMFCoreException("Error occurred during Project opening initialisation",
+            LegacyErrorHandler.handleException(
+                    new CoreException("Error occurred during Project opening initialisation",
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }
@@ -274,8 +274,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
         try {
             plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
-            OMFErrorHandler.handleException(
-                    new OMFCoreException("Error occurred during Project closing Feature removal",
+            LegacyErrorHandler.handleException(
+                    new CoreException("Error occurred during Project closing Feature removal",
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }
@@ -284,8 +284,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
         try {
             ListenerManager.getInstance().removeAllListeners();
         }catch (Exception exception) {
-            OMFErrorHandler.handleException(
-                    new OMFCoreException("Error occurred during Project closing Listener removal",
+            LegacyErrorHandler.handleException(
+                    new CoreException("Error occurred during Project closing Listener removal",
                             exception, GenericException.ECriticality.CRITICAL), false);
         }
     }

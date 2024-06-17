@@ -12,7 +12,7 @@ import com.nomagic.magicdraw.actions.DiagramContextAMConfigurator;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.utils.PriorityProvider;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
@@ -45,7 +45,7 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
             UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getDiagramAction());
         }catch (Exception e){
             String actionName = action != null? action.getClass().getSimpleName(): "Unknown";
-            ErrorHandler2.getInstance().handleException(new CoreException2("Error while registering Diagram action: " + actionName, e));
+            ErrorHandler.getInstance().handleException(new CoreException2("Error while registering Diagram action: " + actionName, e));
         }
     }
 }

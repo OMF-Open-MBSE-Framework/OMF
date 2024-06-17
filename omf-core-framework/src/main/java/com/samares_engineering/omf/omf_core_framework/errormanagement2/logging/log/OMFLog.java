@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.utils.ElementAction;
 
@@ -10,54 +10,82 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OMFLog2 {
+public class OMFLog {
     private final List<String> messageComponents = new ArrayList<>();
     private final Map<String, Runnable> linkActionMapping = new HashMap<>();
 
-    public OMFLog2 text(String string) {
+    public OMFLog text(String string) {
         messageComponents.add(string);
         return this;
     }
 
-    public OMFLog2 breakLine() {
+    public OMFLog text(String string, OMFLogLevel logLevel) {
+        switch (logLevel) {
+            case INFO:
+                return info(string);
+            case WARNING:
+                return warn(string);
+            case ERROR:
+                return err(string);
+            default:
+                return text(string);
+        }
+    }
+
+    public OMFLog breakLine() {
         return text("<BR>");
     }
-    public OMFLog2 bold(String string) {
+
+    public OMFLog bold(String string) {
         return text("<B>" + string + "</B>");
     }
 
-    public OMFLog2 italic(String string) {
+    public OMFLog italic(String string) {
         return text("<I>" + string + "</I>");
     }
 
-    public OMFLog2 underline(String string) {
+    public OMFLog underline(String string) {
         return text("<U>" + string + "</U>");
     }
 
-    public OMFLog2 strike(String string) {
+    public OMFLog strike(String string) {
         return text("<S>" + string + "</S>");
     }
 
-    public OMFLog2 color(String string, String color) {
+    public OMFLog color(String string, String color) {
         return text("<font color=" + color + ">" + string + "</font>");
     }
-    public OMFLog2 warn(String string) {return color(string, OMFColors2.WARN);}
-    public OMFLog2 warn(OMFLog2 log) {return warn(log.toString());}
-    public OMFLog2 info(String string) {
-        return color(string, OMFColors2.INFO);
-    }
-    public OMFLog2 info(OMFLog2 log) {return info(log.toString());}
-    public OMFLog2 err(String string) {
-        return color(string, OMFColors2.ERROR);
-    }
-    public OMFLog2 err(OMFLog2 log) {return err(log.toString());}
 
-    public OMFLog2 linkElement(String linkText, Element elementToLink) {
+    public OMFLog warn(String string) {
+        return color(string, OMFColors.WARN);
+    }
+
+    public OMFLog warn(OMFLog log) {
+        return warn(log.toString());
+    }
+
+    public OMFLog info(String string) {
+        return color(string, OMFColors.INFO);
+    }
+
+    public OMFLog info(OMFLog log) {
+        return info(log.toString());
+    }
+
+    public OMFLog err(String string) {
+        return color(string, OMFColors.ERROR);
+    }
+
+    public OMFLog err(OMFLog log) {
+        return err(log.toString());
+    }
+
+    public OMFLog linkElement(String linkText, Element elementToLink) {
         linkActionMapping.put(linkText, new ElementAction(elementToLink)::selectInBrowser);
         return text("<A>" + linkText + "</A>");
     }
 
-    public OMFLog2 linkElementAndParent(Element elementToLink) {
+    public OMFLog linkElementAndParent(Element elementToLink) {
         String linkElementName = "";
         String linkOwnerElementName = "DELETED";
         if (elementToLink != null) {
@@ -68,14 +96,14 @@ public class OMFLog2 {
                 linkActionMapping.put(linkOwnerElementName, new ElementAction(elementToLink.getOwner())::selectInBrowser);
             }
         }
-        return text("<A>" + linkElementName + "</A> -> <A>" + linkOwnerElementName + "</A>");
+        return text("<A>" + linkElementName + "</A>::<A>" + linkOwnerElementName + "</A>");
     }
 
-    public OMFLog2 link(String linkText, String url) {
+    public OMFLog link(String linkText, String url) {
         return text("<A href=" + url + ">" + linkText + "</A>");
     }
 
-    public OMFLog2 linkAction(String linkText, Runnable action) {
+    public OMFLog linkAction(String linkText, Runnable action) {
         linkActionMapping.put(linkText, action);
         return text("<A>" + linkText + "</A>");
     }
@@ -84,31 +112,34 @@ public class OMFLog2 {
      * Log message formatting
      */
 
-    public String toHTMLFormat(OMFLogLevel2 logLevel) {
+    public String toHTMLFormat(OMFLogLevel logLevel) {
         return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel)
                 + " " + toString(" ") + "</font>";
     }
 
-    public String toHTMLFormat(OMFLogLevel2 logLevel, String pluginName) {
+    public String toHTMLFormat(OMFLogLevel logLevel, String pluginName) {
         return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName)
                 + " " + toString(" ") + "</font>";
     }
-    public String toHTMLFormat(OMFLogLevel2 logLevel, String pluginName, String featureName) {
-        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName, featureName)+ " "
+
+    public String toHTMLFormat(OMFLogLevel logLevel, String pluginName, String featureName) {
+        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName, featureName) + " "
                 + toString(" ") + "</font>";
     }
 
-    public static String getPrefix(OMFLogLevel2 logLevel) {
+    public static String getPrefix(OMFLogLevel logLevel) {
         return "[" + getLogLevelPrefix(logLevel) + "]";
     }
-    public static String getPrefix(OMFLogLevel2 logLevel, String pluginName) {
+
+    public static String getPrefix(OMFLogLevel logLevel, String pluginName) {
         return getPrefix(logLevel) + "[" + pluginName + "]";
     }
-    public static String getPrefix(OMFLogLevel2 logLevel, String pluginName, String featureName) {
+
+    public static String getPrefix(OMFLogLevel logLevel, String pluginName, String featureName) {
         return getPrefix(logLevel, pluginName) + "[" + featureName + "]";
     }
 
-    private static String getLogLevelPrefix(OMFLogLevel2 logLevel) {
+    private static String getLogLevelPrefix(OMFLogLevel logLevel) {
         switch (logLevel) {
             case WARNING:
                 return "Warning";
@@ -120,15 +151,15 @@ public class OMFLog2 {
         }
     }
 
-    private static String getMessageColor(OMFLogLevel2 logLevel) {
+    private static String getMessageColor(OMFLogLevel logLevel) {
         switch (logLevel) {
             case WARNING:
-                return OMFColors2.WARN;
+                return OMFColors.WARN;
             case ERROR:
-                return OMFColors2.ERROR;
+                return OMFColors.ERROR;
             case INFO:
             default:
-                return OMFColors2.INFO;
+                return OMFColors.INFO;
         }
     }
 
@@ -147,13 +178,34 @@ public class OMFLog2 {
      * Syntaxic sugar to reduced boilerplate of logging
      */
 
-    public OMFLog2 logToConsole(OMFLogLevel2 logLevel) {
-        OMFLogger2.logToUIConsole(this, logLevel);
+    public OMFLog logToUiConsole(OMFLogLevel logLevel) {
+        OMFLogger.logToUIConsole(this, logLevel);
         return this;
     }
 
-    public void logToConsole(OMFLogLevel2 logLevel, MDFeature feature) {
-        OMFLogger2.logToUIConsole(this, logLevel, feature);
+    public OMFLog logToUiConsole(OMFLogLevel logLevel, MDFeature feature) {
+        OMFLogger.logToUIConsole(this, logLevel, feature);
+        return this;
+    }
+
+    public OMFLog logToNotification(OMFLogLevel logLevel) {
+        OMFLogger.logToNotification(this, logLevel);
+        return this;
+    }
+
+    public OMFLog logToNotification(OMFLogLevel logLevel, MDFeature feature) {
+        OMFLogger.logToNotification(this, logLevel, feature);
+        return this;
+    }
+
+    public OMFLog logToSystemConsole(OMFLogLevel logLevel) {
+        OMFLogger.logToSystemConsole(this, logLevel);
+        return this;
+    }
+
+    public OMFLog logToSystemConsole(OMFLogLevel logLevel, MDFeature feature) {
+        OMFLogger.logToSystemConsole(this, logLevel, feature);
+        return this;
     }
 
     /*
@@ -164,7 +216,7 @@ public class OMFLog2 {
         return linkActionMapping;
     }
 
-    public OMFLog2 replaceNewLinesWithBreaks() {
+    public OMFLog replaceNewLinesWithBreaks() {
         messageComponents.replaceAll(s -> s.replaceAll("\n", "<BR>"));
         return this;
     }

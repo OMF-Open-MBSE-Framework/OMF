@@ -7,6 +7,8 @@
 
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
 
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+
 public class NoElementFoundException extends GenericException {
     public NoElementFoundException(String message) {
         super(message);

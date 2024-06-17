@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_test_framework.utils;
 
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

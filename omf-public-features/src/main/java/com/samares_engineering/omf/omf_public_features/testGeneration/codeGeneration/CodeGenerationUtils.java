@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration;
 
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 
@@ -27,7 +27,7 @@ public class CodeGenerationUtils {
         try {
             javaFile.writeTo(new File(generationPathRoot));
         } catch (IOException e) {
-            OMFErrorHandler.handleException(new CodeGenerationException("Unable to save the generated file.", GenericException.ECriticality.ALERT), false);
+            LegacyErrorHandler.handleException(new CodeGenerationException("Unable to save the generated file.", GenericException.ECriticality.ALERT), false);
         }
     }
 

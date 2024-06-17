@@ -19,7 +19,7 @@ import com.nomagic.uml2.ext.jmi.reflect.AbstractRefObject;
 import com.nomagic.uml2.ext.jmi.reflect.ModelReflection;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
-        import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.Message;
 import com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.MessageOccurrenceSpecification;
@@ -31,7 +31,7 @@ import org.omg.mof.model.StructuralFeature;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
-        import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 public class LegacyElementModelComparator implements ModelComparator {
     //For Logging

@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.opti
 
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_test_framework.errors;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 
 public class AmbiguousElementException extends GenericException {
     public AmbiguousElementException(String message) {

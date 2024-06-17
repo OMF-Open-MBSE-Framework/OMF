@@ -8,8 +8,8 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.exceptions.CloneFailedException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.ConnectorUtils;
@@ -122,7 +122,7 @@ public class CloneManager {
 
             cloneElements(property.getOwner());
         }catch (Exception e){
-            OMFErrorHandler.handleException(new CloneFailedException("Error while cloning property: " + property.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
+            LegacyErrorHandler.handleException(new CloneFailedException("Error while cloning property: " + property.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
         }
         return getOrignialClonedMap();
     }
@@ -145,7 +145,7 @@ public class CloneManager {
 
             fixAllCopiedConnectors();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new CloneFailedException("Error while cloning part: " + part.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
+            LegacyErrorHandler.handleException(new CloneFailedException("Error while cloning part: " + part.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
         }
 
         return getOrignialClonedMap();
@@ -210,7 +210,7 @@ public class CloneManager {
 
             fixAllCopiedConnectors();
         }catch (Exception e){
-            OMFErrorHandler.handleException(new CloneFailedException("Error while cloning type: " + type.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
+            LegacyErrorHandler.handleException(new CloneFailedException("Error while cloning type: " + type.getHumanName(), e, GenericException.ECriticality.CRITICAL), true);
         }
         return getOrignialClonedMap();
     }

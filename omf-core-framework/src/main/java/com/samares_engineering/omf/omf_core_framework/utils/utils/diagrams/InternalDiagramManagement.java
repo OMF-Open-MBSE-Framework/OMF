@@ -28,15 +28,14 @@ import com.nomagic.uml2.ext.magicdraw.components.mdbasiccomponents.ConnectorKind
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class InternalDiagramManagement {
     private InternalDiagramManagement() {}
@@ -101,7 +100,7 @@ public class InternalDiagramManagement {
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
 
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new LayoutException("Error during port: " + portToRefresh.getHumanName() + " displaying, please refresh it manually", e), false);
+            LegacyErrorHandler.handleException(new LayoutException("Error during port: " + portToRefresh.getHumanName() + " displaying, please refresh it manually", e), false);
         }
 
         setSelectedElements(DiagramUtils.getDiagram(diagram), displayedPorts);
@@ -131,7 +130,7 @@ public class InternalDiagramManagement {
 
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new LayoutException("Error during refresh of embedded port", e), false);
+            LegacyErrorHandler.handleException(new LayoutException("Error during refresh of embedded port", e), false);
         }
 
         setSelectedElements(DiagramUtils.getDiagram(diagram), displayedPorts);
@@ -164,7 +163,7 @@ public class InternalDiagramManagement {
             PresentationElementsManager manager = PresentationElementsManager.getInstance();
             return manager.createShapeElement(nestedPort, hostingPortPE);
         } catch (ReadOnlyElementException e) {
-            OMFErrorHandler.handleException(new LayoutException("Error during creation of nested port", "createPortShapeElement"), false);
+            LegacyErrorHandler.handleException(new LayoutException("Error during creation of nested port", "createPortShapeElement"), false);
         }
         return null;
     }
@@ -231,7 +230,7 @@ public class InternalDiagramManagement {
 
             createdConnectors.stream().forEach(connector -> refreshConnector(connector, diagram));
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new LayoutException("Error during refresh connector", "refreshAllConnectors"), false);
+            LegacyErrorHandler.handleException(new LayoutException("Error during refresh connector", "refreshAllConnectors"), false);
         }
 
 
@@ -251,7 +250,7 @@ public class InternalDiagramManagement {
         boolean isDstAPort = secondEnd.getRole() instanceof Port;
 
         if (!isSrcAPort || !isDstAPort) {    //TODO improve ErrorManagement
-            OMFErrorHandler.handleException(
+            LegacyErrorHandler.handleException(
                     new OMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
             return;
         }
@@ -310,7 +309,7 @@ public class InternalDiagramManagement {
                         try {
                             manager.createPathElement(connector, srcPortPEE, dstPortPEE);
                         } catch (ReadOnlyElementException e) {
-                            OMFErrorHandler.handleException(e, false);
+                            LegacyErrorHandler.handleException(e, false);
                         }
                     }
 
@@ -321,7 +320,7 @@ public class InternalDiagramManagement {
                                 try {
                                     connectorPEE = manager.createPathElement(connector, srcPortPEE, dstPortPEE);
                                 } catch (ReadOnlyElementException e) {
-                                    OMFErrorHandler.handleException(e, false);
+                                    LegacyErrorHandler.handleException(e, false);
                                 }
                             });
                 }
@@ -347,7 +346,7 @@ public class InternalDiagramManagement {
                                 try {
                                     connectorPEE = manager.createPathElement(connector, srcPortPEE, dstPortPEE);
                                 } catch (ReadOnlyElementException e) {
-                                    OMFErrorHandler.handleException(e, false);
+                                    LegacyErrorHandler.handleException(e, false);
                                 }
                             });
                 }
@@ -364,7 +363,7 @@ public class InternalDiagramManagement {
             //this seems to work outside of a transaction as well
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
         } catch (Exception e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
     }
 
@@ -404,7 +403,7 @@ public class InternalDiagramManagement {
         boolean isDstAPort = secondEnd.getRole() instanceof Port;
 
         if (!isSrcAPort || !isDstAPort) {    //TODO improve ErrorManagement
-            OMFErrorHandler.handleException(
+            LegacyErrorHandler.handleException(
                     new OMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
             return;
         }
@@ -463,7 +462,7 @@ public class InternalDiagramManagement {
                         try {
                             manager.createPathElement(connector, srcPortPEE, dstPortPEE);
                         } catch (ReadOnlyElementException e) {
-                            OMFErrorHandler.handleException(e, false);
+                            LegacyErrorHandler.handleException(e, false);
                         }
                     }
 
@@ -474,7 +473,7 @@ public class InternalDiagramManagement {
                                 try {
                                     connectorPEE = manager.createPathElement(connector, srcPortPEE, dstPortPEE);
                                 } catch (ReadOnlyElementException e) {
-                                    OMFErrorHandler.handleException(e, false);
+                                    LegacyErrorHandler.handleException(e, false);
                                 }
                             });
                 }
@@ -500,7 +499,7 @@ public class InternalDiagramManagement {
                                 try {
                                     connectorPEE = manager.createPathElement(connector, srcPortPEE, dstPortPEE);
                                 } catch (ReadOnlyElementException e) {
-                                    OMFErrorHandler.handleException(e, false);
+                                    LegacyErrorHandler.handleException(e, false);
                                 }
                             });
                 }
@@ -517,7 +516,7 @@ public class InternalDiagramManagement {
             //this seems to work outside of a transaction as well
             diagramPresentationElement.addProperty(PropertyPool.getBooleanProperty(PropertyID.SHOW_OBJECT_CLASS, false));
         } catch (Exception e) {
-            OMFErrorHandler.handleException(e, false);
+            LegacyErrorHandler.handleException(e, false);
         }
     }
 
@@ -536,7 +535,7 @@ public class InternalDiagramManagement {
             try {
                 PresentationElementsManager.getInstance().deletePresentationElement(presentationElement);
             } catch (Exception e) {
-                OMFErrorHandler.handleException(new LayoutException("Error during PresentationElement deletion"), false);
+                LegacyErrorHandler.handleException(new LayoutException("Error during PresentationElement deletion"), false);
             }
         }
     }

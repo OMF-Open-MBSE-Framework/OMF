@@ -1,11 +1,11 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.propertycomparators;
 
+import com.nomagic.uml2.ext.jmi.reflect.AbstractRefObject;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers.ComparatorUtils;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.PropertyDiff;
-import com.nomagic.uml2.ext.jmi.reflect.AbstractRefObject;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 
 import java.util.List;
 import java.util.Objects;

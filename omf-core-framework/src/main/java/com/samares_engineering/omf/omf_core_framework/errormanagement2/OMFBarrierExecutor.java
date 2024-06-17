@@ -4,9 +4,7 @@ import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFUnhandledNonSessionFeatureException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFRollBackException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -55,25 +53,25 @@ public class OMFBarrierExecutor {
             return callable.call();
         } catch (OMFDevException devException) {
             if(feature != null)
-                ErrorHandler2.getInstance().handleException(
+                ErrorHandler.getInstance().handleException(
                         new OMFUnhandledNonSessionFeatureException(
                                 feature,
                                 devException,
                                 devException.getModifiers()),
                         feature);
             else
-                ErrorHandler2.getInstance().handleException( new OMFUnhandledNonSessionFeatureException(
+                ErrorHandler.getInstance().handleException( new OMFUnhandledNonSessionFeatureException(
                                 devException,
                                 devException.getModifiers()));
         } catch (Exception uncauchtException) {
             if(feature != null)
-                ErrorHandler2.getInstance().handleException(
+                ErrorHandler.getInstance().handleException(
                         new OMFUnhandledNonSessionFeatureException(
                                 feature,
                                 uncauchtException),
                         feature);
             else
-                ErrorHandler2.getInstance().handleException( new OMFUnhandledNonSessionFeatureException(uncauchtException));
+                ErrorHandler.getInstance().handleException( new OMFUnhandledNonSessionFeatureException(uncauchtException));
         }
        return null;
     }
@@ -124,29 +122,25 @@ public class OMFBarrierExecutor {
                     return callable.call();
                 } catch (OMFDevException e) {
                     if(feature != null)
-                        ErrorHandler2.getInstance().handleException(e, feature); //Could Throw a RollbackException2
+                        ErrorHandler.getInstance().handleException(e, feature); //Could Throw a RollbackException2
                     else
-                        ErrorHandler2.getInstance().handleException(e); //Could Throw a RollbackException2
+                        ErrorHandler.getInstance().handleException(e); //Could Throw a RollbackException2
                 } catch (Exception e) {
                     if(feature != null)
-                        ErrorHandler2.getInstance().handleException(e, feature); //Could Throw a RollbackException2
+                        ErrorHandler.getInstance().handleException(e, feature); //Could Throw a RollbackException2
                     else
-                        ErrorHandler2.getInstance().handleException(e); //Could Throw a RollbackException2
+                        ErrorHandler.getInstance().handleException(e); //Could Throw a RollbackException2
                 }
                 return null;
             });
-        } catch (OMFRollBackException rollbackException){// 2021x, OMF < 2.0
-            OMFErrorHandler.handleException(rollbackException);
-        } catch (RollbackException2 rollbackException){ // 2021x, error handling system
-            ErrorHandler2.getInstance().handleException(rollbackException);
+        } catch (RollbackException rollbackException){ // 2021x, error handling system
+            ErrorHandler.getInstance().handleException(rollbackException);
         }catch (Exception uncaughtException){
             Throwable cause = uncaughtException.getCause();
-            if(cause instanceof OMFRollBackException)   // 2022x, OMF < 2.0
-                OMFErrorHandler.handleException((OMFRollBackException) cause);
-            else if(cause instanceof RollbackException2) // 2022x, error handling system
-                ErrorHandler2.getInstance().handleException((RollbackException2) cause);
+            if(cause instanceof RollbackException) // 2022x, error handling system
+                ErrorHandler.getInstance().handleException((RollbackException) cause);
             else
-                ErrorHandler2.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
+                ErrorHandler.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
         }
         return null;
     }

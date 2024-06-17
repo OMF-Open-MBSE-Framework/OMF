@@ -22,9 +22,9 @@ import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.profiles.ProfileImplementation;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
@@ -68,7 +68,7 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
         ParseResult<CompilationUnit> result = new JavaParser().parse(originalWrapper);
 
         if (result.isSuccessful() && result.getResult().isEmpty()) {
-            OMFErrorHandler.handleException(new OMFException("Error while parsing the original wrapper", GenericException.ECriticality.CRITICAL), false);
+            LegacyErrorHandler.handleException(new OMFException("Error while parsing the original wrapper", GenericException.ECriticality.CRITICAL), false);
         }
 
         CompilationUnit cu = result.getResult().get();
@@ -91,7 +91,7 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
                     .map(Class::getSimpleName)
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFException("Error while retrieving nested classes/enums", GenericException.ECriticality.CRITICAL), true);
+            LegacyErrorHandler.handleException(new OMFException("Error while retrieving nested classes/enums", GenericException.ECriticality.CRITICAL), true);
             return Collections.emptyList();
         }
     }

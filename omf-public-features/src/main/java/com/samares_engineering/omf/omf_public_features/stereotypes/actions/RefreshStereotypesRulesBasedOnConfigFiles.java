@@ -7,16 +7,12 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel2;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
 import java.util.List;
@@ -36,13 +32,13 @@ public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
     @Override
     public void actionToPerform(List<Element> selectedElements) {
         try {
-            OMFLogger.getInstance().log("Parsing config files", null, OMFLogLevel.INFO);
+            OMFLogger.infoToUIConsole("Parsing config files");
             ((StereotypesFeature) feature).getRuleUpdater().updateAllRulesBasedOnConfigFiles();
-            OMFLogger.getInstance().log("Rules updated based on config files", null, OMFLogLevel.INFO);
+            OMFLogger.infoToUIConsole("Rules updated based on config files");
         }catch (OMFWarningException e) {
-            OMFLogger2.logToUIConsole(new OMFLog2().info(e.getUiMessage()), OMFLogLevel2.WARNING);
+            OMFLogger.warnToUIConsole(new OMFLog().info(e.getUiMessage()));
         } catch (Exception e) {
-            throw new OMFCriticalException2("Error while parsing, please verify the configuration file and try again", e);
+            throw new OMFCriticalException("Error while parsing, please verify the configuration file and try again", e);
         }
     }
 }

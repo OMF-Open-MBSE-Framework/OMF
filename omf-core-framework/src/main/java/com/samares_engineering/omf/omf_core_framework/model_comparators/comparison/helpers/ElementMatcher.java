@@ -1,7 +1,5 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers;
 
-import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
-import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 import com.google.common.base.Strings;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.uml.BaseElement;
@@ -13,6 +11,8 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.Message;
 import com.nomagic.uml2.ext.magicdraw.interactions.mdbasicinteractions.MessageOccurrenceSpecification;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.ElementComparator;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 
 import javax.annotation.CheckForNull;
 import java.util.Collection;

@@ -6,10 +6,10 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.DeletionPropertyChangeElementListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.OrchestratorListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.TransactionElementListener;
-import com.samares_engineering.omf.omf_core_framework.utils.ColorPrinter;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;

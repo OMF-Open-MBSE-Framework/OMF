@@ -12,7 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
@@ -45,7 +45,7 @@ public class ImportFromGPT extends AUIAction {
         // Load the JSON data from file
         String jsonFilePath = null;
         jsonFilePath = (String) feature.getPlugin().getEnvironmentOptionsGroup()
-                .orElseThrow(() -> new OMFCriticalException2("No environment options groups have been declared for this " +
+                .orElseThrow(() -> new OMFCriticalException("No environment options groups have been declared for this " +
                         "plugin")
                 ).getProperty(SysmlGptExploFeature.GPT_GENERATED_JSON_TO_IMPORT).getValue();
 
@@ -53,7 +53,7 @@ public class ImportFromGPT extends AUIAction {
         try {
             tokener = new JSONTokener(new FileReader(jsonFilePath));
         } catch (FileNotFoundException e) {
-            throw new OMFCriticalException2("The specified file " + jsonFilePath + " could not be found", e);
+            throw new OMFCriticalException("The specified file " + jsonFilePath + " could not be found", e);
         }
         JSONObject json = new JSONObject(tokener);
 

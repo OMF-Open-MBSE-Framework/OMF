@@ -1,9 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OptionNotFound;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OptionNotFound;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
 public abstract class EnvOptionsHelper {
@@ -12,7 +12,7 @@ public abstract class EnvOptionsHelper {
 
     protected EnvOptionsHelper(MDFeature feature) {
         this(feature, feature.getPlugin().getEnvironmentOptionsGroup()
-                .orElseThrow(() -> new OMFFeatureRegisteringException("No environment options groups have been declared" +
+                .orElseThrow(() -> new FeatureRegisteringException("No environment options groups have been declared" +
                         "for this plugin")));
     }
     protected EnvOptionsHelper(MDFeature feature, OMFPropertyOptionsGroup optionsGroup) {
@@ -28,7 +28,7 @@ public abstract class EnvOptionsHelper {
          try {
              return optionsGroup.getPropertyByName(name);
         }catch (Exception e){
-            OMFErrorHandler.handleException(new OptionNotFound(name), false);
+            LegacyErrorHandler.handleException(new OptionNotFound(name), false);
         }
          return null;
     }

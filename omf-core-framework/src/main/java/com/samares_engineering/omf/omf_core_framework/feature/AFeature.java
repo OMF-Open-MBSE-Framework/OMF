@@ -8,9 +8,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
@@ -78,7 +78,7 @@ public abstract class AFeature implements MDFeature {
         try {
             this.envOptionsHelper = initEnvOptionsHelper();
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating environment options helper for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating environment options helper for feature " + name, e);
         }
         isFeatureInitialised = true;
     }
@@ -91,28 +91,28 @@ public abstract class AFeature implements MDFeature {
             this.options.addAll(initOptions());
             options.forEach(this::initRegistrableItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating options for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating options for feature " + name, e);
         }
 
         try {
             this.mdActions.addAll(initFeatureActions());
             mdActions.forEach(this::initRegistrableItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating ui actions for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating ui actions for feature " + name, e);
         }
 
         try {
             this.liveActions.addAll(initLiveActions());
             liveActions.forEach(this::initRegistrableItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating live actions for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating live actions for feature " + name, e);
         }
 
         try {
             this.hooksHolders.addAll(initLifeCycleHooks());
             hooksHolders.forEach(this::initRegistrableItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating lifecycle hooks for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating lifecycle hooks for feature " + name, e);
         }
 
         isFeatureItemsInitialised = true;
@@ -129,14 +129,14 @@ public abstract class AFeature implements MDFeature {
             this.projectOnlyOptions.addAll(initProjectOnlyOptions());
             projectOnlyOptions.forEach(this::initRegistrableItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating project only options for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating project only options for feature " + name, e);
         }
 
         try {
             this.projectOnlyLiveActions.addAll(initProjectOnlyLiveActions());
             projectOnlyLiveActions.forEach(this::initRegistrableItem);
         } catch (Exception e) {
-            throw new OMFFeatureRegisteringException("Error while instantiating project only live actions for feature " + name, e);
+            throw new FeatureRegisteringException("Error while instantiating project only live actions for feature " + name, e);
         }
 
         isProjectOnlyItemsInitialised = true;
@@ -200,9 +200,9 @@ public abstract class AFeature implements MDFeature {
         try {
             onRegistering();
         } catch (OMFDevException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
+            ErrorHandler.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
+            ErrorHandler.getInstance().handleException(e, this);
         }
     }
 
@@ -210,9 +210,9 @@ public abstract class AFeature implements MDFeature {
         try {
             onUnregistering();
         } catch (OMFDevException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
+            ErrorHandler.getInstance().handleException(e, this);
         } catch (RuntimeException e) {
-            ErrorHandler2.getInstance().handleException(e, this);
+            ErrorHandler.getInstance().handleException(e, this);
         }
     }
 
@@ -237,7 +237,7 @@ public abstract class AFeature implements MDFeature {
                 property,
                 groupName,
                 plugin.getEnvironmentOptionsGroup()
-                        .orElseThrow(() -> new OMFFeatureRegisteringException("Can't create environment option as no" +
+                        .orElseThrow(() -> new FeatureRegisteringException("Can't create environment option as no" +
                                 " environment options groups have been declared for this plugin")),
                 OptionKind.Environment
         );

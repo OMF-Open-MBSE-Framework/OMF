@@ -1,9 +1,6 @@
 package com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.koTests;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCase;
 import com.samares_engineering.omf.omf_test_framework.templates.AModelComparatorTestCaseKO;
 
 public class T1_KO_wrongBlockName extends AModelComparatorTestCaseKO {/*******************************************************************************

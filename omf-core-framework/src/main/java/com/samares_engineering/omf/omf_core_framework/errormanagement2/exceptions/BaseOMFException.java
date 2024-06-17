@@ -1,24 +1,25 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 
 import java.util.Set;
 
 public abstract class BaseOMFException extends RuntimeException {
-    protected OMFLog2 OMFLog;
-    protected Set<OMFExceptionModifier2> modifiers;
+    protected com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog OMFLog;
+    protected Set<OMFExceptionModifier> modifiers;
 
     /**
      * Exception without a cause... and a simple message.
      */
     protected BaseOMFException(String message) {
-        this(new OMFLog2().text(message));
+        this(new OMFLog().text(message));
     }
 
     /**
      * Just an exception without a cause...
      */
-    protected BaseOMFException(OMFLog2 message) {
+    protected BaseOMFException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message) {
         this(message, null);
     }
 
@@ -26,39 +27,39 @@ public abstract class BaseOMFException extends RuntimeException {
      * Simple message
      */
     protected BaseOMFException(String message, Throwable cause) {
-        this(new OMFLog2().text(message), cause);
+        this(new OMFLog().text(message), cause);
     }
 
     /**
      * Full constructor wrapping causing exception
      */
-    protected BaseOMFException(OMFLog2 message, Throwable cause) {
+    protected BaseOMFException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, Throwable cause) {
         super(message.toString(), cause);
         OMFLog = message;
     }
 
 
-    public OMFLog2 getUiMessage() {
+    public com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog getUiMessage() {
         return OMFLog;
     }
 
-    public Set<OMFExceptionModifier2> getModifiers() {
+    public Set<OMFExceptionModifier> getModifiers() {
         return modifiers;
     }
 
     public boolean isSilent() {
-        return modifiers.contains(OMFExceptionModifier2.SILENT);
+        return modifiers.contains(OMFExceptionModifier.SILENT);
     }
     public boolean isNotSilent() {
         return !isSilent();
     }
 
     public boolean isDeactivateFeature() {
-        return modifiers.contains(OMFExceptionModifier2.DEACTIVATE_FEATURE);
+        return modifiers.contains(OMFExceptionModifier.DEACTIVATE_FEATURE);
     }
 
     public boolean isRollbackChanges() {
-        return !modifiers.contains(OMFExceptionModifier2.NO_ROLLBACK);
+        return !modifiers.contains(OMFExceptionModifier.NO_ROLLBACK);
     }
 
 

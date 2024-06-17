@@ -1,16 +1,15 @@
 package com.samares_engineering.omf.omf_core_framework.model_comparators.comparison.helpers;
 
-import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
-import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
-import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.PropertyDiff;
-//import com.alliance.magicdraw.mbsi.profiles.MBSIProfile;
 import com.nomagic.uml2.ext.jmi.reflect.AbstractRefObject;
 import com.nomagic.uml2.ext.jmi.reflect.ModelReflection;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
+import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.PropertyDiff;
 import org.omg.mof.model.Class;
 import org.omg.mof.model.MofAttribute;
 import org.omg.mof.model.Reference;
@@ -174,7 +173,7 @@ public class ComparatorUtils {
         try {
             referencedElements1 = getReferencedElements(ref1.get(refName));
         } catch (OMFException e) {
-            OMFErrorHandler.handleException(e);
+            LegacyErrorHandler.handleException(e);
         }
         return new ArrayList<>(referencedElements1);
     }

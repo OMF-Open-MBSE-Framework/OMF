@@ -7,8 +7,7 @@ import com.nomagic.magicdraw.properties.ElementProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
 import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsUtils;
 import com.squareup.javapoet.MethodSpec;
@@ -122,11 +121,8 @@ public class OptionsCodeGenerator {
         else {
             String propTypeName = property.toString().split("@")[0];
             createPropValue = "\"//TODO " + propTypeName + " value\"";
-            OMFLogger.getInstance().log(propTypeName +
-                            " type is not yet support for the test generation. " +
-                            "You should manually define their value on the test (\"TODO\" value)",
-                    null,
-                    OMFLogLevel.WARNING);
+            OMFLogger.warnToUIConsole(" type is not yet support for the test generation. " +
+                            "You should manually define their value on the test (\"TODO\" value)");
         }
 
         return "\n\t\t new $T(" + createdValueClass.getSimpleName() +".class, \""

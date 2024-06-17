@@ -7,6 +7,8 @@
 
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.general;
 
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+
 public class DevelopmentException extends GenericException {
     public DevelopmentException(String message) {
         super(message);

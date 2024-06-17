@@ -18,8 +18,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.transaction.ModelValidationResult;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.OMFLockException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException;
 
 import javax.annotation.CheckForNull;
 import java.beans.PropertyChangeEvent;
@@ -92,60 +92,60 @@ public class LockerManager {
         projectService.getLockInfo(element);
 
         if(isLockedByOther(element)) {
-            OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is locked by  " + lockInfo + "   PLEASE UNDO and resolve this lock issue", element));
+            LegacyErrorHandler.handleException(new LockException("[LOCK ERROR] Element is locked by  " + lockInfo + "   PLEASE UNDO and resolve this lock issue", element));
             return;
         }
 
         if(!isEditable) {
-            OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is not editable => PLEASE UNDO and check if these elements are accessible (shared and read-only projects, libraries etc)  " + lockInfo, element));
+            LegacyErrorHandler.handleException(new LockException("[LOCK ERROR] Element is not editable => PLEASE UNDO and check if these elements are accessible (shared and read-only projects, libraries etc)  " + lockInfo, element));
             return;
         }
 
         if(!projectService.isLocked(element)) {
-            OMFErrorHandler.handleException(new OMFLockException("[LOCK ERROR] Element is not lock. => PLEASE UNDO and lock these element before actions  " + lockInfo, element));
+            LegacyErrorHandler.handleException(new LockException("[LOCK ERROR] Element is not lock. => PLEASE UNDO and lock these element before actions  " + lockInfo, element));
             return;
         }
     }
 
 
-    public OMFLockException checkIfEditable2(Element element) {
+    public LockException checkIfEditable2(Element element) {
         boolean isEditable = isEditable(element) || isLockedByOther(element);
         String lockInfo = "";
         projectService.getLockInfo(element);
 
         if(isLockedByOther(element)) {
-            return new OMFLockException("     [LOCKED BY] " + lockInfo, element);
+            return new LockException("     [LOCKED BY] " + lockInfo, element);
         }
 
         if(!isEditable) {
-            return new OMFLockException("     [NON EDITABLE]  " + lockInfo, element);
+            return new LockException("     [NON EDITABLE]  " + lockInfo, element);
         }
 
         if(!projectService.isLocked(element)) {
-            return new OMFLockException("     [NOT LOCK] " + lockInfo, element);
+            return new LockException("     [NOT LOCK] " + lockInfo, element);
         }
         return null;
     }
 
 
-    public List<OMFLockException> checkCreation(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public List<LockException> checkCreation(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
 
 
-    public Collection<OMFLockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public Collection<LockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
-    public Collection<OMFLockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    public Collection<LockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         return defaultCheck(events, checkedElements);
     }
 
-    private List<OMFLockException> defaultCheck(List<PropertyChangeEvent> events, Set<Element> checkedElements) {
+    private List<LockException> defaultCheck(List<PropertyChangeEvent> events, Set<Element> checkedElements) {
         Map<Element, String> elementsToCheckMap = filterElementToCheck(events, checkedElements);
 
         checkedElements.addAll(elementsToCheckMap.keySet());
 
-        ArrayList<OMFLockException> lockExceptions = new ArrayList<>();
+        ArrayList<LockException> lockExceptions = new ArrayList<>();
 
         elementsToCheckMap.forEach((element, propertyName) ->
                 checkElement(element, propertyName).ifPresent(lockExceptions::add));
@@ -159,7 +159,7 @@ public class LockerManager {
      * @param propertyName
      * @return Optional OMFLockException
      */
-    private Optional<OMFLockException> checkElement(Element elementToCheck, String propertyName) {
+    private Optional<LockException> checkElement(Element elementToCheck, String propertyName) {
         boolean isEditable = isEditable(elementToCheck);
         boolean isMovable = elementToCheck.getOwner() == null ||  ModelHelper.canMoveChildInto(elementToCheck.getOwner(), elementToCheck);
 
@@ -169,10 +169,10 @@ public class LockerManager {
 
         String sLockInfo = Objects.isNull(lockInfo)? "":  lockInfo.toString();
 
-        if(!isEditable) return Optional.of(new OMFLockException("     [NON EDITABLE]  " + sLockInfo + " - cause: " + propertyName, elementToCheck));
+        if(!isEditable) return Optional.of(new LockException("     [NON EDITABLE]  " + sLockInfo + " - cause: " + propertyName, elementToCheck));
 
 
-        if(!isMovable) return Optional.of(new OMFLockException("     [NON MOVABLE]  " + sLockInfo+ " - cause: " + propertyName, elementToCheck));
+        if(!isMovable) return Optional.of(new LockException("     [NON MOVABLE]  " + sLockInfo+ " - cause: " + propertyName, elementToCheck));
 
 
         return Optional.empty();

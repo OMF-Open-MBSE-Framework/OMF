@@ -1,6 +1,5 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators;
 
-import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.ConfiguratorWithPriority;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 

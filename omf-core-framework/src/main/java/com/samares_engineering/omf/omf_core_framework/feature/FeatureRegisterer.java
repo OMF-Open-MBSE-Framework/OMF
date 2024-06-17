@@ -7,10 +7,8 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature;
 
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFeatureRegisteringException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.feature.OMFFrameworkException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.feature.FeatureHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IFeatureLifeCycleHook;
@@ -51,8 +49,8 @@ public class FeatureRegisterer {
     public void registerFeature(MDFeature feature) {
         try {
             if (isAlreadyRegistered(feature)) {
-                OMFErrorHandler.handleException(new OMFFrameworkException("Trying to register feature " + feature.getName() +
-                        " which is already registered.", GenericException.ECriticality.ALERT));
+                LegacyErrorHandler.handleException(new FeatureRegisteringException("Trying to register feature " + feature.getName() +
+                        " which is already registered."));
             }
             feature.initFeature(plugin);
             feature.register();
@@ -64,8 +62,8 @@ public class FeatureRegisterer {
             registeredFeatures.add(feature);
             eventHandler.fireFeatureRegistered(feature);
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFrameworkException("Error while registering feature " + feature.getName(),
-                    e, GenericException.ECriticality.CRITICAL), false);
+            LegacyErrorHandler.handleException(new FeatureRegisteringException("Error while registering feature " + feature.getName(),
+                    e), false);
         }
     }
 
@@ -109,9 +107,9 @@ public class FeatureRegisterer {
             try {
                 registerer.registerFeatureItems(feature);
             } catch (Exception e) {
-                OMFErrorHandler.handleException(
-                        new OMFFrameworkException("Error while registering project only items for feature " +
-                                feature.getName(), e, GenericException.ECriticality.CRITICAL));
+                LegacyErrorHandler.handleException(
+                        new FeatureRegisteringException("Error while registering project only items for feature " +
+                                feature.getName(), e));
             }
         });
 
@@ -123,10 +121,10 @@ public class FeatureRegisterer {
      *
      * @param feature the feature to unregister
      */
-    public void unregisterFeature(MDFeature feature) throws OMFFeatureRegisteringException {
+    public void unregisterFeature(MDFeature feature) throws FeatureRegisteringException {
         if (!isAlreadyRegistered(feature)) {
-            OMFErrorHandler.handleException(new OMFFrameworkException("Trying to unregister feature "
-                    + feature.getName() + " which is not registered.", GenericException.ECriticality.ALERT));
+            LegacyErrorHandler.handleException(new FeatureRegisteringException("Trying to unregister feature "
+                    + feature.getName() + " which is not registered."));
         }
 
         registeredFeatures.remove(feature);
@@ -134,7 +132,7 @@ public class FeatureRegisterer {
             try {
                 registerer.unregisterFeatureItems(feature);
             } catch (Exception e) {
-                throw new OMFFeatureRegisteringException(
+                throw new FeatureRegisteringException(
                         "Error while unregistering items for feature " + feature.getName(), e);
             }
         }
@@ -143,7 +141,7 @@ public class FeatureRegisterer {
             try {
                 registerer.unregisterFeatureItems(feature);
             } catch (Exception e) {
-                throw new OMFFeatureRegisteringException("Error while unregistering Project only items for feature " +
+                throw new FeatureRegisteringException("Error while unregistering Project only items for feature " +
                         feature.getName(), e);
             }
         }
@@ -162,8 +160,8 @@ public class FeatureRegisterer {
             try {
                 unregisterFeature(feature);
             } catch (Exception e) {
-                OMFErrorHandler.handleException(new OMFFrameworkException("Error while unregistering feature " +
-                        feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+                LegacyErrorHandler.handleException(new FeatureRegisteringException("Error while unregistering feature " +
+                        feature.getName(), e), false);
             }
         });
     }
@@ -187,8 +185,8 @@ public class FeatureRegisterer {
             try {
                 registerer.unregisterFeatureItems(feature);
             } catch (Exception e) {
-                OMFErrorHandler.handleException(new OMFFrameworkException("Error while unregistering project only items for" +
-                        " feature " + feature.getName(), e, GenericException.ECriticality.CRITICAL), false);
+                LegacyErrorHandler.handleException(new FeatureRegisteringException("Error while unregistering project only items for" +
+                        " feature " + feature.getName(), e), false);
             }
         });
     }
@@ -211,8 +209,8 @@ public class FeatureRegisterer {
             this.featureItemRegisters.add(featureItemRegisterer);
             featureItemRegisterer.init(this);
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFrameworkException("Error while adding feature item registerer " +
-                    featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
+            LegacyErrorHandler.handleException(new FeatureRegisteringException("Error while adding feature item registerer " +
+                    featureItemRegisterer.getClass().getName(), e), false);
         }
     }
 
@@ -253,8 +251,8 @@ public class FeatureRegisterer {
             this.projectOnlyFeatureItemRegisters.add(featureItemRegisterer);
             featureItemRegisterer.init(this);
         } catch (Exception e) {
-            OMFErrorHandler.handleException(new OMFFrameworkException("Error while adding project only feature item registerer " +
-                    featureItemRegisterer.getClass().getName(), e, GenericException.ECriticality.CRITICAL), false);
+            LegacyErrorHandler.handleException(new FeatureRegisteringException("Error while adding project only feature item registerer " +
+                    featureItemRegisterer.getClass().getName(), e), false);
         }
     }
 

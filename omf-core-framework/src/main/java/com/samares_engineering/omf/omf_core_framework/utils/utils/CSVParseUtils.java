@@ -8,12 +8,15 @@
 package com.samares_engineering.omf.omf_core_framework.utils.utils;
 
 import com.jidesoft.csv.CsvReader;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
 
 import javax.annotation.CheckForNull;
 import javax.swing.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 public class CSVParseUtils {

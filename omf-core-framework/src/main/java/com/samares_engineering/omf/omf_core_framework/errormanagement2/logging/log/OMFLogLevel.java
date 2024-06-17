@@ -6,8 +6,8 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log;
 
-public enum OMFLogLevel2 {
+public enum OMFLogLevel {
     INFO,
     WARNING,
-    ERROR
+    ERROR;
 }

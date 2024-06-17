@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.sandbox.actions;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
@@ -13,7 +13,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import static com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2.DEACTIVATE_FEATURE;
+import static com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier.DEACTIVATE_FEATURE;
 
 @MenuAction
 @BrowserAction
@@ -31,7 +31,7 @@ public class TestErrorHandling extends AUIAction {
         try {
             throw new FileNotFoundException();
         } catch (FileNotFoundException e) {
-            throw new OMFCriticalException2("hgkjhg", e, DEACTIVATE_FEATURE);
+            throw new OMFCriticalException("hgkjhg", e, DEACTIVATE_FEATURE);
         }
     }
 

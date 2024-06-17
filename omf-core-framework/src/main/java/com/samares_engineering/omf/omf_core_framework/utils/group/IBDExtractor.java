@@ -11,9 +11,9 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errors.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.GenericException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class IBDExtractor {
         try {
             return Refactoring.Replacing.replace(newTargetElement,extractedTarget, new ConvertElementInfo(newTargetElement.getClass()));
         } catch (ReadOnlyElementException e) {
-            OMFErrorHandler.handleException(
+            LegacyErrorHandler.handleException(
                     new OMFException("Error while extracting, it seems some element related to the extract are readOnly",
                             e, GenericException.ECriticality.CRITICAL), true);
         }

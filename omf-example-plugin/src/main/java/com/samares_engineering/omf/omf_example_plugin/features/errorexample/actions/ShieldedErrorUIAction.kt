@@ -1,12 +1,10 @@
 package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import org.apache.commons.collections4.CollectionUtils
 
 @BrowserAction
@@ -24,14 +22,14 @@ class ShieldedErrorUIAction : AUIAction(){
         try {
             failMethod()
         } catch (e: Exception) {
-            throw OMFCriticalException2("this error has been thrown to OMF Shield", e)
+            throw OMFCriticalException("this error has been thrown to OMF Shield", e)
         }
     }
 
     private fun failMethod() {
         val block = SysMLFactory.getInstance().createBlock();
         block.name = "SHOULD NOT BE CREATED";
-        throw OMFCriticalException2("This is a critical exception")
+        throw OMFCriticalException("This is a critical exception")
     }
 
 

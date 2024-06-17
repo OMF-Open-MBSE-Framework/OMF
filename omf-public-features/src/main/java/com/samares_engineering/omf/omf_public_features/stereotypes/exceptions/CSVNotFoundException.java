@@ -1,8 +1,6 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFExceptionModifier2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog2;
 
 import java.io.FileNotFoundException;
 

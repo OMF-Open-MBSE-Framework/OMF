@@ -1,12 +1,9 @@
 package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler2
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException2
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import org.apache.commons.collections4.CollectionUtils
 
 @BrowserAction
