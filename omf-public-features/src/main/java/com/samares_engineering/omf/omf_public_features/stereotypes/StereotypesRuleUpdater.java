@@ -213,8 +213,7 @@ public class StereotypesRuleUpdater {
         try {
             lines = CSVParseUtils.getParsedLines(csvConfigFilePath, delimiter);
         } catch (FileNotFoundException e) {
-            throw new CSVNotFoundException("Can't find .csv config file " + csvConfigFilePath + ", make sure the path defined in " +
-                            "environment options is correct", e);
+            throw new CSVNotFoundException(csvConfigFilePath, e);
         } catch (OMFException e) {
             throw new OMFCriticalException("Error while loading csv config file " + csvConfigFilePath, e);
         }

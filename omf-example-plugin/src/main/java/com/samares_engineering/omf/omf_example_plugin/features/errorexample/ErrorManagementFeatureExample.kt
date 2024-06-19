@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.errorexample.crea
 import java.beans.PropertyChangeEvent
 import java.util.*
 
-class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT FEATURE") {
+class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT TEST FEATURE") {
     public override fun initFeatureActions(): List<UIAction> {
         return Arrays.asList<UIAction>(
             CriticalFeatureExampleAction(),

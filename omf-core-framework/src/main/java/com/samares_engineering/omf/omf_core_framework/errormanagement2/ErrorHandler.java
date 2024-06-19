@@ -40,7 +40,8 @@ public class ErrorHandler {
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
-     * @param exception the exception to handle
+     *
+     * @param exception       the exception to handle
      * @param impactedFeature the feature that was impacted by the exception
      */
     public void handleException(OMFCriticalException exception, MDFeature impactedFeature) {
@@ -51,15 +52,18 @@ public class ErrorHandler {
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
+     *
      * @param exception the exception to handle
      */
-    public void handleException(OMFCriticalException exception ) {
+    public void handleException(OMFCriticalException exception) {
         defaultHandlingDevException(exception, null, OMFLogLevel.ERROR);
     }
+
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
-     * @param exception the exception to handle
+     *
+     * @param exception       the exception to handle
      * @param impactedFeature the feature that was impacted by the exception
      */
     public void handleException(OMFDevException exception, MDFeature impactedFeature) {
@@ -69,22 +73,23 @@ public class ErrorHandler {
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that a recoverable
      * error occurred
+     *
      * @param exception the exception to handle
      */
-    public void handleException(OMFDevException exception ) {
+    public void handleException(OMFDevException exception) {
         defaultHandlingDevException(exception, null, OMFLogLevel.ERROR);
     }
 
     /**
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
-     * @param exception the exception to handle
+     *
+     * @param exception       the exception to handle
      * @param impactedFeature the feature that was impacted by the exception
      */
     public void handleException(RuntimeException exception, MDFeature impactedFeature) {
         exception.printStackTrace();
         OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR, impactedFeature);
-        unregisterFeature(impactedFeature);
         rollbackChanges();
     }
 
@@ -92,6 +97,7 @@ public class ErrorHandler {
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      * <br><b>Call the version of the method with the impacted feature if possible.</b>
+     *
      * @param exception the exception to handle
      */
     public void handleException(RuntimeException exception) {
@@ -99,16 +105,17 @@ public class ErrorHandler {
         OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR);
         rollbackChanges();
     }
+
     /**
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
-     * @param exception the exception to handle
-        * @param impactedFeature the feature that was impacted by the exception
+     *
+     * @param exception       the exception to handle
+     * @param impactedFeature the feature that was impacted by the exception
      */
     public void handleException(Exception exception, MDFeature impactedFeature) {
         exception.printStackTrace();
         OMFLogger.logToNotification("An error occurred during plugin execution: " + exception.getMessage(), OMFLogLevel.ERROR, impactedFeature);
-        unregisterFeature(impactedFeature);
         rollbackChanges();
     }
 
@@ -116,6 +123,7 @@ public class ErrorHandler {
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      * <br><b>Call the version of the method with the impacted feature if possible.</b>
+     *
      * @param exception the exception to handle
      */
     public void handleException(Exception exception) {
@@ -128,6 +136,7 @@ public class ErrorHandler {
      * Handle Core RollBackException for unexpected exceptions inside the framework.
      * Will log the exception and display a generic error to the user.
      * TODO shall log the exception in a dedicated log file.
+     *
      * @param exception the exception to handle
      */
     public void handleException(CoreException2 exception) {
@@ -141,6 +150,7 @@ public class ErrorHandler {
      * Handle Core RollBackException: Will do nothing the rollback is already requested.
      * REMEMBER: Rollback are handled by the framework, you should not throw them yourself.
      * - In UI Action/LiveAction: throw any exception you want, the framework will handle the rollback.
+     *
      * @param rollBackException the exception to handle
      */
     public void handleException(RollbackException rollBackException) {
@@ -154,9 +164,9 @@ public class ErrorHandler {
      * necessary actions based on the properties of the exception.
      * <br>Throws a RollbackException if the exception requires a rollback.
      *
-     * @param exception The developer exception that needs to be handled.
+     * @param exception       The developer exception that needs to be handled.
      * @param impactedFeature The feature that was impacted by the exception. This can be null.
-     * @param logLevel The level at which the exception should be logged.
+     * @param logLevel        The level at which the exception should be logged.
      */
     private static void defaultHandlingDevException(OMFDevException exception, @CheckForNull MDFeature impactedFeature, OMFLogLevel logLevel) {
         exception.printStackTrace();
@@ -170,7 +180,7 @@ public class ErrorHandler {
         if (exception.isDeactivateFeature()) {
             if (impactedFeature != null) {
                 unregisterFeature(impactedFeature);
-            }else {
+            } else {
                 OMFLogger.warnToSystemConsole("Could not deactivate feature as the feature is not known: " + exception.getClass().getSimpleName());
             }
         }
