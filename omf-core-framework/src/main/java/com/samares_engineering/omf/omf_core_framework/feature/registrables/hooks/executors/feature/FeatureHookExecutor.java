@@ -1,6 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.feature;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
@@ -27,7 +27,7 @@ public class FeatureHookExecutor extends HookExecutor<IFeatureLifeCycleHook> {
                    .map(IOnFeatureUnregisteringHook.class::cast)
                    .forEach(hook -> hook.triggerOnFeatureUnregisteringHook(feature));
        } catch (Exception e) {
-           ErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onFeatureRegistering hooks", e));
+           OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onFeatureRegistering hooks", e));
        }
 
    }
@@ -44,7 +44,7 @@ public class FeatureHookExecutor extends HookExecutor<IFeatureLifeCycleHook> {
                     .map(IOnFeatureUnregisteringHook.class::cast)
                     .forEach(hook -> hook.triggerOnFeatureUnregisteringHook(feature));
         } catch (Exception e) {
-            ErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onFeatureUnregistering hooks", e));
+            OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onFeatureUnregistering hooks", e));
         }
     }
 

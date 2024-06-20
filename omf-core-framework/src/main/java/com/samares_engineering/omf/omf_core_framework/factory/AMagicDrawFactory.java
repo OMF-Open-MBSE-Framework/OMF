@@ -12,7 +12,7 @@ import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.impl.ElementsFactory;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.Objects;
@@ -26,7 +26,7 @@ public abstract class AMagicDrawFactory {
 
     public void reInitFactory(String className, Project project) {
         setProject(project);
-        ColorPrinter.status(className + " reinitialized for " + project.getName());
+        SysoutColorPrinter.status(className + " reinitialized for " + project.getName());
     }
 
     // General element operations
@@ -64,7 +64,7 @@ public abstract class AMagicDrawFactory {
      */
     public void setProject(Project project) {
         if(project == null){
-            ColorPrinter.warn("Trying to set a null project to the factory: " + getClass().getSimpleName());
+            SysoutColorPrinter.warn("Trying to set a null project to the factory: " + getClass().getSimpleName());
         }
         this.project = project;
     }

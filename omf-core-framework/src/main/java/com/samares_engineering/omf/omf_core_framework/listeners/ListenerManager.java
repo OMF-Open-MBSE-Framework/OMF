@@ -6,7 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.listeners;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.DeletionPropertyChangeElementListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.OrchestratorListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.TransactionElementListener;
@@ -98,13 +98,13 @@ public class ListenerManager implements IListenerManager {
         if (listenersActivated || this.featureListeners == null) return;
         this.featureListeners.forEach(IElementListener::activate);
         listenersActivated = true;
-        ColorPrinter.status("Listeners Activated");
+        SysoutColorPrinter.status("Listeners Activated");
     }
 
     public void deactivateAllListeners() {
         if (!listenersActivated || !thereAreDeclaredListeners()) return;
         this.featureListeners.forEach(IElementListener::deactivate);
-        ColorPrinter.status("Listeners Deactivated");
+        SysoutColorPrinter.status("Listeners Deactivated");
         listenersActivated = false;
     }
 
@@ -117,7 +117,7 @@ public class ListenerManager implements IListenerManager {
                 .filter(Objects::nonNull)
                 .filter(IElementListener::isNotRegistered)
                 .forEach(IElementListener::register);
-        ColorPrinter.status("Listeners Registered");
+        SysoutColorPrinter.status("Listeners Registered");
     }
 
     public void removeAllListeners() {
@@ -131,7 +131,7 @@ public class ListenerManager implements IListenerManager {
                 .filter(Objects::nonNull)
                 .filter(IElementListener::isRegistered)
                 .forEach(IElementListener::unregister);
-        ColorPrinter.status("Listeners Removed");
+        SysoutColorPrinter.status("Listeners Removed");
     }
 
     @Override

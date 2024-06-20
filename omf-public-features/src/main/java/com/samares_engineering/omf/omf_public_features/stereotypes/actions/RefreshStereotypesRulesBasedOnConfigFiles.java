@@ -8,7 +8,7 @@ package com.samares_engineering.omf.omf_public_features.stereotypes.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
@@ -35,8 +35,8 @@ public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
             OMFLogger.infoToUIConsole("Parsing config files");
             ((StereotypesFeature) feature).getRuleUpdater().updateAllRulesBasedOnConfigFiles();
             OMFLogger.infoToUIConsole("Rules updated based on config files");
-        }catch (OMFWarningException e) {
-            OMFLogger.warnToUIConsole(new OMFLog().info(e.getUiMessage()));
+        }catch (OMFLogException e) {
+            OMFLogger.warnToUIConsole(e.getLog());
         } catch (Exception e) {
             throw new OMFCriticalException("Error while parsing, please verify the configuration file and try again", e);
         }

@@ -1,13 +1,14 @@
 package com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.BaseOMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 
-public class PluginRegisteringException extends BaseOMFException {
+public class PluginRegisteringException extends OMFLogException {
     public PluginRegisteringException(String message) {
         super(message);
     }
 
-    public PluginRegisteringException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message) {
+    public PluginRegisteringException(OMFLog message) {
         super(message);
     }
 
@@ -15,7 +16,7 @@ public class PluginRegisteringException extends BaseOMFException {
         super(message, cause);
     }
 
-    public PluginRegisteringException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, Throwable cause) {
+    public PluginRegisteringException(OMFLog message, Throwable cause) {
         super(message, cause);
     }
 }

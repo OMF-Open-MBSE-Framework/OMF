@@ -7,10 +7,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.exceptions.ErrorWhileEvaluationRuleException;
@@ -95,10 +94,10 @@ public class LiveAction implements ILiveAction {
         for (IRule<PropertyChangeEvent, PropertyChangeEvent> rule : rules) {  //return all matching rules until the first Blocking rule is found
             if(isRuleMatching(evt, rule)){
                 rulesToExecute.add(rule);
-                ColorPrinter.status("Triggered rule: " + rule.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
+                SysoutColorPrinter.status("Triggered rule: " + rule.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
                         + " on element: " + ((Element) evt.getSource()).getHumanName());
                 if (rule.isBlocking()) {
-                    ColorPrinter.status("Rule is blocking: stopping rule matching for this event");
+                    SysoutColorPrinter.status("Rule is blocking: stopping rule matching for this event");
                     break;
                 }
             }
@@ -133,13 +132,7 @@ public class LiveAction implements ILiveAction {
 
         listenerManager.deactivateAllListeners();
         matchingRules.forEach(rule -> {
-            try {
-                rule.process(evt);
-            } catch (OMFDevException e) {
-                ErrorHandler.getInstance().handleException(e, getFeature()); //Could throw a RollbackException
-            } catch (RuntimeException e) {
-                ErrorHandler.getInstance().handleException(e, getFeature());//Throw a RollbackException
-            }
+            OMFBarrierExecutor.executeInSessionWithinBarrier(() -> rule.process(evt), getFeature());
         });
 
         OMFAutomationManager.getInstance().automationTriggered();

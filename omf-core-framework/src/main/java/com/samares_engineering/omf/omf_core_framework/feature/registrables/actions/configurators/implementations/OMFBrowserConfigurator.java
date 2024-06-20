@@ -10,7 +10,7 @@ import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
 import com.nomagic.magicdraw.ui.browser.Tree;
 import com.nomagic.magicdraw.utils.PriorityProvider;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
@@ -47,7 +47,7 @@ public class OMFBrowserConfigurator extends AUIActionConfigurator implements Bro
             UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getBrowserAction());
         }catch (Exception e){
             String actionName = action != null? action.getClass().getSimpleName(): "Unknown";
-            ErrorHandler.getInstance().handleException(new CoreException2("Error while registering browser action: " + actionName, e));
+            OMFErrorHandler.getInstance().handleException(new CoreException2("Error while registering browser action: " + actionName, e));
         }
     }
 }

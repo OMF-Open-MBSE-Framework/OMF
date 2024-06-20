@@ -13,9 +13,9 @@ import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin.PluginRegisteringException;
@@ -179,7 +179,7 @@ public abstract class APlugin extends Plugin {
     public final void init() {
         try {
             OMFLogger.init(this);
-            ErrorHandler.init(this);
+            OMFErrorHandler.init(this);
         } catch (Exception e) {
             throw new PluginRegisteringException("Error occurred during error management initialization", e);
         }
@@ -187,7 +187,7 @@ public abstract class APlugin extends Plugin {
         try {
             initPlugin();
         } catch (Exception e) {
-            ErrorHandler.getInstance().handleException(new PluginRegisteringException("Error occurred during Plugin Initialization", e));
+            OMFErrorHandler.getInstance().handleException(new PluginRegisteringException("Error occurred during Plugin Initialization", e));
         }
     }
 
@@ -237,9 +237,9 @@ public abstract class APlugin extends Plugin {
                 try {
                     magicDrawHookExecutor.triggerOnMagicDrawStartHooks();
                 } catch (CoreException2 coreException) {
-                    ErrorHandler.getInstance().handleException(coreException);
+                    OMFErrorHandler.getInstance().handleException(coreException);
                 } catch (RuntimeException e) {
-                    ErrorHandler.getInstance().handleException(new CoreException2("Error occurred during onMagicDrawStart hook execution", e));
+                    OMFErrorHandler.getInstance().handleException(new CoreException2("Error occurred during onMagicDrawStart hook execution", e));
                 }
             });
         }catch (Exception e){
@@ -329,7 +329,7 @@ public abstract class APlugin extends Plugin {
             if (projectListener != null)
                 Application.getInstance().getProjectsManager().addProjectListener(projectListener);
             else
-                ColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
+                SysoutColorPrinter.warn("[OMF] NO PROJECT LISTENER REGISTERED");
         } catch (Exception e) {
             throw new PluginRegisteringException("Error occurred during ProjectListener configuration", e);
         }
@@ -341,7 +341,7 @@ public abstract class APlugin extends Plugin {
         try {
             browserConfigurator = initFeatureRegisteringBrowserConfigurator();
             if (browserConfigurator == null)
-                ColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
+                SysoutColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
             else {
                 actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
             }
@@ -353,7 +353,7 @@ public abstract class APlugin extends Plugin {
         try {
             diagramConfigurator = initFeatureRegisteringDiagramConfigurator();
             if (diagramConfigurator == null)
-                ColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
+                SysoutColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
             else {
                 actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM, diagramConfigurator);
             }
@@ -364,7 +364,7 @@ public abstract class APlugin extends Plugin {
         try {
             menuConfigurator = initFeatureRegisteringMainMenuConfigurator();
             if (menuConfigurator == null)
-                ColorPrinter.warn("[OMF] NO MAIN MENU CONFIGURATOR REGISTERED");
+                SysoutColorPrinter.warn("[OMF] NO MAIN MENU CONFIGURATOR REGISTERED");
             else
                 actionManager.addMainMenuConfigurator(menuConfigurator);
         } catch (Exception e) {
@@ -393,7 +393,7 @@ public abstract class APlugin extends Plugin {
         try {
             environmentOptionsGroup = initFeatureRegisteringEnvironmentOptionGroup();
             if (environmentOptionsGroup == null) {
-                ColorPrinter.warn("[OMFPluginRegistering] NO ENVIRONMENT OPTIONS REGISTERED");
+                SysoutColorPrinter.warn("[OMFPluginRegistering] NO ENVIRONMENT OPTIONS REGISTERED");
                 return;
             }
 
@@ -415,7 +415,7 @@ public abstract class APlugin extends Plugin {
             projectOptionConfigurator = initFeatureRegisteringProjectOptionGroup();
 
             if (projectOptionConfigurator == null) {
-                ColorPrinter.warn("[OMF] NO PROJECT OPTIONS REGISTERED");
+                SysoutColorPrinter.warn("[OMF] NO PROJECT OPTIONS REGISTERED");
                 return;
             }
 

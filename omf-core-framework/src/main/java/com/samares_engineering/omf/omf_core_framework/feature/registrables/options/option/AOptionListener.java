@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.opti
 
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -23,7 +23,7 @@ public abstract class AOptionListener implements EnvironmentOptions.EnvironmentC
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ColorPrinter.print("PropChange: " + evt.getPropertyName()
+        SysoutColorPrinter.print("PropChange: " + evt.getPropertyName()
                 + " prop: " + evt.getSource()
                 + " val: " + evt.getNewValue());
     }

@@ -12,7 +12,7 @@ import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
@@ -108,7 +108,7 @@ public class UndoManager {
 
         }
 
-        ColorPrinter.success("CANCELED!!");
+        SysoutColorPrinter.success("CANCELED!!");
         undo();
 
     }
@@ -133,7 +133,7 @@ public class UndoManager {
 
         }
 
-        ColorPrinter.success("CANCELED!!");
+        SysoutColorPrinter.success("CANCELED!!");
         undo();
     }
 
@@ -198,7 +198,7 @@ public class UndoManager {
     private void startThead(Runnable runnable) {
         boolean isThreadStillAlive = thread != null && thread.isAlive();
         if (isThreadStillAlive) {
-            ColorPrinter.warn("[DO/UNDO] Thread interrupted");
+            SysoutColorPrinter.warn("[DO/UNDO] Thread interrupted");
             thread.interrupt();
         }
 

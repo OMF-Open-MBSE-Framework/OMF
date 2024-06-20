@@ -34,7 +34,7 @@ import com.nomagic.magicdraw.uml.symbols.shapes.AbstractHeaderShapeView;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
@@ -264,13 +264,13 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
         try {
             SessionManager.getInstance().executeInsideSession(initProject,"Executing test case - " + getClass().getSimpleName(),  runnable);
         } catch (RollbackException rollbackException){ // 2021x error handling system
-            ErrorHandler.getInstance().handleException(rollbackException);
+            OMFErrorHandler.getInstance().handleException(rollbackException);
         }catch (Exception uncaughtException){
             Throwable cause = uncaughtException.getCause();
             if(cause instanceof RollbackException) // 2022x error handling system
-                ErrorHandler.getInstance().handleException((RollbackException) cause);
+                OMFErrorHandler.getInstance().handleException((RollbackException) cause);
             else
-                ErrorHandler.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
+                OMFErrorHandler.getInstance().handleException(new CoreException2("[Core] Exception dodged the framework exception handling", uncaughtException));
         }
 
         closeSession();

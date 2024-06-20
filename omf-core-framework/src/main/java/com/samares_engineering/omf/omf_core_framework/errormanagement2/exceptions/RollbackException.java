@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions;
 
 /**
- * Don't use this class, it is only used by the error handler to trigger a rollback of the changes.
+ * DON'T USE THIS EXCEPTION in your plugin's code, it is only used internally by the error handler to trigger a rollback of the changes.
  */
 public final class RollbackException extends RuntimeException {
 

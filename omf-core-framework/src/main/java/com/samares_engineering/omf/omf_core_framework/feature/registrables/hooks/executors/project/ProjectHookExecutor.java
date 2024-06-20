@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.project;
 
 import com.nomagic.magicdraw.core.Project;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.exceptions.HooksExecutionException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.*;
@@ -15,7 +15,7 @@ public class ProjectHookExecutor extends HookExecutor<IProjectLifeCycleHook> {
                    .map(IOnProjectOpenedHook.class::cast)
                    .forEach(hook -> hook.triggerOnProjectOpenedHook(project));
        }catch (Exception e){
-           ErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectOpened hooks", e));
+           OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectOpened hooks", e));
        }
    }
 
@@ -26,7 +26,7 @@ public class ProjectHookExecutor extends HookExecutor<IProjectLifeCycleHook> {
                    .map(IOnProjectClosedHook.class::cast)
                      .forEach(hook -> hook.triggerOnProjectClosedHook(project));
        }catch (Exception e) {
-           ErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectClosed hooks", e));
+           OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectClosed hooks", e));
        }
     }
 
@@ -37,7 +37,7 @@ public class ProjectHookExecutor extends HookExecutor<IProjectLifeCycleHook> {
                     .map(IOnProjectSavedHook.class::cast)
                     .forEach(hook -> hook.triggerOnProjectSavedHook(project));
         } catch (Exception e) {
-            ErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectSaved hooks", e));
+            OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectSaved hooks", e));
         }
     }
 
@@ -48,7 +48,7 @@ public class ProjectHookExecutor extends HookExecutor<IProjectLifeCycleHook> {
                     .map(IOnProjectCreatedHook.class::cast)
                     .forEach(hook -> hook.triggerOnProjectCreatedHook(project));
         } catch (Exception e) {
-            ErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectCreated hooks", e));
+            OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onProjectCreated hooks", e));
         }
     }
 

@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 package com.samares_engineering.omf.omf_public_features.stereotypes;
 
@@ -13,10 +13,10 @@ import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activit
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
@@ -45,12 +45,13 @@ public class StereotypesRuleUpdater {
     public StereotypesRuleUpdater(StereotypesFeature feature) {
         this(feature, ';');
     }
+
     public StereotypesRuleUpdater(StereotypesFeature feature, char delimiter) {
         this.feature = feature;
         this.delimiter = delimiter;
     }
 
-    public void updateAllRulesBasedOnConfigFiles(){
+    public void updateAllRulesBasedOnConfigFiles() {
         organizerEngine.removeAllRules();
         createInstanceRules((feature.getOptionsHelper().getInstanceConfigFilePath()));
         createTypeRules(feature.getOptionsHelper().getTypeConfigFilePath());
@@ -61,21 +62,19 @@ public class StereotypesRuleUpdater {
      * We need a separate init method from the update method as when the rules are created, environment options have
      * not been created yet, so we fetch the corresponding default values directly.
      */
-    public void initAllRulesBasedOnConfigFiles(){
-       try {
-           organizerEngine.removeAllRules();
-           createInstanceRules(StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
-           createTypeRules(StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
-           createOrganizerRules(StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
-       }catch (OMFWarningException warningException){
-           ErrorHandler.getInstance().handleException(
-                   new OMFCriticalException(warningException.getMessage()
-                           + " The feature will be deactivated.",
-                           warningException, OMFExceptionModifier.DEACTIVATE_FEATURE
-                   ));
-
-           OMFLogger.warn(warningException);
-       }
+    public void initAllRulesBasedOnConfigFiles() {
+        try {
+            organizerEngine.removeAllRules();
+            createInstanceRules(StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
+            createTypeRules(StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
+            createOrganizerRules(StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
+        } catch (OMFLogException warningException) {
+            OMFErrorHandler.getInstance().handleException(
+                    new OMFCriticalException(warningException.getMessage()
+                            + " The feature will be deactivated.",
+                            warningException, OMFExceptionModifier.DEACTIVATE_FEATURE
+                    ));
+        }
     }
 
     private void createInstanceRules(String configFilePath) {

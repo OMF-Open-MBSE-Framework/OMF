@@ -8,8 +8,8 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.ErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
@@ -197,25 +197,12 @@ public abstract class AFeature implements MDFeature {
      */
 
     public final void triggerOnRegisteringHook() {
-        try {
-            onRegistering();
-        } catch (OMFDevException e) {
-            ErrorHandler.getInstance().handleException(e, this);
-        } catch (RuntimeException e) {
-            ErrorHandler.getInstance().handleException(e, this);
-        }
+        OMFBarrierExecutor.executeWithinBarrier(this::onRegistering, this);
     }
 
     public final void triggerOnUnregisteringHook() {
-        try {
-            onUnregistering();
-        } catch (OMFDevException e) {
-            ErrorHandler.getInstance().handleException(e, this);
-        } catch (RuntimeException e) {
-            ErrorHandler.getInstance().handleException(e, this);
-        }
+        OMFBarrierExecutor.executeWithinBarrier(this::onUnregistering, this);
     }
-
 
     /**
      * Override this to inject code to be run on feature activation

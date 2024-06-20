@@ -11,7 +11,7 @@ import com.google.common.base.Strings;
 import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
@@ -121,14 +121,14 @@ public class LegacyErrorHandler {
         String errorMSG = tagDisplay + exception.getMessage();
         switch (errorLvl) {
             case INFO:
-                ColorPrinter.status(errorMSG);
+                SysoutColorPrinter.status(errorMSG);
                 break;
             case WARNING:
-                ColorPrinter.warn(errorMSG);
+                SysoutColorPrinter.warn(errorMSG);
                 exception.printStackTrace();
                 break;
             case ERROR:
-                ColorPrinter.err(errorMSG);
+                SysoutColorPrinter.err(errorMSG);
                 exception.printStackTrace();
                 break;
         }

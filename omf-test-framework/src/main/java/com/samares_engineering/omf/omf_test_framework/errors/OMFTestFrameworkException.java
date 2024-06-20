@@ -8,15 +8,16 @@
 package com.samares_engineering.omf.omf_test_framework.errors;
 
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.BaseOMFException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 
-public class OMFTestFrameworkException extends BaseOMFException {
+public class OMFTestFrameworkException extends OMFLogException {
 
     public OMFTestFrameworkException(String message) {
         super(message);
     }
 
-    public OMFTestFrameworkException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message) {
+    public OMFTestFrameworkException(OMFLog message) {
         super(message);
     }
 
@@ -24,7 +25,7 @@ public class OMFTestFrameworkException extends BaseOMFException {
         super(message, cause);
     }
 
-    public OMFTestFrameworkException(com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog message, Throwable cause) {
+    public OMFTestFrameworkException(OMFLog message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -2,7 +2,6 @@ package com.samares_engineering.omf.omf_example_plugin.features.errorexample.act
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFWarningException
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
@@ -21,11 +20,7 @@ class HandlingErrorUIAction : AUIAction(){
     }
 
     override fun actionToPerform(selectedElements: MutableList<Element>?) {
-        try {
             failMethod()
-        } catch (e: Exception) {
-            OMFLogger.warn(OMFWarningException("this error has been well handled", e))
-        }
     }
 
     private fun failMethod() {

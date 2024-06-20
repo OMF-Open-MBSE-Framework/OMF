@@ -5,7 +5,6 @@ import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFDevException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
@@ -93,14 +92,14 @@ public class OMFLogger {
             switch (logLevel) {
 
                 case WARNING:
-                    ColorPrinter.warn(logMessage.toString());
+                    SysoutColorPrinter.warn(logMessage.toString());
                     break;
                 case ERROR:
-                    ColorPrinter.err(logMessage.toString());
+                    SysoutColorPrinter.err(logMessage.toString());
                     break;
                 case INFO:
                 default:
-                    ColorPrinter.print(logMessage.toString());
+                    SysoutColorPrinter.print(logMessage.toString());
                     break;
             }
         }
@@ -196,33 +195,5 @@ public class OMFLogger {
 
     public static void infoToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
-    }
-
-
-    public static void warn(OMFDevException devException) {
-        devException.printStackTrace();
-        warnToNotification(devException.getUiMessage());
-        warnToUIConsole(devException.getUiMessage());
-        warnToSystemConsole(devException.getUiMessage());
-    }
-
-    public static void err(OMFDevException devException) {
-        devException.printStackTrace();
-        errorToNotification(devException.getUiMessage());
-        errorToUIConsole(devException.getUiMessage());
-        errorToSystemConsole(devException.getUiMessage());
-    }
-    public static void warn(Exception devException) {
-        devException.printStackTrace();
-        warnToNotification(devException.getMessage());
-        warnToUIConsole(devException.getMessage());
-        warnToSystemConsole(devException.getMessage());
-    }
-
-    public static void err(Exception devException) {
-        devException.printStackTrace();
-        errorToNotification(devException.getMessage());
-        errorToUIConsole(devException.getMessage());
-        errorToSystemConsole(devException.getMessage());
     }
 }

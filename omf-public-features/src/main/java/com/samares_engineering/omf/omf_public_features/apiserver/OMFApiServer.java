@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
@@ -66,12 +66,12 @@ public class OMFApiServer extends AbstractHandler {
 
     public void addRoute(String path, RequestHandler handler){
         route.put(path, handler);
-        ColorPrinter.status("[API_SERVER] '" + path + "' route has been registered");
+        SysoutColorPrinter.status("[API_SERVER] '" + path + "' route has been registered");
     }
 
     public void removeRoute(String path){
         route.remove(path);
-        ColorPrinter.status("[APIS_ERVER] '" + path + "' route has been removed");
+        SysoutColorPrinter.status("[APIS_ERVER] '" + path + "' route has been removed");
     }
 
 

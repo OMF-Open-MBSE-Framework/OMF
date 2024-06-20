@@ -7,11 +7,13 @@
 
 package com.samares_engineering.omf.omf_test_framework.utils;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.ColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFColors.*;
 
 public class TestLogBuilder{
 
@@ -34,19 +36,19 @@ public class TestLogBuilder{
     }
 
     public TestLogBuilder status(String message) {
-        log(ColorPrinter.BLUE, message);
+        log(BLUE, message);
         return this;
     }
     public TestLogBuilder err(String message) {
-        log(ColorPrinter.RED, message);
+        log(RED, message);
         return this;
     }
     public TestLogBuilder success(String message) {
-        log(ColorPrinter.GREEN, message);
+        log(GREEN, message);
         return this;
     }
     public TestLogBuilder warn(String message) {
-        log(ColorPrinter.YELLOW, message);
+        log(YELLOW, message);
         return this;
     }
     public TestLogBuilder log(String message) {
@@ -55,11 +57,11 @@ public class TestLogBuilder{
     }
 
     public TestLogBuilder pink(String message) {
-        log(ColorPrinter.PURPLE, message);
+        log(PURPLE, message);
         return this;
     }
 
     public void showLogs() {
-        logs.forEach(log -> ColorPrinter.print(log.message, log.color));
+        logs.forEach(log -> SysoutColorPrinter.print(log.message, log.color));
     }
 }
