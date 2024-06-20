@@ -9,8 +9,8 @@ package com.samares_engineering.omf.omf_core_framework.listeners;
 
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
@@ -65,12 +65,12 @@ public interface IElementListener {
     /**
      * @return the RuleEngine map
      */
-    HashMap<String, List<ILiveAction>> getRuleEngineMap();
+    HashMap<String, List<ALiveActionEngine>> getRuleEngineMap();
 
     /**
      * Setting the RuleEngine map
      */
-    void setRuleEngineMap(HashMap<String, List<ILiveAction>> rulesEngines);
+    void setRuleEngineMap(HashMap<String, List<ALiveActionEngine>> rulesEngines);
 
     /**
      * @return true if at least one rule matched
@@ -108,7 +108,7 @@ public interface IElementListener {
             setIsRegistered(true);
         }catch (Exception e){
             deactivate();
-            LegacyErrorHandler.handleException(new OMFException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
+            LegacyErrorHandler.handleException(new LegacyOMFException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
         }
     }
 
@@ -122,7 +122,7 @@ public interface IElementListener {
             removingListener();
             setIsRegistered(false);
         }catch (Exception e){
-            LegacyErrorHandler.handleException(new OMFException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
+            LegacyErrorHandler.handleException(new LegacyOMFException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
         }
     }
 

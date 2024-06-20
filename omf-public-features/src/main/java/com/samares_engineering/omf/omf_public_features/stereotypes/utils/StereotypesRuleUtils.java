@@ -19,7 +19,7 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -174,7 +174,7 @@ public class StereotypesRuleUtils {
         //STEREOTYPE NOT APPLIED
         if(!hasStereotype(element, strType))
             try {
-                throw new OMFException("[Stereotype Application] the stereotype has not be properly applied, " +
+                throw new LegacyOMFException("[Stereotype Application] the stereotype has not be properly applied, " +
                         "please check that it exists", GenericException.ECriticality.ALERT);
             } catch (Exception e) {
                 LegacyErrorHandler.handleException(e, false);
@@ -230,8 +230,8 @@ public class StereotypesRuleUtils {
         if(foundStereotype != null){
             return foundStereotype;
         }else{
-            LegacyErrorHandler.handleException(new OMFException("[InstanceCreator] " +
-                    "\n It seems that no profile owns the stereotype of the name \"" + str, OMFException.ECriticality.CRITICAL), false);
+            LegacyErrorHandler.handleException(new LegacyOMFException("[InstanceCreator] " +
+                    "\n It seems that no profile owns the stereotype of the name \"" + str, LegacyOMFException.ECriticality.CRITICAL), false);
         }
         return null; // Will not goes that far, an exception will thrown
     }
@@ -248,8 +248,8 @@ public class StereotypesRuleUtils {
         if(optStereotype.isPresent()){
             return optStereotype.get().getProfile();
         }else{
-            LegacyErrorHandler.handleException(new OMFException("[InstanceCreator] " +
-                    "\n It seems that no profile owns the stereotype of the name \"" + str, OMFException.ECriticality.CRITICAL), false);
+            LegacyErrorHandler.handleException(new LegacyOMFException("[InstanceCreator] " +
+                    "\n It seems that no profile owns the stereotype of the name \"" + str, LegacyOMFException.ECriticality.CRITICAL), false);
         }
         return null;
     }

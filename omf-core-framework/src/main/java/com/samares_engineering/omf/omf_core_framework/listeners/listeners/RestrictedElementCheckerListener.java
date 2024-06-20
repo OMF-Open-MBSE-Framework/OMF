@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener;
@@ -133,7 +133,7 @@ public class RestrictedElementCheckerListener extends AElementListener implement
             try {
                 OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);
             } catch (Exception e) {
-                LegacyErrorHandler.handleException(new OMFException("[RemoveListener] unable to unregister this listener",
+                LegacyErrorHandler.handleException(new LegacyOMFException("[RemoveListener] unable to unregister this listener",
                         GenericException.ECriticality.ALERT));
             }
         }

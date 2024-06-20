@@ -30,7 +30,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.*;
@@ -251,7 +251,7 @@ public class InternalDiagramManagement {
 
         if (!isSrcAPort || !isDstAPort) {    //TODO improve ErrorManagement
             LegacyErrorHandler.handleException(
-                    new OMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
+                    new LegacyOMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
             return;
         }
 
@@ -404,7 +404,7 @@ public class InternalDiagramManagement {
 
         if (!isSrcAPort || !isDstAPort) {    //TODO improve ErrorManagement
             LegacyErrorHandler.handleException(
-                    new OMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
+                    new LegacyOMFException("[Refresh] Connection with part not implemented yet", GenericException.ECriticality.ALERT), false);
             return;
         }
 

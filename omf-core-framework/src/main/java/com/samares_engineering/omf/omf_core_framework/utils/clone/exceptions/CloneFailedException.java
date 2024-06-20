@@ -1,8 +1,8 @@
 package com.samares_engineering.omf.omf_core_framework.utils.clone.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
-public class CloneFailedException extends OMFException {
+public class CloneFailedException extends LegacyOMFException {
     public CloneFailedException(String errorMsg, ECriticality criticality) {
         super(errorMsg, criticality);
     }

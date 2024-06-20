@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.list
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -24,7 +24,7 @@ public abstract class RegisteringPropertyChangeListener implements PropertyChang
         }
     }
 
-    public abstract void featureUnregistered(PropertyChangeEvent evt) throws OMFException;
+    public abstract void featureUnregistered(PropertyChangeEvent evt) throws LegacyOMFException;
 
-    public abstract void featureRegistered(PropertyChangeEvent evt) throws OMFException;
+    public abstract void featureRegistered(PropertyChangeEvent evt) throws LegacyOMFException;
 }

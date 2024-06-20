@@ -15,7 +15,7 @@ import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyManager;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -149,10 +149,10 @@ public class OptionsHelper {
      * @param optionName
      * @param value
      */
-    protected static boolean compareOptionValueByCategoryName(String category, String optionName, Object value) throws OMFException {
+    protected static boolean compareOptionValueByCategoryName(String category, String optionName, Object value) throws LegacyOMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);
         if(optOption.isEmpty())
-            throw new OMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
+            throw new LegacyOMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
         return optOption.get().getValue().equals(value);
     }
 
@@ -173,10 +173,10 @@ public class OptionsHelper {
      * @param optionName
      * @param value
      */
-    public static void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value) throws OMFException {
+    public static void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value) throws LegacyOMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);
         if(optOption.isEmpty())
-            throw new OMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
+            throw new LegacyOMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
 
         setOptionValue(optOption.get(), value);
     }

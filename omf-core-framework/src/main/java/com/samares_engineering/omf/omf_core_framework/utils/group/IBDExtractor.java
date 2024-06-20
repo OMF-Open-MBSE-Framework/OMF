@@ -13,7 +13,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +132,7 @@ public class IBDExtractor {
             return Refactoring.Replacing.replace(newTargetElement,extractedTarget, new ConvertElementInfo(newTargetElement.getClass()));
         } catch (ReadOnlyElementException e) {
             LegacyErrorHandler.handleException(
-                    new OMFException("Error while extracting, it seems some element related to the extract are readOnly",
+                    new LegacyOMFException("Error while extracting, it seems some element related to the extract are readOnly",
                             e, GenericException.ECriticality.CRITICAL), true);
         }
 

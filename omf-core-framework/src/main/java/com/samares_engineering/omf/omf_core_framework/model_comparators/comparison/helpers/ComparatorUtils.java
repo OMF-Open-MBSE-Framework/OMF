@@ -6,7 +6,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.DiffKind;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.ElementDiff;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.diffdata.dataclasses.PropertyDiff;
@@ -46,7 +46,7 @@ public class ComparatorUtils {
         return var0 == null ? "null" : var0.toString() ;
     }
 
-    public static Collection<Element> getReferencedElements(Object ref1Value) throws OMFException {
+    public static Collection<Element> getReferencedElements(Object ref1Value) throws LegacyOMFException {
         if (ref1Value == null)
             return Collections.emptyList();
         if (ref1Value instanceof Collection) {
@@ -58,7 +58,7 @@ public class ComparatorUtils {
         if (ref1Value instanceof Element) {
             return Collections.singletonList((Element) ref1Value);
         }
-        throw new OMFException("Unexpected type of referenced element: " + ref1Value.getClass().getName(), GenericException.ECriticality.CRITICAL);
+        throw new LegacyOMFException("Unexpected type of referenced element: " + ref1Value.getClass().getName(), GenericException.ECriticality.CRITICAL);
     }
 
     public static void toFullName(Element element, StringBuilder sBuilder) {
@@ -172,7 +172,7 @@ public class ComparatorUtils {
         Collection<Element> referencedElements1 = null;
         try {
             referencedElements1 = getReferencedElements(ref1.get(refName));
-        } catch (OMFException e) {
+        } catch (LegacyOMFException e) {
             LegacyErrorHandler.handleException(e);
         }
         return new ArrayList<>(referencedElements1);

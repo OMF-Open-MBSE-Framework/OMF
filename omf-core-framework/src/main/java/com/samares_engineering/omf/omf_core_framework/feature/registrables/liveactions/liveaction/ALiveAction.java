@@ -4,24 +4,24 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 
 import java.beans.PropertyChangeEvent;
 
 /**
  * Abstract class for a rule, contains the basic methods for a LiveAction rule.
  */
-public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChangeEvent> {
-    protected ILiveAction ruleEngine;
+public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, PropertyChangeEvent> {
+    protected ALiveActionEngine ruleEngine;
     public String id = "";
     public boolean isActivated = true;
 
-    public ARule(){id = getClass().getSimpleName();}
+    public ALiveAction(){id = getClass().getSimpleName();}
 
-    public ARule(String id){
+    public ALiveAction(String id){
         this.id = id;
     }
 
@@ -64,13 +64,13 @@ public abstract class ARule implements IRule<PropertyChangeEvent, PropertyChange
     }
 
     @Override
-    public void setRuleEngine(ILiveAction ruleEngine) {
+    public void setRuleEngine(ALiveActionEngine ruleEngine) {
         this.ruleEngine = ruleEngine;
     }
 
 
     @Override
-    public ILiveAction getRuleEngine() {
+    public ALiveActionEngine getRuleEngine() {
         return ruleEngine;
     }
 

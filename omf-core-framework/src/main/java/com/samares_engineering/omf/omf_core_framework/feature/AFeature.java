@@ -9,14 +9,13 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.List;
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
  * see {@link UIAction}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
- * see {@link ILiveAction}
+ * see {@link ALiveActionEngine}
  */
 public abstract class AFeature implements MDFeature {
     protected String name;
@@ -48,14 +47,14 @@ public abstract class AFeature implements MDFeature {
 
     // Registrable items
     private final List<UIAction> mdActions = new ArrayList<>();
-    private final List<ILiveAction> liveActions = new ArrayList<>();
+    private final List<ALiveActionEngine> liveActions = new ArrayList<>();
     private final List<IOption> options = new ArrayList<>();
     private final List<IHook> hooksHolders = new ArrayList<>();
 
     // Delayed registrable items
     private final List<IOption> projectOnlyOptions = new ArrayList<>();
     private final List<UIAction> projectOnlyMdActions = new ArrayList<>();
-    private final List<ILiveAction> projectOnlyLiveActions = new ArrayList<>();
+    private final List<ALiveActionEngine> projectOnlyLiveActions = new ArrayList<>();
 
     protected AFeature(String name) {
         this.name = name;
@@ -165,13 +164,13 @@ public abstract class AFeature implements MDFeature {
      *
      * @return list of IRuleEngine to register
      */
-    protected abstract List<ILiveAction> initLiveActions();
+    protected abstract List<ALiveActionEngine> initLiveActions();
     /**
      * Define all the project only live actions (RuleEngines) there, it will be automatically registered with the feature.
      *
      * @return list of IRuleEngine to register
      */
-    protected abstract List<ILiveAction> initProjectOnlyLiveActions();
+    protected abstract List<ALiveActionEngine> initProjectOnlyLiveActions();
 
     /**
      * Define all the feature options (Environment and Project) there, it will be automatically registered with the feature.
@@ -284,7 +283,7 @@ public abstract class AFeature implements MDFeature {
         return options;
     }
     @Override
-    public List<ILiveAction> getRuleEngines() {
+    public List<ALiveActionEngine> getRuleEngines() {
         return liveActions;
     }
     @Override
@@ -296,7 +295,7 @@ public abstract class AFeature implements MDFeature {
         return projectOnlyOptions;
     }
     @Override
-    public List<ILiveAction> getProjectOnlyRuleEngines() {
+    public List<ALiveActionEngine> getProjectOnlyRuleEngines() {
         return projectOnlyLiveActions;
     }
     @Override

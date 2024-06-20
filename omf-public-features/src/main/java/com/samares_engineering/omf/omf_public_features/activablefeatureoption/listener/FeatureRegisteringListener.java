@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OptionNotFound;
 import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.RegisteringPropertyChangeListener;
@@ -46,10 +46,10 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
      * This method is called when a feature is registered.
      * It will update the option value accordingly, so that the option is always in sync with the feature status.
      * @param evt the event
-     * @throws OMFException if the option is not found
+     * @throws LegacyOMFException if the option is not found
      */
     @Override
-    public void featureRegistered(PropertyChangeEvent evt) throws OMFException {
+    public void featureRegistered(PropertyChangeEvent evt) throws LegacyOMFException {
         MDFeature feature = (MDFeature) evt.getNewValue();
         if(feature == null) return;
         Property optionProperty = getOptionFromFeature(feature);

@@ -19,15 +19,15 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.CSVParseUtils;
 import com.samares_engineering.omf.omf_public_features.stereotypes.exceptions.CSVNotFoundException;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance.InstanceCallBehaviorCreatedRule;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance.InstancePropertyCreatedRule;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.type.ActivityToCreateRule;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.type.ClassToCreateRule;
+import com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance.InstanceCallBehaviorCreatedLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance.InstancePropertyCreatedLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.rules.type.ActivityToCreateLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.rules.type.ClassToCreateLiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.String2Class;
 
 import java.io.FileNotFoundException;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class StereotypesRuleUpdater {
     private final StereotypesFeature feature;
-    private ILiveAction organizerEngine;
+    private ALiveActionEngine organizerEngine;
     private char delimiter;
 
     public StereotypesRuleUpdater(StereotypesFeature feature) {
@@ -107,13 +107,13 @@ public class StereotypesRuleUpdater {
             switch (typeListener) {
                 case "Class2Property":
                     organizerEngine.addRule(
-                            new InstancePropertyCreatedRule(ruleId, Class.class, typeStereotype,
+                            new InstancePropertyCreatedLiveAction(ruleId, Class.class, typeStereotype,
                                     Property.class, instanceStereotype, instanceOwner)
                     );
                     break;
                 case "Activity2CallBehavior":
                     organizerEngine.addRule(
-                            new InstanceCallBehaviorCreatedRule(ruleId, Activity.class, typeStereotype,
+                            new InstanceCallBehaviorCreatedLiveAction(ruleId, Activity.class, typeStereotype,
                                     CallBehaviorAction.class, instanceStereotype, instanceOwner)
                     );
                     break;
@@ -151,10 +151,10 @@ public class StereotypesRuleUpdater {
 
             switch (typeListener) {
                 case "Property2Class":
-                    organizerEngine.addRule(new ClassToCreateRule(id, instance, definition, null));
+                    organizerEngine.addRule(new ClassToCreateLiveAction(id, instance, definition, null));
                     break;
                 case "CallBehavior2Activity":
-                    organizerEngine.addRule(new ActivityToCreateRule(id, instance, definition, null));
+                    organizerEngine.addRule(new ActivityToCreateLiveAction(id, instance, definition, null));
                     break;
                 default:
                     OMFLogger.logToUIConsole("[TypeCreator] While parsing file configuration." +
@@ -213,7 +213,7 @@ public class StereotypesRuleUpdater {
             lines = CSVParseUtils.getParsedLines(csvConfigFilePath, delimiter);
         } catch (FileNotFoundException e) {
             throw new CSVNotFoundException(csvConfigFilePath, e);
-        } catch (OMFException e) {
+        } catch (LegacyOMFException e) {
             throw new OMFCriticalException("Error while loading csv config file " + csvConfigFilePath, e);
         }
         if (!lines.isEmpty()) {
@@ -233,7 +233,7 @@ public class StereotypesRuleUpdater {
         return null == Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, instance);
     }
 
-    public void setOrganizerRuleEngine(ILiveAction organizerEngine) {
+    public void setOrganizerRuleEngine(ALiveActionEngine organizerEngine) {
         this.organizerEngine = organizerEngine;
     }
 

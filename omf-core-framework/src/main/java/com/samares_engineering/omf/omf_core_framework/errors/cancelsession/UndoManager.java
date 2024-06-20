@@ -15,7 +15,7 @@ import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 /**
@@ -97,7 +97,7 @@ public class UndoManager {
         int i = 0;
         while (SessionManager.getInstance().isSessionCreated(project)) {
             if (i++ > 100) {//avoid infinite loop
-                LegacyErrorHandler.handleException(new OMFException("[UNDO] Undo request did not succeed in time, please undo the action manually", GenericException.ECriticality.CRITICAL), false);
+                LegacyErrorHandler.handleException(new LegacyOMFException("[UNDO] Undo request did not succeed in time, please undo the action manually", GenericException.ECriticality.CRITICAL), false);
                 return;
             }
             try {
@@ -122,7 +122,7 @@ public class UndoManager {
         int i = 0;
         while (SessionManager.getInstance().isSessionCreated(project)) {
             if (i++ > 100) {//avoid infinite loop
-                LegacyErrorHandler.handleException(new OMFException("[UNDO] Undo request did not succeed in time, please undo the action manually", GenericException.ECriticality.CRITICAL), false);
+                LegacyErrorHandler.handleException(new LegacyOMFException("[UNDO] Undo request did not succeed in time, please undo the action manually", GenericException.ECriticality.CRITICAL), false);
                 return;
             }
             try {

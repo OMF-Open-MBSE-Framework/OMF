@@ -15,7 +15,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramUtils;
@@ -34,7 +34,7 @@ public class ConnectorUtils {
      * @param availableParts the available parts
      * @return the common ancestor
      */
-    public static Class getCommonAncestor(Property part1, Property part2, Class untilObject, List<Property> availableParts) throws OMFException {
+    public static Class getCommonAncestor(Property part1, Property part2, Class untilObject, List<Property> availableParts) throws LegacyOMFException {
         Class commonAncestor = null;
         List<Property> nestedPart1List = oldCalculateNestedPath(new ArrayList<>(), part1, untilObject, availableParts);
         List<Property> nestedPart2List = oldCalculateNestedPath(new ArrayList<>(), part2, untilObject, availableParts);
@@ -85,7 +85,7 @@ public class ConnectorUtils {
      */
     public static List<Property> oldCalculateNestedPath(List<Property> nestedPath, Property currentPart,
                                                         Class untilObject,
-                                                        List<Property> availableParts) throws OMFException {
+                                                        List<Property> availableParts) throws LegacyOMFException {
         if (untilObject.equals(currentPart.getOwner())) {
             nestedPath.add(currentPart);
             return nestedPath;
@@ -100,14 +100,14 @@ public class ConnectorUtils {
                     .orElseThrow();
 
             if (!availableParts.contains(currentPart))
-                throw new OMFException("[FullConnectionPath]-calculateNestedPath cannot find part: " + currentPart.getHumanName(),
+                throw new LegacyOMFException("[FullConnectionPath]-calculateNestedPath cannot find part: " + currentPart.getHumanName(),
                         GenericException.ECriticality.CRITICAL);
 
             return calculateNestedPath(nestedPath, nestedPart, untilObject, availableParts);
         }
     }
 
-    public static List<Property> calculateNestedPath(List<Property> nestedPath, Property currentPart, Class untilObject, List<Property> availableParts) throws OMFException {
+    public static List<Property> calculateNestedPath(List<Property> nestedPath, Property currentPart, Class untilObject, List<Property> availableParts) throws LegacyOMFException {
 
         if (untilObject.equals(currentPart.getOwner())) {
             nestedPath.add(currentPart);
@@ -120,7 +120,7 @@ public class ConnectorUtils {
 
             Optional<Property> nestedPart = availableParts.stream().filter(property -> partOwner.equals((property).getType())).findFirst();
             if (nestedPart.isEmpty())
-                throw new OMFException("[FullConnectionPath]-calculateNestedPath cannot find part: " + currentPart.getHumanName(), GenericException.ECriticality.CRITICAL);
+                throw new LegacyOMFException("[FullConnectionPath]-calculateNestedPath cannot find part: " + currentPart.getHumanName(), GenericException.ECriticality.CRITICAL);
 
             return calculateNestedPath(nestedPath, nestedPart.get(), untilObject, availableParts);
 

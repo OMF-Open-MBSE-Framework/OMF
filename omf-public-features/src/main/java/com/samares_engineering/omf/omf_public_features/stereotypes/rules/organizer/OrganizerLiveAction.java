@@ -8,21 +8,21 @@ package com.samares_engineering.omf.omf_public_features.stereotypes.rules.organi
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 
-public class OrganizerRule extends ARule {
+public class OrganizerLiveAction extends ALiveAction {
     public String idOption;
     public String strInstance = "";
     public Class classInstance = null;
     public Element owner = null;
     public ArrayList<String> strOwner = null;
 
-    public OrganizerRule(String id, String idOption, String strInstance, Class classInstance, Element owner) {
+    public OrganizerLiveAction(String id, String idOption, String strInstance, Class classInstance, Element owner) {
         super(id);
         this.strInstance = strInstance;
         this.owner = owner;

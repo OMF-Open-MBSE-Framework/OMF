@@ -7,12 +7,12 @@
 
 package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.creation;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 
-public class LiveActionExample extends ARule {
+public class LiveActionExample extends ALiveAction {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()

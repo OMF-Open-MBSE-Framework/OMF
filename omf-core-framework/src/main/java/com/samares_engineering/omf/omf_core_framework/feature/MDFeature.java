@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.feature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * A feature contains FeatureItem such as UI actions, rule engines, options and life cycle hooks.
  * see {@link RegistrableFeatureItem}
  * see {@link UIAction}
- * see {@link ILiveAction}
+ * see {@link ALiveActionEngine}
  * see {@link IHook}
  * see {@link IOption}
  */
@@ -36,12 +36,12 @@ public interface MDFeature{
 
 
     List<UIAction> getUIActions();
-    List<ILiveAction> getRuleEngines();
+    List<ALiveActionEngine> getRuleEngines();
     List<IOption> getOptions();
     List<IHook> getLifeCycleHooks();
 
     List<UIAction> getProjectOnlyUIActions();
-    List<ILiveAction> getProjectOnlyRuleEngines();
+    List<ALiveActionEngine> getProjectOnlyRuleEngines();
     List<IOption> getProjectOnlyOptions();
 
     void initFeature(APlugin plugin);

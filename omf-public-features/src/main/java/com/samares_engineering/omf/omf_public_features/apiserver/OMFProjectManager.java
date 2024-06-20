@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.core.project.ProjectsManager;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.TwcAccessor;
 
@@ -31,7 +31,7 @@ public class OMFProjectManager {
         return projectManager.getProject(projectPath);
     }
 
-    public Project openTWCProject(String projectPath) throws OMFException {
+    public Project openTWCProject(String projectPath) throws LegacyOMFException {
         getTWCAccessor().openProject(projectPath);
         return OMFUtils.getProject();
     }

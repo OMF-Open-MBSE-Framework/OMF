@@ -4,11 +4,11 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 
-public interface IRule<I, O> {
+public interface LiveAction<I, O> {
     boolean matches(I e);
 
     /**
@@ -26,7 +26,7 @@ public interface IRule<I, O> {
 
     boolean isBlocking();
 
-    void setRuleEngine(ILiveAction ruleEngine);
+    void setRuleEngine(ALiveActionEngine ruleEngine);
 
-    ILiveAction getRuleEngine();
+    ALiveActionEngine getRuleEngine();
 }

@@ -10,7 +10,7 @@ import com.nomagic.magicdraw.hyperlinks.Hyperlink;
 import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.NoElementFoundException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -103,7 +103,7 @@ public class ExtHyperTextServerRouting {
 
                 try {
                     handleTWCProjectOpening(projectPath);
-                } catch (OMFException e) {
+                } catch (LegacyOMFException e) {
                     throw new RuntimeException(e);
                 }
                 successAnswer("Project " + OMFUtils.getProject().getName() + " Opened", target, baseRequest, request, response);
@@ -111,7 +111,7 @@ public class ExtHyperTextServerRouting {
         };
     }
 
-    private static Project handleTWCProjectOpening(String projectPath) throws OMFException {
+    private static Project handleTWCProjectOpening(String projectPath) throws LegacyOMFException {
         return new OMFProjectManager().openTWCProject(projectPath);
     }
 

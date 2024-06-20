@@ -5,9 +5,9 @@
  * @since     0.0.0
  ******************************************************************************/
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine;
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine;
 
-public enum RECategoryEnum {
+public enum LiveActionType {
     ANALYSE("ANALYSE"),
     CREATE("CREATE"),
     DELETE("DELETE"),
@@ -16,7 +16,7 @@ public enum RECategoryEnum {
 
     private final String name;
 
-    RECategoryEnum(String name){
+    LiveActionType(String name){
         this.name = name;
     }
 

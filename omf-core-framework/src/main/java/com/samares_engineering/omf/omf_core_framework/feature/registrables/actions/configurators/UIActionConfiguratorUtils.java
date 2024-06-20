@@ -5,7 +5,7 @@ import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDActionsCategory;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 
 import java.util.*;
@@ -25,7 +25,7 @@ public class UIActionConfiguratorUtils {
     public static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, UIAction action) {
         List<String> subCategoryNames = Arrays.asList(action.getCategory().split(CATEGORY_SEPARATOR_REGEX));
         if (subCategoryNames.isEmpty()) {
-            LegacyErrorHandler.handleException(new OMFException("Trying to create or find a category with an empty " +
+            LegacyErrorHandler.handleException(new LegacyOMFException("Trying to create or find a category with an empty " +
                     "name", GenericException.ECriticality.CRITICAL), true);
         }
 

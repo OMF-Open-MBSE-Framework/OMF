@@ -6,22 +6,20 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_public_features.stereotypes.rules.type;
 
-import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 
-public class ActivityToCreateRule extends ARule {
-    public String strInstance   = "";
-    public String strType = "";
-    public Element owner = null;
-    public ArrayList<String> strOwner   = null;
+public class ClassToCreateLiveAction extends ALiveAction {
+    public final String strInstance;
+    public final String strType;
+    public final Element owner;
 
-    public ActivityToCreateRule(String id, String strInstance, String strType, Element owner){
+    public ClassToCreateLiveAction(String id, String strInstance, String strType, Element owner){
         super(id);
         this.strInstance  = strInstance;
         this.strType    = strType;
@@ -33,26 +31,24 @@ public class ActivityToCreateRule extends ARule {
         if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isTypeActivated()) {
             return false;
         }
-        if (evt.getSource() instanceof Action) {
-            Action action = (Action) evt.getSource();
-
-            boolean isElementStillInCreation = action.getOwner() == null;
-            if(isElementStillInCreation)
+        if (evt.getSource() instanceof Property) {
+            Property part = (Property) evt.getSource();
+            if(part.getOwner() == null)
                 return false;
-
-            if (null != evt.getSource()) {
-                return StereotypesRuleUtils.isInstanceActionWithStr(action, this.strInstance) &&
-                        StereotypesRuleUtils.isCBATypeNull(action);
+            if (null != evt.getSource() &&  StereotypesRuleUtils.isInstancePropertyWithStr(part, this.strInstance) &&
+                        StereotypesRuleUtils.isTypeElementTypeNull(part)) {
+                System.out.println("[Test]-Part: " + part.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
+                return true;
             }
         }
         return false;
     }
 
     @Override
-    public PropertyChangeEvent process(PropertyChangeEvent e) {
-        StereotypesRuleUtils.createActivityTypeBehavior(e, this.strType);
-        StereotypesRuleUtils.organizeType(e, owner);
-        return e;
+    public PropertyChangeEvent process(PropertyChangeEvent evt) {
+        StereotypesRuleUtils.createTypeBehavior(evt, this.strType);
+        StereotypesRuleUtils.organizeType(evt, owner);
+        return evt;
     }
 
     @Override

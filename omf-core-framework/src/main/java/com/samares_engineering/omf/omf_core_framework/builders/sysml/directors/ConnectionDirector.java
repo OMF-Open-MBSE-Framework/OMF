@@ -19,7 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.builders.sysml.ConnectorBu
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.InterfaceBlockBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.sysml.ProxyPortBuilder;
 import com.samares_engineering.omf.omf_core_framework.builders.uml.PortBuilder;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.InternalDiagramManagement;
@@ -159,7 +159,7 @@ public class ConnectionDirector implements IGenericBuilder {
 
     public ConnectionDirector createDirectConnectorPath(Property srcPart, ConnectableElement srcConnection, Property dstPart, Property dstConnection,
                                                         Element connectorOwner,
-                                                        List<Element> srcPropertyPath, List<Element> dstPropertyPath) throws OMFException, BuilderException {
+                                                        List<Element> srcPropertyPath, List<Element> dstPropertyPath) throws LegacyOMFException, BuilderException {
         ConnectorBuilder connectorBuilder = new ConnectorBuilder()
                 .createNewElement()
                 .srcPart(srcPart)
@@ -173,7 +173,7 @@ public class ConnectionDirector implements IGenericBuilder {
         return createDirectConnectorPath(connectorBuilder);
     }
 
-    public ConnectionDirector createDirectConnectorPath(ConnectorBuilder connectorBuilder) throws OMFException, BuilderException {
+    public ConnectionDirector createDirectConnectorPath(ConnectorBuilder connectorBuilder) throws LegacyOMFException, BuilderException {
         Connector connector = connectorBuilder.build();
         createdConnectors.add(connector);
         return this;

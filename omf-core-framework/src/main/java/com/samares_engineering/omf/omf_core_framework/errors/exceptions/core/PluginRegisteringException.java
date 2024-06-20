@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_core_framework.errors.exceptions.plugin;
+package com.samares_engineering.omf.omf_core_framework.errors.exceptions.core;
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;

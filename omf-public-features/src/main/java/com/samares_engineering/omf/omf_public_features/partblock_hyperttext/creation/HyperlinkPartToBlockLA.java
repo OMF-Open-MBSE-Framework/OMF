@@ -10,12 +10,12 @@ package com.samares_engineering.omf.omf_public_features.partblock_hyperttext.cre
 import com.nomagic.magicdraw.hyperlinks.Hyperlink;
 import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 
 import java.beans.PropertyChangeEvent;
 
-public class HyperlinkPartToBlockLA extends ARule {
+public class HyperlinkPartToBlockLA extends ALiveAction {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
        return new EventChecker()

@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.RestartAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.StopAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.server.ExtHyperTextServerRouting;
@@ -48,12 +48,12 @@ public class APIServerFeature extends SimpleFeature {
     }
 
     @Override
-    public List<ILiveAction> initLiveActions() {
+    public List<ALiveActionEngine> initLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<ILiveAction> initProjectOnlyLiveActions() {
+    protected List<ALiveActionEngine> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 

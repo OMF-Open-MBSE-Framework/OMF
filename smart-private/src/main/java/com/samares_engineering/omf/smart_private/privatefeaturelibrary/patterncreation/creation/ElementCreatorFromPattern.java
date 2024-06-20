@@ -10,7 +10,7 @@ package com.samares_engineering.omf.smart_private.privatefeaturelibrary.patternc
 import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationHelper;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class ElementCreatorFromPattern extends ARule {
+public class ElementCreatorFromPattern extends ALiveAction {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
         Set<Stereotype> configuredSTR = ((PatternCreationFeature) getFeature()).getConfiguredSTR();

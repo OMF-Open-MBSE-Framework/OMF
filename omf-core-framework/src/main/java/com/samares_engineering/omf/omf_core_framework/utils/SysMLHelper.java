@@ -6,7 +6,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.util.List;
@@ -20,12 +20,12 @@ public class SysMLHelper {
      * If the port has no type, or if the type has no flow properties, an exception is thrown.
      * @param port
      * @return the port direction: IN, OUT or INOUT;
-     * @throws OMFException
+     * @throws LegacyOMFException
      */
-    public static SysMLProfile.FlowDirectionKindEnum getPortDirection(Port port) throws OMFException {
+    public static SysMLProfile.FlowDirectionKindEnum getPortDirection(Port port) throws LegacyOMFException {
         Type type = port.getType();
         if(type == null)
-            throw new OMFException("Port has no type", GenericException.ECriticality.ALERT);
+            throw new LegacyOMFException("Port has no type", GenericException.ECriticality.ALERT);
 
         List<Element> flowProperties = type.getOwnedElement().stream()
                 .filter(Property.class::isInstance)
@@ -33,7 +33,7 @@ public class SysMLHelper {
                 .collect(Collectors.toList());
 
         if(flowProperties.isEmpty())
-            throw new OMFException("Port type has no flow properties", GenericException.ECriticality.ALERT);
+            throw new LegacyOMFException("Port type has no flow properties", GenericException.ECriticality.ALERT);
 
         boolean allOut = flowProperties.stream().allMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
 

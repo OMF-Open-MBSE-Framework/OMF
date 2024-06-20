@@ -1,8 +1,8 @@
 package com.samares_engineering.omf.omf_public_features.apiserver.exception;
 
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
-public class APIServerException extends OMFException {
+public class APIServerException extends LegacyOMFException {
 
     public APIServerException(String errorMsg, ECriticality criticality) {
         super(errorMsg, criticality);

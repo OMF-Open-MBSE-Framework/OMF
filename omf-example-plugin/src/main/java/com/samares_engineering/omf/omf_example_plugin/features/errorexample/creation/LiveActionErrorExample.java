@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.errorexample.cre
 
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.utils.options.OptionsHelper;
@@ -19,7 +19,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class LiveActionErrorExample extends ARule {
+public class LiveActionErrorExample extends ALiveAction {
     @Override
     protected boolean eventMatches(PropertyChangeEvent evt) {
         if (isOptionDeactivated()) return false;

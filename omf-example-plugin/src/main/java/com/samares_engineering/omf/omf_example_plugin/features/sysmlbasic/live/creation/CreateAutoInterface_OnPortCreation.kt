@@ -9,13 +9,13 @@ package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.
 import com.nomagic.magicdraw.sysml.util.SysMLProfile
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature
 import java.beans.PropertyChangeEvent
 
-class CreateAutoInterface_OnPortCreation : ARule() {
+class CreateAutoInterface_OnPortCreation : ALiveAction() {
     /**
      * Triggered only when a ProxyPort is created
      * @param evt event occurred in the model

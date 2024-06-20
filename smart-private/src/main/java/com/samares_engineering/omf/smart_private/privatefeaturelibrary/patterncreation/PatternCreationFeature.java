@@ -15,9 +15,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.ILiveAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.LiveAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule_engine.RECategoryEnum;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions.GenerateTemplateFromElement;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions.RefreshPatternConfiguration;
@@ -54,8 +54,8 @@ public class PatternCreationFeature extends SimpleFeature {
     }
 
     @Override
-    public List<ILiveAction> initLiveActions() {
-        ILiveAction creationRE = new LiveAction(RECategoryEnum.CREATE);
+    public List<ALiveActionEngine> initLiveActions() {
+        ALiveActionEngine creationRE = new LiveAction(LiveActionType.CREATE);
         creationRE.addRule(new ElementCreatorFromPattern());
         return List.of(creationRE);
     }

@@ -7,7 +7,7 @@
 package com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.rule_engines.rule.ARule;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
 import org.apache.logging.log4j.util.Strings;
@@ -17,23 +17,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InstancePropertyCreatedRule extends ARule {
+public class InstancePropertyCreatedLiveAction extends ALiveAction {
     public final Class classOfType;
     public final Class classOfInstance;
     public final String stereoOfType;
     public final String stereoOfInstance;
     public final List<String> ownerValidStereotypes;
 
-    public InstancePropertyCreatedRule(String id, Class classOfType, String stereoOfType, Class classOfInstance,
-                                       String stereoOfInstance, String ownerValidStereotypes) {
+    public InstancePropertyCreatedLiveAction(String id, Class classOfType, String stereoOfType, Class classOfInstance,
+                                             String stereoOfInstance, String ownerValidStereotypes) {
         this(id, classOfType, stereoOfType, classOfInstance, stereoOfInstance,
                 Arrays.stream(ownerValidStereotypes.split("/"))
                         .filter(Strings::isNotEmpty)
                         .collect(Collectors.toList()));
     }
 
-    public InstancePropertyCreatedRule(String id, Class classOfType, String stereoOfType, Class classOfInstance,
-                                       String stereoOfInstance, List<String> ownerValidStereotypes) {
+    public InstancePropertyCreatedLiveAction(String id, Class classOfType, String stereoOfType, Class classOfInstance,
+                                             String stereoOfInstance, List<String> ownerValidStereotypes) {
         super(id);
         this.stereoOfType = stereoOfType;
         this.classOfType = classOfType;

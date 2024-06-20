@@ -15,7 +15,7 @@ import com.nomagic.magicdraw.teamwork2.locks.LockService;
 import com.nomagic.task.EmptyProgressStatus;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.TwcAccessor;
 import com.samares_engineering.omf.omf_test_framework.projectmanager.TestCloseProjects;
@@ -60,7 +60,7 @@ public abstract class ATestBatchTWC extends ATestBatch {
             Objects.requireNonNull(LockService.getLockService(getInitProject()), "Can't get lock service")
                     .lockElements(Collections.singleton(getInitProject().getPrimaryModel()), true, EmptyProgressStatus.getDefault());
 
-        } catch (OMFException e) {
+        } catch (LegacyOMFException e) {
             LegacyErrorHandler.handleException(e, true);
         }
     }
@@ -77,7 +77,7 @@ public abstract class ATestBatchTWC extends ATestBatch {
     }
 
 
-    private Project getProjectFromTWC(TwcAccessor twcAccessor, String projectName) throws OMFException {
+    private Project getProjectFromTWC(TwcAccessor twcAccessor, String projectName) throws LegacyOMFException {
         twcAccessor.openProject(projectName);
         return OMFUtils.getProject();
     }

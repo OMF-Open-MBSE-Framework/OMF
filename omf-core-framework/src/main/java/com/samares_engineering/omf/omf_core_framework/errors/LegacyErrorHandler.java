@@ -15,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.S
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.UnCaughtException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -42,11 +42,11 @@ public class LegacyErrorHandler {
         displayDEVMessage("RollBack requested", rollBackException, OMFLogLevel.INFO);
     }
 
-    public static void handleException(OMFException omfException) {
+    public static void handleException(LegacyOMFException omfException) {
         handleException(omfException, true);
     }
 
-    public static void handleException(OMFException exception, boolean cancelSession) {
+    public static void handleException(LegacyOMFException exception, boolean cancelSession) {
         defaultOMFExceptionHandling(exception, cancelSession);
     }
 

@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.utils.utils;
 
 import com.jidesoft.csv.CsvReader;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
 import javax.annotation.CheckForNull;
 import javax.swing.*;
@@ -24,19 +24,19 @@ public class CSVParseUtils {
 
     private CSVParseUtils() {}
 
-    public static List<List<String>> getParsedLines(String csvFilePath, char delimiter) throws FileNotFoundException, OMFException {
+    public static List<List<String>> getParsedLines(String csvFilePath, char delimiter) throws FileNotFoundException, LegacyOMFException {
         CsvReader reader = new CsvReader(new FileReader(csvFilePath), delimiter);
         List<List<String>> parsedLines;
         try {
             parsedLines = reader.parse();
         } catch (IOException e) {
-            throw new OMFException("Can't read .csv config file " + csvFilePath + ", make sure the file is in .csv " +
+            throw new LegacyOMFException("Can't read .csv config file " + csvFilePath + ", make sure the file is in .csv " +
                     "format and uses " + delimiter + "as a delimiter", e, GenericException.ECriticality.CRITICAL);
         }
         try {
             reader.getReader().close();
         } catch (IOException e) {
-            throw new OMFException("Problem when closing .csv config file " + csvFilePath, e,
+            throw new LegacyOMFException("Problem when closing .csv config file " + csvFilePath, e,
                             GenericException.ECriticality.ALERT);
         }
         return parsedLines;

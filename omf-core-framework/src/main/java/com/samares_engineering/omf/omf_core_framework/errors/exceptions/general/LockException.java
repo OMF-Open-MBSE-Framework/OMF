@@ -10,12 +10,12 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class LockException extends OMFException {
+public class LockException extends LegacyOMFException {
     public Collection<Element> lockedElements;
     public Exception exception;
     public GenericException.ECriticality criticality;

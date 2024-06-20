@@ -13,7 +13,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OMFException;
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class UMLUtils {
                 .anyMatch(metaClass -> metaClass == StereotypesHelper.getMetaClassByClass(OMFUtils.getProject(), clazz));
     }
 
-    public static boolean isInstanceOfMetaClass(Element type, java.lang.Class metaClass) throws OMFException {
+    public static boolean isInstanceOfMetaClass(Element type, java.lang.Class metaClass) throws LegacyOMFException {
         try {
             if (type == null)
                 return false;
@@ -40,7 +40,7 @@ public class UMLUtils {
 
             return type instanceof NamedElement && ((NamedElement) type).getName().equals(metaClass.getSimpleName());
         } catch (Exception e) {
-            throw new OMFException("Impossible to determine MetaClass of selected type",
+            throw new LegacyOMFException("Impossible to determine MetaClass of selected type",
                     e, GenericException.ECriticality.CRITICAL);
         }
     }
