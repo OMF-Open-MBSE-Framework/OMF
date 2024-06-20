@@ -15,10 +15,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_public_features.stereotypes.actions.RefreshStereotypesRulesBasedOnConfigFiles;
 
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class StereotypesFeature extends SimpleFeature {
 
     @Override
     public List<ALiveActionEngine> initLiveActions() {
-        ALiveActionEngine creationRE = new LiveAction(LiveActionType.CREATE);
+        var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
         return Arrays.asList(creationRE);
     }
 

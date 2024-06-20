@@ -1,7 +1,5 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
-
 /**
  * Used for critical exceptions inside the framework.
  */

@@ -10,11 +10,10 @@ import com.nomagic.magicdraw.properties.BooleanProperty
 import com.nomagic.magicdraw.properties.Property
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions.*
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.creation.LiveActionErrorExample
 import java.beans.PropertyChangeEvent
@@ -33,7 +32,7 @@ class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT TEST FEATU
     }
 
     public override fun initLiveActions(): List<ALiveActionEngine> {
-        val creationRE: ALiveActionEngine = LiveAction(LiveActionType.CREATE)
+        val creationRE = ALiveActionEngine(LiveActionType.CREATE)
         creationRE.addRule(LiveActionErrorExample())
         return java.util.List.of(creationRE)
     }

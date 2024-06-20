@@ -1,6 +1,5 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base;
 
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 

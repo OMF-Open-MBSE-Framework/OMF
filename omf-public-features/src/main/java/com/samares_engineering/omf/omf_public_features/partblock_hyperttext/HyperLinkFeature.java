@@ -10,12 +10,11 @@ package com.samares_engineering.omf.omf_public_features.partblock_hyperttext;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.creation.HyperlinkPartToBlockLA;
 
 import java.beans.PropertyChangeEvent;
@@ -29,7 +28,7 @@ public class HyperLinkFeature extends SimpleFeature {
 
     @Override
     public List<ALiveActionEngine> initLiveActions() {
-        ALiveActionEngine creationRE = new LiveAction(LiveActionType.AFTER_AUTOMATION);
+        var creationRE = new ALiveActionEngine(LiveActionType.AFTER_AUTOMATION);
         creationRE.addRule(new HyperlinkPartToBlockLA());
         return List.of(creationRE);
     }

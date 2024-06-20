@@ -16,7 +16,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions.GenerateTemplateFromElement;
@@ -55,7 +54,7 @@ public class PatternCreationFeature extends SimpleFeature {
 
     @Override
     public List<ALiveActionEngine> initLiveActions() {
-        ALiveActionEngine creationRE = new LiveAction(LiveActionType.CREATE);
+        var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
         creationRE.addRule(new ElementCreatorFromPattern());
         return List.of(creationRE);
     }

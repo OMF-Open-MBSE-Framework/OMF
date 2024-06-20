@@ -10,8 +10,8 @@ package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions.ExampleMDAction1;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.actions.ExampleMDAction2;
@@ -43,7 +43,7 @@ public class TemplateFeature extends SimpleFeature {
 
     @Override
     public List<ALiveActionEngine> initLiveActions() {
-        ALiveActionEngine creationRE = new LiveAction(LiveActionType.CREATE);
+        var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
         creationRE.addRule(new LiveActionExample());
         return List.of(creationRE);
     }
