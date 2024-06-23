@@ -2,17 +2,17 @@ package com.samares_engineering.omf.omf_public_features.apiserver;
 
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 public class APIEnvOptionsHelper extends EnvOptionsHelper {
     private static APIEnvOptionsHelper instance;
 
-    public APIEnvOptionsHelper(MDFeature feature) {
+    public APIEnvOptionsHelper(OMFFeature feature) {
         super(feature);
     }
 
-    public static APIEnvOptionsHelper getInstance(MDFeature feature) {
+    public static APIEnvOptionsHelper getInstance(OMFFeature feature) {
         if(instance == null)
             instance = new APIEnvOptionsHelper(feature);
         return instance;

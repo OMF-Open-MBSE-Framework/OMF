@@ -8,7 +8,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -40,7 +40,7 @@ public class OMFErrorHandler {
      * Case where the framework user threw the OMF runtime exception to signal to the framework that an irrecoverable
      * error occurred
      */
-    public void handleException(OMFLogException exception, MDFeature impactedFeature) {
+    public void handleException(OMFLogException exception, OMFFeature impactedFeature) {
         if (exception instanceof OMFCriticalException) {
             handleCriticalException((OMFCriticalException) exception, impactedFeature, OMFLogLevel.ERROR);
         } else {
@@ -64,7 +64,7 @@ public class OMFErrorHandler {
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      */
-    public void handleException(Exception exception, MDFeature impactedFeature) {
+    public void handleException(Exception exception, OMFFeature impactedFeature) {
         exception.printStackTrace();
         OMFLogger.logToNotification(generateUserMessage(exception), OMFLogLevel.ERROR, impactedFeature);
         rollbackChanges();
@@ -85,7 +85,7 @@ public class OMFErrorHandler {
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      */
-    public void handleException(Error exception, MDFeature impactedFeature) {
+    public void handleException(Error exception, OMFFeature impactedFeature) {
         exception.printStackTrace();
         OMFLogger.logToNotification(generateUserMessage(exception), OMFLogLevel.ERROR, impactedFeature);
         rollbackChanges();
@@ -132,7 +132,7 @@ public class OMFErrorHandler {
      * @param impactedFeature The feature that was impacted by the exception. This can be null.
      * @param logLevel        The level at which the exception should be logged.
      */
-    private static void handleCriticalException(OMFCriticalException exception, @CheckForNull MDFeature impactedFeature, OMFLogLevel logLevel) {
+    private static void handleCriticalException(OMFCriticalException exception, @CheckForNull OMFFeature impactedFeature, OMFLogLevel logLevel) {
         exception.printStackTrace();
         if (exception.isNotSilent()) {
             if (impactedFeature != null)
@@ -153,7 +153,7 @@ public class OMFErrorHandler {
         }
     }
 
-    private void handleOMFLogException(OMFLogException exception, @CheckForNull MDFeature impactedFeature) {
+    private void handleOMFLogException(OMFLogException exception, @CheckForNull OMFFeature impactedFeature) {
         exception.printStackTrace();
         if (impactedFeature != null)
             OMFLogger.logToNotification(exception.getLog(), OMFLogLevel.ERROR, impactedFeature);
@@ -161,7 +161,7 @@ public class OMFErrorHandler {
             OMFLogger.logToNotification(exception.getLog(), OMFLogLevel.ERROR);
     }
 
-    private static void unregisterFeature(MDFeature impactedFeature) {
+    private static void unregisterFeature(OMFFeature impactedFeature) {
         new OMFLog().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
                 .text("You can reactivate it in the environment options.")
                 .logToUiConsole(OMFLogLevel.ERROR);

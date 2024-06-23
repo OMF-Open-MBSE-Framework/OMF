@@ -13,9 +13,10 @@ import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.AOnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions.GenerateTemplateFromElement;
@@ -34,8 +35,8 @@ public class PatternCreationFeature extends SimpleFeature {
     }
     
     @Override
-    protected List<IHook> initLifeCycleHooks() {
-        return List.of(new OnProjectOpenedHook() {
+    protected List<Hook> initLifeCycleHooks() {
+        return List.of(new AOnProjectOpenedHook() {
             @Override
             public void onProjectOpened(Project project) {
                 // We delegate management of rules to OrganizeListenerConfig
@@ -53,7 +54,7 @@ public class PatternCreationFeature extends SimpleFeature {
     }
 
     @Override
-    public List<ALiveActionEngine> initLiveActions() {
+    public List<LiveActionEngine> initLiveActions() {
         var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
         creationRE.addRule(new ElementCreatorFromPattern());
         return List.of(creationRE);

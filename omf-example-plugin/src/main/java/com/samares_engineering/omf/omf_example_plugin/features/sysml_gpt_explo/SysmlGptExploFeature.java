@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.actions.ImportFromGPT;
 
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public class SysmlGptExploFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<IOption> initProjectOnlyOptions() {
+    protected List<Option> initProjectOnlyOptions() {
         var projectOpt = createEnvOption(
                 new StringProperty(GPT_GENERATED_JSON_TO_IMPORT,
                         "C:\\Users\\HugoStinson\\OneDrive - SAMARES ENGINEERING\\Bureau\\gptMagicdrawTest.json"),

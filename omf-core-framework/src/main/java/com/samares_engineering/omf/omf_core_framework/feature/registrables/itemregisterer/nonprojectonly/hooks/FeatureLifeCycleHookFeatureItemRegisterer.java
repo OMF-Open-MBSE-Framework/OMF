@@ -2,8 +2,8 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.item
 
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IFeatureLifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.FeatureLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
  * Registerer for Feature Hooks. <br>
  * It registers the all hooks stored in a HookExecutor to the FeatureRegisterer,
  * which will trigger them when the Feature lifecycle events are triggered.
- * @see IFeatureLifeCycleHook
+ * @see FeatureLifeCycleHook
  */
-public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<IFeatureLifeCycleHook> {
+public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<FeatureLifeCycleHook> {
     private FeatureRegisterer featureRegisterer;
 
     @Override
@@ -32,7 +32,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param hooks list of hooks
      */
     @Override
-    public void registerFeatureItems(List<IFeatureLifeCycleHook> hooks) {
+    public void registerFeatureItems(List<FeatureLifeCycleHook> hooks) {
         hooks.forEach(this::registerFeatureItem);
     }
 
@@ -41,7 +41,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param hook HookExecutor to register
      */
     @Override
-    public void registerFeatureItem(IFeatureLifeCycleHook hook) {
+    public void registerFeatureItem(FeatureLifeCycleHook hook) {
         try {
             if(hook == null || !hook.isActivated()) return;
             featureRegisterer.getFeatureHookExecutor().addHook(hook);
@@ -57,7 +57,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param mdFeature list of hooks
      */
     @Override
-    public void unregisterFeatureItems(List<IFeatureLifeCycleHook> mdFeature) {
+    public void unregisterFeatureItems(List<FeatureLifeCycleHook> mdFeature) {
         mdFeature.forEach(this::unregisterFeatureItem);
     }
 
@@ -66,7 +66,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param hook hook to unregister
      */
     @Override
-    public void unregisterFeatureItem(IFeatureLifeCycleHook hook) {
+    public void unregisterFeatureItem(FeatureLifeCycleHook hook) {
         try {
             if(hook == null) return;
             featureRegisterer.getFeatureHookExecutor().removeHook(hook);
@@ -82,10 +82,10 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param feature feature
      */
     @Override
-    public void registerFeatureItems(MDFeature feature) {
+    public void registerFeatureItems(OMFFeature feature) {
         registerFeatureItems(feature.getLifeCycleHooks().stream()
-                .filter(IFeatureLifeCycleHook.class::isInstance)
-                .map(IFeatureLifeCycleHook.class::cast)
+                .filter(FeatureLifeCycleHook.class::isInstance)
+                .map(FeatureLifeCycleHook.class::cast)
                 .collect(Collectors.toList()));
     }
 
@@ -94,10 +94,10 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param feature feature
      */
     @Override
-    public void unregisterFeatureItems(MDFeature feature) {
+    public void unregisterFeatureItems(OMFFeature feature) {
         unregisterFeatureItems(feature.getLifeCycleHooks().stream()
-                .filter(IFeatureLifeCycleHook.class::isInstance)
-                .map(IFeatureLifeCycleHook.class::cast)
+                .filter(FeatureLifeCycleHook.class::isInstance)
+                .map(FeatureLifeCycleHook.class::cast)
                 .collect(Collectors.toList()));
     }
 

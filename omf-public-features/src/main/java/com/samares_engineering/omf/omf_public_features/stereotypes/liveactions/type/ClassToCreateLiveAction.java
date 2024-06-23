@@ -4,13 +4,13 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_public_features.stereotypes.rules.type;
+package com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.type;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
+import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesLiveActionsUtils;
 
 import java.beans.PropertyChangeEvent;
 
@@ -35,8 +35,8 @@ public class ClassToCreateLiveAction extends ALiveAction {
             Property part = (Property) evt.getSource();
             if(part.getOwner() == null)
                 return false;
-            if (null != evt.getSource() &&  StereotypesRuleUtils.isInstancePropertyWithStr(part, this.strInstance) &&
-                        StereotypesRuleUtils.isTypeElementTypeNull(part)) {
+            if (null != evt.getSource() &&  StereotypesLiveActionsUtils.isInstancePropertyWithStr(part, this.strInstance) &&
+                        StereotypesLiveActionsUtils.isTypeElementTypeNull(part)) {
                 System.out.println("[Test]-Part: " + part.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
                 return true;
             }
@@ -46,8 +46,8 @@ public class ClassToCreateLiveAction extends ALiveAction {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent evt) {
-        StereotypesRuleUtils.createTypeBehavior(evt, this.strType);
-        StereotypesRuleUtils.organizeType(evt, owner);
+        StereotypesLiveActionsUtils.createTypeBehavior(evt, this.strType);
+        StereotypesLiveActionsUtils.organizeType(evt, owner);
         return evt;
     }
 

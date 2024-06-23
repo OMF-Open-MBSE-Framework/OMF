@@ -11,11 +11,11 @@ import com.nomagic.magicdraw.core.Project;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IOnMagicDrawStartHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectClosedHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectOpenedHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectClosedHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.RestrictedElementCheckerListener;
 
@@ -42,14 +42,14 @@ public class LockSafeFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<IHook> initLifeCycleHooks() {
+    protected List<Hook> initLifeCycleHooks() {
         return List.of(new FeatureConfigurationHooks(this));
     }
 
 
 
     @Override
-    public List<IOption> initOptions() {
+    public List<Option> initOptions() {
         LockerManagerOptionHelper envOptionsHelper = (LockerManagerOptionHelper) getEnvOptionsHelper();
         OptionImpl twcSafeModeOption = envOptionsHelper.twcSafeModeOption(restrictedElementListener);
         OptionImpl rollbackOption = envOptionsHelper.rollbackOption(restrictedElementListener);
@@ -60,8 +60,8 @@ public class LockSafeFeature extends SimpleFeature {
      * Hooks to register for the feature to configure the feature on project open and close and MagicDraw start.
      */
     private static class FeatureConfigurationHooks extends BaseHookFeatureItem implements
-            IOnProjectOpenedHook,
-            IOnProjectClosedHook,
+            OnProjectOpenedHook,
+            OnProjectClosedHook,
             IOnMagicDrawStartHook {
 
         private final LockSafeFeature lockSafeFeature;

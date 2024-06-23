@@ -12,8 +12,8 @@ import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.RestartAPIServerAction;
 import com.samares_engineering.omf.omf_public_features.apiserver.actions.StopAPIServerAction;
@@ -48,17 +48,17 @@ public class APIServerFeature extends SimpleFeature {
     }
 
     @Override
-    public List<ALiveActionEngine> initLiveActions() {
+    public List<LiveActionEngine> initLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
-    protected List<ALiveActionEngine> initProjectOnlyLiveActions() {
+    protected List<LiveActionEngine> initProjectOnlyLiveActions() {
         return Collections.emptyList();
     }
 
     @Override
-    public List<IOption> initOptions() {
+    public List<Option> initOptions() {
         OptionImpl serverURLOption = createEnvOption(
                 new StringProperty(APIEnvOptionsHelper.API_SERVER_URL, serverURL),
                 APIEnvOptionsHelper.API_SERVER_CONFIGURATION_GROUP
@@ -80,7 +80,7 @@ public class APIServerFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<IOption> initProjectOnlyOptions() {
+    protected List<Option> initProjectOnlyOptions() {
         return Collections.emptyList();
     }
 

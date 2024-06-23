@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.listener;
 
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -25,12 +25,12 @@ public class FeatureRegisteringEventHandler {
         this.support.removePropertyChangeListener(pcl);
     }
 
-    public void fireFeatureRegistered(MDFeature feature) {
+    public void fireFeatureRegistered(OMFFeature feature) {
 
         support.firePropertyChange(FEATURE_REGISTERED, null, feature);
     }
 
-    public void fireFeatureUnregistered(MDFeature feature) {
+    public void fireFeatureUnregistered(OMFFeature feature) {
         support.firePropertyChange(FEATURE_UNREGISTERED, feature, null);
     }
 

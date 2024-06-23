@@ -8,9 +8,9 @@
 package com.samares_engineering.omf.omf_core_framework.feature;
 
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 import java.util.List;
@@ -19,14 +19,14 @@ import java.util.List;
  * This interface represents a feature that can be registered in the OMF.
  * A feature is a set of functionalities that can be activated or deactivated.
  * A feature can be registered in the OMF and can be project specific.
- * A feature contains FeatureItem such as UI actions, rule engines, options and life cycle hooks.
+ * A feature contains FeatureItem such as UI actions, live action engines, options and life cycle hooks.
  * see {@link RegistrableFeatureItem}
  * see {@link UIAction}
- * see {@link ALiveActionEngine}
- * see {@link IHook}
- * see {@link IOption}
+ * see {@link LiveActionEngine}
+ * see {@link Hook}
+ * see {@link Option}
  */
-public interface MDFeature{
+public interface OMFFeature {
     String getName();
 
     void setIsRegistered(boolean isRegistered);
@@ -36,13 +36,13 @@ public interface MDFeature{
 
 
     List<UIAction> getUIActions();
-    List<ALiveActionEngine> getRuleEngines();
-    List<IOption> getOptions();
-    List<IHook> getLifeCycleHooks();
+    List<LiveActionEngine> getLiveActionEngines();
+    List<Option> getOptions();
+    List<Hook> getLifeCycleHooks();
 
     List<UIAction> getProjectOnlyUIActions();
-    List<ALiveActionEngine> getProjectOnlyRuleEngines();
-    List<IOption> getProjectOnlyOptions();
+    List<LiveActionEngine> getProjectOnlyLiveActionEngines();
+    List<Option> getProjectOnlyOptions();
 
     void initFeature(APlugin plugin);
     void initFeatureItems();

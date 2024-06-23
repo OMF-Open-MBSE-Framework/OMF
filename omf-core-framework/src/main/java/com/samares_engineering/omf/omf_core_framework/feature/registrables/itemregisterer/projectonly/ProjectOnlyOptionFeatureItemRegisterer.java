@@ -9,9 +9,9 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.item
 
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * Registerer/Unregister the 'ProjectOnly' Options of a feature.
  * All ProjectOnly Options will be configured when the project is opened, and removed when the project is closed.
- * @see IOption
+ * @see Option
  */
-public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<IOption> {
+public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<Option> {
     private FeatureRegisterer featureRegister;
 
     @Override
@@ -35,7 +35,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
      * By default, the removal will be delegated to the IOptions itself.
      * @param options list of IOptions
      */
-    public void registerFeatureItems(List<IOption> options) {
+    public void registerFeatureItems(List<Option> options) {
         options.forEach(this::registerFeatureItem);
     }
 
@@ -44,11 +44,11 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
      * By default, the removal will be delegated to the IOptions itself.
      * @param options list of IOptions
      */
-    public void unregisterFeatureItems(List<IOption> options){
+    public void unregisterFeatureItems(List<Option> options){
         options.forEach(this::unregisterFeatureItem);
     }
 
-    public void registerFeatureItem(IOption option) {
+    public void registerFeatureItem(Option option) {
         try {
             if (option == null || !option.isActivated()) return;
             if (option.getKind() == OptionKind.Project && OMFUtils.isProjectVoid()) return;
@@ -60,7 +60,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
         }
     }
 
-    public void unregisterFeatureItem(IOption option) {
+    public void unregisterFeatureItem(Option option) {
         try {
             if (option == null) return;
             option.unregister();
@@ -72,12 +72,12 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
     }
 
     @Override
-    public void registerFeatureItems(MDFeature feature) {
+    public void registerFeatureItems(OMFFeature feature) {
         registerFeatureItems(feature.getProjectOnlyOptions());
     }
 
     @Override
-    public void unregisterFeatureItems(MDFeature feature) {
+    public void unregisterFeatureItems(OMFFeature feature) {
         unregisterFeatureItems(feature.getProjectOnlyOptions());
     }
 

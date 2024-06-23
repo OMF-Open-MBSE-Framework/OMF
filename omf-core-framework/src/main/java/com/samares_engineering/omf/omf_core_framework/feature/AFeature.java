@@ -11,9 +11,9 @@ import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -32,10 +32,10 @@ import java.util.List;
  * see {@link com.samares_engineering.omf.omf_core_framework.plugin.APlugin}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
  * see {@link UIAction}
- * see {@link com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption}
- * see {@link ALiveActionEngine}
+ * see {@link Option}
+ * see {@link LiveActionEngine}
  */
-public abstract class AFeature implements MDFeature {
+public abstract class AFeature implements OMFFeature {
     protected String name;
     protected boolean isRegistered;
     private boolean isFeatureInitialised = false;
@@ -47,14 +47,14 @@ public abstract class AFeature implements MDFeature {
 
     // Registrable items
     private final List<UIAction> mdActions = new ArrayList<>();
-    private final List<ALiveActionEngine> liveActions = new ArrayList<>();
-    private final List<IOption> options = new ArrayList<>();
-    private final List<IHook> hooksHolders = new ArrayList<>();
+    private final List<LiveActionEngine> liveActions = new ArrayList<>();
+    private final List<Option> options = new ArrayList<>();
+    private final List<Hook> hooksHolders = new ArrayList<>();
 
     // Delayed registrable items
-    private final List<IOption> projectOnlyOptions = new ArrayList<>();
+    private final List<Option> projectOnlyOptions = new ArrayList<>();
     private final List<UIAction> projectOnlyMdActions = new ArrayList<>();
-    private final List<ALiveActionEngine> projectOnlyLiveActions = new ArrayList<>();
+    private final List<LiveActionEngine> projectOnlyLiveActionEngines = new ArrayList<>();
 
     protected AFeature(String name) {
         this.name = name;
@@ -132,8 +132,8 @@ public abstract class AFeature implements MDFeature {
         }
 
         try {
-            this.projectOnlyLiveActions.addAll(initProjectOnlyLiveActions());
-            projectOnlyLiveActions.forEach(this::initRegistrableItem);
+            this.projectOnlyLiveActionEngines.addAll(initProjectOnlyLiveActions());
+            projectOnlyLiveActionEngines.forEach(this::initRegistrableItem);
         } catch (Exception e) {
             throw new FeatureRegisteringException("Error while instantiating project only live actions for feature " + name, e);
         }
@@ -160,36 +160,36 @@ public abstract class AFeature implements MDFeature {
     protected abstract List<UIAction> initFeatureActions();
 
     /**
-     * Define all the feature live actions (RuleEngines) there, it will be automatically registered with the feature.
+     * Define all the feature live actions (LiveActionEngines) there, it will be automatically registered with the feature.
      *
-     * @return list of IRuleEngine to register
+     * @return list of ILiveActionEngine to register
      */
-    protected abstract List<ALiveActionEngine> initLiveActions();
+    protected abstract List<LiveActionEngine> initLiveActions();
     /**
-     * Define all the project only live actions (RuleEngines) there, it will be automatically registered with the feature.
+     * Define all the project only live actions (LiveActionEngines) there, it will be automatically registered with the feature.
      *
-     * @return list of IRuleEngine to register
+     * @return list of ILiveActionEngine to register
      */
-    protected abstract List<ALiveActionEngine> initProjectOnlyLiveActions();
+    protected abstract List<LiveActionEngine> initProjectOnlyLiveActions();
 
     /**
      * Define all the feature options (Environment and Project) there, it will be automatically registered with the feature.
      *
      * @return list of IOption to register
      */
-    protected abstract List<IOption> initOptions();
+    protected abstract List<Option> initOptions();
     /**
      * Define all the project only options (Environment and Project) there, it will be automatically registered with the feature.
      *
      * @return list of IOption to register
      */
-    protected abstract List<IOption> initProjectOnlyOptions();
+    protected abstract List<Option> initProjectOnlyOptions();
 
     /**
      * Define all the lifecycle hooks there, it will be automatically registered with the feature.
      * @return list of LifeCycleHook to register
      */
-    protected abstract List<IHook> initLifeCycleHooks();
+    protected abstract List<Hook> initLifeCycleHooks();
 
     /*
      Lifecycle hooks
@@ -279,11 +279,11 @@ public abstract class AFeature implements MDFeature {
     }
 
     @Override
-    public List<IOption> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
     @Override
-    public List<ALiveActionEngine> getRuleEngines() {
+    public List<LiveActionEngine> getLiveActionEngines() {
         return liveActions;
     }
     @Override
@@ -291,12 +291,12 @@ public abstract class AFeature implements MDFeature {
         return mdActions;
     }
     @Override
-    public List<IOption> getProjectOnlyOptions() {
+    public List<Option> getProjectOnlyOptions() {
         return projectOnlyOptions;
     }
     @Override
-    public List<ALiveActionEngine> getProjectOnlyRuleEngines() {
-        return projectOnlyLiveActions;
+    public List<LiveActionEngine> getProjectOnlyLiveActionEngines() {
+        return projectOnlyLiveActionEngines;
     }
     @Override
     public List<UIAction> getProjectOnlyUIActions() {
@@ -308,7 +308,7 @@ public abstract class AFeature implements MDFeature {
     }
 
     @Override
-    public List<IHook> getLifeCycleHooks() {
+    public List<Hook> getLifeCycleHooks() {
         return hooksHolders;
     }
 }

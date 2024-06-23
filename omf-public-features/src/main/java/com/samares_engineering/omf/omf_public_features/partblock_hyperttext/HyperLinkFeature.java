@@ -11,9 +11,10 @@ import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.creation.HyperlinkPartToBlockLA;
 
@@ -27,14 +28,14 @@ public class HyperLinkFeature extends SimpleFeature {
     }
 
     @Override
-    public List<ALiveActionEngine> initLiveActions() {
+    public List<LiveActionEngine> initLiveActions() {
         var creationRE = new ALiveActionEngine(LiveActionType.AFTER_AUTOMATION);
         creationRE.addRule(new HyperlinkPartToBlockLA());
         return List.of(creationRE);
     }
 
     @Override
-    public List<IOption> initOptions() {
+    public List<Option> initOptions() {
         OptionImpl testEnvOption = createEnvOption(
                 new BooleanProperty("Activate autoLink from part to Block (add hyperlink to access Block Specification with double click on part:", true),
                 "Feature Activation");

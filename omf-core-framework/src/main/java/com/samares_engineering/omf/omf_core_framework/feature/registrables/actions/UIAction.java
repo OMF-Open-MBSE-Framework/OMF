@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.actions.MDAction;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem;
 
 import java.util.List;
@@ -30,6 +30,6 @@ public interface UIAction extends RegistrableFeatureItem {
 
     String getCategory();
 
-    void initRegistrableItem(MDFeature mdFeature);
+    void initRegistrableItem(OMFFeature OMFFeature);
 
 }

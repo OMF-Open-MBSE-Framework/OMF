@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.S
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.PluginRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
@@ -28,13 +28,13 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.RuleEngineFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.LiveActionEngineFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.UIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.FeatureLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.MagicDrawLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.ProjectLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyRuleEngineFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyLiveActionEngineFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyUIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
@@ -51,7 +51,7 @@ import java.util.*;
  * It includes auto registering of:
  * - Configurators (Browser, Diagram, Menu)
  * - Options (Environment, and Project (NOT IMPLEMENTED YET)
- * - Features registering (Listeners, RuleEngines, Options, MDActions)
+ * - Features registering (Listeners, LiveActionEngines, Options, MDActions)
  * <p>
  * For quick plugin registering use OMFxxx as default classes (OMFBrowserConfigurator, OMFEnvironmentOptions, ...)
  */
@@ -59,7 +59,7 @@ public abstract class APlugin extends Plugin {
     private boolean isInitialized = false;
 
     // Initialized by user implementing the plugin (basically API of the framework for the plugin)
-    private final Map<String, MDFeature> features = new LinkedHashMap<>();
+    private final Map<String, OMFFeature> features = new LinkedHashMap<>();
     private List<AOptionListener> environmentOptionsListener;
     private FeatureProjectOptionsConfigurator projectOptionConfigurator;
     private OMFPropertyOptionsGroup environmentOptionsGroup;
@@ -72,10 +72,10 @@ public abstract class APlugin extends Plugin {
 
     // Feature item registerers
     private UIActionFeatureItemRegisterer uiActionFeatureItemRegisterer;
-    private RuleEngineFeatureItemRegisterer ruleEngineFeatureItemRegisterer;
+    private LiveActionEngineFeatureItemRegisterer liveActionEngineFeatureItemRegisterer;
     private OptionFeatureItemRegisterer optionFeatureItemRegisterer;
     private ProjectOnlyUIActionFeatureItemRegisterer projectOnlyUiActionRegisterer;
-    private ProjectOnlyRuleEngineFeatureItemRegisterer projectOnlyRuleEngineFeatureItemRegisterer;
+    private ProjectOnlyLiveActionEngineFeatureItemRegisterer projectOnlyLiveActionEngineFeatureItemRegisterer;
     private ProjectOnlyOptionFeatureItemRegisterer projectOnlyOptionFeatureItemRegisterer;
     private ProjectLifeCycleHookFeatureItemRegisterer projectLifeCycleHookFeatureItemRegisterer;
     private MagicDrawLifeCycleHookFeatureItemRegisterer magicDrawLifeCycleHookFeatureItemRegisterer;
@@ -92,7 +92,7 @@ public abstract class APlugin extends Plugin {
      *
      * @return List of feature to register at plugin initialization
      */
-    protected abstract List<MDFeature> initFeatures();
+    protected abstract List<OMFFeature> initFeatures();
 
     /**
      * Define the BrowserConfigurator to register at plugin initialization.
@@ -252,10 +252,10 @@ public abstract class APlugin extends Plugin {
         try {
             this.featureRegisterer = initFeatureRegisterer();
             this.uiActionFeatureItemRegisterer = new UIActionFeatureItemRegisterer(this);
-            this.ruleEngineFeatureItemRegisterer = new RuleEngineFeatureItemRegisterer();
+            this.liveActionEngineFeatureItemRegisterer = new LiveActionEngineFeatureItemRegisterer();
             this.optionFeatureItemRegisterer = new OptionFeatureItemRegisterer();
             this.projectOnlyUiActionRegisterer = new ProjectOnlyUIActionFeatureItemRegisterer(this);
-            this.projectOnlyRuleEngineFeatureItemRegisterer = new ProjectOnlyRuleEngineFeatureItemRegisterer();
+            this.projectOnlyLiveActionEngineFeatureItemRegisterer = new ProjectOnlyLiveActionEngineFeatureItemRegisterer();
             this.projectOnlyOptionFeatureItemRegisterer = new ProjectOnlyOptionFeatureItemRegisterer();
             this.projectLifeCycleHookFeatureItemRegisterer = new ProjectLifeCycleHookFeatureItemRegisterer();
             this.magicDrawLifeCycleHookFeatureItemRegisterer = new MagicDrawLifeCycleHookFeatureItemRegisterer();
@@ -263,7 +263,7 @@ public abstract class APlugin extends Plugin {
 
             List<FeatureItemRegisterer> defaultFeatureRegisterer = List.of(
                     uiActionFeatureItemRegisterer,
-                    ruleEngineFeatureItemRegisterer,
+                    liveActionEngineFeatureItemRegisterer,
                     optionFeatureItemRegisterer,
                     projectLifeCycleHookFeatureItemRegisterer,
                     magicDrawLifeCycleHookFeatureItemRegisterer,
@@ -271,7 +271,7 @@ public abstract class APlugin extends Plugin {
                     );
 
             List<ProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
-                    projectOnlyRuleEngineFeatureItemRegisterer,
+                    projectOnlyLiveActionEngineFeatureItemRegisterer,
                     projectOnlyOptionFeatureItemRegisterer);
             featureRegisterer.addAllIFeatureItemRegisterer(defaultFeatureRegisterer);
             featureRegisterer.addAllProjectOnlyFeatureItemRegisterer(defaultProjectOnlyFeatureRegisterer);
@@ -290,7 +290,7 @@ public abstract class APlugin extends Plugin {
 
     private void configureFeatures() {
         try {
-            List<MDFeature> featureInstances = this.initFeatures();
+            List<OMFFeature> featureInstances = this.initFeatures();
             if (featureInstances == null) {
                 OMFLogger.logToUIConsole("No feature to registered in the plugin", OMFLogLevel.WARNING);
                 return;
@@ -427,8 +427,8 @@ public abstract class APlugin extends Plugin {
 
 
     //------------------------------------ GETTER SETTER ----------------------------------------------------//
-    public RuleEngineFeatureItemRegisterer getRuleEngineRegisterer() {
-        return ruleEngineFeatureItemRegisterer;
+    public LiveActionEngineFeatureItemRegisterer getLiveActionEngineRegisterer() {
+        return liveActionEngineFeatureItemRegisterer;
     }
 
     public UIActionFeatureItemRegisterer getUiActionFeatureItemRegisterer() {
@@ -453,11 +453,11 @@ public abstract class APlugin extends Plugin {
         return Collections.emptyList();
     }
 
-    public List<MDFeature> getFeatures() {
+    public List<OMFFeature> getFeatures() {
         return new ArrayList<>(features.values());
     }
 
-    public Optional<MDFeature> getFeatureByName(String name) {
+    public Optional<OMFFeature> getFeatureByName(String name) {
         if (features.containsKey(name)) {
             return Optional.of(features.get(name));
         }
@@ -516,16 +516,16 @@ public abstract class APlugin extends Plugin {
         return projectOnlyUiActionRegisterer;
     }
 
-    public ProjectOnlyRuleEngineFeatureItemRegisterer getProjectOnlyRuleEngineFeatureItemRegisterer() {
-        return projectOnlyRuleEngineFeatureItemRegisterer;
+    public ProjectOnlyLiveActionEngineFeatureItemRegisterer getProjectOnlyLiveActionEngineFeatureItemRegisterer() {
+        return projectOnlyLiveActionEngineFeatureItemRegisterer;
     }
 
     public ProjectOnlyOptionFeatureItemRegisterer getProjectOnlyOptionFeatureItemRegisterer() {
         return projectOnlyOptionFeatureItemRegisterer;
     }
 
-    public RuleEngineFeatureItemRegisterer getRuleEngineFeatureItemRegisterer() {
-        return ruleEngineFeatureItemRegisterer;
+    public LiveActionEngineFeatureItemRegisterer getLiveActionEngineFeatureItemRegisterer() {
+        return liveActionEngineFeatureItemRegisterer;
     }
 
     public OptionFeatureItemRegisterer getOptionFeatureItemRegisterer() {

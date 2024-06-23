@@ -20,14 +20,14 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.CSVParseUtils;
 import com.samares_engineering.omf.omf_public_features.stereotypes.exceptions.CSVNotFoundException;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance.InstanceCallBehaviorCreatedLiveAction;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance.InstancePropertyCreatedLiveAction;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.type.ActivityToCreateLiveAction;
-import com.samares_engineering.omf.omf_public_features.stereotypes.rules.type.ClassToCreateLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.instance.InstanceCallBehaviorCreatedLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.instance.InstancePropertyCreatedLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.type.ActivityToCreateLiveAction;
+import com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.type.ClassToCreateLiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.utils.String2Class;
 
 import java.io.FileNotFoundException;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class StereotypesRuleUpdater {
     private final StereotypesFeature feature;
-    private ALiveActionEngine organizerEngine;
+    private LiveActionEngine organizerEngine;
     private char delimiter;
 
     public StereotypesRuleUpdater(StereotypesFeature feature) {
@@ -233,7 +233,7 @@ public class StereotypesRuleUpdater {
         return null == Finder.byNameRecursively().find(OMFUtils.getProject(), Stereotype.class, instance);
     }
 
-    public void setOrganizerRuleEngine(ALiveActionEngine organizerEngine) {
+    public void setOrganizerRuleEngine(LiveActionEngine organizerEngine) {
         this.organizerEngine = organizerEngine;
     }
 

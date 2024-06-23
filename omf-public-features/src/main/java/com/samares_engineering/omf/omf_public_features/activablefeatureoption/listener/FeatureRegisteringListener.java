@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericE
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OptionNotFound;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.RegisteringPropertyChangeListener;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 
@@ -31,7 +31,7 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
      */
     @Override
     public void featureUnregistered(PropertyChangeEvent evt) {
-        MDFeature feature = (MDFeature) evt.getOldValue();
+        OMFFeature feature = (OMFFeature) evt.getOldValue();
         try {
             if(feature == null) return;
             Property optionProperty = getOptionFromFeature(feature);
@@ -50,7 +50,7 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
      */
     @Override
     public void featureRegistered(PropertyChangeEvent evt) throws LegacyOMFException {
-        MDFeature feature = (MDFeature) evt.getNewValue();
+        OMFFeature feature = (OMFFeature) evt.getNewValue();
         if(feature == null) return;
         Property optionProperty = getOptionFromFeature(feature);
         if(optionProperty == null) throw new OptionNotFound(feature.getName());
@@ -63,7 +63,7 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
      * @return the option
      * @throws OptionNotFound if the option is not found
      */
-    private Property getOptionFromFeature(MDFeature feature) throws OptionNotFound {
+    private Property getOptionFromFeature(OMFFeature feature) throws OptionNotFound {
         if(activationFeature.getEnvOptionsHelper() == null) return null;
         return activationFeature.getEnvOptionsHelper()
                 .getOptionFromFeature(feature);

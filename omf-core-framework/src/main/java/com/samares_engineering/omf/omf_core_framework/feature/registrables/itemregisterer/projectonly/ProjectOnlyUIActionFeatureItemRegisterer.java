@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly;
 
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.UIActionFeatureItemRegisterer;
@@ -15,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 /**
  * This class is used to register and unregister UIActions from MDFeatures.
- * It is used by the {@link MDFeature} class.
+ * It is used by the {@link OMFFeature} class.
  * It is used to register MDActions that are only available in the context of a project.
  * It is used to register MDActions that are available in the context of a project and a diagram.
  * It is used to register MDActions that are available in the context of a project and a browser.
@@ -27,12 +27,12 @@ public class ProjectOnlyUIActionFeatureItemRegisterer extends UIActionFeatureIte
     }
 
     @Override
-    public void registerFeatureItems(MDFeature feature) {
+    public void registerFeatureItems(OMFFeature feature) {
         registerFeatureItems(feature.getProjectOnlyUIActions());
     }
 
     @Override
-    public void unregisterFeatureItems(MDFeature feature) {
+    public void unregisterFeatureItems(OMFFeature feature) {
         unregisterFeatureItems(feature.getProjectOnlyUIActions());
     }
 }

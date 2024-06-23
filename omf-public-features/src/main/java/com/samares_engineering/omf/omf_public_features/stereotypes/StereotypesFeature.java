@@ -13,11 +13,12 @@ import com.nomagic.magicdraw.properties.StringProperty;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.AOnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_public_features.stereotypes.actions.RefreshStereotypesRulesBasedOnConfigFiles;
 
 import java.util.ArrayList;
@@ -61,14 +62,14 @@ public class StereotypesFeature extends SimpleFeature {
     }
 
     @Override
-    public List<ALiveActionEngine> initLiveActions() {
+    public List<LiveActionEngine> initLiveActions() {
         var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
         return Arrays.asList(creationRE);
     }
 
     @Override
-    public List<IOption> initOptions() {
-        List<IOption> options = new ArrayList<>();
+    public List<Option> initOptions() {
+        List<Option> options = new ArrayList<>();
 
         // Organizer
         StringProperty organizerConfigFilePathProp = new StringProperty(StereotypesEnvOptionsHelper.ORGANIZER_CONFIG_FILE_PATH_ID,
@@ -112,12 +113,12 @@ public class StereotypesFeature extends SimpleFeature {
         return options;
     }
     @Override
-    protected List<IHook> initLifeCycleHooks() {
-        return List.of(new OnProjectOpenedHook() {
+    protected List<Hook> initLifeCycleHooks() {
+        return List.of(new AOnProjectOpenedHook() {
             @Override
             public void onProjectOpened(Project project) {
                 // We delegate management of rules to OrganizeListenerConfig
-                ruleUpdater.setOrganizerRuleEngine(getRuleEngines().get(0));
+                ruleUpdater.setOrganizerRuleEngine(getLiveActionEngines().get(0));
                 ruleUpdater.initAllRulesBasedOnConfigFiles();
             }
         });

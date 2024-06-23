@@ -4,12 +4,12 @@
  * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since 0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance;
+package com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.instance;
 
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
+import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesLiveActionsUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class InstanceCallBehaviorCreatedLiveAction extends ALiveAction {
         if (evt.getSource() instanceof Action) {
             Action action = (Action) evt.getSource();
             if (null != evt.getSource()) {
-                if (StereotypesRuleUtils.isParentBehaviorInstantiationPatternSatisfied(action, this.strDefinition) &&
-                        StereotypesRuleUtils.ownerHasStereotype(action, this.strOwner)) {
+                if (StereotypesLiveActionsUtils.isParentBehaviorInstantiationPatternSatisfied(action, this.strDefinition) &&
+                        StereotypesLiveActionsUtils.ownerHasStereotype(action, this.strOwner)) {
                     System.out.println("[Test]-Part: " + action.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
                     return true;
                 }
@@ -55,7 +55,7 @@ public class InstanceCallBehaviorCreatedLiveAction extends ALiveAction {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        StereotypesRuleUtils.instantiationBehavior(e, this.strInstance);
+        StereotypesLiveActionsUtils.instantiationBehavior(e, this.strInstance);
         return e;
     }
 

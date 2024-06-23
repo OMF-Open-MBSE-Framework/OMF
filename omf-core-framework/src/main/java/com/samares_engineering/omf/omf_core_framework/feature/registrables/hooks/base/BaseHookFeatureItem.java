@@ -1,18 +1,18 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base;
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
-public class BaseHookFeatureItem implements IHook {
-    private MDFeature feature;
+public class BaseHookFeatureItem implements Hook {
+    private OMFFeature feature;
     private boolean activated = true;
 
-    public MDFeature getFeature() {
+    public OMFFeature getFeature() {
         return feature;
     }
 
-    public void initRegistrableItem(MDFeature feature) {
+    public void initRegistrableItem(OMFFeature feature) {
         this.feature = feature;
     }
 

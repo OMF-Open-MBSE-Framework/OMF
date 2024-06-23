@@ -6,7 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
 public interface LiveAction<I, O> {
     boolean matches(I e);
@@ -26,7 +26,7 @@ public interface LiveAction<I, O> {
 
     boolean isBlocking();
 
-    void setRuleEngine(ALiveActionEngine ruleEngine);
+    void setRuleEngine(LiveActionEngine ruleEngine);
 
-    ALiveActionEngine getRuleEngine();
+    LiveActionEngine getRuleEngine();
 }

@@ -17,7 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeature
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public interface IOption extends RegistrableFeatureItem {
+public interface Option extends RegistrableFeatureItem {
     void addListener(AOptionListener listener);
 
     /**

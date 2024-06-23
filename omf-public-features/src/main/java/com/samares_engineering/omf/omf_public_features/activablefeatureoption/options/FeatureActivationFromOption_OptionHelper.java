@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.OptionNotFound;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
@@ -25,7 +25,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
     public static final String MANAGE_FEATURE_ACTIVATION = "Manage Feature Activation:";
     public static final String ACTIVATE_FEATURE_ = "Activate ";
 
-    public FeatureActivationFromOption_OptionHelper(MDFeature feature, OMFPropertyOptionsGroup featureManagerOptionGroup) {
+    public FeatureActivationFromOption_OptionHelper(OMFFeature feature, OMFPropertyOptionsGroup featureManagerOptionGroup) {
         super(feature, featureManagerOptionGroup);
     }
 
@@ -35,7 +35,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      * @param feature the feature
      * @return the option
      */
-    public OptionImpl createDeactivationOption(MDFeature feature) {
+    public OptionImpl createDeactivationOption(OMFFeature feature) {
         BooleanProperty isInterfaceCreationActivated = new BooleanProperty(
                 getFeatureActivationPropertyName(feature),true);
         isInterfaceCreationActivated.setValue(feature.isRegistered());
@@ -72,7 +72,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      * @param feature the feature
      * @return the option name
      */
-    private String getFeatureActivationPropertyName(MDFeature feature) {
+    private String getFeatureActivationPropertyName(OMFFeature feature) {
         return ACTIVATE_FEATURE_ + feature.getName() + ":";
     }
 
@@ -82,7 +82,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      * @param optionProperty the option
      * @return the feature
      */
-    public Optional<MDFeature> getFeatureFromOption(APlugin plugin, Property optionProperty) {
+    public Optional<OMFFeature> getFeatureFromOption(APlugin plugin, Property optionProperty) {
         return plugin.getFeatures().stream()
                 .filter(pluginFeature -> optionProperty.getID().contains(pluginFeature.getName()))
                 .findFirst();
@@ -93,7 +93,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      * @return the options
      */
     public List<Property> getAllFeatureOptions() {
-        List<MDFeature> features = new ArrayList<>(getFeature().getPlugin().getFeatures());
+        List<OMFFeature> features = new ArrayList<>(getFeature().getPlugin().getFeatures());
         features.remove(getFeature());
         return features.stream()
                 .map(this::getFeatureActivationPropertyName)
@@ -112,7 +112,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      * @return the option
      * @throws OptionNotFound if the option is not found
      */
-    public Property getOptionFromFeature(MDFeature feature) throws OptionNotFound {
+    public Property getOptionFromFeature(OMFFeature feature) throws OptionNotFound {
         String optionName = getFeatureActivationPropertyName(feature);
         Property optionProperty = getPropertyByName(optionName);
         if (optionProperty == null) throw new OptionNotFound(optionName);

@@ -8,7 +8,7 @@
 package com.samares_engineering.omf.omf_example_plugin.test;
 
 import com.nomagic.magicdraw.commandline.CommandLineActionManager;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
@@ -59,7 +59,7 @@ public class OMFExampleTestPlugin extends APlugin {
     }
 
     @Override
-    public List<MDFeature> initFeatures() {
+    public List<OMFFeature> initFeatures() {
         return List.of(
                 new FeatureCopyID(),
                 new TestGenerationFeature()

@@ -9,8 +9,8 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.live
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.exceptions.ErrorWhileEvaluationRuleException;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 
@@ -25,7 +25,7 @@ public class ALiveActionEngine implements LiveActionEngine {
     private String id = "";
     private int priority = -1;
     private String category = "";
-    private MDFeature feature;
+    private OMFFeature feature;
     private boolean activated = true;
 
     public ALiveActionEngine(LiveActionType category){
@@ -46,7 +46,7 @@ public class ALiveActionEngine implements LiveActionEngine {
     }
 
     @Override
-    public void initRegistrableItem(MDFeature feature) {
+    public void initRegistrableItem(OMFFeature feature) {
         this.feature = feature;
         setListenerManager(feature.getPlugin().getListenerManager());
     }
@@ -155,7 +155,7 @@ public class ALiveActionEngine implements LiveActionEngine {
         this.category = category;
     }
 
-    public MDFeature getFeature() {
+    public OMFFeature getFeature() {
         return feature;
     }
 

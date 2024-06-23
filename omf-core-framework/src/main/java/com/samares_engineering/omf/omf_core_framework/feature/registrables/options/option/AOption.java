@@ -16,7 +16,7 @@ import com.nomagic.magicdraw.core.options.OptionsGroup;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.properties.Property;
 import com.nomagic.magicdraw.properties.PropertyResourceProvider;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -32,7 +32,7 @@ import java.util.List;
  * finding option in magicdraw, and getting and setting various properties of the option.
  * Listeners can be added to the option to listen to changes in the option.
  */
-public abstract class AOption implements IOption {
+public abstract class AOption implements Option {
     String groupName;
     String uriOptions;
     String categoryName;
@@ -45,7 +45,7 @@ public abstract class AOption implements IOption {
 
     private final List<AOptionListener> registeredListener = new ArrayList<>();
     private final List<AOptionListener> listenerToRegister = new ArrayList<>();
-    private MDFeature feature;
+    private OMFFeature feature;
 
 
     /**
@@ -53,7 +53,7 @@ public abstract class AOption implements IOption {
      *
      * @param feature The feature to initialize the registrable item with.
      */
-    public void initRegistrableItem(MDFeature feature) {
+    public void initRegistrableItem(OMFFeature feature) {
         this.feature = feature;
     }
 
@@ -442,7 +442,7 @@ public abstract class AOption implements IOption {
      * @return The feature of the option.
      */
     @Override
-    public MDFeature getFeature() {
+    public OMFFeature getFeature() {
         return feature;
     }
 }

@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -23,15 +23,15 @@ public class OMFBarrierExecutor {
         return executeWithinBarrier(runnable, "Action performed by the plugin", null);
     }
 
-    public static Object executeWithinBarrier(Runnable runnable, MDFeature feature) {
+    public static Object executeWithinBarrier(Runnable runnable, OMFFeature feature) {
         return executeWithinBarrier(runnable, feature.getName() + " action", feature);
     }
 
-    public static Object executeWithinBarrier(Runnable runnable, String sessionName, @CheckForNull MDFeature feature) {
+    public static Object executeWithinBarrier(Runnable runnable, String sessionName, @CheckForNull OMFFeature feature) {
         return executeWithinBarrier(runnable, feature, true);
     }
 
-    public static Object executeWithinBarrier(Runnable runnable, @CheckForNull MDFeature feature, boolean deactivateListener) {
+    public static Object executeWithinBarrier(Runnable runnable, @CheckForNull OMFFeature feature, boolean deactivateListener) {
         return executeWithinBarrier(() ->{runnable.run(); return null;}, feature, deactivateListener);
     }
 
@@ -39,12 +39,12 @@ public class OMFBarrierExecutor {
         return executeWithinBarrier(callable, null);
     }
 
-    public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull MDFeature feature) {
+    public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull OMFFeature feature) {
         return executeWithinBarrier(callable, feature, false);
     }
 
 
-    public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull MDFeature feature, boolean deactivateListener) {
+    public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull OMFFeature feature, boolean deactivateListener) {
         if (deactivateListener)
             ListenerManager.getInstance().deactivateAllListeners();
 
@@ -73,15 +73,15 @@ public class OMFBarrierExecutor {
         return executeInSessionWithinBarrier(runnable, "Action performed by the plugin", null);
     }
 
-    public static Object executeInSessionWithinBarrier(Runnable runnable, MDFeature feature) {
+    public static Object executeInSessionWithinBarrier(Runnable runnable, OMFFeature feature) {
         return executeInSessionWithinBarrier(runnable, feature.getName() + " action", feature);
     }
 
-    public static Object executeInSessionWithinBarrier(Runnable runnable, String sessionName, @CheckForNull MDFeature feature) {
+    public static Object executeInSessionWithinBarrier(Runnable runnable, String sessionName, @CheckForNull OMFFeature feature) {
         return executeInSessionWithinBarrier(runnable, sessionName, feature, true);
     }
 
-    public static Object executeInSessionWithinBarrier(Runnable runnable, String sessionName, @CheckForNull MDFeature feature, boolean deactivateListener) {
+    public static Object executeInSessionWithinBarrier(Runnable runnable, String sessionName, @CheckForNull OMFFeature feature, boolean deactivateListener) {
         return executeInSessionWithinBarrier(() ->{runnable.run(); return null;}, sessionName, feature, deactivateListener);
     }
 
@@ -89,15 +89,15 @@ public class OMFBarrierExecutor {
         return executeInSessionWithinBarrier(callable, "Action performed by the plugin", null);
     }
 
-    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, MDFeature feature) {
+    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, OMFFeature feature) {
         return executeInSessionWithinBarrier(callable, feature.getName() + " action", feature);
     }
 
-    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull MDFeature feature) {
+    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull OMFFeature feature) {
         return executeInSessionWithinBarrier(callable, sessionName, feature, true);
     }
 
-    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull MDFeature feature, boolean deactivateListeners) {
+    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull OMFFeature feature, boolean deactivateListeners) {
         if (deactivateListeners)
             ListenerManager.getInstance().deactivateAllListeners();
         try {

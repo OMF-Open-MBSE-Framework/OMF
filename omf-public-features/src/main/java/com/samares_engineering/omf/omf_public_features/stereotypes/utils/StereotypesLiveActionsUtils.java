@@ -32,7 +32,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class StereotypesRuleUtils {
+public class StereotypesLiveActionsUtils {
 
     public static boolean isTypeInstantiationPatternSatisfied(Element src, Class srcClass, String strType, Class typeClass) {
         if (!(src instanceof TypedElement) || !srcClass.isInstance(src)) {

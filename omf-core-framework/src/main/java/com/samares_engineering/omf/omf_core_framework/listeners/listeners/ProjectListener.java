@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
 import com.samares_engineering.omf.omf_core_framework.factory.FactoryManager;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.project.ProjectHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -216,7 +216,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //        }
 //    }
 
-    private void projectOnlyFeatureRegistering(List<MDFeature> registeredFeatures) {
+    private void projectOnlyFeatureRegistering(List<OMFFeature> registeredFeatures) {
         try {
             plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
@@ -270,7 +270,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //        }
 //    }
 
-    private void projectOnlyFeatureUnRegistering(List<MDFeature> registeredFeatures) {
+    private void projectOnlyFeatureUnRegistering(List<OMFFeature> registeredFeatures) {
         try {
             plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {

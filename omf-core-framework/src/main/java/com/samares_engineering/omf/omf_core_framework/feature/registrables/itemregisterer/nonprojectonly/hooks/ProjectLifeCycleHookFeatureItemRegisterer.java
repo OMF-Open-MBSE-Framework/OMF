@@ -2,8 +2,8 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.item
 
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IProjectLifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.ProjectLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
 
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
  * Registerer for Project Hooks. <br>
  * It registers the all hooks stored in a HookExecutor to the ProjectListener,
  * which will trigger them when the project lifecycle events are triggered.
- * @see IProjectLifeCycleHook
+ * @see ProjectLifeCycleHook
  */
-public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<IProjectLifeCycleHook> {
+public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<ProjectLifeCycleHook> {
     private FeatureRegisterer featureRegister;
     private ProjectListener projectListener;
 
@@ -35,7 +35,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param hooks list of hooks
      */
     @Override
-    public void registerFeatureItems(List<IProjectLifeCycleHook> hooks) {
+    public void registerFeatureItems(List<ProjectLifeCycleHook> hooks) {
         hooks.forEach(this::registerFeatureItem);
     }
 
@@ -44,7 +44,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param hook HookExecutor to register
      */
     @Override
-    public void registerFeatureItem(IProjectLifeCycleHook hook) {
+    public void registerFeatureItem(ProjectLifeCycleHook hook) {
         try {
             if(hook == null || !hook.isActivated()) return;
             projectListener.getProjectHookExecutor().addHook(hook);
@@ -60,7 +60,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param mdFeature list of hooks
      */
     @Override
-    public void unregisterFeatureItems(List<IProjectLifeCycleHook> mdFeature) {
+    public void unregisterFeatureItems(List<ProjectLifeCycleHook> mdFeature) {
         mdFeature.forEach(this::unregisterFeatureItem);
     }
 
@@ -69,7 +69,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param hook hook to unregister
      */
     @Override
-    public void unregisterFeatureItem(IProjectLifeCycleHook hook) {
+    public void unregisterFeatureItem(ProjectLifeCycleHook hook) {
         try {
             if(hook == null) return;
             projectListener.getProjectHookExecutor().removeHook(hook);
@@ -85,10 +85,10 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param feature feature
      */
     @Override
-    public void registerFeatureItems(MDFeature feature) {
+    public void registerFeatureItems(OMFFeature feature) {
         registerFeatureItems(feature.getLifeCycleHooks().stream()
-                .filter(IProjectLifeCycleHook.class::isInstance)
-                .map(IProjectLifeCycleHook.class::cast)
+                .filter(ProjectLifeCycleHook.class::isInstance)
+                .map(ProjectLifeCycleHook.class::cast)
                 .collect(Collectors.toList()));
     }
 
@@ -97,10 +97,10 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
      * @param feature feature
      */
     @Override
-    public void unregisterFeatureItems(MDFeature feature) {
+    public void unregisterFeatureItems(OMFFeature feature) {
         unregisterFeatureItems(feature.getLifeCycleHooks().stream()
-                .filter(IProjectLifeCycleHook.class::isInstance)
-                .map(IProjectLifeCycleHook.class::cast)
+                .filter(ProjectLifeCycleHook.class::isInstance)
+                .map(ProjectLifeCycleHook.class::cast)
                 .collect(Collectors.toList()));
     }
 

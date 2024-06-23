@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.item
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IMagicdrawLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -86,7 +86,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
      * @param feature feature
      */
     @Override
-    public void registerFeatureItems(MDFeature feature) {
+    public void registerFeatureItems(OMFFeature feature) {
         registerFeatureItems(feature.getLifeCycleHooks().stream()
                 .filter(IMagicdrawLifeCycleHook.class::isInstance)
                 .map(IMagicdrawLifeCycleHook.class::cast)
@@ -98,7 +98,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
      * @param feature feature
      */
     @Override
-    public void unregisterFeatureItems(MDFeature feature) {
+    public void unregisterFeatureItems(OMFFeature feature) {
         unregisterFeatureItems(feature.getLifeCycleHooks().stream()
                 .filter(IMagicdrawLifeCycleHook.class::isInstance)
                 .map(IMagicdrawLifeCycleHook.class::cast)

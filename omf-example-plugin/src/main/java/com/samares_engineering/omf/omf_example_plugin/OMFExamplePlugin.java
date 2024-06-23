@@ -6,7 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_example_plugin;
 
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
@@ -37,7 +37,7 @@ import java.util.List;
 
 public class OMFExamplePlugin extends APlugin {
     @Override
-    public List<MDFeature> initFeatures() {
+    public List<OMFFeature> initFeatures() {
         return List.of(
 //                new FeaturesDeactivationFeature(), // Don't know what this is but it's always commented out
                 new StereotypesFeature(),

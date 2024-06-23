@@ -4,13 +4,13 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_public_features.stereotypes.rules.organizer;
+package com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.organizer;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
+import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesLiveActionsUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class OrganizerLiveAction extends ALiveAction {
         if (element.getOwner() == null)   //still in creation
             return false;
 
-        if (StereotypesRuleUtils.hasStereotype(element, this.strInstance)) {
+        if (StereotypesLiveActionsUtils.hasStereotype(element, this.strInstance)) {
             System.out.println("[Test]-" + classInstance.getName() + ": "
                     + element.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
             return true;
@@ -58,7 +58,7 @@ public class OrganizerLiveAction extends ALiveAction {
         if (owner == null) {
             throw new OMFCriticalException("Storage element for: \"" + idOption + "\" is not defined");
         }
-        StereotypesRuleUtils.organizeOwner(evt, owner);
+        StereotypesLiveActionsUtils.organizeOwner(evt, owner);
         return evt;
     }
 

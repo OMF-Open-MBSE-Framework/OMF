@@ -9,14 +9,14 @@ package com.samares_engineering.omf.omf_core_framework.ui.projectoptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptionsConfigurator;
 import com.nomagic.magicdraw.properties.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureProjectOptionsConfigurator implements ProjectOptionsConfigurator {
 
-    private List<IOption> options;
+    private List<Option> options;
     String projectOptionMainCategory;
 
     private static FeatureProjectOptionsConfigurator instance;
@@ -43,7 +43,7 @@ public class FeatureProjectOptionsConfigurator implements ProjectOptionsConfigur
         options.forEach(opt -> createIfAbsent(opt, projectOptions));
     }
 
-    private void createIfAbsent(IOption opt, ProjectOptions projectOptions) {
+    private void createIfAbsent(Option opt, ProjectOptions projectOptions) {
         Property optProperty = opt.getProperty();
         projectOptions.addProperty(projectOptionMainCategory, optProperty);
 
@@ -54,20 +54,20 @@ public class FeatureProjectOptionsConfigurator implements ProjectOptionsConfigur
 
     }
 
-    public void addOption(IOption projectOption){
+    public void addOption(Option projectOption){
         options.add(projectOption);
     }
 
-    public void addAllOption(List<IOption> projectOptions){
+    public void addAllOption(List<Option> projectOptions){
         options.addAll(projectOptions);
     }
 
 
-    public void removeOption(IOption projectOption){
+    public void removeOption(Option projectOption){
         options.remove(projectOption);
     }
 
-    public void removeAllOption(List<IOption> projectOptions){
+    public void removeAllOption(List<Option> projectOptions){
         options.removeAll(projectOptions);
     }
 

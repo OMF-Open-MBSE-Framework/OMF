@@ -10,8 +10,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.SyncAllNameAction
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper
@@ -31,20 +32,18 @@ class SysMLBasicFeature : SimpleFeature("SysML Basic") {
         )
     }
 
-    public override fun initLiveActions(): List<ALiveActionEngine> {
+    public override fun initLiveActions(): List<LiveActionEngine> {
         val creationRE = ALiveActionEngine(LiveActionType.CREATE)
         creationRE.addRule(CreateAutoInterface_OnPortCreation())
 
         val modificationRE = ALiveActionEngine(LiveActionType.UPDATE)
         modificationRE.addRule(CreateAutoInterface_OnPortCreation())
 
-        return java.util.List.of<ALiveActionEngine>(
-            creationRE
-        )
+        return listOf(creationRE)
     }
 
 
-    public override fun initOptions(): List<IOption> {
+    public override fun initOptions(): List<Option> {
         return envOptionsHelper.allOptions
     }
 }

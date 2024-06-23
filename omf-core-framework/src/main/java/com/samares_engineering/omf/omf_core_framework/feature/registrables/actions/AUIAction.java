@@ -23,8 +23,8 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExcept
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -56,7 +56,7 @@ public abstract class AUIAction implements UIAction {
 
     private boolean deactivateListenerOnTrigger = true;
 
-    protected MDFeature feature;
+    protected OMFFeature feature;
 
     public AUIAction() {
         this("", "", false);
@@ -420,12 +420,12 @@ public abstract class AUIAction implements UIAction {
     }
 
     @Override
-    public MDFeature getFeature() {
+    public OMFFeature getFeature() {
         return feature;
     }
 
     @Override
-    public void initRegistrableItem(MDFeature feature) {
+    public void initRegistrableItem(OMFFeature feature) {
         this.feature = feature;
     }
 

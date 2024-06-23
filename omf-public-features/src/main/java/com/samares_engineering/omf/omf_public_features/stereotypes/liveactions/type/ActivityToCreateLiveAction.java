@@ -4,13 +4,13 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_public_features.stereotypes.rules.type;
+package com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.type;
 
 import com.nomagic.uml2.ext.magicdraw.actions.mdbasicactions.Action;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
+import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesLiveActionsUtils;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ public class ActivityToCreateLiveAction extends ALiveAction {
                 return false;
 
             if (null != evt.getSource()) {
-                return StereotypesRuleUtils.isInstanceActionWithStr(action, this.strInstance) &&
-                        StereotypesRuleUtils.isCBATypeNull(action);
+                return StereotypesLiveActionsUtils.isInstanceActionWithStr(action, this.strInstance) &&
+                        StereotypesLiveActionsUtils.isCBATypeNull(action);
             }
         }
         return false;
@@ -50,8 +50,8 @@ public class ActivityToCreateLiveAction extends ALiveAction {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        StereotypesRuleUtils.createActivityTypeBehavior(e, this.strType);
-        StereotypesRuleUtils.organizeType(e, owner);
+        StereotypesLiveActionsUtils.createActivityTypeBehavior(e, this.strType);
+        StereotypesLiveActionsUtils.organizeType(e, owner);
         return e;
     }
 

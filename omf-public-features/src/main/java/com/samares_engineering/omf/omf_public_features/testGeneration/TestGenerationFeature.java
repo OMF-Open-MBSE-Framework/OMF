@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericE
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_public_features.apiserver.OMFApiServer;
 import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 import com.samares_engineering.omf.omf_public_features.testGeneration.actions.GenerateCreationTest;
@@ -72,13 +72,13 @@ public class TestGenerationFeature extends SimpleFeature {
     }
 
     @Override
-    public List<IOption> initOptions() {
+    public List<Option> initOptions() {
         // Test Generation Root Path
         StringProperty testGenRootPathProp = new StringProperty(
                 TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_ID,
                 TestGenerationEnvOptionsHelper.getTestGenerationRootPathDefaultValue()
         );
-        IOption testGenRootPath = createEnvOption(
+        Option testGenRootPath = createEnvOption(
                 testGenRootPathProp,
                 TestGenerationEnvOptionsHelper.TEST_GENERATION_ROOTPATH_GRP
         );
@@ -89,7 +89,7 @@ public class TestGenerationFeature extends SimpleFeature {
                 TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_ID,
                 TestGenerationEnvOptionsHelper.getTestGenerationJavaPackageDefaultValue()
         );
-        IOption testGenJavaPackage = createEnvOption(
+        Option testGenJavaPackage = createEnvOption(
                 testGenJavaPackageProp,
                 TestGenerationEnvOptionsHelper.TEST_GENERATION_JAVAPACKAGE_GRP
         );

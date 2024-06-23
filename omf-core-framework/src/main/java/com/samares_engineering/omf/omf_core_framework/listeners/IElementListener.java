@@ -10,7 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.listeners;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
@@ -65,12 +65,12 @@ public interface IElementListener {
     /**
      * @return the RuleEngine map
      */
-    HashMap<String, List<ALiveActionEngine>> getRuleEngineMap();
+    HashMap<String, List<LiveActionEngine>> getRuleEngineMap();
 
     /**
      * Setting the RuleEngine map
      */
-    void setRuleEngineMap(HashMap<String, List<ALiveActionEngine>> rulesEngines);
+    void setRuleEngineMap(HashMap<String, List<LiveActionEngine>> rulesEngines);
 
     /**
      * @return true if at least one rule matched

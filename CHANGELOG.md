@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error management & logging 2.0 
 - OMF Comparator was moved from omf-test-framework to omf-core-framework, and dependencies from omf-test were removed
 - Revert to using the legacy comparator/test logger in the OMF Test Framework as the new one was causing issues
+- Renamed a number of classes to follow OMF Conventions
+- Fully renamed Rules to LiveActions
 
 ### Fixed
 - Cleaned some legacy code & unused resources

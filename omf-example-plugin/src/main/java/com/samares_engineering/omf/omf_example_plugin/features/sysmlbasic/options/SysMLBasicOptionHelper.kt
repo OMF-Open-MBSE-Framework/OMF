@@ -3,8 +3,8 @@ package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.optio
 import com.nomagic.magicdraw.properties.BooleanProperty
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind
 
@@ -15,10 +15,10 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
  * And all getters and setters to manage these options:
  * - isAutoInterfaceCreationActivated()
  */
-class SysMLBasicOptionHelper(feature: MDFeature?) : EnvOptionsHelper(feature) {
+class SysMLBasicOptionHelper(feature: OMFFeature?) : EnvOptionsHelper(feature) {
     private val GROUP = "SysML Basics Features"
 
-    val allOptions: List<IOption>
+    val allOptions: List<Option>
         get() {
             val isInterfaceCreationActivated = BooleanProperty(ACTIVATE_AUTO_INTERFACE_BLOCK_CREATION, false)
             val isInterfaceCreationActivatedOption = OptionImpl(
@@ -47,7 +47,7 @@ class SysMLBasicOptionHelper(feature: MDFeature?) : EnvOptionsHelper(feature) {
                     },
                 OptionKind.Environment
             )
-            return java.util.List.of<IOption>(
+            return java.util.List.of<Option>(
                 isInterfaceCreationActivatedOption,
                 isNameLivePropagationActivatedOption
             )

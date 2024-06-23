@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
@@ -22,7 +22,7 @@ public class LockerManagerOptionHelper extends EnvOptionsHelper {
     static final String ROLLBACK_AUTO_ENABLED_DESC = "If true, the rollback will be performed automatically" +
                     " when an error is thrown by the LockManager.";
 
-    protected LockerManagerOptionHelper(MDFeature feature) {
+    protected LockerManagerOptionHelper(OMFFeature feature) {
         super(feature);
     }
 

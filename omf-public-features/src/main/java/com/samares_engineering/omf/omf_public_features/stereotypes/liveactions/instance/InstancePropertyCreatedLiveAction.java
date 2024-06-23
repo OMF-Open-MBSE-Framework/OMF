@@ -4,12 +4,12 @@
  * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since 0.0.0
  ******************************************************************************/
-package com.samares_engineering.omf.omf_public_features.stereotypes.rules.instance;
+package com.samares_engineering.omf.omf_public_features.stereotypes.liveactions.instance;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesEnvOptionsHelper;
-import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesRuleUtils;
+import com.samares_engineering.omf.omf_public_features.stereotypes.utils.StereotypesLiveActionsUtils;
 import org.apache.logging.log4j.util.Strings;
 
 import java.beans.PropertyChangeEvent;
@@ -49,9 +49,9 @@ public class InstancePropertyCreatedLiveAction extends ALiveAction {
         if (!classOfInstance.isInstance(evt.getSource())) return false;
 
         Element srcElement = (Element) evt.getSource();
-        boolean isTypeInstantiationPatternSatisfied = StereotypesRuleUtils.isTypeInstantiationPatternSatisfied(
+        boolean isTypeInstantiationPatternSatisfied = StereotypesLiveActionsUtils.isTypeInstantiationPatternSatisfied(
                 srcElement, classOfInstance, this.stereoOfType, this.classOfType);
-        boolean ownerHasSpecifiedStereotype = StereotypesRuleUtils.ownerHasStereotype(srcElement, this.ownerValidStereotypes);
+        boolean ownerHasSpecifiedStereotype = StereotypesLiveActionsUtils.ownerHasStereotype(srcElement, this.ownerValidStereotypes);
         if (isTypeInstantiationPatternSatisfied && ownerHasSpecifiedStereotype) {
             System.out.println("[Test]-Part: " + srcElement.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
             return true;
@@ -61,7 +61,7 @@ public class InstancePropertyCreatedLiveAction extends ALiveAction {
 
     @Override
     public PropertyChangeEvent process(PropertyChangeEvent e) {
-        StereotypesRuleUtils.instantiationBehavior(e, this.stereoOfInstance);
+        StereotypesLiveActionsUtils.instantiationBehavior(e, this.stereoOfInstance);
         return e;
     }
 

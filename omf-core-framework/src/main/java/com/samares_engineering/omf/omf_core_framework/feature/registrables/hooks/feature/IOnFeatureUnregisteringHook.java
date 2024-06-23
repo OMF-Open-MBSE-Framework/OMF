@@ -1,13 +1,13 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature;
 
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 
-public interface IOnFeatureUnregisteringHook extends IFeatureLifeCycleHook{
+public interface IOnFeatureUnregisteringHook extends FeatureLifeCycleHook {
     /**
      * Trigger the onFeatureUnregistering hook
      * @param feature the feature that is being unregistered
      */
-    default void triggerOnFeatureUnregisteringHook(MDFeature feature){
+    default void triggerOnFeatureUnregisteringHook(OMFFeature feature){
         executeHook(() -> onFeatureUnregistering(feature), "onFeatureUnregistering");
     }
 
@@ -16,7 +16,7 @@ public interface IOnFeatureUnregisteringHook extends IFeatureLifeCycleHook{
      * Developers should implement this method to add custom logic.
      * @param feature the feature that is being unregistered
      */
-    void onFeatureUnregistering(MDFeature feature);
+    void onFeatureUnregistering(OMFFeature feature);
 
 
 }

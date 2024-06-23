@@ -6,8 +6,8 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
 import java.beans.PropertyChangeEvent;
 
@@ -15,7 +15,7 @@ import java.beans.PropertyChangeEvent;
  * Abstract class for a rule, contains the basic methods for a LiveAction rule.
  */
 public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, PropertyChangeEvent> {
-    protected ALiveActionEngine ruleEngine;
+    protected LiveActionEngine ruleEngine;
     public String id = "";
     public boolean isActivated = true;
 
@@ -64,17 +64,17 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
     }
 
     @Override
-    public void setRuleEngine(ALiveActionEngine ruleEngine) {
+    public void setRuleEngine(LiveActionEngine ruleEngine) {
         this.ruleEngine = ruleEngine;
     }
 
 
     @Override
-    public ALiveActionEngine getRuleEngine() {
+    public LiveActionEngine getRuleEngine() {
         return ruleEngine;
     }
 
-    public MDFeature getFeature() {
+    public OMFFeature getFeature() {
         return ruleEngine.getFeature();
     }
 }

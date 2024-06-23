@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.properties.ElementProperty;
 import com.nomagic.magicdraw.properties.StringProperty;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
@@ -13,7 +13,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
         super(stereotypesFeature);
     }
 
-    public static StereotypesEnvOptionsHelper getInstance(MDFeature feature) {
+    public static StereotypesEnvOptionsHelper getInstance(OMFFeature feature) {
         return ((StereotypesFeature) feature).getOptionsHelper();
     }
 

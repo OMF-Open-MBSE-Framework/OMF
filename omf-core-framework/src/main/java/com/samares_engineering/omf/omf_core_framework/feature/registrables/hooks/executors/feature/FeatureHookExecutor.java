@@ -2,13 +2,13 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.exceptions.HooksExecutionException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IFeatureLifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.FeatureLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IOnFeatureUnregisteringHook;
 
-public class FeatureHookExecutor extends HookExecutor<IFeatureLifeCycleHook> {
+public class FeatureHookExecutor extends HookExecutor<FeatureLifeCycleHook> {
 
     public FeatureHookExecutor(FeatureRegisterer featureRegisterer) {
         super();
@@ -20,7 +20,7 @@ public class FeatureHookExecutor extends HookExecutor<IFeatureLifeCycleHook> {
     * @see HookExecutor
     * @param feature the feature that is being registered
     */
-   public void triggerOnFeatureRegisteringHooks(MDFeature feature) {
+   public void triggerOnFeatureRegisteringHooks(OMFFeature feature) {
        try {
            getHooksHolders().stream()
                    .filter(IOnFeatureUnregisteringHook.class::isInstance)
@@ -37,7 +37,7 @@ public class FeatureHookExecutor extends HookExecutor<IFeatureLifeCycleHook> {
      * @see HookExecutor
      * @param feature the feature that is being unregistered
      */
-    public void triggerOnFeatureUnregisteringHooks(MDFeature feature) {
+    public void triggerOnFeatureUnregisteringHooks(OMFFeature feature) {
         try {
             getHooksHolders().stream()
                     .filter(IOnFeatureUnregisteringHook.class::isInstance)

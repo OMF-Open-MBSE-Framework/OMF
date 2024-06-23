@@ -11,13 +11,13 @@ import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.nomagic.magicdraw.properties.Property;
 import com.samares_engineering.omf.omf_core_framework.feature.AFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -38,7 +38,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<IHook> initLifeCycleHooks() {
+    protected List<Hook> initLifeCycleHooks() {
         return List.of(new OnMagicDrawStartHook() {
             @Override
             public void onMagicDrawStart() {
@@ -54,7 +54,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
      * Registering the option and its listener to activate or deactivate all the features.
      */
     @Override
-    public List<IOption> initOptions() {
+    public List<Option> initOptions() {
         featureDeactivationOptionHelper = new FeatureDeactivationOptionHelper(this);
         FeatureDeactivationOptionHelper envOptionsHelper = (FeatureDeactivationOptionHelper) getEnvOptionsHelper();
         AOption activationDeactivationOption = envOptionsHelper.getActivationFeatureOption();
@@ -81,14 +81,14 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
      */
     private void activateDeactivateAllFeatures(boolean featureShallBeRegistered) {
         AFeature deactivationFeature = this;
-        Predicate<MDFeature> exceptThisFeature = feature -> !(deactivationFeature.equals(feature));
+        Predicate<OMFFeature> exceptThisFeature = feature -> !(deactivationFeature.equals(feature));
         if (featureShallBeRegistered) {
-            List<MDFeature> features = getAllFeaturesToRegister().stream()
+            List<OMFFeature> features = getAllFeaturesToRegister().stream()
                     .filter(exceptThisFeature) // get all feature except this one
                     .collect(Collectors.toList());
             getPlugin().getFeatureRegister().registerFeatures(features);
         } else {
-            List<MDFeature> unregisteredFeatures = getAllFeaturesToUnregistered().stream()
+            List<OMFFeature> unregisteredFeatures = getAllFeaturesToUnregistered().stream()
                     .filter(exceptThisFeature)
                     .collect(Collectors.toList());
             getPlugin().getFeatureRegister().unregisterFeatures(unregisteredFeatures);
@@ -99,7 +99,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
      * Override this method to change the list of features to unregister when the option is deactivated.
      * @return the list of features to unregister when the option is deactivated.
      */
-    private List<MDFeature> getAllFeaturesToUnregistered() {
+    private List<OMFFeature> getAllFeaturesToUnregistered() {
         return getPlugin().getFeatureRegister().getRegisteredFeatures();
     }
 
@@ -107,7 +107,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
      * Override this method to change the list of features to register when the option is activated.
      * @return the list of features to register when the option is activated.
      */
-    private List<MDFeature> getAllFeaturesToRegister() {
+    private List<OMFFeature> getAllFeaturesToRegister() {
         return getPlugin().getFeatures();
     }
 

@@ -7,15 +7,15 @@ import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.Opt
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 
 public abstract class EnvOptionsHelper {
-    private final MDFeature feature;
+    private final OMFFeature feature;
     private final OMFPropertyOptionsGroup optionsGroup;
 
-    protected EnvOptionsHelper(MDFeature feature) {
+    protected EnvOptionsHelper(OMFFeature feature) {
         this(feature, feature.getPlugin().getEnvironmentOptionsGroup()
                 .orElseThrow(() -> new FeatureRegisteringException("No environment options groups have been declared" +
                         "for this plugin")));
     }
-    protected EnvOptionsHelper(MDFeature feature, OMFPropertyOptionsGroup optionsGroup) {
+    protected EnvOptionsHelper(OMFFeature feature, OMFPropertyOptionsGroup optionsGroup) {
         this.feature = feature;
         this.optionsGroup = optionsGroup;
     }
@@ -33,7 +33,7 @@ public abstract class EnvOptionsHelper {
          return null;
     }
 
-    public MDFeature getFeature() {
+    public OMFFeature getFeature() {
         return feature;
     }
 

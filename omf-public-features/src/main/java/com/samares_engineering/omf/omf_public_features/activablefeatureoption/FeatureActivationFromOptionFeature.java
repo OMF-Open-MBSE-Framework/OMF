@@ -11,11 +11,11 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.IOption;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener.FeatureRegisteringListener;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationFromOption_OptionHelper;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationManagerOptionGroup;
@@ -65,7 +65,7 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<IHook> initLifeCycleHooks() {
+    protected List<Hook> initLifeCycleHooks() {
         return List.of(new OnMagicDrawStartHook() {
             @Override
             public void onMagicDrawStart() {
@@ -104,9 +104,9 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<IOption> initOptions() {
+    protected List<Option> initOptions() {
         FeatureActivationFromOption_OptionHelper envOptionsHelper = getEnvOptionsHelper();
-        List<MDFeature> features = getPlugin().getFeatures();
+        List<OMFFeature> features = getPlugin().getFeatures();
         features.remove(this); // remove this feature from the list (we don't want to create an option for this feature
         return features
                 .stream()
@@ -129,7 +129,7 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
      * @param feature the feature
      * @param shallBeRegistered true if the feature shall be registered, false otherwise
      */
-    public void setFeatureActivation(MDFeature feature, boolean shallBeRegistered) {
+    public void setFeatureActivation(OMFFeature feature, boolean shallBeRegistered) {
         if(shallBeRegistered && !feature.isRegistered())
             getFeatureRegister().registerFeature(feature);
         else if(!shallBeRegistered && feature.isRegistered())

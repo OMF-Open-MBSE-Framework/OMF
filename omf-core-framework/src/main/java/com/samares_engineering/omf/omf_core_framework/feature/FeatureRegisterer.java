@@ -11,7 +11,7 @@ import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.feature.FeatureHookExecutor;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IFeatureLifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.FeatureLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.FeatureRegisteringEventHandler;
@@ -27,9 +27,9 @@ public class FeatureRegisterer {
 
     private final FeatureRegisteringEventHandler eventHandler;
 
-    private List<MDFeature> registeredFeatures = new ArrayList<>();
+    private List<OMFFeature> registeredFeatures = new ArrayList<>();
     private final APlugin plugin;
-    private HookExecutor<IFeatureLifeCycleHook> featureHookExecutor;
+    private HookExecutor<FeatureLifeCycleHook> featureHookExecutor;
 
     //TODO: Create a class regrouping all Configurators
     public FeatureRegisterer(APlugin plugin) {
@@ -46,7 +46,7 @@ public class FeatureRegisterer {
      *
      * @param feature the feature to register
      */
-    public void registerFeature(MDFeature feature) {
+    public void registerFeature(OMFFeature feature) {
         try {
             if (isAlreadyRegistered(feature)) {
                 LegacyErrorHandler.handleException(new FeatureRegisteringException("Trying to register feature " + feature.getName() +
@@ -67,7 +67,7 @@ public class FeatureRegisterer {
         }
     }
 
-    private void registerFeatureItems(MDFeature feature) {
+    private void registerFeatureItems(OMFFeature feature) {
         feature.initFeatureItems();
         for (FeatureItemRegisterer registerer : featureItemRegisters) {
             registerer.registerFeatureItems(feature);
@@ -75,20 +75,20 @@ public class FeatureRegisterer {
     }
 
     /**
-     * Registers a list of features, see {@link FeatureRegisterer#registerFeature(MDFeature)}
+     * Registers a list of features, see {@link FeatureRegisterer#registerFeature(OMFFeature)}
      *
      * @param features the features to register
      */
-    public void registerFeatures(List<MDFeature> features) {
+    public void registerFeatures(List<OMFFeature> features) {
         features.forEach(this::registerFeature);
     }
 
     /**
-     * Registers project only items of a list of features, see {@link FeatureRegisterer#registerProjectOnlyFeatureItems(MDFeature)}
+     * Registers project only items of a list of features, see {@link FeatureRegisterer#registerProjectOnlyFeatureItems(OMFFeature)}
      *
      * @param features the features to register
      */
-    public void registerProjectOnlyItemsOfFeatures(List<MDFeature> features) {
+    public void registerProjectOnlyItemsOfFeatures(List<OMFFeature> features) {
         features.forEach(this::registerProjectOnlyFeatureItems);
     }
 
@@ -101,7 +101,7 @@ public class FeatureRegisterer {
      *
      * @param feature the feature to register
      */
-    private void registerProjectOnlyFeatureItems(MDFeature feature) {
+    private void registerProjectOnlyFeatureItems(OMFFeature feature) {
         feature.initProjectOnlyFeatureItems();
         projectOnlyFeatureItemRegisters.forEach(registerer -> {
             try {
@@ -121,7 +121,7 @@ public class FeatureRegisterer {
      *
      * @param feature the feature to unregister
      */
-    public void unregisterFeature(MDFeature feature) throws FeatureRegisteringException {
+    public void unregisterFeature(OMFFeature feature) throws FeatureRegisteringException {
         if (!isAlreadyRegistered(feature)) {
             LegacyErrorHandler.handleException(new FeatureRegisteringException("Trying to unregister feature "
                     + feature.getName() + " which is not registered."));
@@ -151,11 +151,11 @@ public class FeatureRegisterer {
     }
 
     /**
-     * Unregisters a list of features, see {@link FeatureRegisterer#unregisterFeature(MDFeature)}
+     * Unregisters a list of features, see {@link FeatureRegisterer#unregisterFeature(OMFFeature)}
      *
      * @param features the features to unregister
      */
-    public void unregisterFeatures(List<MDFeature> features) {
+    public void unregisterFeatures(List<OMFFeature> features) {
         new ArrayList<>(features).forEach(feature -> {
             try {
                 unregisterFeature(feature);
@@ -167,11 +167,11 @@ public class FeatureRegisterer {
     }
 
     /**
-     * Unregisters project only items of a list of features, see {@link FeatureRegisterer#unregisterProjectOnlyFeatureItems(MDFeature)}
+     * Unregisters project only items of a list of features, see {@link FeatureRegisterer#unregisterProjectOnlyFeatureItems(OMFFeature)}
      *
      * @param features the features to unregister
      */
-    public void unregisterProjectOnlyItemsOfFeatures(List<MDFeature> features) {
+    public void unregisterProjectOnlyItemsOfFeatures(List<OMFFeature> features) {
         new ArrayList<>(features).forEach(this::unregisterProjectOnlyFeatureItems);//New Arraylist to manage List modifications while iterating
     }
 
@@ -180,7 +180,7 @@ public class FeatureRegisterer {
      *
      * @param feature the feature to unregister
      */
-    public void unregisterProjectOnlyFeatureItems(MDFeature feature) {
+    public void unregisterProjectOnlyFeatureItems(OMFFeature feature) {
         projectOnlyFeatureItemRegisters.forEach(registerer -> {
             try {
                 registerer.unregisterFeatureItems(feature);
@@ -194,8 +194,8 @@ public class FeatureRegisterer {
     /**
      * Checks if a feature is already registered
      */
-    public boolean isAlreadyRegistered(MDFeature mdFeature) {
-        return registeredFeatures.stream().anyMatch(mdFeature.getClass()::isInstance);
+    public boolean isAlreadyRegistered(OMFFeature OMFFeature) {
+        return registeredFeatures.stream().anyMatch(OMFFeature.getClass()::isInstance);
     }
 
     /**
@@ -287,11 +287,11 @@ public class FeatureRegisterer {
     /**
      * Returns all registered features
      */
-    public List<MDFeature> getRegisteredFeatures() {
+    public List<OMFFeature> getRegisteredFeatures() {
         return registeredFeatures;
     }
 
-    public void setRegisteredFeatures(List<MDFeature> registeredFeatures) {
+    public void setRegisteredFeatures(List<OMFFeature> registeredFeatures) {
         this.registeredFeatures = registeredFeatures;
     }
 
@@ -306,7 +306,7 @@ public class FeatureRegisterer {
         return eventHandler;
     }
 
-    public HookExecutor<IFeatureLifeCycleHook> getFeatureHookExecutor() {
+    public HookExecutor<FeatureLifeCycleHook> getFeatureHookExecutor() {
         return featureHookExecutor;
     }
 }

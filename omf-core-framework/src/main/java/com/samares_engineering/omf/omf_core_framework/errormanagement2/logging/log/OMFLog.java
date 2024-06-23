@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.utils.ElementAction;
 
 import java.util.ArrayList;
@@ -183,7 +183,7 @@ public class OMFLog {
         return this;
     }
 
-    public OMFLog logToUiConsole(OMFLogLevel logLevel, MDFeature feature) {
+    public OMFLog logToUiConsole(OMFLogLevel logLevel, OMFFeature feature) {
         OMFLogger.logToUIConsole(this, logLevel, feature);
         return this;
     }
@@ -193,7 +193,7 @@ public class OMFLog {
         return this;
     }
 
-    public OMFLog logToNotification(OMFLogLevel logLevel, MDFeature feature) {
+    public OMFLog logToNotification(OMFLogLevel logLevel, OMFFeature feature) {
         OMFLogger.logToNotification(this, logLevel, feature);
         return this;
     }
@@ -203,7 +203,7 @@ public class OMFLog {
         return this;
     }
 
-    public OMFLog logToSystemConsole(OMFLogLevel logLevel, MDFeature feature) {
+    public OMFLog logToSystemConsole(OMFLogLevel logLevel, OMFFeature feature) {
         OMFLogger.logToSystemConsole(this, logLevel, feature);
         return this;
     }

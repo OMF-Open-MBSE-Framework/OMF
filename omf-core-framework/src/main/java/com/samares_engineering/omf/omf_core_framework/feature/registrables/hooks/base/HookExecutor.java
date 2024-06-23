@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class HookExecutor<H extends IHook> {
+public abstract class HookExecutor<H extends Hook> {
     List<H> hooksHolders;
     private APlugin plugin;
 

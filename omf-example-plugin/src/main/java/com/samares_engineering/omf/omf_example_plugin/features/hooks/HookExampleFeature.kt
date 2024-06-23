@@ -2,19 +2,19 @@ package com.samares_engineering.omf.omf_example_plugin.features.hooks
 
 import com.nomagic.magicdraw.core.Project
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.IHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IOnFeatureRegisteringHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IOnFeatureUnregisteringHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IOnMagicDrawStartHook
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectCreatedHook
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.IOnProjectOpenedHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectCreatedHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook
 
 class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
 
-    override fun initLifeCycleHooks(): MutableList<IHook> {
+    override fun initLifeCycleHooks(): MutableList<Hook> {
         return mutableListOf(OnProjectHookExample())
     }
 
@@ -23,8 +23,8 @@ class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
     }
 
     class OnProjectHookExample : BaseHookFeatureItem(),
-        IOnProjectOpenedHook,
-        IOnProjectCreatedHook,
+            OnProjectOpenedHook,
+            OnProjectCreatedHook,
         IOnMagicDrawStartHook,
     IOnFeatureRegisteringHook,
     IOnFeatureUnregisteringHook{
@@ -41,14 +41,14 @@ class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
             OMFLogger.warnToSystemConsole("MagicDraw started")
         }
 
-        override fun onFeatureRegistering(feature: MDFeature?) {
+        override fun onFeatureRegistering(feature: OMFFeature?) {
             if(feature == getFeature()){
                 return
             }
             OMFLogger.warnToSystemConsole("Feature registering: ${feature?.name}")
         }
 
-        override fun onFeatureUnregistering(feature: MDFeature?) {
+        override fun onFeatureUnregistering(feature: OMFFeature?) {
             OMFLogger.warnToSystemConsole("Feature unregistering: ${feature?.name}")
         }
     }

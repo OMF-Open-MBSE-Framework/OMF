@@ -7,7 +7,7 @@ import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
 public class OMFLogger {
@@ -46,18 +46,18 @@ public class OMFLogger {
         logToUIConsole(new OMFLog().text(message), logLevel);
     }
 
-    public static void logToUIConsole(OMFLog logMessage, OMFLogLevel logLevel, MDFeature feature) {
+    public static void logToUIConsole(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
             String formattedLog = logMessage.toHTMLFormat(logLevel, getInstance().plugin.getName(), feature.getName());
             Application.getInstance().getGUILog().addHyperlinkedText(formattedLog, logMessage.getLinkActionMapping());
         }
     }
 
-    public static void logToUIConsole(String message, OMFLogLevel logLevel, MDFeature feature) {
+    public static void logToUIConsole(String message, OMFLogLevel logLevel, OMFFeature feature) {
         logToUIConsole(new OMFLog().text(message), logLevel, feature);
     }
 
-    public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, MDFeature feature) {
+    public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
             NotificationManager.getInstance().showNotification(new Notification(
                     "[Plugin Error]", //id (not sure what is does)
@@ -79,7 +79,7 @@ public class OMFLogger {
         }
     }
 
-    public static void logToNotification(String message, OMFLogLevel logLevel, MDFeature feature) {
+    public static void logToNotification(String message, OMFLogLevel logLevel, OMFFeature feature) {
             logToNotification(new OMFLog().text(message).replaceNewLinesWithBreaks(), logLevel, feature);
     }
 
@@ -109,7 +109,7 @@ public class OMFLogger {
         logToSystemConsole(new OMFLog().text(message), logLevel);
     }
 
-    public static void logToSystemConsole(OMFLog logMessage, OMFLogLevel logLevel, MDFeature feature) {
+    public static void logToSystemConsole(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
         logToSystemConsole("[" + feature.getName() + "]" + logMessage.toString(), logLevel);
     }
 

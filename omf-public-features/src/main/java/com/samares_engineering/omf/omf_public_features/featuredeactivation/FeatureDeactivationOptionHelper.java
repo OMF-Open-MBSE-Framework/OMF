@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_public_features.featuredeactivation;
 import com.nomagic.magicdraw.properties.BooleanProperty;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
-import com.samares_engineering.omf.omf_core_framework.feature.MDFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
@@ -16,7 +16,7 @@ public class FeatureDeactivationOptionHelper extends EnvOptionsHelper{
     private final String GROUP_NAME;
     private String ID_ACTIVATE_AUTOMATION;
 
-    protected FeatureDeactivationOptionHelper(MDFeature feature) {
+    protected FeatureDeactivationOptionHelper(OMFFeature feature) {
         super(feature);
         APlugin plugin = feature.getPlugin();
         ID_ACTIVATE_AUTOMATION = "activate automations " + plugin.getName() + " :";
