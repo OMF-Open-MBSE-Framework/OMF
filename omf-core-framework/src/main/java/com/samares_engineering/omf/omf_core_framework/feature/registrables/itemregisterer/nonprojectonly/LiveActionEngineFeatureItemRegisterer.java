@@ -36,84 +36,81 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
     }
 
     /**
-     * Will allow to register a list of RuleEngine in the listener.
-     * @param ruleEngines List of RuleEngine to register
+     * Will allow to register a list of LiveActionEngine in the listener.
+     * @param liveActionEngines List of LiveActionEngine to register
      */
-    public void registerFeatureItems(List<LiveActionEngine> ruleEngines) {
+    public void registerFeatureItems(List<LiveActionEngine> liveActionEngines) {
         try {
-            ruleEngines.forEach(this::registerFeatureItem);
+            liveActionEngines.forEach(this::registerFeatureItem);
         }catch (Exception e){
             throw new FeatureRegisteringException("Unable to register LiveActions", e);
         }
     }
 
-    public void unregisterFeatureItems(List<LiveActionEngine> ruleEngines){
+    public void unregisterFeatureItems(List<LiveActionEngine> liveActionEngines){
         try {
-            ruleEngines.forEach(this::unregisterFeatureItem);
+            liveActionEngines.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
             throw new FeatureRegisteringException(" Unable to unregister liveActions", e);
         }
     }
 
     /**
-     * Allow RuleEngine registration in the listener. Depending on the Category the RuleEngine will be triggered and Rules will be evaluated.
-     * -category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to register
+     * Allow LiveActionEnginet registration in the listener. Depending on the Category the LiveActionEngine will be triggered and LiveActions will be evaluated.
+     * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param liveActionEngine: The LiveActionEngine to register
      */
     @Override
-    public void registerFeatureItem(LiveActionEngine ruleEngine) {
-        String category = ruleEngine.getCategory();
+    public void registerFeatureItem(LiveActionEngine liveActionEngine) {
+        String category = liveActionEngine.getType();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<LiveActionEngine>> liveActionEngineMap = listener.getLiveActionEngineMap();
 
-        ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        liveActionEngineMap.computeIfAbsent(category, LiveActionEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
-        ruleEngineMap.get(category).add(ruleEngine);
+        liveActionEngineMap.get(category).add(liveActionEngine);
     }
 
     /**
-     * Remove a specific RuleEngine if registered.
-     * -category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to remove
+     * Remove a specific LiveActionEngine if registered.
+     * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param LiveActionEngine: The LiveActionEngine to remove
      */
     @Override
-    public void unregisterFeatureItem(LiveActionEngine ruleEngine) {
-        String category = ruleEngine.getCategory();
+    public void unregisterFeatureItem(LiveActionEngine LiveActionEngine) {
+        String category = LiveActionEngine.getType();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> ruleEngineMap = listener.getRuleEngineMap();
-        if (ruleEngineMap.containsKey(category))
-            ruleEngineMap.get(category).remove(ruleEngine);
+        HashMap<String, List<LiveActionEngine>> LiveActionEngineMap = listener.getLiveActionEngineMap();
+        if (LiveActionEngineMap.containsKey(category))
+            LiveActionEngineMap.get(category).remove(LiveActionEngine);
     }
-
-
-
+    
     /**
-     * Allow RuleEngine registration in the listener with a specific Priority. Depending on the Category the RuleEngine will be triggered and Rules will be evaluated.
-     * -category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to register
-     * @param featurePriority: will help to order the RuleEngine execution by its priority.
+     * Allow LiveActionEngine registration in the listener with a specific Priority. Depending on the Category the LiveActionEngine will be triggered and LiveActions will be evaluated.
+     * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param LiveActionEngine: The LiveActionEngine to register
+     * @param featurePriority: will help to order the LiveActionEngine execution by its priority.
      */
-    private void addRuleEngine(LiveActionEngine ruleEngine, int featurePriority){
-        String category = ruleEngine.getCategory();
+    private void addLiveActionEngine(LiveActionEngine LiveActionEngine, int featurePriority){
+        String category = LiveActionEngine.getType();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<LiveActionEngine>> LiveActionEngineMap = listener.getLiveActionEngineMap();
 
-        ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        LiveActionEngineMap.computeIfAbsent(category, LiveActionEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
-        ruleEngineMap.get(category).add(featurePriority, ruleEngine);
+        LiveActionEngineMap.get(category).add(featurePriority, LiveActionEngine);
     }
-
 
     //TODO: Rethink priority management: does the priority is guaranteed ? Priority shall be linked to the RE/Feature
     /**
-     * Move RuleEngine registration in the listener with to specific, RE will be removed, then add again in the list decreasing the priority of all the other features.
-     * - category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to register
+     * Move LiveActionEngine registration in the listener with to specific, RE will be removed, then add again in the list decreasing the priority of all the other features.
+     * - category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param LiveActionEngine: The LiveActionEngine to register
      * @param featurePriority: The new pr.
      */
-    private void moveRuleEngine(LiveActionEngine ruleEngine, int featurePriority){
-        unregisterFeatureItem(ruleEngine);
-        addRuleEngine(ruleEngine, featurePriority);
+    private void moveLiveActionEngine(LiveActionEngine LiveActionEngine, int featurePriority){
+        unregisterFeatureItem(LiveActionEngine);
+        addLiveActionEngine(LiveActionEngine, featurePriority);
     }
 
     /**

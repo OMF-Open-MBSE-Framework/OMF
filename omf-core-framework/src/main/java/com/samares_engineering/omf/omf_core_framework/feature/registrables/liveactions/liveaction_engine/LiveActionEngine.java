@@ -17,28 +17,28 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LiveActionEngine extends PriorityProvider, RegistrableFeatureItem {
-    Optional<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getMatchingRule(PropertyChangeEvent evt);
+    Optional<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getMatchingLiveAction(PropertyChangeEvent evt);
 
-    List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingRules(PropertyChangeEvent evt);
+    List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingLiveActions(PropertyChangeEvent evt);
 
-    boolean processAllMatchingRule(PropertyChangeEvent evt);
+    boolean processAllMatchingLiveActions(PropertyChangeEvent evt);
 
-    boolean skipRules(PropertyChangeEvent evt);
+    boolean skipLiveActions(PropertyChangeEvent evt);
 
-    void addRule(LiveAction<PropertyChangeEvent, PropertyChangeEvent> rule);
+    void addLiveAction(LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction);
 
-    void addAllRules(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> lRules);
+    void addAllLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions);
 
-    List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getRules();
+    List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getLiveActions();
 
-    void removeRule(LiveAction<PropertyChangeEvent, PropertyChangeEvent> rule);
+    void removeLiveAction(LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction);
 
-    void removeRules(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> lRules);
+    void removeLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions);
 
-    void removeAllRules();
+    void removeAllLiveActions();
 
     void setPriority(int priority);
 
-    String getCategory();
-    void setCategory(String category);
+    String getType();
+    void setType(String category);
 }

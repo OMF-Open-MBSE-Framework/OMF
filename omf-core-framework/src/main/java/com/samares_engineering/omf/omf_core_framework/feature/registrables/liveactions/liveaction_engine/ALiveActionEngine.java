@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine;
 
@@ -11,7 +11,8 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrie
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.exceptions.ErrorWhileEvaluationRuleException;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.exceptions.ErrorWhileEvaluationLiveActionException;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 
 import java.beans.PropertyChangeEvent;
@@ -21,26 +22,26 @@ import java.util.Optional;
 
 public class ALiveActionEngine implements LiveActionEngine {
     private IListenerManager listenerManager;
-    private List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> rules = new ArrayList<>();
+    private List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions = new ArrayList<>();
     private String id = "";
     private int priority = -1;
     private String category = "";
     private OMFFeature feature;
     private boolean activated = true;
 
-    public ALiveActionEngine(LiveActionType category){
+    public ALiveActionEngine(LiveActionType category) {
         this(category, -1);
     }
 
-    public ALiveActionEngine(LiveActionType category, int priority){
+    public ALiveActionEngine(LiveActionType category, int priority) {
         this(category.toString(), priority);
     }
 
-    public ALiveActionEngine(String category){
+    public ALiveActionEngine(String category) {
         this(category, -1);
     }
 
-    public ALiveActionEngine(String category, int priority){
+    public ALiveActionEngine(String category, int priority) {
         this.category = category;
         this.priority = priority;
     }
@@ -67,70 +68,71 @@ public class ALiveActionEngine implements LiveActionEngine {
     }
 
     /**
-     * Find the highest priority rule (if it exists) matching the provided event
+     * Find the highest priority liveAction (if it exists) matching the provided event
      *
      * @param evt event to process
-     * @return the rule found
+     * @return the liveAction found
      */
     @Override
-    public Optional<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getMatchingRule(PropertyChangeEvent evt){
-        if (skipRules(evt)) {
+    public Optional<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getMatchingLiveAction(PropertyChangeEvent evt) {
+        if (skipLiveActions(evt)) {
             return Optional.empty();
         }
-        return rules.stream()
-                .filter(rule -> isRuleMatching(evt, rule))
+        return liveActions.stream()
+                .filter(liveAction -> isLiveActionMatching(evt, liveAction))
                 .findFirst();
     }
 
     @Override
-    public List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingRules(PropertyChangeEvent evt){
-        if (skipRules(evt))
+    public List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingLiveActions(PropertyChangeEvent evt) {
+        if (skipLiveActions(evt))
             return new ArrayList<>();
 
-        List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> rulesToExecute = new ArrayList<>();
+        List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActionsToExecute = new ArrayList<>();
 
-        for (com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent> rule : rules) {  //return all matching rules until the first Blocking rule is found
-            if(isRuleMatching(evt, rule)){
-                rulesToExecute.add(rule);
-                SysoutColorPrinter.status("Triggered rule: " + rule.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
+        for (LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction : liveActions) {  //return all matching liveActions until the first Blocking liveAction is found
+            if (isLiveActionMatching(evt, liveAction)) {
+                liveActionsToExecute.add(liveAction);
+                SysoutColorPrinter.status("Triggered live action: " + liveAction.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
                         + " on element: " + ((Element) evt.getSource()).getHumanName());
-                if (rule.isBlocking()) {
-                    SysoutColorPrinter.status("Rule is blocking: stopping rule matching for this event");
+                if (liveAction.isBlocking()) {
+                    SysoutColorPrinter.status("Live action is blocking: stopping liveAction matching for this event");
                     break;
                 }
             }
         }
-        return rulesToExecute;
+        return liveActionsToExecute;
 
     }
 
-    private boolean isRuleMatching(PropertyChangeEvent evt, com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent> rule) {
+    private boolean isLiveActionMatching(PropertyChangeEvent evt, LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction) {
         Boolean isMatching = OMFBarrierExecutor.executeWithinBarrier(() -> {
             try {
-                return rule.isActivated() && rule.matches(evt);
+                return liveAction.isActivated() && liveAction.matches(evt);
             } catch (Exception e) {
-                throw new ErrorWhileEvaluationRuleException(rule, e);
+                throw new ErrorWhileEvaluationLiveActionException(liveAction, e);
             }
         }, getFeature());
         return isMatching != null && isMatching;
     }
 
     /**
-     * Finds and processes the highest priority rule (if it exists) matching the provided event
-     * In case of a blocking rule, the processing stops after the first blocking rule has been processed
+     * Finds and processes the highest priority liveAction (if it exists) matching the provided event
+     * In case of a blocking liveAction, the processing stops after the first blocking liveAction has been processed
      * In case of error, the error is handled by the ErrorHandler2, which may throw a RollbackException
+     *
      * @param evt event to process
-     * @return true if a matching rule has been found and processed, false otherwise
+     * @return true if a matching liveAction has been found and processed, false otherwise
      */
     @Override
-    public boolean processAllMatchingRule(PropertyChangeEvent evt) {
-        List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> matchingRules = getAllMatchingRules(evt);
-        if(matchingRules.isEmpty())
+    public boolean processAllMatchingLiveActions(PropertyChangeEvent evt) {
+        List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> matchingLiveActions = getAllMatchingLiveActions(evt);
+        if (matchingLiveActions.isEmpty())
             return false;
 
         listenerManager.deactivateAllListeners();
-        matchingRules.forEach(rule -> {
-            OMFBarrierExecutor.executeInSessionWithinBarrier(() -> rule.process(evt), getFeature());
+        matchingLiveActions.forEach(liveAction -> {
+            OMFBarrierExecutor.executeInSessionWithinBarrier(() -> liveAction.process(evt), getFeature());
         });
 
         OMFAutomationManager.getInstance().automationTriggered();
@@ -144,14 +146,16 @@ public class ALiveActionEngine implements LiveActionEngine {
     public int getPriority() {
         return priority;
     }
+
     public void setPriority(int priority) {
         this.priority = priority;
     }
 
-    public String getCategory() {
+    public String getType() {
         return category;
     }
-    public void setCategory(String category) {
+
+    public void setType(String category) {
         this.category = category;
     }
 
@@ -159,50 +163,56 @@ public class ALiveActionEngine implements LiveActionEngine {
         return feature;
     }
 
-    public boolean skipRules(PropertyChangeEvent evt) {
+    public boolean skipLiveActions(PropertyChangeEvent evt) {
         return false;
     }
 
     @Override
-    public void addRule(com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent> rule) {
-        rule.setRuleEngine(this);
-        this.rules.add(rule);
+    public void addLiveAction(LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction) {
+        liveAction.setLiveActionEngine(this);
+        this.liveActions.add(liveAction);
     }
 
     @Override
-    public void addAllRules(List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> lRules){
-        lRules.forEach(this::addRule);
+    public void addAllLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions) {
+        liveActions.forEach(this::addLiveAction);
     }
+
     @Override
-    public void removeRule(com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent> rule){
-        this.rules.remove(rule);
+    public void removeLiveAction(LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction) {
+        this.liveActions.remove(liveAction);
     }
+
     @Override
-    public void removeRules(List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> lRules){
-        this.rules.removeAll(lRules);
+    public void removeLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions) {
+        this.liveActions.removeAll(liveActions);
     }
+
     @Override
-    public void removeAllRules(){
-        this.rules.clear();
+    public void removeAllLiveActions() {
+        this.liveActions.clear();
     }
 
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
 
-    public List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getRules() {
-        return rules;
+    public List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getLiveActions() {
+        return liveActions;
     }
-    public void setRules(List<com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction<PropertyChangeEvent,PropertyChangeEvent>> rules) {
-        this.rules = rules;
+
+    public void setLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions) {
+        this.liveActions = liveActions;
     }
 
     public void setListenerManager(IListenerManager listenerManager) {
         this.listenerManager = listenerManager;
     }
+
     public IListenerManager getListenerManager() {
         return listenerManager;
     }

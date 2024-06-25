@@ -56,7 +56,7 @@ public class PatternCreationFeature extends SimpleFeature {
     @Override
     public List<LiveActionEngine> initLiveActions() {
         var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
-        creationRE.addRule(new ElementCreatorFromPattern());
+        creationRE.addLiveAction(new ElementCreatorFromPattern());
         return List.of(creationRE);
     }
 

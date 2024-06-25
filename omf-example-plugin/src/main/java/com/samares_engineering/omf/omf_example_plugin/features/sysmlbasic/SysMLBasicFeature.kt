@@ -34,10 +34,10 @@ class SysMLBasicFeature : SimpleFeature("SysML Basic") {
 
     public override fun initLiveActions(): List<LiveActionEngine> {
         val creationRE = ALiveActionEngine(LiveActionType.CREATE)
-        creationRE.addRule(CreateAutoInterface_OnPortCreation())
+        creationRE.addLiveAction(CreateAutoInterface_OnPortCreation())
 
         val modificationRE = ALiveActionEngine(LiveActionType.UPDATE)
-        modificationRE.addRule(CreateAutoInterface_OnPortCreation())
+        modificationRE.addLiveAction(CreateAutoInterface_OnPortCreation())
 
         return listOf(creationRE)
     }

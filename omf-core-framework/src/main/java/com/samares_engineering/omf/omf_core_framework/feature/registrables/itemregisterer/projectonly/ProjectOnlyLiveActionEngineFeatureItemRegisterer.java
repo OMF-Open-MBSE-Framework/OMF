@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This class is used to register RuleEngines (LiveActions) in the ListenerManager.
- * It will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+ * This class is used to register LiveActions (LiveActions) in the ListenerManager.
+ * It will be used to register the LiveAction in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
  * see {@link IListenerManager}
  * see {@link IElementListener}
  * see {@link ALiveActionEngine}
@@ -44,24 +44,24 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
     }
 
     /**
-     * Register all RuleEngines in the ListenerManager
-     * @param ruleEngines
+     * Register all LiveActions in the ListenerManager
+     * @param LiveActions
      */
-    public void registerFeatureItems(List<LiveActionEngine> ruleEngines) {
+    public void registerFeatureItems(List<LiveActionEngine> LiveActions) {
         try {
-            ruleEngines.forEach(this::registerFeatureItem);
+            LiveActions.forEach(this::registerFeatureItem);
         }catch (Exception e){
             throw new FeatureRegisteringException("[Feature Registerer] Unable to register LiveActions", e);
         }
     }
 
     /**
-     * Unregister all RuleEngines in the ListenerManager
-     * @param ruleEngines
+     * Unregister all LiveActions in the ListenerManager
+     * @param LiveActions
      */
-    public void unregisterFeatureItems(List<LiveActionEngine> ruleEngines) {
+    public void unregisterFeatureItems(List<LiveActionEngine> LiveActions) {
         try {
-            ruleEngines.forEach(this::unregisterFeatureItem);
+            LiveActions.forEach(this::unregisterFeatureItem);
         }catch (Exception e){
             throw new FeatureRegisteringException(
                     "[Feature Registerer] Unable to unregister liveActions",
@@ -70,64 +70,64 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
     }
 
     /**
-     * Allow RuleEngine registration in the listener. Depending on the Category the RuleEngine will be triggered and Rules will be evaluated.
-     * -category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to register
+     * Allow LiveAction registration in the listener. Depending on the Category the LiveAction will be triggered and LiveActions will be evaluated.
+     * -category: based on LiveActionUsage it will be used to register the LiveAction in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param liveAction: The LiveAction to register
      */
     @Override
-    public void registerFeatureItem(LiveActionEngine ruleEngine) {
-        String category = ruleEngine.getCategory();
+    public void registerFeatureItem(LiveActionEngine liveAction) {
+        String category = liveAction.getType();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<LiveActionEngine>> liveActionMap = listener.getLiveActionEngineMap();
 
-        ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        liveActionMap.computeIfAbsent(category, LiveActions ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
-        ruleEngineMap.get(category).add(ruleEngine);
+        liveActionMap.get(category).add(liveAction);
     }
 
     /**
-     * Remove a specific RuleEngine if registered.
-     * -category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to remove
+     * Remove a specific LiveAction if registered.
+     * -category: based on LiveActionUsage it will be used to register the LiveAction in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param liveAction: The LiveAction to remove
      */
     @Override
-    public void unregisterFeatureItem(LiveActionEngine ruleEngine) {
-        String category = ruleEngine.getCategory();
+    public void unregisterFeatureItem(LiveActionEngine liveAction) {
+        String category = liveAction.getType();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> ruleEngineMap = listener.getRuleEngineMap();
-        if (ruleEngineMap.containsKey(category))
-            ruleEngineMap.get(category).remove(ruleEngine);
+        HashMap<String, List<LiveActionEngine>> liveActionMap = listener.getLiveActionEngineMap();
+        if (liveActionMap.containsKey(category))
+            liveActionMap.get(category).remove(liveAction);
     }
 
 
 
     /**
-     * Allow RuleEngine registration in the listener with a specific Priority. Depending on the Category the RuleEngine will be triggered and Rules will be evaluated.
-     * -category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to register
-     * @param featurePriority: will help to order the RuleEngine execution by its priority.
+     * Allow LiveAction registration in the listener with a specific Priority. Depending on the Category the LiveAction will be triggered and LiveActions will be evaluated.
+     * -category: based on LiveActionUsage it will be used to register the LiveAction in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param liveAction: The LiveAction to register
+     * @param featurePriority: will help to order the LiveAction execution by its priority.
      */
-    private void addRuleEngine(LiveActionEngine ruleEngine, int featurePriority){
-        String category = ruleEngine.getCategory();
+    private void addLiveAction(LiveActionEngine liveAction, int featurePriority){
+        String category = liveAction.getType();
         IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> ruleEngineMap = listener.getRuleEngineMap();
+        HashMap<String, List<LiveActionEngine>> liveActionMap = listener.getLiveActionEngineMap();
 
-        ruleEngineMap.computeIfAbsent(category, ruleEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        liveActionMap.computeIfAbsent(category, LiveActions ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
-        ruleEngineMap.get(category).add(featurePriority, ruleEngine);
+        liveActionMap.get(category).add(featurePriority, liveAction);
     }
 
 
     //TODO: Rethink priority management: does the priority is guaranteed ? Priority shall be linked to the RE/Feature
     /**
-     * Move RuleEngine registration in the listener with to specific, RE will be removed, then add again in the list decreasing the priority of all the other features.
-     * - category: based on RuleEngineUsage it will be used to register the RuleEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
-     * @param ruleEngine: The RuleEngine to register
+     * Move LiveAction registration in the listener with to specific, RE will be removed, then add again in the list decreasing the priority of all the other features.
+     * - category: based on LiveActionUsage it will be used to register the LiveAction in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * @param liveAction: The LiveAction to register
      * @param featurePriority: The new pr.
      */
-    private void moveRuleEngine(LiveActionEngine ruleEngine, int featurePriority){
-        unregisterFeatureItem(ruleEngine);
-        addRuleEngine(ruleEngine, featurePriority);
+    private void moveLiveAction(LiveActionEngine liveAction, int featurePriority){
+        unregisterFeatureItem(liveAction);
+        addLiveAction(liveAction, featurePriority);
     }
 
     /**

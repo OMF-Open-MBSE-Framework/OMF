@@ -26,7 +26,7 @@ public interface LiveAction<I, O> {
 
     boolean isBlocking();
 
-    void setRuleEngine(LiveActionEngine ruleEngine);
+    void setLiveActionEngine(LiveActionEngine liveActionEngine);
 
-    LiveActionEngine getRuleEngine();
+    LiveActionEngine getLiveActionEngine();
 }

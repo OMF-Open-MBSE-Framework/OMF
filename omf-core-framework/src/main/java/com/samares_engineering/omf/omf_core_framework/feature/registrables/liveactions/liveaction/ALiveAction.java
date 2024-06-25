@@ -12,10 +12,10 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import java.beans.PropertyChangeEvent;
 
 /**
- * Abstract class for a rule, contains the basic methods for a LiveAction rule.
+ * Abstract class for a liveAction, contains the basic methods for a LiveAction liveAction.
  */
 public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, PropertyChangeEvent> {
-    protected LiveActionEngine ruleEngine;
+    protected LiveActionEngine liveActionEngine;
     public String id = "";
     public boolean isActivated = true;
 
@@ -26,10 +26,10 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
     }
 
     /**
-     * Check if the event matches the rule, and if the rule is activated.
-     * This method is executed within a barrier that will catch any exception and rethrow it as an ErrorWhileEvaluationRuleException.
+     * Check if the event matches the liveAction, and if the liveAction is activated.
+     * This method is executed within a barrier that will catch any exception and rethrow it as an ErrorWhileEvaluationLiveActionException.
      * @param evt the event to match
-     * @return true if the event matches the rule, false otherwise
+     * @return true if the event matches the liveAction, false otherwise
      */
     @Override
     public final boolean matches(PropertyChangeEvent evt) {
@@ -37,11 +37,11 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
     }
 
     /**
-     * Implement the check for the rule here.
-     * This method checks if the event matches the rule, thus if the rule should be executed.
-     * This method is executed within a barrier that will catch any exception and rethrow it as an ErrorWhileEvaluationRuleException.
+     * Implement the check for the liveAction here.
+     * This method checks if the event matches the liveAction, thus if the liveAction should be executed.
+     * This method is executed within a barrier that will catch any exception and rethrow it as an ErrorWhileEvaluationLiveActionException.
      * @param evt the event to check
-     * @return true if the event matches the rule, false otherwise
+     * @return true if the event matches the liveAction, false otherwise
      */
     protected abstract boolean eventMatches(PropertyChangeEvent evt);
 
@@ -64,17 +64,17 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
     }
 
     @Override
-    public void setRuleEngine(LiveActionEngine ruleEngine) {
-        this.ruleEngine = ruleEngine;
+    public void setLiveActionEngine(LiveActionEngine liveActionEngine) {
+        this.liveActionEngine = liveActionEngine;
     }
 
 
     @Override
-    public LiveActionEngine getRuleEngine() {
-        return ruleEngine;
+    public LiveActionEngine getLiveActionEngine() {
+        return liveActionEngine;
     }
 
     public OMFFeature getFeature() {
-        return ruleEngine.getFeature();
+        return liveActionEngine.getFeature();
     }
 }

@@ -106,13 +106,10 @@ public class OMFFactory extends AMagicDrawFactory {
     }
 
     public void conjugateFlowProperty(Property flowProperty) {
-//        SysML.FlowProperty.setName(NamingRules.getFfpBuilderName().name(SysML.FlowProperty.getName()).switchPrefixFromName().switchSuffixFromName().build());
         if(Profile.getInstance().getSysml().flowProperty().getDirection(flowProperty) == SysMLProfile.FlowDirectionKindEnum.IN) {
             Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
-//            SysML.FlowProperty.setName(NamingRules.getFfpBuilderName().name(SysML.FlowProperty.getName()).outPrefix().outSuffix().build());
         } else {
             Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.IN);
-//            SysML.FlowProperty.setName(NamingRules.getFfpBuilderName().name(SysML.FlowProperty.getName()).inPrefix().inSuffix().build());
         }
     }
 

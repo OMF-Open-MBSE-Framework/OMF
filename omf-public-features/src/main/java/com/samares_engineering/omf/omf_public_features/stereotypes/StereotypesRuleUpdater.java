@@ -52,7 +52,7 @@ public class StereotypesRuleUpdater {
     }
 
     public void updateAllRulesBasedOnConfigFiles() {
-        organizerEngine.removeAllRules();
+        organizerEngine.removeAllLiveActions();
         createInstanceRules((feature.getOptionsHelper().getInstanceConfigFilePath()));
         createTypeRules(feature.getOptionsHelper().getTypeConfigFilePath());
         createOrganizerRules(feature.getOptionsHelper().getOrganizerConfigFilePath());
@@ -64,7 +64,7 @@ public class StereotypesRuleUpdater {
      */
     public void initAllRulesBasedOnConfigFiles() {
         try {
-            organizerEngine.removeAllRules();
+            organizerEngine.removeAllLiveActions();
             createInstanceRules(StereotypesEnvOptionsHelper.getInstanceConfigFilePathDefaultValue());
             createTypeRules(StereotypesEnvOptionsHelper.getTypeConfigFilePathDefaultValue());
             createOrganizerRules(StereotypesEnvOptionsHelper.getOrganizerConfigFilePathDefaultValue());
@@ -106,13 +106,13 @@ public class StereotypesRuleUpdater {
 
             switch (typeListener) {
                 case "Class2Property":
-                    organizerEngine.addRule(
+                    organizerEngine.addLiveAction(
                             new InstancePropertyCreatedLiveAction(ruleId, Class.class, typeStereotype,
                                     Property.class, instanceStereotype, instanceOwner)
                     );
                     break;
                 case "Activity2CallBehavior":
-                    organizerEngine.addRule(
+                    organizerEngine.addLiveAction(
                             new InstanceCallBehaviorCreatedLiveAction(ruleId, Activity.class, typeStereotype,
                                     CallBehaviorAction.class, instanceStereotype, instanceOwner)
                     );
@@ -151,10 +151,10 @@ public class StereotypesRuleUpdater {
 
             switch (typeListener) {
                 case "Property2Class":
-                    organizerEngine.addRule(new ClassToCreateLiveAction(id, instance, definition, null));
+                    organizerEngine.addLiveAction(new ClassToCreateLiveAction(id, instance, definition, null));
                     break;
                 case "CallBehavior2Activity":
-                    organizerEngine.addRule(new ActivityToCreateLiveAction(id, instance, definition, null));
+                    organizerEngine.addLiveAction(new ActivityToCreateLiveAction(id, instance, definition, null));
                     break;
                 default:
                     OMFLogger.logToUIConsole("[TypeCreator] While parsing file configuration." +

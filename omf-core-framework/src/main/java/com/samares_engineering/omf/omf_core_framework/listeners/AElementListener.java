@@ -19,7 +19,7 @@ public abstract class AElementListener implements IElementListener {
     private boolean activated;
     private boolean isRegistered;
 
-    private HashMap<String, List<LiveActionEngine>> rulesEngines = new HashMap<>();
+    private HashMap<String, List<LiveActionEngine>> liveActionEngines = new HashMap<>();
 
     private int priority = 0;
 
@@ -39,55 +39,55 @@ public abstract class AElementListener implements IElementListener {
     }
 
     @Override
-    public HashMap<String, List<LiveActionEngine>> getRuleEngineMap() {
-        return rulesEngines;
+    public HashMap<String, List<LiveActionEngine>> getLiveActionEngineMap() {
+        return liveActionEngines;
     }
 
     @Override
-    public void setRuleEngineMap(HashMap<String, List<LiveActionEngine>> rulesEngines) {
-        this.rulesEngines = rulesEngines;
+    public void setLiveActionEngineMap(HashMap<String, List<LiveActionEngine>> liveActionEngines) {
+        this.liveActionEngines = liveActionEngines;
     }
 
     @Override
     public boolean manageAnalysis(PropertyChangeEvent event) {
-        List<LiveActionEngine> ruleEngines = getRuleEngineMap().get(LiveActionType.ANALYSE.toString());
-        return processAllMatchingRules(ruleEngines, event);
+        List<LiveActionEngine> liveActionEngines = getLiveActionEngineMap().get(LiveActionType.ANALYSE.toString());
+        return processAllMatchingLiveActions(liveActionEngines, event);
     }
 
     @Override
     public boolean manageCreation(PropertyChangeEvent event) {
-        List<LiveActionEngine> ruleEngines = getRuleEngineMap().get(LiveActionType.CREATE.toString());
-        return processAllMatchingRules(ruleEngines, event);
+        List<LiveActionEngine> liveActionEngines = getLiveActionEngineMap().get(LiveActionType.CREATE.toString());
+        return processAllMatchingLiveActions(liveActionEngines, event);
     }
 
     @Override
     public boolean manageUpdate(PropertyChangeEvent event) {
-        List<LiveActionEngine> ruleEngines = getRuleEngineMap().get(LiveActionType.UPDATE.toString());
-        return processAllMatchingRules(ruleEngines, event);
+        List<LiveActionEngine> liveActionEngines = getLiveActionEngineMap().get(LiveActionType.UPDATE.toString());
+        return processAllMatchingLiveActions(liveActionEngines, event);
     }
 
     @Override
     public boolean manageDeletion(PropertyChangeEvent event) {
-        List<LiveActionEngine> ruleEngines = getRuleEngineMap().get(LiveActionType.DELETE.toString());
-        return processAllMatchingRules(ruleEngines, event);
+        List<LiveActionEngine> liveActionEngines = getLiveActionEngineMap().get(LiveActionType.DELETE.toString());
+        return processAllMatchingLiveActions(liveActionEngines, event);
     }
 
     @Override
     public boolean manageAfterAutomation(Collection<PropertyChangeEvent> l_events) {
-        List<LiveActionEngine> ruleEngines = getRuleEngineMap().get(LiveActionType.AFTER_AUTOMATION.toString());
-        return l_events.stream().map(event -> processAllMatchingRules(ruleEngines, event)).anyMatch(b -> b);
+        List<LiveActionEngine> liveActionEngines = getLiveActionEngineMap().get(LiveActionType.AFTER_AUTOMATION.toString());
+        return l_events.stream().map(event -> processAllMatchingLiveActions(liveActionEngines, event)).anyMatch(b -> b);
     }
 
     /**
-     * @return true if at least one rule matched
+     * @return true if at least one liveAction matched
      */
-    private boolean processAllMatchingRules(List<LiveActionEngine> ruleEngines, PropertyChangeEvent event) {
-        if(ruleEngines == null) return false;
-        boolean hasRulesBeenTriggered = ruleEngines.stream()
-                .map(ruleEngine -> ruleEngine.processAllMatchingRule(event))
+    private boolean processAllMatchingLiveActions(List<LiveActionEngine> liveActionEngines, PropertyChangeEvent event) {
+        if(liveActionEngines == null) return false;
+        boolean hasLiveActionsBeenTriggered = liveActionEngines.stream()
+                .map(liveActionEngine -> liveActionEngine.processAllMatchingLiveActions(event))
                 .collect(Collectors.toList())
                 .contains(true);
-        return hasRulesBeenTriggered;
+        return hasLiveActionsBeenTriggered;
     }
 
     public void setActivated(boolean activated) {

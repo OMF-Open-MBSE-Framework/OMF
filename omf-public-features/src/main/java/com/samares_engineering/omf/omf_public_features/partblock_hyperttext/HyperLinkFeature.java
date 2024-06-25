@@ -30,7 +30,7 @@ public class HyperLinkFeature extends SimpleFeature {
     @Override
     public List<LiveActionEngine> initLiveActions() {
         var creationRE = new ALiveActionEngine(LiveActionType.AFTER_AUTOMATION);
-        creationRE.addRule(new HyperlinkPartToBlockLA());
+        creationRE.addLiveAction(new HyperlinkPartToBlockLA());
         return List.of(creationRE);
     }
 

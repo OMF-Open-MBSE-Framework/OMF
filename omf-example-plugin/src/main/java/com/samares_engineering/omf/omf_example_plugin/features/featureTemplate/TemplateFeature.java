@@ -44,7 +44,7 @@ public class TemplateFeature extends SimpleFeature {
     @Override
     public List<LiveActionEngine> initLiveActions() {
         var creationRE = new ALiveActionEngine(LiveActionType.CREATE);
-        creationRE.addRule(new LiveActionExample());
+        creationRE.addLiveAction(new LiveActionExample());
         return List.of(creationRE);
     }
 

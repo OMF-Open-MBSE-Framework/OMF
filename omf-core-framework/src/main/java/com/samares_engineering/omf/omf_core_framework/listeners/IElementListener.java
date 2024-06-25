@@ -63,32 +63,32 @@ public interface IElementListener {
     void setIsRegistered(boolean isRegistered);
 
     /**
-     * @return the RuleEngine map
+     * @return the LiveActionEngine map
      */
-    HashMap<String, List<LiveActionEngine>> getRuleEngineMap();
+    HashMap<String, List<LiveActionEngine>> getLiveActionEngineMap();
 
     /**
-     * Setting the RuleEngine map
+     * Setting the LiveActionEngine map
      */
-    void setRuleEngineMap(HashMap<String, List<LiveActionEngine>> rulesEngines);
+    void setLiveActionEngineMap(HashMap<String, List<LiveActionEngine>> liveActionsEngines);
 
     /**
-     * @return true if at least one rule matched
+     * @return true if at least one liveAction matched
      */
     boolean manageAnalysis(PropertyChangeEvent event);
 
     /**
-     * @return true if at least one rule matched
+     * @return true if at least one liveAction matched
      */
     boolean manageCreation(PropertyChangeEvent event);
 
     /**
-     * @return true if at least one rule matched
+     * @return true if at least one liveAction matched
      */
     boolean manageUpdate(PropertyChangeEvent event);
 
     /**
-     * @return true if at least one rule matched
+     * @return true if at least one liveAction matched
      */
     boolean manageDeletion(PropertyChangeEvent event);
     /**
