@@ -53,6 +53,7 @@ This project contains a framework for the development of Magicdraw plugins. As s
 - Once you see the message "Listening for transport dt_socket at address: 5005", you can connect the debugger to the
   running process.
 - Check that the breakpoint is hit.
+- 
 #### IntelliJ
 - Right click the "runTest" task and select "Debug 'runTest'".
 
@@ -68,6 +69,26 @@ The plugin is packaged from the template in _src/main/resources/dist/template_.
   configuration. The library will be copied to the _plugin/lib_ folder during the build.
 - Adding a plugin resource -> Add the resource in the _template/plugin_ folder as if the folder was the root of the plugin
   folder in MagicDraw.
+
+# Exception handling & logging in plugin using OMF
+To log a message, create a OMFLog representing a log message, then use OMFLogger to log the OMFLog to MD console, console, notification etc... 
+Any runtime exception in the plugin's business not caught by the plugin is handled by OMF (exception barrier pattern). 
+By default, the exception is handled in the following way: the message is logged to the user in Magicdraw with the context
+of the plugin & feature, the stack trace 
+is printed in sysout (editor console), and when we are in the context of a session a rollback is done cancelling any 
+changes to the model.
+There are 3 types of exceptions :
+- **OMFLogException** is a RuntimeException whose message is a OMFLog. Use this exception in most cases, (or extend it)
+especially if you want to have MD specific info in your message (like formatting, links to model elements....). 
+- **OMFCriticalException** is an OMFLogException that is used to signal to OMF that the action is broken
+(we can't handle/recover from the error). In addition to an OMFLog, we can add some "modifiers" (OMFExceptionModifiers)
+to tell OMF how to handle the exception: 
+  - NO_ROLLBACK => Changes done to the model are not cancelled
+  - DEACTIVATE_FEATURE => Automatically deactivate the feature containing the action that failed
+  - SILENT => Don't log message to the user
+  - WARNING => Log message to the user as a warning
+- **Other RuntimeException** any other RuntimeException (java exceptions like NullPointerExceptions or exceptions thrown
+by libraries). These exceptions are handled with the default behaviour explained above.
 
 
 # Release process (for maintainers)
