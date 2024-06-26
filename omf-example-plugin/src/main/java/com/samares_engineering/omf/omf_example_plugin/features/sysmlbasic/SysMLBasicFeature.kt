@@ -27,7 +27,7 @@ class SysMLBasicFeature : SimpleFeature("SysML Basic") {
     }
 
     public override fun initFeatureActions(): List<UIAction> {
-        return java.util.List.of<UIAction>( //             new ResetListeners()
+        return listOf<UIAction>( //             new ResetListeners()
             SyncAllNameAction()
         )
     }

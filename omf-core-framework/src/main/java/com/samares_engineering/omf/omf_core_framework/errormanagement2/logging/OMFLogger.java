@@ -5,6 +5,7 @@ import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
@@ -195,5 +196,66 @@ public class OMFLogger {
 
     public static void infoToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
+    }
+
+    // The following methods are shorthand helpers to log to the default locations
+    public static void warn(OMFLogException exception) {
+        warn(exception.getLog(), exception);
+    }
+
+    public static void err(OMFLogException exception) {
+        err(exception.getLog(), exception);
+    }
+
+    public static void warn(Exception exception) {
+        warn(exception.getMessage(), exception);
+    }
+
+    public static void err(Exception exception) {
+        err(exception.getMessage(), exception);
+    }
+
+    public static void warn(OMFLog message, Exception e) {
+        e.printStackTrace();
+        warn(message);
+    }
+
+    public static void err(OMFLog message, Exception e) {
+        e.printStackTrace();
+        err(message);
+    }
+
+    public static void warn(String message, Exception e) {
+        e.printStackTrace();
+        warn(message);
+    }
+
+    public static void err(String message, Exception e) {
+        e.printStackTrace();
+        err(message);
+    }
+
+    public static void warn(OMFLog message) {
+        warnToNotification(message);
+        warnToUIConsole(message);
+        warnToSystemConsole(message);
+    }
+
+    public static void err(OMFLog message) {
+        errorToNotification(message);
+        errorToUIConsole(message);
+        errorToSystemConsole(message);
+    }
+
+    public static void warn(String message) {
+        warnToNotification(message);
+        warnToUIConsole(message);
+        warnToSystemConsole(message);
+    }
+
+    public static void err(String message) {
+        errorToNotification(message);
+        errorToUIConsole(message);
+        errorToSystemConsole(message);
     }
 }
