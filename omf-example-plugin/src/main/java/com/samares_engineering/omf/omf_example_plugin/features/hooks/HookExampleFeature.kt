@@ -6,13 +6,13 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IOnFeatureRegisteringHook
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IOnFeatureUnregisteringHook
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IOnMagicDrawStartHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.OnFeatureRegisteringHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.OnFeatureUnregisteringHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectCreatedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook
 
-class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
+class HookExampleFeature : SimpleFeature("Hook Example Feature") {
 
     override fun initLifeCycleHooks(): MutableList<Hook> {
         return mutableListOf(OnProjectHookExample())
@@ -25,9 +25,9 @@ class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
     class OnProjectHookExample : BaseHookFeatureItem(),
             OnProjectOpenedHook,
             OnProjectCreatedHook,
-        IOnMagicDrawStartHook,
-    IOnFeatureRegisteringHook,
-    IOnFeatureUnregisteringHook{
+            OnMagicDrawStartHook,
+            OnFeatureRegisteringHook,
+            OnFeatureUnregisteringHook {
 
         override fun onProjectCreated(project: Project) {
             OMFLogger.warnToSystemConsole("Project created: ${project.name}")
@@ -42,7 +42,7 @@ class HookExampleFeature : SimpleFeature("Hook Example Feature" ) {
         }
 
         override fun onFeatureRegistering(feature: OMFFeature?) {
-            if(feature == getFeature()){
+            if (feature == getFeature()) {
                 return
             }
             OMFLogger.warnToSystemConsole("Feature registering: ${feature?.name}")

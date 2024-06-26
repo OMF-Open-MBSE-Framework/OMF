@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.HookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.exceptions.HooksExecutionException;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.FeatureLifeCycleHook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.IOnFeatureUnregisteringHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.OnFeatureUnregisteringHook;
 
 public class FeatureHookExecutor extends HookExecutor<FeatureLifeCycleHook> {
 
@@ -23,8 +23,8 @@ public class FeatureHookExecutor extends HookExecutor<FeatureLifeCycleHook> {
    public void triggerOnFeatureRegisteringHooks(OMFFeature feature) {
        try {
            getHooksHolders().stream()
-                   .filter(IOnFeatureUnregisteringHook.class::isInstance)
-                   .map(IOnFeatureUnregisteringHook.class::cast)
+                   .filter(OnFeatureUnregisteringHook.class::isInstance)
+                   .map(OnFeatureUnregisteringHook.class::cast)
                    .forEach(hook -> hook.triggerOnFeatureUnregisteringHook(feature));
        } catch (Exception e) {
            OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onFeatureRegistering hooks", e));
@@ -40,8 +40,8 @@ public class FeatureHookExecutor extends HookExecutor<FeatureLifeCycleHook> {
     public void triggerOnFeatureUnregisteringHooks(OMFFeature feature) {
         try {
             getHooksHolders().stream()
-                    .filter(IOnFeatureUnregisteringHook.class::isInstance)
-                    .map(IOnFeatureUnregisteringHook.class::cast)
+                    .filter(OnFeatureUnregisteringHook.class::isInstance)
+                    .map(OnFeatureUnregisteringHook.class::cast)
                     .forEach(hook -> hook.triggerOnFeatureUnregisteringHook(feature));
         } catch (Exception e) {
             OMFErrorHandler.getInstance().handleException(new HooksExecutionException("Error while triggering onFeatureUnregistering hooks", e));

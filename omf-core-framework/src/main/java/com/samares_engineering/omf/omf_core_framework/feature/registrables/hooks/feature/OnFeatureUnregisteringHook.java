@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 
-public interface IOnFeatureUnregisteringHook extends FeatureLifeCycleHook {
+public interface OnFeatureUnregisteringHook extends FeatureLifeCycleHook {
     /**
      * Trigger the onFeatureUnregistering hook
      * @param feature the feature that is being unregistered

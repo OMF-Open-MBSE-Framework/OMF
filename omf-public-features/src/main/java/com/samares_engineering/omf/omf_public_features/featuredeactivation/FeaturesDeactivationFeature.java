@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.AOnMagicDrawStartHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOption;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
@@ -39,7 +39,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
 
     @Override
     protected List<Hook> initLifeCycleHooks() {
-        return List.of(new OnMagicDrawStartHook() {
+        return List.of(new AOnMagicDrawStartHook() {
             @Override
             public void onMagicDrawStart() {
                 boolean featureShallBeRegistered = ((FeatureDeactivationOptionHelper) getEnvOptionsHelper()).isActivateAutomationValue();

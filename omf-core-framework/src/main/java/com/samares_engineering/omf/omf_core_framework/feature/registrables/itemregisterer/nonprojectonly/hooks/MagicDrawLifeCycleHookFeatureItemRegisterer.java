@@ -4,7 +4,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IMagicdrawLifeCycleHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.MagicdrawLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
 
@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
  * Registerer for MagicDraw Hooks. <br>
  * It registers the all hooks stored in the plugin HookExecutor.
  * which will trigger them when the MagicDraw lifecycle events are triggered.
- * @see IMagicdrawLifeCycleHook
+ * @see MagicdrawLifeCycleHook
  */
-public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<IMagicdrawLifeCycleHook> {
+public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<MagicdrawLifeCycleHook> {
     private FeatureRegisterer featureRegister;
     private APlugin plugin;
 
@@ -36,7 +36,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
      * @param hooks list of hooks
      */
     @Override
-    public void registerFeatureItems(List<IMagicdrawLifeCycleHook> hooks) {
+    public void registerFeatureItems(List<MagicdrawLifeCycleHook> hooks) {
         hooks.forEach(this::registerFeatureItem);
     }
 
@@ -45,7 +45,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
      * @param MagicdrawLifeCycleHook HookExecutor where the hooks are stored
      */
     @Override
-    public void registerFeatureItem(IMagicdrawLifeCycleHook MagicdrawLifeCycleHook) {
+    public void registerFeatureItem(MagicdrawLifeCycleHook MagicdrawLifeCycleHook) {
         try {
             if(MagicdrawLifeCycleHook == null || !MagicdrawLifeCycleHook.isActivated()) return;
             plugin.getMagicDrawHookExecutor().addHook(MagicdrawLifeCycleHook);
@@ -61,7 +61,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
      * @param mdFeature list of hooks
      */
     @Override
-    public void unregisterFeatureItems(List<IMagicdrawLifeCycleHook> mdFeature) {
+    public void unregisterFeatureItems(List<MagicdrawLifeCycleHook> mdFeature) {
         mdFeature.forEach(this::unregisterFeatureItem);
     }
 
@@ -70,7 +70,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
      * @param hook hook to unregister
      */
     @Override
-    public void unregisterFeatureItem(IMagicdrawLifeCycleHook hook) {
+    public void unregisterFeatureItem(MagicdrawLifeCycleHook hook) {
         try {
             if(hook == null) return;
             plugin.getMagicDrawHookExecutor().removeHook(hook);
@@ -88,8 +88,8 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
     @Override
     public void registerFeatureItems(OMFFeature feature) {
         registerFeatureItems(feature.getLifeCycleHooks().stream()
-                .filter(IMagicdrawLifeCycleHook.class::isInstance)
-                .map(IMagicdrawLifeCycleHook.class::cast)
+                .filter(MagicdrawLifeCycleHook.class::isInstance)
+                .map(MagicdrawLifeCycleHook.class::cast)
                 .collect(Collectors.toList()));
     }
 
@@ -100,8 +100,8 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
     @Override
     public void unregisterFeatureItems(OMFFeature feature) {
         unregisterFeatureItems(feature.getLifeCycleHooks().stream()
-                .filter(IMagicdrawLifeCycleHook.class::isInstance)
-                .map(IMagicdrawLifeCycleHook.class::cast)
+                .filter(MagicdrawLifeCycleHook.class::isInstance)
+                .map(MagicdrawLifeCycleHook.class::cast)
                 .collect(Collectors.toList()));
     }
 

@@ -12,7 +12,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.BaseHookFeatureItem;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.IOnMagicDrawStartHook;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.OnMagicDrawStartHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectClosedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectOpenedHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
@@ -62,7 +62,7 @@ public class LockSafeFeature extends SimpleFeature {
     private static class FeatureConfigurationHooks extends BaseHookFeatureItem implements
             OnProjectOpenedHook,
             OnProjectClosedHook,
-            IOnMagicDrawStartHook {
+            OnMagicDrawStartHook {
 
         private final LockSafeFeature lockSafeFeature;
 

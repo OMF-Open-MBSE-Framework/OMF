@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - IntelliJ install info in README
+- Error management documentation in README
+- Several new hooks
 
 ### Changed
 - Feature hooks are now generic feature items
@@ -17,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Revert to using the legacy comparator/test logger in the OMF Test Framework as the new one was causing issues
 - Renamed a number of classes to follow OMF Conventions
 - Fully renamed Rules to LiveActions
+- Use "APlugin.initPlugin()" rather than "APlugin.init()" now, and don't call super.init()
 
 ### Fixed
 - Cleaned some legacy code & unused resources
