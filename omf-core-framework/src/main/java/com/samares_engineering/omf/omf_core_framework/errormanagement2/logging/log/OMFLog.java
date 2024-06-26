@@ -208,6 +208,29 @@ public class OMFLog {
         return this;
     }
 
+    public OMFLog logWarn() {
+        OMFLogger.warn(this);
+        return this;
+    }
+
+    public OMFLog logErr() {
+        OMFLogger.err(this);
+        return this;
+    }
+
+    public OMFLog logWarnWithCause(Exception e) {
+        OMFLogger.warn(this, e);
+        return this;
+    }
+
+    public OMFLog logErrWithCause(Exception e) {
+        OMFLogger.err(this, e);
+        return this;
+    }
+
+
+
+
     /*
      * Getters
      */
@@ -220,6 +243,4 @@ public class OMFLog {
         messageComponents.replaceAll(s -> s.replaceAll("\n", "<BR>"));
         return this;
     }
-
-
 }
