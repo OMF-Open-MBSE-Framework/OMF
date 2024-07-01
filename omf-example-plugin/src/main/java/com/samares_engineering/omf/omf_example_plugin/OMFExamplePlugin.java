@@ -60,6 +60,11 @@ public class OMFExamplePlugin extends APlugin {
     }
 
     @Override
+    public void onPluginInit() {
+
+    }
+
+    @Override
     public OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator() {
         return new OMFBrowserConfigurator();
     }
@@ -91,6 +96,4 @@ public class OMFExamplePlugin extends APlugin {
     public IListenerManager initListenerManager() {
         return ListenerManager.getInstance();
     }
-
-
 }

@@ -166,7 +166,9 @@ public abstract class APlugin extends Plugin {
      *
      * @return FeatureRegisterer to register
      */
-    protected FeatureRegisterer initFeatureRegisterer() {return new FeatureRegisterer(this);}
+    protected FeatureRegisterer initFeatureRegisterer() {
+        return new FeatureRegisterer(this);
+    }
 
 
     //------------------------ INITIALIZATION PROCESS-------------------------------------------//
@@ -186,6 +188,7 @@ public abstract class APlugin extends Plugin {
 
         try {
             initPlugin();
+            onPluginInit(); // Call the overridable on plugin init hook
         } catch (Exception e) {
             OMFErrorHandler.getInstance().handleException(new PluginRegisteringException("Error occurred during Plugin Initialization", e));
         }
@@ -200,10 +203,8 @@ public abstract class APlugin extends Plugin {
      * - EnvironmentOptions (allowing Environment option registering) <br>
      * - ProjectOptions (allowing Project option registering) <br>
      * - Constants (DEV/TESTER, GUI_REQUIRED, etc.) <br>
-     * Override this method to add custom configuration.<br>
-     * Call super.initPlugin() to keep default OMF configuration.<br>
      */
-    public void initPlugin() {
+    public final void initPlugin() {
         //        ProjectOptions.addConfigurator();
         //        ProjectOptions.addConfigurator(TestProjectOptionsConfigurator.getInstance())
         configureMagicDrawHookExecutor();
@@ -220,6 +221,11 @@ public abstract class APlugin extends Plugin {
 
         isInitialized = true;
     }
+
+    /**
+     * Override this method to add behavior at plugin init
+     */
+    public abstract void onPluginInit();
 
     private void configureMagicDrawHookExecutor() {
         try {
@@ -242,7 +248,7 @@ public abstract class APlugin extends Plugin {
                     OMFErrorHandler.getInstance().handleException(new CoreException2("Error occurred during onMagicDrawStart hook execution", e));
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new PluginRegisteringException("Error occurred during onStartupHookConfiguration: \n" + e.getMessage(), e);
         }
 
@@ -268,7 +274,7 @@ public abstract class APlugin extends Plugin {
                     projectLifeCycleHookFeatureItemRegisterer,
                     magicDrawLifeCycleHookFeatureItemRegisterer,
                     featureLifeCycleHookFeatureItemRegisterer
-                    );
+            );
 
             List<ProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
                     projectOnlyLiveActionEngineFeatureItemRegisterer,
