@@ -11,7 +11,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public interface OMFFeature {
     void setIsRegistered(boolean isRegistered);
     boolean isRegistered();
 
-    APlugin getPlugin();
+    OMFPlugin getPlugin();
 
 
     List<UIAction> getUIActions();
@@ -44,7 +44,7 @@ public interface OMFFeature {
     List<LiveActionEngine> getProjectOnlyLiveActionEngines();
     List<Option> getProjectOnlyOptions();
 
-    void initFeature(APlugin plugin);
+    void initFeature(OMFPlugin plugin);
     void initFeatureItems();
     void initProjectOnlyFeatureItems();
 

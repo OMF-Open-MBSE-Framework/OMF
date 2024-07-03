@@ -17,7 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.factory.FactoryManager;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.project.ProjectHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.VersionUtils;
@@ -27,10 +27,10 @@ import java.util.List;
 
 public class ProjectListener implements ProjectPartLoadedListener {
     public static final String PROFILE_NAME = "";
-    private final APlugin plugin;
+    private final OMFPlugin plugin;
     private final ProjectHookExecutor projectHookExecutor;
 
-    public ProjectListener(APlugin plugin){
+    public ProjectListener(OMFPlugin plugin){
         this.plugin = plugin;
         this.projectHookExecutor = new ProjectHookExecutor();
         this.projectHookExecutor.init(plugin);

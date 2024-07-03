@@ -61,7 +61,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class AbstractTestCase extends MagicDrawTestCase{
+public abstract class AbstractTestCase extends MagicDrawTestCase {
     public String testCaseID;
     private TestLogger loggerTest;
     private Project initProject;
@@ -234,7 +234,6 @@ public abstract class AbstractTestCase extends MagicDrawTestCase{
     public List<Runnable> testActions() {
         return Collections.emptyList();
     }
-
 
     /**
      * Reinitialize the environment options to the default values after conducting the test.

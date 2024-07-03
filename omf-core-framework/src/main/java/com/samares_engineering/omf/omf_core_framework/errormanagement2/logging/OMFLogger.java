@@ -9,18 +9,19 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 public class OMFLogger {
     private static OMFLogger instance;
-    private APlugin plugin;
-    private OMFLogLevel logLevel = OMFLogLevel.INFO;
+    private final OMFPlugin plugin;
+    private final OMFLogLevel logLevel = OMFLogLevel.INFO;
 
-    private OMFLogger(APlugin plugin) {
+    protected OMFLogger(OMFPlugin plugin) {
         this.plugin = plugin;
     }
 
-    //Rational, to avoid typing OMFLLogger2.getInstance() everytime, it's included in each static method
+    //Rational, to avoid typing OMFLogger2.getInstance() everytime, it's included in each static method
     private static OMFLogger getInstance() {
         if (instance.plugin == null) {
             throw new CoreException2("The OMFLogger has not been initialized yet. Please call the init() method first.");
@@ -28,7 +29,7 @@ public class OMFLogger {
         return instance;
     }
 
-    public static void init(APlugin plugin) {
+    public static void init(OMFPlugin plugin) {
         if (instance != null) {
             throw new CoreException2("Can't initialize the OMFLogger has it has already been initialized.");
         }

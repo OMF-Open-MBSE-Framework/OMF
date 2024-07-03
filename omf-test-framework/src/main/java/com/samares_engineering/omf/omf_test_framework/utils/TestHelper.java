@@ -14,7 +14,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.legacy_comparator.LegacyElementModelComparator;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.filters.ElementFilter;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
 import org.apache.commons.lang3.StringUtils;
@@ -64,9 +65,9 @@ public class TestHelper {
         return StringUtils.deleteWhitespace(s1).equalsIgnoreCase( StringUtils.deleteWhitespace(s2));
     }
 
-    public static APlugin findTestedPluginInstance(Class<? extends APlugin> pluginClass) throws OMFTestFrameworkException {
+    public static OMFPlugin findTestedPluginInstance(Class<? extends OMFPlugin> pluginClass) throws OMFTestFrameworkException {
         try {
-            return (APlugin) PluginUtils.getPlugins().stream()
+            return (OMFPlugin) PluginUtils.getPlugins().stream()
                     .filter(pluginClass::isInstance)
                     .findFirst().orElseThrow(Exception::new);
         } catch (Exception e) {

@@ -55,7 +55,7 @@ import java.util.*;
  * <p>
  * For quick plugin registering use OMFxxx as default classes (OMFBrowserConfigurator, OMFEnvironmentOptions, ...)
  */
-public abstract class APlugin extends Plugin {
+public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginInitializer {
     private boolean isInitialized = false;
 
     // Initialized by user implementing the plugin (basically API of the framework for the plugin)
@@ -83,80 +83,16 @@ public abstract class APlugin extends Plugin {
 
     // MagicDraw Hook Executor
     private MagicDrawHookExecutor magicDrawHookExecutor;
-
+    
     //------------------------ ELEMENTS TO REGISTER AT INIT -------------------------------------------//
-
-    /**
-     * Define all the features registered by default at Plugin initialization.
-     * NOTE: Features can be registered later, by code or the project is opened (use instead getOnProjectOpeningFeatureToRegister())
-     *
-     * @return List of feature to register at plugin initialization
-     */
-    protected abstract List<OMFFeature> initFeatures();
-
-    /**
-     * Define the BrowserConfigurator to register at plugin initialization.
-     * This Configurator will be used for FeatureRegistering
-     *
-     * @return BrowserConfigurator to register
-     */
-    protected abstract OMFBrowserConfigurator initFeatureRegisteringBrowserConfigurator();
-
-    /**
-     * Define the DiagramConfigurator to register at plugin initialization.
-     * This Configurator will be used for FeatureRegistering
-     *
-     * @return DiagramConfigurator to register
-     */
-    protected abstract OMFDiagramConfigurator initFeatureRegisteringDiagramConfigurator();
-
-    /**
-     * Define the MainMenuConfigurator to register at plugin initialization.
-     * This Configurator will be used for FeatureRegistering
-     *
-     * @return MainMenuConfigurator to register
-     */
-    public abstract OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator();
-
-    /**
-     * Define the EnvironmentOptionsGroup to register at plugin Initialization
-     * This Configurator will be used for FeatureRegistering
-     *
-     * @return EnvironmentOptionsGroup to register
-     */
-    protected abstract OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup();
-
-    /**
-     * Define the ProjectOptionsGroup to register at plugin Initialization
-     * This Configurator will be used for FeatureRegistering
-     *
-     * @return ProjectOptionsGroup to register
-     */
-    protected abstract FeatureProjectOptionsConfigurator initFeatureRegisteringProjectOptionGroup();
-
-    /**
-     * Define the ProjectListener to register at plugin Initialization
-     * This Listener will be used for FeatureRegistering at projectOpening and registration of ProjectOptions
-     *
-     * @return ProjectOptionsGroup to register
-     */
-    protected abstract ProjectListener initProjectListener();
-
-    /**
-     * Define the ListenerManager to register at plugin Initialization
-     * This ListenerManager will be used for FeatureRegistering with liveActions and all registration of listeners
-     *
-     * @return ProjectOptionsGroup to register
-     */
-    protected abstract IListenerManager initListenerManager();
-
     /**
      * Define the MagicDrawHookExecutor to register at plugin Initialization
      * This HookExecutor will be used for FeatureRegistering with MagicDraw hooks
      *
      * @return MagicDrawHookExecutor to register
      */
-    protected MagicDrawHookExecutor initMagicDrawHookExecutor() {
+    @Override
+    public MagicDrawHookExecutor initMagicDrawHookExecutor() {
         return new MagicDrawHookExecutor();
     }
 
@@ -166,7 +102,8 @@ public abstract class APlugin extends Plugin {
      *
      * @return FeatureRegisterer to register
      */
-    protected FeatureRegisterer initFeatureRegisterer() {
+    @Override
+    public FeatureRegisterer initFeatureRegisterer() {
         return new FeatureRegisterer(this);
     }
 
@@ -174,25 +111,47 @@ public abstract class APlugin extends Plugin {
     //------------------------ INITIALIZATION PROCESS-------------------------------------------//
 
     /**
-     * Please do not override this method, use initPlugin() instead.
+     * Do not override this method, use onPluginInit() instead to add behavior on init.
      * It will call initPlugin() and handle exceptions
      */
     @Override
-    public final void init() {
+    public void init() {
         try {
-            OMFLogger.init(this);
+            initLogger();
             OMFErrorHandler.init(this);
         } catch (Exception e) {
             throw new PluginRegisteringException("Error occurred during error management initialization", e);
         }
 
         try {
-            initPlugin();
+            configurePlugin();
             onPluginInit(); // Call the overridable on plugin init hook
         } catch (Exception e) {
             OMFErrorHandler.getInstance().handleException(new PluginRegisteringException("Error occurred during Plugin Initialization", e));
         }
     }
+
+    protected void initLogger() {
+        OMFLogger.init(this);
+    }
+
+    // Helper methods
+
+    @Override
+    public void registerAllFeatures() {
+        try {
+            featureRegisterer.registerFeatures(getFeatures());
+        } catch (Exception e) {
+            throw new PluginRegisteringException("Error occured while registering features");
+        }
+    }
+
+    @Override
+    public void unregisterAllFeatures() {
+        featureRegisterer.unregisterFeatures(getFeatures());
+    }
+    
+    // Plugin configuration
 
     /**
      * Initialize the plugin, and will configure:
@@ -204,7 +163,7 @@ public abstract class APlugin extends Plugin {
      * - ProjectOptions (allowing Project option registering) <br>
      * - Constants (DEV/TESTER, GUI_REQUIRED, etc.) <br>
      */
-    public final void initPlugin() {
+    protected void configurePlugin() {
         //        ProjectOptions.addConfigurator();
         //        ProjectOptions.addConfigurator(TestProjectOptionsConfigurator.getInstance())
         configureMagicDrawHookExecutor();
@@ -221,11 +180,6 @@ public abstract class APlugin extends Plugin {
 
         isInitialized = true;
     }
-
-    /**
-     * Override this method to add behavior at plugin init
-     */
-    public abstract void onPluginInit();
 
     private void configureMagicDrawHookExecutor() {
         try {
@@ -378,19 +332,6 @@ public abstract class APlugin extends Plugin {
         }
     }
 
-
-    protected void registerAllFeatures() {
-        try {
-            featureRegisterer.registerFeatures(getFeatures());
-        } catch (Exception e) {
-            throw new PluginRegisteringException("Error occured while registering features");
-        }
-    }
-
-    protected void unregisterAllFeatures() {
-        featureRegisterer.unregisterFeatures(getFeatures());
-    }
-
     protected void configureEnvironmentOptions() {
 
         Application application = Application.getInstance();
@@ -430,17 +371,21 @@ public abstract class APlugin extends Plugin {
             throw new PluginRegisteringException("Error occurred during ProjectOptions Configuration", e);
         }
     }
-
-
+    
+    
     //------------------------------------ GETTER SETTER ----------------------------------------------------//
+
+    @Override
     public LiveActionEngineFeatureItemRegisterer getLiveActionEngineRegisterer() {
         return liveActionEngineFeatureItemRegisterer;
     }
 
+    @Override
     public UIActionFeatureItemRegisterer getUiActionFeatureItemRegisterer() {
         return uiActionFeatureItemRegisterer;
     }
 
+    @Override
     public OptionFeatureItemRegisterer getOptionRegisterer() {
         return optionFeatureItemRegisterer;
     }
@@ -455,14 +400,17 @@ public abstract class APlugin extends Plugin {
         return true;
     }
 
+    @Override
     public List<AOptionListener> initEnvironmentOptionsListener() {
         return Collections.emptyList();
     }
 
+    @Override
     public List<OMFFeature> getFeatures() {
         return new ArrayList<>(features.values());
     }
 
+    @Override
     public Optional<OMFFeature> getFeatureByName(String name) {
         if (features.containsKey(name)) {
             return Optional.of(features.get(name));
@@ -470,86 +418,107 @@ public abstract class APlugin extends Plugin {
         return Optional.empty();
     }
 
+    @Override
     public FeatureRegisterer getFeatureRegister() {
         return featureRegisterer;
     }
 
+    @Override
     public boolean isInitialized() {
         return this.isInitialized;
     }
 
+    @Override
     public List<AOptionListener> getEnvironmentOptionsListener() {
         return environmentOptionsListener;
     }
 
+    @Override
     public FeatureProjectOptionsConfigurator getProjectOptionConfigurator() {
         return projectOptionConfigurator;
     }
 
+    @Override
     public Optional<OMFPropertyOptionsGroup> getEnvironmentOptionsGroup() {
         return Optional.ofNullable(environmentOptionsGroup);
     }
 
+    @Override
     public FeatureRegisterer getFeatureRegisterer() {
         return featureRegisterer;
     }
 
+    @Override
     public IListenerManager getListenerManager() {
         return listenerManager;
     }
 
+    @Override
     public ProjectListener getProjectListener() {
         return projectListener;
     }
 
+    @Override
     public OMFBrowserConfigurator getBrowserConfigurator() {
         return browserConfigurator;
     }
 
+    @Override
     public OMFDiagramConfigurator getDiagramConfigurator() {
         return diagramConfigurator;
     }
 
+    @Override
     public OMFMainMenuConfigurator getMenuConfigurator() {
         return menuConfigurator;
     }
 
+    @Override
     public String getName() {
         return this.getDescriptor().getName();
     }
 
+    @Override
     public ProjectOnlyUIActionFeatureItemRegisterer getProjectOnlyUiActionRegisterer() {
         return projectOnlyUiActionRegisterer;
     }
 
+    @Override
     public ProjectOnlyLiveActionEngineFeatureItemRegisterer getProjectOnlyLiveActionEngineFeatureItemRegisterer() {
         return projectOnlyLiveActionEngineFeatureItemRegisterer;
     }
 
+    @Override
     public ProjectOnlyOptionFeatureItemRegisterer getProjectOnlyOptionFeatureItemRegisterer() {
         return projectOnlyOptionFeatureItemRegisterer;
     }
 
+    @Override
     public LiveActionEngineFeatureItemRegisterer getLiveActionEngineFeatureItemRegisterer() {
         return liveActionEngineFeatureItemRegisterer;
     }
 
+    @Override
     public OptionFeatureItemRegisterer getOptionFeatureItemRegisterer() {
         return optionFeatureItemRegisterer;
     }
 
+    @Override
     public MagicDrawLifeCycleHookFeatureItemRegisterer getMagicDrawLifeCycleHookFeatureItemRegisterer() {
         return magicDrawLifeCycleHookFeatureItemRegisterer;
     }
 
+    @Override
     public ProjectLifeCycleHookFeatureItemRegisterer getProjectLifeCycleHookFeatureItemRegisterer() {
         return projectLifeCycleHookFeatureItemRegisterer;
     }
 
+    @Override
     public FeatureLifeCycleHookFeatureItemRegisterer getFeatureLifeCycleHookFeatureItemRegisterer() {
         return featureLifeCycleHookFeatureItemRegisterer;
     }
 
+    @Override
     public MagicDrawHookExecutor getMagicDrawHookExecutor() {
         return magicDrawHookExecutor;
     }

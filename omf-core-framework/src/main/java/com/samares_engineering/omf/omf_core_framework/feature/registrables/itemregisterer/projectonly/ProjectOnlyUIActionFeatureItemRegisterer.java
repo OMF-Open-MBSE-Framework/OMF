@@ -11,7 +11,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.UIActionFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 /**
  * This class is used to register and unregister UIActions from MDFeatures.
@@ -22,7 +22,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
  * It is used to register MDActions that are available in the context of a project and a menu.
  */
 public class ProjectOnlyUIActionFeatureItemRegisterer extends UIActionFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<UIAction> {
-    public ProjectOnlyUIActionFeatureItemRegisterer(APlugin plugin) {
+    public ProjectOnlyUIActionFeatureItemRegisterer(OMFPlugin plugin) {
         super(plugin);
     }
 

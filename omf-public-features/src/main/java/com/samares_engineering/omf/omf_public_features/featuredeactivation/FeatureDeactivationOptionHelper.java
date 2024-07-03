@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 import java.util.Objects;
 
@@ -18,13 +18,13 @@ public class FeatureDeactivationOptionHelper extends EnvOptionsHelper{
 
     protected FeatureDeactivationOptionHelper(OMFFeature feature) {
         super(feature);
-        APlugin plugin = feature.getPlugin();
+        OMFPlugin plugin = feature.getPlugin();
         ID_ACTIVATE_AUTOMATION = "activate automations " + plugin.getName() + " :";
         GROUP_NAME = plugin.getName() + "Features Configurations";
     }
 
     public OptionImpl getActivationFeatureOption() {
-        APlugin plugin = getFeature().getPlugin();
+        OMFPlugin plugin = getFeature().getPlugin();
 
         return new OptionImpl(
                 new BooleanProperty(ID_ACTIVATE_AUTOMATION, true),

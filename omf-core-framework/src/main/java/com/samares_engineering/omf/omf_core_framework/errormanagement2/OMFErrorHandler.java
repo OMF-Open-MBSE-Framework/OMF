@@ -9,16 +9,17 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.O
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import javax.annotation.CheckForNull;
 
 public class OMFErrorHandler {
     private static OMFErrorHandler instance;
-    private final APlugin plugin;
+    private final OMFPlugin plugin;
 
-    private OMFErrorHandler(APlugin plugin) {
+    private OMFErrorHandler(OMFPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -29,7 +30,7 @@ public class OMFErrorHandler {
         return instance;
     }
 
-    public static void init(APlugin plugin) {
+    public static void init(OMFPlugin plugin) {
         if (instance != null) {
             throw new CoreException2("Can't initialize the ErrorHandler has it has already been initialized.");
         }

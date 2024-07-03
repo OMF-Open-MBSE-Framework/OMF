@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.hook
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 public class BaseHookFeatureItem implements Hook {
     private OMFFeature feature;
@@ -28,7 +28,7 @@ public class BaseHookFeatureItem implements Hook {
         return activated;
     }
 
-    public APlugin getPlugin() {
+    public OMFPlugin getPlugin() {
         return getFeature().getPlugin();
     }
 

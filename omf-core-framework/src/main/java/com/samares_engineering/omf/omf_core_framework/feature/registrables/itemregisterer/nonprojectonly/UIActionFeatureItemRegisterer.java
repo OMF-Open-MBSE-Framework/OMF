@@ -16,7 +16,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     private final List<UIActionConfigurator> configurators = new ArrayList<>();
     private FeatureRegisterer featureRegisterer;
 
-    public UIActionFeatureItemRegisterer(APlugin plugin) {
+    public UIActionFeatureItemRegisterer(OMFPlugin plugin) {
         configurators.add(plugin.getBrowserConfigurator());
         configurators.add(plugin.getDiagramConfigurator());
         configurators.add(plugin.getMenuConfigurator());

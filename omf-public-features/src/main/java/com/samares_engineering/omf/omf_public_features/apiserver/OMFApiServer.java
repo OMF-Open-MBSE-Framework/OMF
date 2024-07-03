@@ -5,6 +5,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_public_features.apiserver.exception.APIServerException;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -35,9 +36,9 @@ public class OMFApiServer extends AbstractHandler {
         this.plugin = plugin;
     }
 
-    public static OMFApiServer getInstance(Plugin plugin){
+    public static OMFApiServer getInstance(OMFPlugin plugin){
         if(instance == null)
-            instance = new OMFApiServer(plugin);
+            instance = new OMFApiServer((Plugin) plugin);
         return instance;
     }
     public static OMFApiServer getInstance(){

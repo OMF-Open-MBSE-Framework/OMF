@@ -15,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.listener.FeatureRegisteringEventHandler;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.ArrayList;
@@ -28,11 +28,11 @@ public class FeatureRegisterer {
     private final FeatureRegisteringEventHandler eventHandler;
 
     private List<OMFFeature> registeredFeatures = new ArrayList<>();
-    private final APlugin plugin;
+    private final OMFPlugin plugin;
     private HookExecutor<FeatureLifeCycleHook> featureHookExecutor;
 
     //TODO: Create a class regrouping all Configurators
-    public FeatureRegisterer(APlugin plugin) {
+    public FeatureRegisterer(OMFPlugin plugin) {
         this.plugin = plugin;
         this.featureItemRegisters = new ArrayList<>();
         this.projectOnlyFeatureItemRegisters = new ArrayList<>();
@@ -298,7 +298,7 @@ public class FeatureRegisterer {
     /**
      * Get the plugin instance
      */
-    public APlugin getPlugin() {
+    public OMFPlugin getPlugin() {
         return plugin;
     }
 

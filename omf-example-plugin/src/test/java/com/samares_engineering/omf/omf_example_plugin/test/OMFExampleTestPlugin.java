@@ -15,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.test.feature.FeatureCopyID;
@@ -24,13 +24,15 @@ import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.LocalB
 import com.samares_engineering.omf.omf_example_plugin.test.suites.batches.TWCBatch;
 import com.samares_engineering.omf.omf_public_features.testGeneration.TestGenerationFeature;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
+import com.samares_engineering.omf.omf_test_framework.plugin.AOMFTestPlugin;
+import com.samares_engineering.omf.omf_test_framework.plugin.OMFTestPlugin;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class OMFExampleTestPlugin extends APlugin {
+public class OMFExampleTestPlugin extends AOMFTestPlugin {
 
     // List the test batches to be executed here
     public static final List<Class<? extends ATestBatch>> TEST_BATCHES = Arrays.asList(
@@ -40,7 +42,7 @@ public class OMFExampleTestPlugin extends APlugin {
     );
 
     @Override
-    public void initPlugin() {
+    public void onPluginInit() {
         // TODO find a way to get the path to set from gradle properties
         System.setProperty("tests.resources", "plugins/com.samares_engineering.omf.omf_example_plugin.test/projects");
 

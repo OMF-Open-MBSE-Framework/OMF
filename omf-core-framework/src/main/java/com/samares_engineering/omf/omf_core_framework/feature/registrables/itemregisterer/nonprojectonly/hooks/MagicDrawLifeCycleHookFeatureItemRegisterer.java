@@ -6,7 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.magicdraw.MagicdrawLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<MagicdrawLifeCycleHook> {
     private FeatureRegisterer featureRegister;
-    private APlugin plugin;
+    private OMFPlugin plugin;
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {

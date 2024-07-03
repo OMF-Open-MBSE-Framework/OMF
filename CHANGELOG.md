@@ -19,7 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Revert to using the legacy comparator/test logger in the OMF Test Framework as the new one was causing issues
 - Renamed a number of classes to follow OMF Conventions
 - Fully renamed Rules to LiveActions
-- Use "APlugin.initPlugin()" rather than "APlugin.init()" now, and don't call super.init()
+- Extend AOMFPlugin for normal plugin & AOMFTestPlugin for test plugins
+- Use "AOMFPlugin.initPlugin()" rather than "AOMFPlugin.init()" now, and don't call super.init()
 
 ### Fixed
 - Cleaned some legacy code & unused resources

@@ -16,7 +16,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
  * - Live Actions: Live Actions are actions that are triggered by the system on Model changes (e.g. element creation).
  * Feature are registered in the OMFPlugin class, and are initialised when the plugin is loaded.
  * Features can be registered as project only, meaning that they will only be available in the current project.
- * see {@link com.samares_engineering.omf.omf_core_framework.plugin.APlugin}
+ * see {@link OMFPlugin}
  * see {@link com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer}
  * see {@link UIAction}
  * see {@link Option}
@@ -43,7 +44,7 @@ public abstract class AFeature implements OMFFeature {
     private boolean isFeatureItemsInitialised = false;
     private EnvOptionsHelper envOptionsHelper;
 
-    protected APlugin plugin;
+    protected OMFPlugin plugin;
 
     // Registrable items
     private final List<UIAction> mdActions = new ArrayList<>();
@@ -70,7 +71,7 @@ public abstract class AFeature implements OMFFeature {
      * feature is first registered, as the
      * Note: this does not register the feature into magic draw/listeners.
      */
-    public final void initFeature(APlugin plugin) {
+    public final void initFeature(OMFPlugin plugin) {
         // We only need to initialise feature once
         if (isFeatureInitialised) return;
         this.plugin = plugin;
@@ -274,7 +275,7 @@ public abstract class AFeature implements OMFFeature {
         return isRegistered;
     }
 
-    public APlugin getPlugin() {
+    public OMFPlugin getPlugin() {
         return plugin;
     }
 

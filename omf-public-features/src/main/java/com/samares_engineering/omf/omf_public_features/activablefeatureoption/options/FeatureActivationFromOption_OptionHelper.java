@@ -8,7 +8,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionImpl;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 
@@ -82,7 +83,7 @@ public class FeatureActivationFromOption_OptionHelper extends EnvOptionsHelper {
      * @param optionProperty the option
      * @return the feature
      */
-    public Optional<OMFFeature> getFeatureFromOption(APlugin plugin, Property optionProperty) {
+    public Optional<OMFFeature> getFeatureFromOption(OMFPlugin plugin, Property optionProperty) {
         return plugin.getFeatures().stream()
                 .filter(pluginFeature -> optionProperty.getID().contains(pluginFeature.getName()))
                 .findFirst();

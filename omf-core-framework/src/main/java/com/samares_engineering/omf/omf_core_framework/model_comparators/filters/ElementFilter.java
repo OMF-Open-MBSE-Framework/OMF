@@ -78,7 +78,6 @@ public class ElementFilter implements ModelComparatorFilter {
                 return false;
             default:
                 return true;
-
         }
     }
 }

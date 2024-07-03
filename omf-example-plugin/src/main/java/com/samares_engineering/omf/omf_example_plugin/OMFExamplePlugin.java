@@ -13,16 +13,14 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
-import com.samares_engineering.omf.omf_core_framework.plugin.APlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
+import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.featureexample.FeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.hooks.HookExampleFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.sandbox.SandboxFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
@@ -35,16 +33,16 @@ import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncr
 
 import java.util.List;
 
-public class OMFExamplePlugin extends APlugin {
+public class OMFExamplePlugin extends AOMFPlugin {
     @Override
     public List<OMFFeature> initFeatures() {
         return List.of(
-//                new FeaturesDeactivationFeature(), // Don't know what this is but it's always commented out
+//                new FeaturesDeactivationFeature(),
                 new StereotypesFeature(),
                 new CloneElementFeature(),
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),
-                new ErrorManagementFeatureExample(),
+                //new ErrorManagementFeatureExample(),
                 new HyperLinkFeature(),
                 new LockSafeFeature(),
                 new APIServerFeature("http://localhost", 9850),
@@ -52,9 +50,6 @@ public class OMFExamplePlugin extends APlugin {
                 new SysmlGptExploFeature(),
                 new PatternCreationFeature(),
                 new TemplateFeature(),
-                new SandboxFeature(),
-                new HookExampleFeature(),
-                new FeatureExample(),
                 new FeatureActivationFromOptionFeature()
         );
     }
@@ -75,7 +70,9 @@ public class OMFExamplePlugin extends APlugin {
     }
 
     @Override
-    public OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator() {return new OMFMainMenuConfigurator();}
+    public OMFMainMenuConfigurator initFeatureRegisteringMainMenuConfigurator() {
+        return new OMFMainMenuConfigurator();
+    }
 
     @Override
     public OMFPropertyOptionsGroup initFeatureRegisteringEnvironmentOptionGroup() {
