@@ -97,12 +97,12 @@ by libraries). These exceptions are handled with the default behaviour explained
 - Create a new branch from `0-DEV` with the name `RELEASE/<version>` (e.g. `RELEASE/1.0.0`)
 - On the release branch, change the version in `gradle.properties` (remove SNAPSHOT suffix)
 - Commit and push. 
-- Publish to nexus & maven central staging repo => gradle task `publish` (Broken at the moment) The CI/CD will build the plugin and publish it to Nexus & Maven Central staging
+- Publish to nexus & maven central staging repo => gradle task `publish` The CI/CD will build the plugin and publish it 
+to Nexus & Maven Central staging (this is broken at the moment, so you will have to do it manually)
 
-** Manual Publish task
+** Manual Publish task **
 1) Follow the 'First time setup' section of [Our guide on how to release to maven central](https://samaresengineering.atlassian.net/wiki/spaces/ST/pages/2514026503/Publish+to+Maven+Central)
 2) Run the gradle task 'publishing/publishAllPublicationsToMavenCentralRepository'
-**
 
 - If there are validation problems:
   - Fix them on the release branch
@@ -120,7 +120,7 @@ We follow the classic Java guidelines (**PascalCase** for classes, **camelCase**
 
 **Interfaces:** Don't prefix with “I”
 
-**Abstract:** Prefix with A and do not use in the code. Use the interface instead.
+**Abstract:** Prefix with A and do not use as type, only in extend. Use the interface instead.
 
 Prefix all classes (or rather interfaces) usable by the framework's user by “**OMF**”, don't prefix for internal framework classes.
 
