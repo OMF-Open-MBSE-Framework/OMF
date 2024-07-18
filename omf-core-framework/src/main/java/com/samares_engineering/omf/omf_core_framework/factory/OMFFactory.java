@@ -185,7 +185,7 @@ public class OMFFactory extends AMagicDrawFactory {
     }
 
     //Connection
-    public void setConnectorEnd(ConnectorEnd ce, Property part, Port port, List<Property> availableParts) throws LegacyOMFException {
+    public void setConnectorEnd(ConnectorEnd ce, Property part, Port port, List<Property> availableParts) {
         List<Element> pathSource = null;
         Class owner = (Class) Objects.requireNonNull(ce.get_connectorOfEnd(), "Can't find connector associated " +
                 "with connector end").getOwner();
@@ -254,7 +254,10 @@ public class OMFFactory extends AMagicDrawFactory {
         return connector;
     }
 
-    public Connector createDirectConnectorPath(Property srcPart, Port srcPort, Property targetPart, Port targetPort, Class connectorOwner, List<Property> srcPropertyPathList, List<Property> dstPropertyPathList) throws LegacyOMFException {
+    public Connector createDirectConnectorPath(Property srcPart, Port srcPort,
+                                               Property targetPart, Port targetPort,
+                                               Class connectorOwner,
+                                               List<Property> srcPropertyPathList, List<Property> dstPropertyPathList) {
         Connector connector = getMagicDrawFactory().createConnectorInstance();
         ConnectorEnd ce1 = Objects.requireNonNull(ModelHelper.getFirstEnd(connector), "Connector first end is null");
         ConnectorEnd ce2 = Objects.requireNonNull(ModelHelper.getSecondEnd(connector), "Connector second end is null");

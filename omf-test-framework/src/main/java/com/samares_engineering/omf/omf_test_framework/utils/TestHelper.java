@@ -15,10 +15,9 @@ import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.legacy_comparator.LegacyElementModelComparator;
 import com.samares_engineering.omf.omf_core_framework.model_comparators.filters.ElementFilter;
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
-import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_test_framework.errors.OMFTestFrameworkException;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import static org.junit.Assert.assertNotNull;
 

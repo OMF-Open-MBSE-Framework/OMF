@@ -14,10 +14,10 @@ import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
-import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.errorexample.ErrorManagementFeatureExample;
+import com.samares_engineering.omf.omf_example_plugin.features.connection.ConnectionFeatureExample;
+import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
@@ -43,6 +43,8 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),
                 //new ErrorManagementFeatureExample(),
+                new ConnectionFeatureExample(),
+                new EnhancedDisplayFeature(),
                 new HyperLinkFeature(),
                 new LockSafeFeature(),
                 new APIServerFeature("http://localhost", 9850),

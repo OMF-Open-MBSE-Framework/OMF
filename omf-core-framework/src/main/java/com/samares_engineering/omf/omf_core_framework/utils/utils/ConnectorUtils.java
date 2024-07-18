@@ -7,6 +7,7 @@
 
 package com.samares_engineering.omf.omf_core_framework.utils.utils;
 
+import com.nomagic.magicdraw.sysml.util.MDCustomizationForSysMLProfile;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
@@ -14,6 +15,8 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
@@ -21,6 +24,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConnectorUtils {
     private ConnectorUtils() {}
@@ -107,7 +111,7 @@ public class ConnectorUtils {
         }
     }
 
-    public static List<Property> calculateNestedPath(List<Property> nestedPath, Property currentPart, Class untilObject, List<Property> availableParts) throws LegacyOMFException {
+    public static List<Property> calculateNestedPath(List<Property> nestedPath, Property currentPart, Class untilObject, List<Property> availableParts) {
 
         if (untilObject.equals(currentPart.getOwner())) {
             nestedPath.add(currentPart);
@@ -120,7 +124,7 @@ public class ConnectorUtils {
 
             Optional<Property> nestedPart = availableParts.stream().filter(property -> partOwner.equals((property).getType())).findFirst();
             if (nestedPart.isEmpty())
-                throw new LegacyOMFException("[FullConnectionPath]-calculateNestedPath cannot find part: " + currentPart.getHumanName(), GenericException.ECriticality.CRITICAL);
+                throw new OMFCriticalException("[FullConnectionPath]-calculateNestedPath cannot find part: " + currentPart.getHumanName());
 
             return calculateNestedPath(nestedPath, nestedPart.get(), untilObject, availableParts);
 
@@ -158,5 +162,49 @@ public class ConnectorUtils {
             return true;
 
         return dirA == SysMLProfile.FlowDirectionKindEnum.OUT && dirB == SysMLProfile.FlowDirectionKindEnum.IN;
+    }
+
+    public static List<Property> getFullPropertyPath(ConnectorEnd end) {
+        List<Property> propertyPath = getPropertyPath(end);
+        ConnectableElement role = end.getRole();
+        if (!(role instanceof Port) && role instanceof Property && !propertyPath.contains(role))  //if end == part add it to the list
+            propertyPath.add((Property) role);
+        else if (null != end.getPartWithPort() && !(end.getPartWithPort() instanceof Port) && !propertyPath.contains(end.getPartWithPort()))   //could be redundant if end is a part
+            propertyPath.add(end.getPartWithPort());
+        return propertyPath;
+    }
+
+
+
+    public static List<Property> getPropertyPath(ConnectorEnd connectorEnd) {
+        return Profile._getSysml().elementPropertyPath().getPropertyPath(connectorEnd).stream()
+                .filter(Property.class::isInstance)
+                .map(Property.class::cast)
+                .collect(Collectors.toList());
+    }
+
+    public static Property getPartFromPropertyPath(Element partType, List<Property> listPropertyPath) {
+        Optional<Property> optPart = listPropertyPath.stream().filter(property -> partType.equals((property).getType())).findFirst();
+        return optPart.orElse(null);
+    }
+
+    public static List<ConnectableElement> getRoleFromConnector(Connector connector) {
+        return connector.getEnd().stream()
+                .map(ConnectorEnd::getRole)
+                .collect(Collectors.toList());
+    }
+    public static List<Property> getPartsFromConnector(Connector connector) {
+        ConnectorEnd end1 = connector.getEnd().get(0);
+        ConnectorEnd end2 = connector.getEnd().get(1);
+        ArrayList<Property> parts = new ArrayList<>();
+
+        MDCustomizationForSysMLProfile.PartPropertyStereotype partStr = Profile._getSysmlAdditionalStereotypes().partProperty();
+        if (partStr.is(end1.getRole())) parts.add((Property) end1.getRole());
+        if (partStr.is(end2.getRole())) parts.add((Property) end2.getRole());
+
+        if (partStr.is(end1.getPartWithPort())) parts.add(end1.getPartWithPort());
+        if (partStr.is(end2.getPartWithPort())) parts.add(end2.getPartWithPort());
+
+        return parts;
     }
 }

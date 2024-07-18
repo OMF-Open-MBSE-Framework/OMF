@@ -28,4 +28,12 @@ public class FactoryManager {
         factories.forEach(factory -> factory.reInitFactory(factory.getClass().getSimpleName(), project));
     }
 
+    public static void addFactory(AMagicDrawFactory factory){
+        factories.add(factory);
+    }
+
+    public static void removeFactory(AMagicDrawFactory factory){
+        factories.remove(factory);
+    }
+
 }

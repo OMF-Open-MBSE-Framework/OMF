@@ -10,6 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.listeners;
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.impl.PropertyNames;
@@ -75,6 +76,12 @@ public class EventChecker {
     public EventChecker isPort() {
         isSourceNotNull();
         predicates.add(evt -> evt.getSource() instanceof Port);
+        return this;
+    }
+
+    public EventChecker isConnector() {
+        isSourceNotNull();
+        predicates.add(evt -> evt.getSource() instanceof Connector);
         return this;
     }
 
