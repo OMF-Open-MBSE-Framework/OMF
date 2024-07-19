@@ -18,10 +18,10 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.connection.ConnectionFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
+import com.samares_engineering.omf.omf_example_plugin.features.elementspecification.ElementSpecificationExample;
+import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.ShortcutFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.ExportDiagramImagesFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
@@ -38,20 +38,30 @@ public class OMFExamplePlugin extends AOMFPlugin {
     public List<OMFFeature> initFeatures() {
         return List.of(
 //                new FeaturesDeactivationFeature(),
-                new StereotypesFeature(),
-                new CloneElementFeature(),
-                new GroupElementFeature(),
-                new SysMLBasicFeature(),
-                //new ErrorManagementFeatureExample(),
-                new ConnectionFeatureExample(),
+                //USEFUL
                 new EnhancedDisplayFeature(),
                 new HyperLinkFeature(),
                 new LockSafeFeature(),
                 new APIServerFeature("http://localhost", 9850),
-                new GeneratePluginModelArchi(),
-                new SysmlGptExploFeature(),
+
+                //USEFUL for Modeling
+                new StereotypesFeature(),
+                new CloneElementFeature(),
+                new GroupElementFeature(),
+                new SysMLBasicFeature(),
+                new ConnectionFeatureExample(),
                 new PatternCreationFeature(),
-                new TemplateFeature(),
+
+                //Examples
+                //new ErrorManagementFeatureExample(),
+//                new GeneratePluginModelArchi(),
+//                new SysmlGptExploFeature(),
+//                new TemplateFeature(),
+                new ShortcutFeature(),
+                new ElementSpecificationExample(),
+                new ExportDiagramImagesFeature(),
+
+                // Deactivation of features
                 new FeatureActivationFromOptionFeature()
         );
     }

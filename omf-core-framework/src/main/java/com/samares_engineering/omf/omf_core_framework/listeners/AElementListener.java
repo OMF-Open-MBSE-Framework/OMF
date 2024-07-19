@@ -11,42 +11,12 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class AElementListener implements IElementListener {
-    private boolean activated;
-    private boolean isRegistered;
+public abstract class AElementListener extends AListener implements IElementListener  {
 
-    private HashMap<String, List<LiveActionEngine>> liveActionEngines = new HashMap<>();
 
-    private int priority = 0;
-
-    @Override
-    public boolean isActivated() {
-        return activated;
-    }
-
-    @Override
-    public void activate() {
-        this.activated = true;
-    }
-
-    @Override
-    public void deactivate() {
-        this.activated = false;
-    }
-
-    @Override
-    public HashMap<String, List<LiveActionEngine>> getLiveActionEngineMap() {
-        return liveActionEngines;
-    }
-
-    @Override
-    public void setLiveActionEngineMap(HashMap<String, List<LiveActionEngine>> liveActionEngines) {
-        this.liveActionEngines = liveActionEngines;
-    }
 
     @Override
     public boolean manageAnalysis(PropertyChangeEvent event) {
@@ -90,29 +60,5 @@ public abstract class AElementListener implements IElementListener {
         return hasLiveActionsBeenTriggered;
     }
 
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    @Override
-    public boolean isRegistered() {
-        return isRegistered;
-    }
-    @Override
-    public boolean isNotRegistered(){
-        return !isRegistered;
-    }
-
-    @Override
-    public void setIsRegistered(boolean isRegistered) {
-        this.isRegistered = isRegistered;
-    }
 }
