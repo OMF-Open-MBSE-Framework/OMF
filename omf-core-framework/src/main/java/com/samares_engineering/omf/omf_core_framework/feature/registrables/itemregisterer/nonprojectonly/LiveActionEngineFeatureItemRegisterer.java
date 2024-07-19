@@ -119,7 +119,9 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
      * @return
      */
     private IElementListener getListenerFromCategory(String category) {
-        switch (LiveActionType.valueOf(category)){
+        LiveActionType liveActionType = LiveActionType.valueOf(category);
+
+        switch (liveActionType){
             case ANALYSE:
                 return listenerManager.getAnalysisListener();
             case CREATE:

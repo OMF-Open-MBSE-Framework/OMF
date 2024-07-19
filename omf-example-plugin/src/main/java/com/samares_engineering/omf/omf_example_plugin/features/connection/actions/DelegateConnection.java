@@ -27,7 +27,7 @@ import java.util.List;
 @BrowserAction
 @MenuAction
 @DeactivateListener
-@MDAction(actionName = "Delegate", category = "")
+@MDAction(actionName = "Delegate", category = "", keyStroke = "alt D")
 public class DelegateConnection extends AUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
