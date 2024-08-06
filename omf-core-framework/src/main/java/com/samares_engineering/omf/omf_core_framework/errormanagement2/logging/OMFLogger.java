@@ -58,40 +58,36 @@ public class OMFLogger {
         logToUIConsole(new OMFLog().text(message), logLevel, feature);
     }
 
-    public static void logToNotificationWithExpandableText(OMFLog displayedMessage, OMFLog expandedMessage, OMFLogLevel logLevel, OMFFeature feature) {
+    public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
             Notification notification = new Notification(
                     "[Plugin Error]", //id (not sure what is does)
                     OMFLog.getPrefix(logLevel, getInstance().plugin.getName(), feature.getName()), //title
-                    displayedMessage.replaceNewLinesWithBreaks().toString(),
+                    logMessage.replaceNewLinesWithBreaks().toString(),
                     getNotificationSeverity(logLevel)
             );
-            notification.setLongText(expandedMessage.replaceNewLinesWithBreaks().toString());
 
-            NotificationManager.getInstance().showNotification(notification);
-        }
-    }
-
-    public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
-        logToNotificationWithExpandableText(logMessage, new OMFLog().text(""), logLevel, feature);
-    }
-
-    public static void logToNotificationWithExpandableText(OMFLog displayedMessage, OMFLog expandedMessage, OMFLogLevel logLevel) {
-        if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
-            Notification notification = new Notification(
-                    "[Plugin Error]", //id (not sure what is does)
-                    OMFLog.getPrefix(logLevel, getInstance().plugin.getName()), //title
-                    displayedMessage.replaceNewLinesWithBreaks().toString(),
-                    getNotificationSeverity(logLevel)
-            );
-            notification.setLongText(expandedMessage.replaceNewLinesWithBreaks().toString());
+            OMFLog expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog();
+            if (expandedMessage != null) notification.setLongText(expandedMessage.toString());
 
             NotificationManager.getInstance().showNotification(notification);
         }
     }
 
     public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel) {
-        logToNotificationWithExpandableText(logMessage, new OMFLog().text(""), logLevel);
+        if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
+            Notification notification = new Notification(
+                    "[Plugin Error]", //id (not sure what is does)
+                    OMFLog.getPrefix(logLevel, getInstance().plugin.getName()), //title
+                    logMessage.replaceNewLinesWithBreaks().toString(),
+                    getNotificationSeverity(logLevel)
+            );
+
+            OMFLog expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog();
+            if (expandedMessage != null) notification.setLongText(expandedMessage.toString());
+
+            NotificationManager.getInstance().showNotification(notification);
+        }
     }
 
     public static void logToNotification(String message, OMFLogLevel logLevel, OMFFeature feature) {

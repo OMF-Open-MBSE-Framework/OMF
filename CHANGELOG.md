@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.1] 2024-09-08
 ### Added
-- new notification method in OMFLogger allowing to expand extra text
+- new notification method in OMFLog allowing to expand extra text
 ### Changed
 ### Fixed
 
