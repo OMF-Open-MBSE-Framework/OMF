@@ -276,6 +276,7 @@ public class OMFFactory extends AMagicDrawFactory {
 
     /**
      * Return the list of ports from a connector list
+     * @param connectorsList the list of connectors
      */
     public List<Port> getPortsListFromConnectorsList(List<Connector> connectorsList){
         return connectorsList.stream()
