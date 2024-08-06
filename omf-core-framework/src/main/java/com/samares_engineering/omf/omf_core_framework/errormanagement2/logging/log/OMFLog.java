@@ -124,8 +124,13 @@ public class OMFLog {
     }
 
     public String toHTMLFormat(OMFLogLevel logLevel, String pluginName) {
-        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName)
-                + " " + toString(" ") + "</font>";
+        String expandedLogString = expandedLog != null ? "<BR>" + expandedLog : "";
+
+        return "<font color=" + getMessageColor(logLevel) + ">"
+                + getPrefix(logLevel, pluginName)
+                + " " + toString(" ")
+                + expandedLogString
+                + "</font>";
     }
 
     public String toHTMLFormat(OMFLogLevel logLevel, String pluginName, String featureName) {

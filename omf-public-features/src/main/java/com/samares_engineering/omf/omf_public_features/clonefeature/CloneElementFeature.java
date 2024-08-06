@@ -9,10 +9,7 @@ package com.samares_engineering.omf.omf_public_features.clonefeature;
 
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_public_features.clonefeature.actions.ClonePart;
-import com.samares_engineering.omf.omf_public_features.clonefeature.actions.ClonePort;
-import com.samares_engineering.omf.omf_public_features.clonefeature.actions.CloneProperty;
-import com.samares_engineering.omf.omf_public_features.clonefeature.actions.CloneType;
+import com.samares_engineering.omf.omf_public_features.clonefeature.actions.*;
 
 import java.util.List;
 
