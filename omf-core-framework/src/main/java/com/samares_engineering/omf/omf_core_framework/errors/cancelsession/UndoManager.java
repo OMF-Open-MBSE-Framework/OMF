@@ -149,7 +149,6 @@ public class UndoManager {
      */
     public static void undo(Project project) {
         project.getCommandHistory().undo();
-
         if (project.getCommandHistory().getCommandForRedo() == null) // UNDO COMMAND WAS NOT PROCESSED CORRECTLY..
             NotificationManager.getInstance().showNotification(new Notification(
                     " [LOCK/AUTO UNDO]",
