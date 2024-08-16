@@ -7,6 +7,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<ProjectLifeCycleHook> {
     private FeatureRegisterer featureRegister;
     private ProjectListener projectListener;
+    final List<ProjectLifeCycleHook> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -48,6 +50,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
         try {
             if(hook == null || !hook.isActivated()) return;
             projectListener.getProjectHookExecutor().addHook(hook);
+            registeredFeatureItems.add(hook);
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not register HookExecutor: " + hook.getClass().getSimpleName()
@@ -73,6 +76,7 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
         try {
             if(hook == null) return;
             projectListener.getProjectHookExecutor().removeHook(hook);
+            registeredFeatureItems.remove(hook);
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not unregister hook: " + hook.getClass().getSimpleName()
@@ -112,5 +116,9 @@ public class ProjectLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegister = featureRegisterer;
+    }
+    @Override
+    public List<ProjectLifeCycleHook> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

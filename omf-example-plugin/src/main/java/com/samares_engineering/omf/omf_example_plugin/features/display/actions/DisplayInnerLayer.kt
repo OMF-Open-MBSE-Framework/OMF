@@ -20,7 +20,7 @@ import java.util.stream.Collectors
 @MDAction(actionName = "Display Inner layer", category = "")
 class DisplayInnerLayer : AUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
-        if (OMFUtils.getProject() == null) return false
+        if (OMFUtils.isProjectVoid()) return false
         val activeDiagram = OMFUtils.getProject().activeDiagram ?: return false
         val diagramType = activeDiagram.diagramType.type
         return diagramType == SysMLConstants.SYSML_INTERNAL_BLOCK_DIAGRAM

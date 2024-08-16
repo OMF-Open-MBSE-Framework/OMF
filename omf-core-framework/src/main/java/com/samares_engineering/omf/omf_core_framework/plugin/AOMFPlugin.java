@@ -419,7 +419,7 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
     }
 
     @Override
-    public FeatureRegisterer getFeatureRegister() {
+    public FeatureRegisterer getFeatureRegisterer() {
         return featureRegisterer;
     }
 
@@ -441,11 +441,6 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
     @Override
     public Optional<OMFPropertyOptionsGroup> getEnvironmentOptionsGroup() {
         return Optional.ofNullable(environmentOptionsGroup);
-    }
-
-    @Override
-    public FeatureRegisterer getFeatureRegisterer() {
-        return featureRegisterer;
     }
 
     @Override

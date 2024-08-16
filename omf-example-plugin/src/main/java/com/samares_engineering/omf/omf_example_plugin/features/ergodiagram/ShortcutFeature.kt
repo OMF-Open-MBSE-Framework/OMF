@@ -17,10 +17,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramListenerConstants
-import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.actions.registerShortcut
+import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.actions.RegisterShortcut
 import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.diagramlistener.OnDiagramOpeningListener
 import java.beans.PropertyChangeEvent
 import java.util.stream.Collectors
+
 
 /**
  *
@@ -44,11 +45,11 @@ class ShortcutFeature : SimpleFeature("SHORTCUT_FEATURE") {
     }
 
     override fun initFeatureActions(): List<UIAction> {
-        return java.util.List.of<UIAction>(registerShortcut())
+        return listOf<UIAction>(RegisterShortcut())
     }
 
     override fun initLifeCycleHooks(): List<Hook> {
-        return java.util.List.of<Hook>(
+        return listOf<Hook>(
             object : AOnProjectOpenedHook() {
                 override fun onProjectOpened(project: Project) {
                     diagramListenerAdapter.install(project)
@@ -58,22 +59,22 @@ class ShortcutFeature : SimpleFeature("SHORTCUT_FEATURE") {
     }
 
     override fun initLiveActions(): List<LiveActionEngine> {
-        val liveActionEngine: LiveActionEngine = ALiveActionEngine(DIAGRAM_OPENED)
-        liveActionEngine.addLiveAction(object : ALiveAction() {
-            override fun eventMatches(evt: PropertyChangeEvent): Boolean {
-                return evt.propertyName == DIAGRAM_OPENED && evt.source is Diagram
-            }
+        val liveActionEngine: LiveActionEngine = ALiveActionEngine(DIAGRAM_OPENED).apply {
+            addLiveAction(object : ALiveAction() {
+                override fun eventMatches(evt: PropertyChangeEvent): Boolean {
+                    return evt.propertyName == DIAGRAM_OPENED && evt.source is Diagram
+                }
 
-            override fun process(e: PropertyChangeEvent): PropertyChangeEvent {
-                return e
-            }
+                override fun process(e: PropertyChangeEvent): PropertyChangeEvent {
+                    return e
+                }
 
-            override fun isBlocking(): Boolean {
-                return false
-            }
-        })
-        return java.util.List.of(
-            liveActionEngine
-        )
+                override fun isBlocking(): Boolean {
+                    return false
+                }
+            })
+        }
+        diagramListener.liveActionEngineMap[DIAGRAM_OPENED] = listOf(liveActionEngine)
+        return emptyList()
     }
 }

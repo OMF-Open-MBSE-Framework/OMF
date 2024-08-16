@@ -256,7 +256,7 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Get the selected Nodes inside the Containment Tree.
-     * Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order corresponds to the user element selection one.
      *
      * @return selected node list.
      */

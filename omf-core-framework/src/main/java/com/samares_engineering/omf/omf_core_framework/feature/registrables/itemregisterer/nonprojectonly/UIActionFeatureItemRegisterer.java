@@ -25,6 +25,7 @@ import java.util.Objects;
 public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAction> {
     private final List<UIActionConfigurator> configurators = new ArrayList<>();
     private FeatureRegisterer featureRegisterer;
+    final  List<UIAction> registeredFeatureItems = new ArrayList<>();
 
     public UIActionFeatureItemRegisterer(OMFPlugin plugin) {
         configurators.add(plugin.getBrowserConfigurator());
@@ -81,6 +82,7 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     @Override
     public void registerFeatureItem(UIAction action) {
         configurators.stream().filter(Objects::nonNull).forEach(c -> c.addRegisteredAction(action));
+        registeredFeatureItems.add(action);
     }
 
     /**
@@ -89,6 +91,7 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     @Override
     public void unregisterFeatureItem(UIAction action) {
         configurators.stream().filter(Objects::nonNull).forEach(c -> c.removeRegisteredAction(action));
+        registeredFeatureItems.remove(action);
     }
 
     @Override
@@ -110,5 +113,10 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegisterer = featureRegisterer;
+    }
+
+    @Override
+    public List<UIAction> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

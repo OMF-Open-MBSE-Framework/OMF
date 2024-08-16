@@ -10,13 +10,13 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Register Shortcut", category = "")
-class registerShortcut : AUIAction() {
+class RegisterShortcut : AUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
-        if (OMFUtils.getProject() == null) return false
+        if (OMFUtils.isProjectVoid()) return false
         return true
     }
 
     override fun actionToPerform(selectedElements: List<Element>) {
-        IBDShortcutConfigurator().register()
+        IBDShortcutConfigurator(feature.plugin.featureRegisterer).register()
     }
 }

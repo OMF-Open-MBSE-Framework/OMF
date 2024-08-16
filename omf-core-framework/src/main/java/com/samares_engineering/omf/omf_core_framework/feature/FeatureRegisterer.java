@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureRegisterer {
-    private List<FeatureItemRegisterer> featureItemRegisters;
-    private List<ProjectOnlyFeatureItemRegisterer> projectOnlyFeatureItemRegisters;
+    private List<FeatureItemRegisterer<?>> featureItemRegisters;
+    private List<ProjectOnlyFeatureItemRegisterer<?>> projectOnlyFeatureItemRegisters;
 
     private final FeatureRegisteringEventHandler eventHandler;
 
@@ -303,6 +303,14 @@ public class FeatureRegisterer {
 
     public void setRegisteredFeatures(List<OMFFeature> registeredFeatures) {
         this.registeredFeatures = registeredFeatures;
+    }
+
+    public List<FeatureItemRegisterer<?>> getFeatureItemRegisters() {
+        return featureItemRegisters;
+    }
+
+    public List<ProjectOnlyFeatureItemRegisterer<?>> getProjectOnlyFeatureItemRegisters() {
+        return projectOnlyFeatureItemRegisters;
     }
 
     /**

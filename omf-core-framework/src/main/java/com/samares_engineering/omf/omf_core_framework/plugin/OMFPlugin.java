@@ -1,6 +1,5 @@
 package com.samares_engineering.omf.omf_core_framework.plugin;
 
-import com.nomagic.magicdraw.plugins.Plugin;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
@@ -42,7 +41,7 @@ public interface OMFPlugin {
 
     Optional<OMFFeature> getFeatureByName(String name);
 
-    FeatureRegisterer getFeatureRegister();
+    FeatureRegisterer getFeatureRegisterer();
 
     boolean isInitialized();
 
@@ -51,8 +50,6 @@ public interface OMFPlugin {
     FeatureProjectOptionsConfigurator getProjectOptionConfigurator();
 
     Optional<OMFPropertyOptionsGroup> getEnvironmentOptionsGroup();
-
-    FeatureRegisterer getFeatureRegisterer();
 
     IListenerManager getListenerManager();
 
