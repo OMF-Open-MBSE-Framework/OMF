@@ -41,7 +41,7 @@ public abstract class AMagicDrawFactory {
 
     /**
      * Get the magicdraw factory, if the project is null, throw an exception
-     * @return
+     * @return the magicdraw factory
      */
     public ElementsFactory getMagicDrawFactory() {
         Objects.requireNonNull(project, "Trying to use a magicdraw factory while specifying a null" +
@@ -51,7 +51,7 @@ public abstract class AMagicDrawFactory {
 
     /**
      * Get the project
-     * @return
+     * @return the project
      */
 
     public Project getProject() {
@@ -60,7 +60,7 @@ public abstract class AMagicDrawFactory {
 
     /**
      * Set the project, if the project is null, log a warning.
-     * @param project
+     * @param project the project to set
      */
     public void setProject(Project project) {
         if(project == null){

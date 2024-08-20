@@ -19,12 +19,12 @@ class HandlingErrorUIAction : AUIAction(){
     }
 
     override fun actionToPerform(selectedElements: MutableList<Element>?) {
-            failMethod()
+        failMethod()
     }
 
     private fun failMethod() {
-        val block = SysMLFactory.getInstance().createBlock();
-        block.name = "SHOULD NOT BE CREATED";
+        val block = SysMLFactory.getInstance().createBlock()
+        block.name = "SHOULD NOT BE CREATED"
         throw OMFCriticalException("This is a critical exception")
     }
 

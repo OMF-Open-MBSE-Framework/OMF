@@ -13,6 +13,7 @@ import java.util.Map;
 public class OMFLog {
     private final List<String> messageComponents = new ArrayList<>();
     private final Map<String, Runnable> linkActionMapping = new HashMap<>();
+    private OMFLog expandedLog;
 
     public OMFLog text(String string) {
         messageComponents.add(string);
@@ -30,6 +31,11 @@ public class OMFLog {
             default:
                 return text(string);
         }
+    }
+
+    public OMFLog expandText(OMFLog expandedLog) {
+        this.expandedLog = expandedLog;
+        return this;
     }
 
     public OMFLog breakLine() {
@@ -118,8 +124,13 @@ public class OMFLog {
     }
 
     public String toHTMLFormat(OMFLogLevel logLevel, String pluginName) {
-        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName)
-                + " " + toString(" ") + "</font>";
+        String expandedLogString = expandedLog != null ? "<BR>" + expandedLog : "";
+
+        return "<font color=" + getMessageColor(logLevel) + ">"
+                + getPrefix(logLevel, pluginName)
+                + " " + toString(" ")
+                + expandedLogString
+                + "</font>";
     }
 
     public String toHTMLFormat(OMFLogLevel logLevel, String pluginName, String featureName) {
@@ -241,6 +252,15 @@ public class OMFLog {
 
     public OMFLog replaceNewLinesWithBreaks() {
         messageComponents.replaceAll(s -> s.replaceAll("\n", "<BR>"));
+        return this;
+    }
+
+    public OMFLog replaceNewLinesWithBreaksInExpandLog() {
+        if (expandedLog == null) {
+            return null;
+        }
+
+        expandedLog.messageComponents.replaceAll(s -> s.replaceAll("\n", "<BR>"));
         return this;
     }
 }

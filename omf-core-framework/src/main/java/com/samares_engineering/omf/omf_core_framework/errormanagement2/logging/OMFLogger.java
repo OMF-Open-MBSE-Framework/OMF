@@ -10,7 +10,6 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
-import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
 public class OMFLogger {
     private static OMFLogger instance;
@@ -61,23 +60,33 @@ public class OMFLogger {
 
     public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
-            NotificationManager.getInstance().showNotification(new Notification(
+            Notification notification = new Notification(
                     "[Plugin Error]", //id (not sure what is does)
                     OMFLog.getPrefix(logLevel, getInstance().plugin.getName(), feature.getName()), //title
                     logMessage.replaceNewLinesWithBreaks().toString(),
-                    getNotificationSeverity(logLevel))
+                    getNotificationSeverity(logLevel)
             );
+
+            OMFLog expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog();
+            if (expandedMessage != null) notification.setLongText(expandedMessage.toString());
+
+            NotificationManager.getInstance().showNotification(notification);
         }
     }
 
     public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
-            NotificationManager.getInstance().showNotification(new Notification(
+            Notification notification = new Notification(
                     "[Plugin Error]", //id (not sure what is does)
                     OMFLog.getPrefix(logLevel, getInstance().plugin.getName()), //title
                     logMessage.replaceNewLinesWithBreaks().toString(),
-                    getNotificationSeverity(logLevel))
+                    getNotificationSeverity(logLevel)
             );
+
+            OMFLog expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog();
+            if (expandedMessage != null) notification.setLongText(expandedMessage.toString());
+
+            NotificationManager.getInstance().showNotification(notification);
         }
     }
 

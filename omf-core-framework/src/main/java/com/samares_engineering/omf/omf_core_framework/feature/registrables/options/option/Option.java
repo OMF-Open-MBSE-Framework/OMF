@@ -21,14 +21,14 @@ public interface Option extends RegistrableFeatureItem {
     void addListener(AOptionListener listener);
 
     /**
-     * register listener on Environment options update (when user click on ok).
-     * @param listener
+     * register listener on Environment options update (when user clicks on ok).
+     * @param listener the listener to register
      */
     void addEnvironmentListener(EnvironmentOptions.EnvironmentChangeListener listener);
 
     /**
-     * register listener on Project options update (when user click on ok).
-     * @param listener
+     * register listener on Project options update (when user clicks on ok).
+     * @param listener the listener to register
      */
     void addProjectListener(PropertyChangeListener listener);
 
@@ -39,7 +39,7 @@ public interface Option extends RegistrableFeatureItem {
     /**
      * BETA
      * register Generic Listener for both project and environment
-     * @param listener
+     * @param listener the listener to register
      */
     void addListenerToRegister(AOptionListener listener);
 
@@ -55,13 +55,13 @@ public interface Option extends RegistrableFeatureItem {
 
     /**
      * get option resource provider, it's role is to Stringify the option for ui.
-     * @return
+     * @return the resource provider
      */
     PropertyResourceProvider getResourceProvider();
 
     /**
      * set option resource provider, it's role is to Stringify the option for ui.
-     * @param resourceProvider
+     * @param resourceProvider the resource provider to set
      */
     void setResourceProvider(PropertyResourceProvider resourceProvider);
 
@@ -79,7 +79,7 @@ public interface Option extends RegistrableFeatureItem {
 
     /**
      * set the option kind: Project Option or an Environment Option
-     * @param kind
+     * @param kind Project Option or an Environment Option
      */
     void setKind(OptionKind kind);
 
@@ -104,13 +104,13 @@ public interface Option extends RegistrableFeatureItem {
 
     /**
      * get the concrete option.
-     * @return
+     * @return the PropertyImpl option
      */
     Property getProperty();
 
     /**
      * set the concrete option.
-     * @param property
+     * @param property the PropertyImpl option to set
      */
 
     void setProperty(Property property);
@@ -119,7 +119,7 @@ public interface Option extends RegistrableFeatureItem {
 
     /**
      * Environment options use AbstractPropertyOptionsGroup to store and manage options.
-     * @param optionCategory
+     * @param optionCategory the category to set
      */
     void setOptionCategory(AbstractPropertyOptionsGroup optionCategory);
 
