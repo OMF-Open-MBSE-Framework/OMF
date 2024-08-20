@@ -10,14 +10,12 @@ import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.uml.symbols.DiagramListenerAdapter
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Diagram
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.AOnProjectOpenedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramListenerConstants
-import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.actions.RegisterShortcut
 import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.diagramlistener.OnDiagramOpeningListener
 import java.beans.PropertyChangeEvent
 import java.util.stream.Collectors
@@ -26,26 +24,22 @@ import java.util.stream.Collectors
 /**
  *
  */
-class ShortcutFeature : SimpleFeature("SHORTCUT_FEATURE") {
+class DiagramListenerFeature : SimpleFeature("DIAGRAM_LISTENER_FEATURE") {
     private val diagramListener = OnDiagramOpeningListener()
     private val diagramListenerAdapter: DiagramListenerAdapter
     private val DIAGRAM_OPENED = DiagramListenerConstants.DIAGRAM_OPENED
 
     init {
-        registerShortcutLiveAction(diagramListener)
+        registerShortcutLiveAction()
         diagramListenerAdapter = DiagramListenerAdapter(diagramListener)
     }
 
-    private fun registerShortcutLiveAction(listener: OnDiagramOpeningListener) {
+    private fun registerShortcutLiveAction() {
         val onDiagramOpenedLiveActions = liveActionEngines.stream()
             .filter { liveActionEngine: LiveActionEngine -> liveActionEngine.type == DIAGRAM_OPENED }
             .collect(Collectors.toList())
 
         diagramListener.liveActionEngineMap[DIAGRAM_OPENED] = onDiagramOpenedLiveActions
-    }
-
-    override fun initFeatureActions(): List<UIAction> {
-        return listOf<UIAction>(RegisterShortcut())
     }
 
     override fun initLifeCycleHooks(): List<Hook> {

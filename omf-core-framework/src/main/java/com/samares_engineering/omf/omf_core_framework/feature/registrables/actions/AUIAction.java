@@ -95,6 +95,7 @@ public abstract class AUIAction implements UIAction {
         this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
+                if (!checkDiagramAvailability()) return; //when called with shortcuts,
                 super.actionPerformed(actionEvent);
                 init();
                 diagramAction.setDiagram(this.getDiagram()); //TODO: temporary fix, to be removed when the diagram action will be fixed
@@ -116,10 +117,16 @@ public abstract class AUIAction implements UIAction {
         };
     }
 
+    /**
+     * Initialize the Browser Action, register the action and set the behavior.
+     *
+     */
     private void initTreeActions() {
         this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
+                if(!checkBrowserAvailability()) return; //when called with shortcuts,
+                // action is triggered before updateState, so we need to check availability here
                 super.actionPerformed(actionEvent);
                 init();
                 executeBrowserAction(browserSelectedElements);

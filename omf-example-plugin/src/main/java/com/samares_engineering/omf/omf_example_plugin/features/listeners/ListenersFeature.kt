@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_example_plugin.features.listeners
 
+import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
@@ -11,6 +12,9 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.AOnProjectOpenedHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectClosedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
@@ -21,10 +25,27 @@ import java.beans.PropertyChangeEvent
 
 private var isListenerActivated: Boolean = false
 class ListenersFeature: SimpleFeature("Listeners Feature") {
+    val listener = ElementListener(this)
+
+    override fun getLifeCycleHooks(): MutableList<Hook> {
+        return mutableListOf(onProjectHoook(listener))
+    }
+
+    class onProjectHoook(val listener: ElementListener): AOnProjectOpenedHook(), OnProjectClosedHook {
+
+        override fun onProjectOpened(project: Project?) {
+            listener.register()
+        }
+
+        override fun onProjectClosed(project: Project?) {
+            listener.unregister()
+        }
+    }
 
     override fun initLiveActions(): MutableList<LiveActionEngine> {
         val creation = ALiveActionEngine(LiveActionType.CREATE).apply {
             addLiveAction(CreateAnotherPortOnPortCreation())
+            addLiveAction(RenamePartCreation())
         }
         val update = ALiveActionEngine(LiveActionType.UPDATE).apply {
             addLiveAction(UpdatePortInterfaceFlowNames())
@@ -34,7 +55,7 @@ class ListenersFeature: SimpleFeature("Listeners Feature") {
             addLiveAction(DeleteInterfaceOnPortDeletion())
         }
 
-        return mutableListOf(deletion)
+        return mutableListOf(creation, update, deletion)
 
     }
 
@@ -46,7 +67,7 @@ class ListenersFeature: SimpleFeature("Listeners Feature") {
 
 @DiagramAction
 @DeactivateListener
-@MDAction(actionName = "Activate/deactivate Listeners", category = "", keyStroke = ["alt shift L"])
+@MDAction(actionName = "Activate/deactivate LiveActions", category = "", keyStroke = ["alt shift L"])
 class ActivateDeactivateListeners : AUIAction() {
     override fun checkAvailability(selectedElements: MutableList<Element>?): Boolean {
         return true
@@ -83,6 +104,9 @@ class DeleteInterfaceOnPortDeletion : ALiveAction() {
     }
 }
 
+
+
+
 class CreateAnotherPortOnPortCreation : ALiveAction() {
     override fun eventMatches(event: PropertyChangeEvent): Boolean {
         return EventChecker()
@@ -96,6 +120,25 @@ class CreateAnotherPortOnPortCreation : ALiveAction() {
         val port = event.source as Port
         val newPort = SysMLFactory.getInstance().createProxyPort(port.owner)
         newPort.name = port.name + "_copy" + (port.owner?.ownedElement?.size ?: "")
+        return event
+    }
+
+    override fun isBlocking(): Boolean {
+        return false
+    }
+}
+
+class RenamePartCreation : ALiveAction() {
+    override fun eventMatches(event: PropertyChangeEvent): Boolean {
+        return EventChecker()
+            .isInstanceCreated()
+            .isPart()
+            .test(event)
+    }
+
+    override fun process(event: PropertyChangeEvent): PropertyChangeEvent {
+        val part = event.source as Property
+        part.name += "_copy"
         return event
     }
 

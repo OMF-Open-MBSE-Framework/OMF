@@ -12,6 +12,7 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
+import com.nomagic.magicdraw.uml.DiagramType;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
@@ -304,6 +305,7 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
                 SysoutColorPrinter.warn("[OMF] NO BROWSER CONFIGURATOR REGISTERED");
             else {
                 actionManager.addContainmentBrowserContextConfigurator(browserConfigurator);
+                actionManager.addContainmentBrowserShortcutsConfigurator(browserConfigurator);
             }
         } catch (Exception e) {
             throw new PluginRegisteringException("Error occurred during BrowserAction Registering", e);
@@ -316,6 +318,8 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
                 SysoutColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
             else {
                 actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM, diagramConfigurator);
+                actionManager.addDiagramShortcutsConfigurator(DiagramType.UML_CLASS_DIAGRAM, diagramConfigurator);
+
             }
         } catch (Exception e) {
             throw new PluginRegisteringException("Error occurred during DiagramAction Registering", e);

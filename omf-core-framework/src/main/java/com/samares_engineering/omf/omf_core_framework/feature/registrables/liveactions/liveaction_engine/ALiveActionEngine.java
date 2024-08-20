@@ -8,7 +8,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.live
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.exceptions.ErrorWhileEvaluationLiveActionException;
@@ -93,10 +93,10 @@ public class ALiveActionEngine implements LiveActionEngine {
         for (LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction : liveActions) {  //return all matching liveActions until the first Blocking liveAction is found
             if (isLiveActionMatching(evt, liveAction)) {
                 liveActionsToExecute.add(liveAction);
-                SysoutColorPrinter.status("Triggered live action: " + liveAction.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
+                OMFLogger.statusToSystemConsole("Triggered live action: " + liveAction.getClass().getSimpleName() + " for event: " + evt.getPropertyName()
                         + " on element: " + ((Element) evt.getSource()).getHumanName());
                 if (liveAction.isBlocking()) {
-                    SysoutColorPrinter.status("Live action is blocking: stopping liveAction matching for this event");
+                    OMFLogger.statusToSystemConsole("Live action is blocking: stopping liveAction matching for this event");
                     break;
                 }
             }

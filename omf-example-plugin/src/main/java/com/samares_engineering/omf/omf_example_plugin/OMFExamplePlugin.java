@@ -16,7 +16,7 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.ShortcutFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.DiagramListenerFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
@@ -47,7 +47,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
 ////                new GeneratePluginModelArchi(),
 ////                new SysmlGptExploFeature(),
 ////                new TemplateFeature(),
-                new ShortcutFeature(),
+                new DiagramListenerFeature(),
 //                new ElementSpecificationExample(),
 //                new ExportDiagramImagesFeature(),
 
