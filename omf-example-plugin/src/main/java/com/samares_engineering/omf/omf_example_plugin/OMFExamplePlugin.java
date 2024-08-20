@@ -64,7 +64,6 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 // Deactivation of features
                 new FeatureActivationFromOptionFeature()
         );
-        this.
     }
 
     @Override
