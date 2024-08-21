@@ -10,19 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
-## [2.0.1] 2024-09-08
+## [2.1.0] - 2024-08-21
 ### Added
+- new notification method in OMFLog allowing to expand extra text
+- Support for @DeactivateListeners annotation in test actions to deactivate listeners during test execution
 ### Changed
 ### Fixed
 - display expanded text to ui console as well
 
-## [2.0.1] 2024-09-08
-### Added
-- new notification method in OMFLog allowing to expand extra text
-### Changed
-### Fixed
-
-## [2.0.0] - 2024-09-07
+## [2.0.0] - 2024-07-09
 ### Added
 - IntelliJ install info in README
 - Error management documentation in README
