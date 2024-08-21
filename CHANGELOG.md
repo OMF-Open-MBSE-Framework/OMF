@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for @DeactivateListeners annotation in test actions to deactivate listeners during test execution
 ### Changed
 ### Fixed
+- System out log colors which where not working properly
 - display expanded text to ui console as well
 
 ## [2.0.0] - 2024-07-09
