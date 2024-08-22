@@ -93,6 +93,10 @@ public class OMFBarrierExecutor {
         return executeInSessionWithinBarrier(callable, feature.getName() + " action", feature);
     }
 
+    public static <V> V executeInSessionWithinBarrier(Callable<V> callable, OMFFeature feature, boolean deactivateListener) {
+        return executeInSessionWithinBarrier(callable, feature.getName() + " action", feature, deactivateListener);
+    }
+
     public static <V> V executeInSessionWithinBarrier(Callable<V> callable, String sessionName, @CheckForNull OMFFeature feature) {
         return executeInSessionWithinBarrier(callable, sessionName, feature, true);
     }

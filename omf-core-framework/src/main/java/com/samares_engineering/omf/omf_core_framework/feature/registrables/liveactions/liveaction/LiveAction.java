@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.KeepListenerActivated;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
 public interface LiveAction<I, O> {
@@ -29,4 +30,6 @@ public interface LiveAction<I, O> {
     void setLiveActionEngine(LiveActionEngine liveActionEngine);
 
     LiveActionEngine getLiveActionEngine();
+
+    default boolean keepListenerActivated() {return getClass().isAnnotationPresent(KeepListenerActivated.class);}
 }

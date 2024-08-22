@@ -32,7 +32,7 @@ class OnDiagramOpeningListener : AListener(), PropertyChangeListener {
 
 
     private fun manageOpening(evt: PropertyChangeEvent): Boolean {
-        val liveActionEngines = liveActionEngineMap[DiagramListenerConstants.DIAGRAM_OPENED]!!
+        val liveActionEngines = liveActionEngineMap[DiagramListenerConstants.DIAGRAM_OPENED] as List<LiveActionEngine<PropertyChangeEvent>>?
         return processAllMatchingLiveActions(liveActionEngines, evt)
     }
 
@@ -41,12 +41,12 @@ class OnDiagramOpeningListener : AListener(), PropertyChangeListener {
      * @return true if at least one liveAction matched
      */
     private fun processAllMatchingLiveActions(
-        liveActionEngines: List<LiveActionEngine>?,
+        liveActionEngines: List<LiveActionEngine<PropertyChangeEvent>>?,
         event: PropertyChangeEvent
     ): Boolean {
         if (liveActionEngines == null) return false
         val hasLiveActionsBeenTriggered = liveActionEngines.stream()
-            .map { liveActionEngine: LiveActionEngine -> liveActionEngine.processAllMatchingLiveActions(event) }
+            .map { liveActionEngine: LiveActionEngine<PropertyChangeEvent> -> liveActionEngine.processAllMatchingLiveActions(event) }
             .collect(Collectors.toList())
             .contains(true)
         return hasLiveActionsBeenTriggered

@@ -12,16 +12,16 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.transaction.TransactionCommitListener
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.CharacterizedEvent
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import java.beans.PropertyChangeEvent
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 class TransactionElementListener : AElementListener(), TransactionCommitListener {
-    private val stopHandlingThisBatch = false
+    private var stopHandlingThisBatch = false
     private var allTriggeredEventsInThisBatch: List<PropertyChangeEvent>? = null
 
     override fun transactionCommited(allTriggeredEventsInThisBatch: Collection<PropertyChangeEvent>): Runnable? {
@@ -37,22 +37,42 @@ class TransactionElementListener : AElementListener(), TransactionCommitListener
 //
             allTriggeredEventsInThisBatch!!.forEach(Consumer { event: PropertyChangeEvent? -> this.manageAnalysis(event) })
 
-            //
-//            for (PropertyChangeEvent evt : allTriggeredEventsInThisBatch) {
-//                if (isInstanceCreated(evt)) {
-//                    stopHandlingThisBatch = manageCreation(evt);
-//                } else {
-//                    stopHandlingThisBatch = manageUpdate(evt);
-//                }
-//                if (stopHandlingThisBatch) return;
-//            }
-            val eventAnalyzer = EventAnalyzer().analyzeSessionBatch(allTriggeredEventsInThisBatch!!)
-            eventAnalyzer.createdEvents.map { getInstanceCreatedEvent(it)}.forEach { evt -> manageCreation(evt!!) }
+
+
+            handleCharacterizedLiveEngine()
             //new solution: eventAnalyzer.createdEvents.keys.forEach {manageCreation(it) }
 //            eventAnalyzer.updatedEvents.forEach { manageUpdate(it) }
+
+            if (handlePropertyChangeEventLiveEngine()) return
         } catch (e: RollbackException) {
             UndoManager.getInstance().requestHardUndo()
         }
+    }
+
+    private fun handleCharacterizedLiveEngine() {
+        val eventAnalyzer = EventAnalyzer().analyzeSessionBatch(allTriggeredEventsInThisBatch!!)
+        eventAnalyzer.createdEvents
+            .map { (element, relatedEvents) -> CharacterizedEvent(element, relatedEvents) }
+            .forEach() { elementCreated -> manageCreation(elementCreated) }
+        eventAnalyzer.updatedEvents
+            .map { (element, relatedEvents) -> CharacterizedEvent(element, relatedEvents) }
+            .forEach() { elementUpdated -> manageUpdate(elementUpdated) }
+        eventAnalyzer.deletedEvents
+            .map { (element, relatedEvents) -> CharacterizedEvent(element, relatedEvents) }
+            .forEach() { elementDeleted -> manageDeletion(elementDeleted) }
+    }
+
+
+    private fun handlePropertyChangeEventLiveEngine(): Boolean {
+        for (evt: PropertyChangeEvent in allTriggeredEventsInThisBatch!!) {
+            if (isInstanceCreated(evt)) {
+                stopHandlingThisBatch = manageCreation(evt);
+            } else {
+                stopHandlingThisBatch = manageUpdate(evt);
+            }
+            if (stopHandlingThisBatch) return true;
+        }
+        return false
     }
 
     private fun getInstanceCreatedEvent(elementCreationRelatedEvents: Map.Entry<Element, MutableList<PropertyChangeEvent>>): PropertyChangeEvent? {
@@ -81,21 +101,63 @@ class TransactionElementListener : AElementListener(), TransactionCommitListener
 
     /********************** ENGINE *********************/
     override fun manageCreation(event: PropertyChangeEvent): Boolean {
-        val liveActionEngines = liveActionEngineMap[LiveActionType.CREATE.toString()]!!
+        val liveActionEngines : List<LiveActionEngine<*>> = liveActionEngineMap[LiveActionType.CREATE.toString()]!!
         return processAllMatchingLiveActions(liveActionEngines, event)
     }
 
+    private fun manageCreation(history: CharacterizedEvent): Boolean {
+        val liveActionEngines = liveActionEngineMap[LiveActionType.CREATE.toString()]!!
+        return processAllMatchingLiveActions(liveActionEngines, history)
+    }
+
+    private fun manageUpdate(history: CharacterizedEvent): Boolean{
+        val liveActionEngines = liveActionEngineMap[LiveActionType.UPDATE.toString()]!!
+        return processAllMatchingLiveActions(liveActionEngines, history)
+    }
+
+    private fun manageDeletion(history: CharacterizedEvent): Boolean{
+        val liveActionEngines = liveActionEngineMap[LiveActionType.DELETE.toString()]!!
+        return processAllMatchingLiveActions(liveActionEngines, history)
+    }
+
     private fun processAllMatchingLiveActions(
-        liveActionEngines: List<LiveActionEngine>?,
+        liveActionEngines: List<LiveActionEngine<*>>?,
         event: PropertyChangeEvent
     ): Boolean {
         if (liveActionEngines == null) return false
-        val hasLiveActionsBeenTriggered = liveActionEngines
-            .map { liveActionEngine: LiveActionEngine -> liveActionEngine.processAllMatchingLiveActions(event)}
+
+
+        var hasLiveActionsBeenTriggered = liveActionEngines
+            .filter { liveActionEngine -> liveActionEngine.checkLiveActionEngineType(PropertyChangeEvent::class.java) }
+            .map { liveActionEngine -> liveActionEngine as LiveActionEngine<PropertyChangeEvent> }
+            .map { liveActionEngine -> liveActionEngine.processAllMatchingLiveActions(event)}
             .toList()
             .contains(true)
+
         return hasLiveActionsBeenTriggered
     }
+
+    private fun processAllMatchingLiveActions(
+        liveActionEngines: List<LiveActionEngine<*>>?,
+        event: CharacterizedEvent
+    ): Boolean {
+        if (liveActionEngines == null) return false
+
+        var hasLiveActionsBeenTriggered = liveActionEngines
+            .filter { liveActionEngine -> liveActionEngine.checkLiveActionEngineType(CharacterizedEvent::class.java) }
+            .map { liveActionEngine -> liveActionEngine as LiveActionEngine<CharacterizedEvent> }
+            .map { liveActionEngine -> liveActionEngine.processAllMatchingLiveActions(event)}
+            .toList()
+            .contains(true)
+
+
+        return hasLiveActionsBeenTriggered
+    }
+
+
+
+
+
 //    fun manageCreation(createdElement: Element): Boolean {
 //        val liveActionEngines = liveActionEngineMap[LiveActionType.CREATE.toString()]!!
 //        return processAllMatchingLiveActions(liveActionEngines, createdElement)

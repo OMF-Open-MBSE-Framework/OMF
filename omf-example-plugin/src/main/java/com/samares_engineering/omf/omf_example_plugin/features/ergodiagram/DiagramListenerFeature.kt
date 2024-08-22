@@ -36,7 +36,7 @@ class DiagramListenerFeature : SimpleFeature("DIAGRAM_LISTENER_FEATURE") {
 
     private fun registerShortcutLiveAction() {
         val onDiagramOpenedLiveActions = liveActionEngines.stream()
-            .filter { liveActionEngine: LiveActionEngine -> liveActionEngine.type == DIAGRAM_OPENED }
+            .filter { liveActionEngine: LiveActionEngine<*> -> liveActionEngine.type == DIAGRAM_OPENED }
             .collect(Collectors.toList())
 
         diagramListener.liveActionEngineMap[DIAGRAM_OPENED] = onDiagramOpenedLiveActions
@@ -52,8 +52,8 @@ class DiagramListenerFeature : SimpleFeature("DIAGRAM_LISTENER_FEATURE") {
         )
     }
 
-    override fun initLiveActions(): List<LiveActionEngine> {
-        val liveActionEngine: LiveActionEngine = ALiveActionEngine(DIAGRAM_OPENED).apply {
+    override fun initLiveActions(): List<LiveActionEngine<*>> {
+        val liveActionEngine: LiveActionEngine<*> = ALiveActionEngine(DIAGRAM_OPENED).apply {
             addLiveAction(object : ALiveAction() {
                 override fun eventMatches(evt: PropertyChangeEvent): Boolean {
                     return evt.propertyName == DIAGRAM_OPENED && evt.source is Diagram
