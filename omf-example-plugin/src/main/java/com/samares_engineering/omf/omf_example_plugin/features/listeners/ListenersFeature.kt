@@ -2,7 +2,6 @@ package com.samares_engineering.omf.omf_example_plugin.features.listeners
 
 import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager
-import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type
@@ -20,7 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.AOnProjectOpenedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectClosedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction2
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveActionCharacterizedEvent
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.*
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
@@ -56,7 +55,7 @@ class ListenersFeature: SimpleFeature("Listeners Feature") {
         }
 
         val deletion2 = LiveActionEngineImpl(LiveActionType.DELETE).apply {
-            addLiveAction(DeleteInterfaceOnPortDeletion2())
+            addLiveAction(DeleteInterfaceOnPortDeletionCharacterizedEvent())
         }
         val deletion = ALiveActionEngine(LiveActionType.DELETE).apply {
             addLiveAction(DeleteInterfaceOnPortDeletion())
@@ -113,7 +112,7 @@ class DeleteInterfaceOnPortDeletion : ALiveAction() {
 }
 
 @KeepListenerActivated
-class DeleteInterfaceOnPortDeletion2 : ALiveAction2() {
+class DeleteInterfaceOnPortDeletionCharacterizedEvent : ALiveActionCharacterizedEvent() {
     override fun eventMatches(history: CharacterizedEvent): Boolean {
         if (!isListenerActivated) return false
         return history.element is Port && history.relatedEvents.contains("type")
@@ -136,7 +135,7 @@ class DeleteInterfaceOnPortDeletion2 : ALiveAction2() {
 
 
 
-class CreateAnotherPortOnPortCreation : ALiveAction2() {
+class CreateAnotherPortOnPortCreation : ALiveActionCharacterizedEvent() {
     override fun eventMatches(history: CharacterizedEvent): Boolean {
         return Profile._getSysml().proxyPort().`is`(history.element)
     }
@@ -153,7 +152,7 @@ class CreateAnotherPortOnPortCreation : ALiveAction2() {
     }
 }
 
-class RenamePartCreation : ALiveAction2() {
+class RenamePartCreation : ALiveActionCharacterizedEvent() {
     override fun eventMatches(history: CharacterizedEvent): Boolean {
         return Profile._getSysmlAdditionalStereotypes().partProperty().`is`(history.element)
     }
@@ -169,7 +168,7 @@ class RenamePartCreation : ALiveAction2() {
     }
 }
 
-class UpdatePortInterfaceFlowNames : ALiveAction2() {
+class UpdatePortInterfaceFlowNames : ALiveActionCharacterizedEvent() {
     /**
      * Triggered only when a ProxyPort is renamed
      * @param history event occurred in the model
@@ -191,7 +190,7 @@ class UpdatePortInterfaceFlowNames : ALiveAction2() {
         return false
     }
 }
-class UpdatePortOnInterfaceNameChanges : ALiveAction2() {
+class UpdatePortOnInterfaceNameChanges : ALiveActionCharacterizedEvent() {
 
     override fun eventMatches(history: CharacterizedEvent): Boolean {
         return history.element is Type

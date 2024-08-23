@@ -11,16 +11,16 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
 /**
- * Abstract class for a liveAction, contains the basic methods for a LiveAction liveAction.
+ * Abstract class for a liveAction, contains the basic methods for a LiveAction.
  */
-public abstract class ALiveAction2 implements LiveAction<CharacterizedEvent, CharacterizedEvent> {
-    protected LiveActionEngine liveActionEngine;
+public abstract class ALiveActionCharacterizedEvent implements LiveAction<CharacterizedEvent, CharacterizedEvent> {
+    protected LiveActionEngine<CharacterizedEvent> liveActionEngine;
     public String id = "";
     public boolean isActivated = true;
 
-    public ALiveAction2(){id = getClass().getSimpleName();}
+    public ALiveActionCharacterizedEvent(){id = getClass().getSimpleName();}
 
-    public ALiveAction2(String id){
+    public ALiveActionCharacterizedEvent(String id){
         this.id = id;
     }
 
@@ -63,13 +63,13 @@ public abstract class ALiveAction2 implements LiveAction<CharacterizedEvent, Cha
     }
 
     @Override
-    public void setLiveActionEngine(LiveActionEngine liveActionEngine) {
+    public void setLiveActionEngine(LiveActionEngine<CharacterizedEvent> liveActionEngine) {
         this.liveActionEngine = liveActionEngine;
     }
 
 
     @Override
-    public LiveActionEngine getLiveActionEngine() {
+    public LiveActionEngine<CharacterizedEvent> getLiveActionEngine() {
         return liveActionEngine;
     }
 

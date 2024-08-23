@@ -27,9 +27,9 @@ public interface LiveAction<I, O> {
 
     boolean isBlocking();
 
-    void setLiveActionEngine(LiveActionEngine liveActionEngine);
+    void setLiveActionEngine(LiveActionEngine<I> liveActionEngine);
 
-    LiveActionEngine getLiveActionEngine();
+    LiveActionEngine<I> getLiveActionEngine();
 
     default boolean keepListenerActivated() {return getClass().isAnnotationPresent(KeepListenerActivated.class);}
 }
