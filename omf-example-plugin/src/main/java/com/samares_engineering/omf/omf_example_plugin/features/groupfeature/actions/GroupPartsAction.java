@@ -45,9 +45,9 @@ public class GroupPartsAction extends AUIAction {
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        List<Property> selectedMICPorts = selectedElements.stream().map(Property.class::cast)
+        List<Property> selectedPorts = selectedElements.stream().map(Property.class::cast)
                 .collect(Collectors.toList());
-        ProgressStatusRunner.runWithProgressStatus(progressStatus -> groupSelectedPorts(selectedMICPorts),
+        ProgressStatusRunner.runWithProgressStatus(progressStatus -> groupSelectedPorts(selectedPorts),
                 "Grouping Ports in progress", false, 0);
     }
 
@@ -55,9 +55,9 @@ public class GroupPartsAction extends AUIAction {
 
     protected void groupSelectedPorts(List<Property> selectedParts) {
         DiagramPresentationElement diagram = OMFUtils.getProject().getActiveDiagram();
-        Property firstSelectedMICPart =  selectedParts.get(0);
+        Property firstSelectedPart =  selectedParts.get(0);
 
-        Element newBlockOwner = firstSelectedMICPart.getType().getOwner();
+        Element newBlockOwner = firstSelectedPart.getType().getOwner();
 
         List<PresentationElement> listPartViews = selectedParts.stream()
                 .map(this::findPresentationElement)

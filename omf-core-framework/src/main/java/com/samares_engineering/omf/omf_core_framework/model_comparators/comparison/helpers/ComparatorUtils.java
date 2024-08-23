@@ -93,11 +93,10 @@ public class ComparatorUtils {
 
     /**
      * Returns true if the provided elements are linked via a isMappedTo relation. The purpose of
-     * this relation is manually mapping elements to be compared to each other in the compare MICs feature UI.
+     * this relation is manually mapping elements to be compared to each other in the compare UI.
      */
     public static boolean areElementsMapped(Element elementA, Element elementB) {
         return elementA.get_relationshipOfRelatedElement().stream()
-//                .filter(MBSIProfile.getInstance().isMappedTo()::is) //TODO
                 .flatMap(rel -> rel.getRelatedElement().stream())
                 .anyMatch(elementB::equals);
     }
