@@ -21,6 +21,6 @@ dependencies {
     compileOnly project(":omf-magicdraw-dependencies")
     compileOnly 'org.apache.commons:commons-lang3:3.12.0'
     api project(":omf-utils")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23"
 }
 
