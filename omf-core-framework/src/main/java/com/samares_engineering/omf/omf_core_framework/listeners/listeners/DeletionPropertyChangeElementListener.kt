@@ -64,11 +64,9 @@ class DeletionPropertyChangeElementListener : AElementListener(), PropertyChange
             this,
             UML2MetamodelConstants.BEFORE_DELETE
         )
-        activate()
     }
 
     override fun removingListener() {
-        deactivate()
         OMFUtils.getProject().repositoryListenerRegistry.removePropertyChangeListener(
             this,
             UML2MetamodelConstants.BEFORE_DELETE
