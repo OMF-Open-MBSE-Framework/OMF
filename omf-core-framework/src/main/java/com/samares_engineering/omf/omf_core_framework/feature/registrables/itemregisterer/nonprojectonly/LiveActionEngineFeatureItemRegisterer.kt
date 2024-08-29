@@ -3,56 +3,59 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
- ******************************************************************************/
+ */
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException
+import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
+import com.samares_engineering.omf.omf_core_framework.listeners.IElementListener
+import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager
 
-import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
-import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType;
-import com.samares_engineering.omf.omf_core_framework.listeners.IElementListener;
-import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegisterer<LiveActionEngine> {
+class LiveActionEngineFeatureItemRegisterer : FeatureItemRegisterer<LiveActionEngine<*>?> {
     /**
      * Use the IListenerManager to get the different listeners (Analyse, Creation, Update, Delete, AfterAutomation).
      */
-    private IListenerManager listenerManager;
-    private FeatureRegisterer featureRegisterer;
-    List<LiveActionEngine> registeredFeatureItems = new ArrayList<>();
+    private var listenerManager: IListenerManager? = null
+    private var featureRegisterer: FeatureRegisterer? = null
+    var registeredFeatureItems1: MutableList<LiveActionEngine<*>> = ArrayList()
 
-    @Override
-    public void init(FeatureRegisterer featureRegisterer) {
-        this.featureRegisterer = featureRegisterer;
-        this.listenerManager = featureRegisterer.getPlugin().getListenerManager();
+    override fun init(featureRegisterer: FeatureRegisterer) {
+        this.featureRegisterer = featureRegisterer
+        this.listenerManager = featureRegisterer.plugin.listenerManager
     }
 
     /**
      * Will allow to register a list of LiveActionEngine in the listener.
      * @param liveActionEngines List of LiveActionEngine to register
      */
-    public void registerFeatureItems(List<LiveActionEngine> liveActionEngines) {
+    override fun registerFeatureItems(liveActionEngines: List<LiveActionEngine<*>?>?) {
         try {
-            liveActionEngines.forEach(this::registerFeatureItem);
-        }catch (Exception e){
-            throw new FeatureRegisteringException("Unable to register LiveActions", e);
+            liveActionEngines!!.forEach{liveActionEngine ->
+                this.registerFeatureItem(
+                    liveActionEngine
+                )
+            }
+        } catch (e: Exception) {
+            throw FeatureRegisteringException("Unable to register LiveActions", e)
         }
     }
 
-    public void unregisterFeatureItems(List<LiveActionEngine> liveActionEngines){
+    override fun unregisterFeatureItems(liveActionEngines: List<LiveActionEngine<*>?>?) {
         try {
-            liveActionEngines.forEach(this::unregisterFeatureItem);
-        }catch (Exception e){
-            throw new FeatureRegisteringException(" Unable to unregister liveActions", e);
+            liveActionEngines!!.forEach{liveActionEngine ->
+                this.unregisterFeatureItem(
+                    liveActionEngine
+                )
+            }
+        } catch (e: Exception) {
+            throw FeatureRegisteringException(" Unable to unregister liveActions", e)
         }
     }
 
@@ -61,16 +64,15 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
      * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
      * @param liveActionEngine: The LiveActionEngine to register
      */
-    @Override
-    public void registerFeatureItem(LiveActionEngine liveActionEngine) {
-        String category = liveActionEngine.getType();
-        IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> liveActionEngineMap = listener.getLiveActionEngineMap();
+    override fun registerFeatureItem(liveActionEngine: LiveActionEngine<*>?) {
+        val category = liveActionEngine!!.type
+        val listener = getListenerFromCategory(category)
+        val liveActionEngineMap = listener!!.liveActionEngineMap
 
-        liveActionEngineMap.computeIfAbsent(category, LiveActionEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        liveActionEngineMap.computeIfAbsent(category) { LiveActionEngines: String? -> ArrayList() } //If category absent -> create a new ArrayList
 
-        liveActionEngineMap.get(category).add(liveActionEngine);
-        registeredFeatureItems.add(liveActionEngine);
+        liveActionEngineMap[category]!!.add(liveActionEngine)
+        registeredFeatureItems1.add(liveActionEngine)
     }
 
     /**
@@ -78,30 +80,28 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
      * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
      * @param LiveActionEngine: The LiveActionEngine to remove
      */
-    @Override
-    public void unregisterFeatureItem(LiveActionEngine LiveActionEngine) {
-        String category = LiveActionEngine.getType();
-        IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> LiveActionEngineMap = listener.getLiveActionEngineMap();
-        if (LiveActionEngineMap.containsKey(category))
-            LiveActionEngineMap.get(category).remove(LiveActionEngine);
-        registeredFeatureItems.remove(LiveActionEngine);
+    override fun unregisterFeatureItem(LiveActionEngine: LiveActionEngine<*>?) {
+        val category = LiveActionEngine!!.type
+        val listener = getListenerFromCategory(category)
+        val LiveActionEngineMap = listener!!.liveActionEngineMap
+        if (LiveActionEngineMap.containsKey(category)) LiveActionEngineMap[category]!!.remove(LiveActionEngine)
+        registeredFeatureItems1.remove(LiveActionEngine)
     }
-    
+
     /**
      * Allow LiveActionEngine registration in the listener with a specific Priority. Depending on the Category the LiveActionEngine will be triggered and LiveActions will be evaluated.
      * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
      * @param LiveActionEngine: The LiveActionEngine to register
      * @param featurePriority: will help to order the LiveActionEngine execution by its priority.
      */
-    private void addLiveActionEngine(LiveActionEngine LiveActionEngine, int featurePriority){
-        String category = LiveActionEngine.getType();
-        IElementListener listener = getListenerFromCategory(category);
-        HashMap<String, List<LiveActionEngine>> LiveActionEngineMap = listener.getLiveActionEngineMap();
+    private fun addLiveActionEngine(LiveActionEngine: LiveActionEngine<*>, featurePriority: Int) {
+        val category = LiveActionEngine.type
+        val listener = getListenerFromCategory(category)
+        val LiveActionEngineMap = listener!!.liveActionEngineMap
 
-        LiveActionEngineMap.computeIfAbsent(category, LiveActionEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
+        LiveActionEngineMap.computeIfAbsent(category) { LiveActionEngines: String? -> ArrayList() } //If category absent -> create a new ArrayList
 
-        LiveActionEngineMap.get(category).add(featurePriority, LiveActionEngine);
+        LiveActionEngineMap[category]!!.add(featurePriority, LiveActionEngine)
     }
 
     //TODO: Rethink priority management: does the priority is guaranteed ? Priority shall be linked to the RE/Feature
@@ -111,59 +111,58 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
      * @param LiveActionEngine: The LiveActionEngine to register
      * @param featurePriority: The new pr.
      */
-    private void moveLiveActionEngine(LiveActionEngine LiveActionEngine, int featurePriority){
-        unregisterFeatureItem(LiveActionEngine);
-        addLiveActionEngine(LiveActionEngine, featurePriority);
+    private fun moveLiveActionEngine(LiveActionEngine: LiveActionEngine<*>, featurePriority: Int) {
+        unregisterFeatureItem(LiveActionEngine)
+        addLiveActionEngine(LiveActionEngine, featurePriority)
     }
 
     /**
      * Will return the listener instance
-     * @param category
-     * @return
+     * @param category the category of the listener
+     * @return the listener instance
      */
-    private IElementListener getListenerFromCategory(String category) {
-        LiveActionType liveActionType = LiveActionType.valueOf(category);
+    private fun getListenerFromCategory(category: String): IElementListener? {
+        val liveActionType = LiveActionType.valueOf(category)
 
-        switch (liveActionType){
-            case ANALYSE:
-                return listenerManager.getAnalysisListener();
-            case CREATE:
-                return listenerManager.getCreationListener();
-            case UPDATE:
-                return listenerManager.getUpdateListener();
-            case HISTORY:
-                return listenerManager.getHistoryListener();
-            case DELETE:
-                return listenerManager.getDeletionListener();
-            case AFTER_AUTOMATION:
-                return listenerManager.getAfterAutomationListener();
-            default:
-                LegacyErrorHandler.handleException(new DevelopmentException("No Listener found for this category"));
-                return null;
+        when (liveActionType) {
+            LiveActionType.ANALYSE -> return listenerManager!!.analysisListener
+            LiveActionType.CREATE -> return listenerManager!!.creationListener
+            LiveActionType.UPDATE -> return listenerManager!!.updateListener
+            LiveActionType.HISTORY -> return listenerManager!!.historyListener
+            LiveActionType.DELETE -> return listenerManager!!.deletionListener
+            LiveActionType.AFTER_AUTOMATION -> return listenerManager!!.afterAutomationListener
+            LiveActionType.ANALYSE_UNDO_REDO -> return listenerManager!!.analysisListener
+            LiveActionType.CREATE_UNDO_REDO -> return listenerManager!!.creationListener
+            LiveActionType.UPDATE_UNDO_REDO -> return listenerManager!!.updateListener
+            LiveActionType.HISTORY_UNDO_REDO -> return listenerManager!!.historyListener
+            LiveActionType.DELETE_UNDO_REDO -> return listenerManager!!.deletionListener
+            LiveActionType.AFTER_AUTOMATION_UNDO_REDO -> return listenerManager!!.afterAutomationListener
+
+
+            else -> {
+                OMFErrorHandler.getInstance().handleException(DevelopmentException("No Listener found for this category"))
+                return null
+            }
         }
     }
 
-    @Override
-    public void registerFeatureItems(OMFFeature feature) {
-        registerFeatureItems(feature.getLiveActionEngines());
+    override fun registerFeatureItems(feature: OMFFeature) {
+        registerFeatureItems(feature.liveActionEngines)
     }
 
-    @Override
-    public void unregisterFeatureItems(OMFFeature feature) {
-        unregisterFeatureItems(feature.getLiveActionEngines());
+    override fun unregisterFeatureItems(feature: OMFFeature) {
+        unregisterFeatureItems(feature.liveActionEngines)
     }
 
-    @Override
-    public FeatureRegisterer getFeatureRegisterer() {
-        return featureRegisterer;
+    override fun getFeatureRegisterer(): FeatureRegisterer {
+        return featureRegisterer!!
     }
 
-    @Override
-    public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
-        this.featureRegisterer = featureRegisterer;
+    override fun setFeatureRegisterer(featureRegisterer: FeatureRegisterer) {
+        this.featureRegisterer = featureRegisterer
     }
-    @Override
-    public List<LiveActionEngine> getRegisteredFeatureItems() {
-        return registeredFeatureItems;
+
+    override fun getRegisteredFeatureItems(): List<LiveActionEngine<*>> {
+        return registeredFeatureItems1
     }
 }

@@ -40,7 +40,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
     @Override
     public void addingListener() {
         OMFUtils.getProject().getRepository().getTransactionManager()
-                .addTransactionCommitListener(this);
+                .addTransactionCommitListenerIncludingUndoAndRedo(this);
     }
 
     @Override

@@ -28,10 +28,10 @@ public class LiveActionEngineSession implements LiveActionEngine<SessionHistory>
     private boolean activated = true;
 
     public LiveActionEngineSession() {
-        this(-1);
+        this("HISTORY", -1);
     }
 
-    public LiveActionEngineSession(int priority) {
+    public LiveActionEngineSession(String history, int priority) {
         this.priority = priority;
     }
 

@@ -43,4 +43,11 @@ public interface IListenerManager {
     IElementListener getAfterAutomationListener();
 
     IElementListener getDeletionListener();
+
+    IElementListener getUndoRedoAnalysisListener();
+    IElementListener getUndoRedoHistoryListener();
+    IElementListener getUndoRedoCreationListener();
+    IElementListener getUndoRedoUpdateListener();
+    IElementListener getUndoRedoDeletionListener();
+
 }
