@@ -6,6 +6,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.feature.FeatureLifeCycleHook;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  */
 public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<FeatureLifeCycleHook> {
     private FeatureRegisterer featureRegisterer;
+    List<FeatureLifeCycleHook> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -45,6 +47,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
         try {
             if(hook == null || !hook.isActivated()) return;
             featureRegisterer.getFeatureHookExecutor().addHook(hook);
+            registeredFeatureItems.add(hook);
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not register HookExecutor: " + hook.getClass().getSimpleName()
@@ -70,6 +73,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
         try {
             if(hook == null) return;
             featureRegisterer.getFeatureHookExecutor().removeHook(hook);
+            registeredFeatureItems.remove(hook);
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not unregister hook: " + hook.getClass().getSimpleName()
@@ -109,5 +113,9 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegisterer = featureRegisterer;
+    }
+    @Override
+    public List<FeatureLifeCycleHook> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

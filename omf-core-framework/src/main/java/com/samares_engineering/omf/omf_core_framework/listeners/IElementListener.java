@@ -17,28 +17,33 @@ import java.util.Collection;
 public interface IElementListener extends IListener {
 
     /**
+     * Manage the event after the analysis
      * @return true if at least one liveAction matched
      */
     boolean manageAnalysis(PropertyChangeEvent event);
 
     /**
+     * Manage the event after the creation
      * @return true if at least one liveAction matched
      */
     boolean manageCreation(PropertyChangeEvent event);
 
     /**
+     * Manage the event after the update
      * @return true if at least one liveAction matched
      */
     boolean manageUpdate(PropertyChangeEvent event);
 
     /**
+     * Manage the event after the deletion
      * @return true if at least one liveAction matched
      */
     boolean manageDeletion(PropertyChangeEvent event);
     /**
+     * Manage the event after the automation
+     * @param l_events list of events
      * @return trigger
      */
-
     boolean manageAfterAutomation(Collection<PropertyChangeEvent> l_events);
 
     /**
@@ -50,6 +55,7 @@ public interface IElementListener extends IListener {
         try {
             addingListener();
             setIsRegistered(true);
+            activate();
         }catch (Exception e){
             deactivate();
             LegacyErrorHandler.handleException(new LegacyOMFException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
@@ -65,6 +71,7 @@ public interface IElementListener extends IListener {
         try {
             removingListener();
             setIsRegistered(false);
+            deactivate();
         }catch (Exception e){
             LegacyErrorHandler.handleException(new LegacyOMFException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
         }

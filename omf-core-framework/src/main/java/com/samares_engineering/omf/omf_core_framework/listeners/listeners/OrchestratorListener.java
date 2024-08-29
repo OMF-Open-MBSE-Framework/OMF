@@ -45,7 +45,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
 
     @Override
     public void removingListener() {
-        final boolean isListenerRemovable = (null != OMFUtils.getProject());
+        final boolean isListenerRemovable = (OMFUtils.isProjectOpened());
         if (isListenerRemovable) {
             try {
                 OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);

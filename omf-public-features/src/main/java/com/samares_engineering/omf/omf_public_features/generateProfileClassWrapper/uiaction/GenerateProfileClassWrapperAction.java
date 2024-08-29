@@ -51,7 +51,6 @@ import java.util.stream.Collectors;
 @MDAction(actionName = "Generate Profile Wrapper", category = "OMF Profile Wrapper")
 public class GenerateProfileClassWrapperAction extends AUIAction {
 
-    public static final String PROFILE_CLASS_TYPE_NAME = "MyProfile";
     private String simpleName;
 
     @Override
@@ -148,7 +147,7 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
 
         getInstanceMethod.setModifiers(NodeList.nodeList(Modifier.publicModifier(), Modifier.staticModifier()));
 
-        getInstanceMethod.setType(PROFILE_CLASS_TYPE_NAME);
+        getInstanceMethod.setType("MBSIProfile");
         getInstanceMethod.setName("getInstance");
 
         BlockStmt body = new BlockStmt();

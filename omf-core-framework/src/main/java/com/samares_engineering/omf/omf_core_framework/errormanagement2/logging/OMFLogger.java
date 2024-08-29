@@ -6,6 +6,7 @@ import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFColors;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
@@ -195,6 +196,12 @@ public class OMFLogger {
     public static void infoToSystemConsole(String message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
     }
+    public static void successToSystemConsole(String message) {
+        logToSystemConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.INFO);
+    }
+    public static void statusToSystemConsole(String message) {
+        logToSystemConsole(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
+    }
 
     public static void warnToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.WARNING);
@@ -267,5 +274,17 @@ public class OMFLogger {
         errorToNotification(message);
         errorToUIConsole(message);
         errorToSystemConsole(message);
+    }
+
+    public static void success(String message) {
+        infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
+        infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
+        infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
+    }
+
+    public static void status(String message) {
+        infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
+        infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
+        infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
     }
 }

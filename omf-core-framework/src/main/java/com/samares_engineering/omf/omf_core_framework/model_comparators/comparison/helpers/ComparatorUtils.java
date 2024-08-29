@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 
 public class ComparatorUtils {
     // Prevent instantiation as this is a static utility class
-    private ComparatorUtils () {}
+    private ComparatorUtils() {
+    }
 
     /**
      * Uses human name if the value is an element, the Java string representation otherwise
@@ -43,7 +44,7 @@ public class ComparatorUtils {
     }
 
     public static String toString(Object var0) {
-        return var0 == null ? "null" : var0.toString() ;
+        return var0 == null ? "null" : var0.toString();
     }
 
     public static Collection<Element> getReferencedElements(Object ref1Value) throws LegacyOMFException {
@@ -93,10 +94,15 @@ public class ComparatorUtils {
 
     /**
      * Returns true if the provided elements are linked via a isMappedTo relation. The purpose of
-     * this relation is manually mapping elements to be compared to each other in the compare UI.
+     * this relation is manually mapping elements to be compared to each other in the compare MICs feature UI.
+     *
+     * @param elementA the first element
+     * @param elementB the second element
+     * @return true if the elements are mapped to each other, false otherwise
      */
     public static boolean areElementsMapped(Element elementA, Element elementB) {
         return elementA.get_relationshipOfRelatedElement().stream()
+//                .filter(MBSIProfile.getInstance().isMappedTo()::is) //TODO
                 .flatMap(rel -> rel.getRelatedElement().stream())
                 .anyMatch(elementB::equals);
     }
@@ -112,9 +118,9 @@ public class ComparatorUtils {
         boolean isEditedReference = false;
         for (PropertyDiff propertyDiff : propertyDiffs) {
             if (propertyDiff.getDiffKind() == DiffKind.EDITED_OWN ||
-                propertyDiff.getDiffKind() == DiffKind.ADDED ||
-                propertyDiff.getDiffKind() == DiffKind.REMOVED
-                ) {
+                    propertyDiff.getDiffKind() == DiffKind.ADDED ||
+                    propertyDiff.getDiffKind() == DiffKind.REMOVED
+            ) {
                 isEditedOwn = true;
             } else if (propertyDiff.getDiffKind() == DiffKind.EDITED_REFERENCE) {
                 isEditedReference = true;
@@ -144,8 +150,8 @@ public class ComparatorUtils {
                     || elementDiff.getDiffKind() == DiffKind.UNMATCHED) {
                 isEditedOwn = true;
             } else if (elementDiff.getDiffKind() == DiffKind.EDITED_REFERENCE
-            || elementDiff.getDiffKind() == DiffKind.EDITED_OWN_AND_REFERENCE
-            || elementDiff.getDiffKind() == DiffKind.EDITED_OWN) {
+                    || elementDiff.getDiffKind() == DiffKind.EDITED_OWN_AND_REFERENCE
+                    || elementDiff.getDiffKind() == DiffKind.EDITED_OWN) {
                 isEditedReference = true;
             }
         }

@@ -12,6 +12,7 @@ public enum LiveActionType {
     CREATE("CREATE"),
     DELETE("DELETE"),
     UPDATE("UPDATE"),
+    HISTORY("HISTORY"),
     AFTER_AUTOMATION("AFTER_AUTOMATION");
 
     private final String name;

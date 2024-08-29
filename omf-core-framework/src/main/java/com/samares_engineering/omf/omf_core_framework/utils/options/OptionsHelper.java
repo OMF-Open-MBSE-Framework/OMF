@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_core_framework.utils.options;
@@ -26,11 +26,12 @@ public class OptionsHelper {
 
     /**
      * Search in all the Project options the given property in the given category.
-     * @param category name of the category, list available in ProjectOptions staticField (PROJECT_GENERAL_PROPERTIES, ...)
+     *
+     * @param category   name of the category, list available in ProjectOptions staticField (PROJECT_GENERAL_PROPERTIES, ...)
      * @param optionName name of the option
      * @return Property option
      */
-    public static Optional<Property> getProjectOptionByCategoryName(String category, String optionName){
+    public static Optional<Property> getProjectOptionByCategoryName(String category, String optionName) {
         Optional<Property> option = getProjectOptionsByCategory(category, optionName, OMFUtils.getProject());
         return option;
     }
@@ -61,20 +62,21 @@ public class OptionsHelper {
                 .findFirst();
 
 
-        return optOption ;
+        return optOption;
     }
 
     /**
      * Search in Project options the given property in the given category. If absent it returns Null.
-     * @param category name of the category (General, OMF, OMF ORGANIZER)
+     *
+     * @param category   name of the category (General, OMF, OMF ORGANIZER)
      * @param optionName name of the option
-     * @param project project containing the options
+     * @param project    project containing the options
      * @return Property option
      */
-    private static Optional<Property> getProjectOptionsByCategory(String category, String optionName, Project project){
+    private static Optional<Property> getProjectOptionsByCategory(String category, String optionName, Project project) {
         try {
             return Optional.ofNullable(project.getOptions().getProperty(category, optionName));
-        }catch (Exception e){
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
@@ -86,7 +88,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @return Property option
      */
-    public static Optional<Property> getEnvironmentOptionByCategoryName(String category, String optionName){
+    public static Optional<Property> getEnvironmentOptionByCategoryName(String category, String optionName) {
         Optional<AbstractPropertyOptionsGroup> optCategory = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
@@ -94,7 +96,7 @@ public class OptionsHelper {
                 .filter(cat -> cat.getName().equals(category))
                 .findAny();
 
-        if(optCategory.isEmpty())
+        if (optCategory.isEmpty())
             return Optional.empty();
 
         Optional<Property> optOption = optCategory.get().getOptions().getProperties().stream()
@@ -112,7 +114,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @return Property option
      */
-    public static Optional<Property> getEnvironmentOptionByID(String id, String optionName){
+    public static Optional<Property> getEnvironmentOptionByID(String id, String optionName) {
         Optional<PropertyManager> optCategory = Application.getInstance().getEnvironmentOptions().getGroups()
                 .stream()
                 .filter(AbstractPropertyOptionsGroup.class::isInstance)
@@ -121,7 +123,7 @@ public class OptionsHelper {
                 .filter(cat -> cat.getName().equals(id))
                 .findAny();
 
-        if(optCategory.isEmpty())
+        if (optCategory.isEmpty())
             return Optional.empty();
 
         Optional<Property> optOption = optCategory.get().getProperties().stream()
@@ -133,11 +135,12 @@ public class OptionsHelper {
 
     /**
      * Compare the option actual value with the given value.
-     * @param option
-     * @param value
-     * @return
+     *
+     * @param option property to compare
+     * @param value  value to compare
+     * @return true if the value is the same, false otherwise
      */
-    protected static boolean compareOptionValue(Property option, Object value){
+    protected static boolean compareOptionValue(Property option, Object value) {
         return option.getValue().equals(value);
     }
 
@@ -145,23 +148,26 @@ public class OptionsHelper {
      * Search for the environment option and compare it with the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param category
-     * @param optionName
-     * @param value
+     *
+     * @param category   name of the category (General, OMF, OMF ORGANIZER)
+     * @param optionName name of the option
+     * @param value      value to compare
+     * @return true if the value is the same, false otherwise
      */
     protected static boolean compareOptionValueByCategoryName(String category, String optionName, Object value) throws LegacyOMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);
-        if(optOption.isEmpty())
+        if (optOption.isEmpty())
             throw new LegacyOMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
         return optOption.get().getValue().equals(value);
     }
 
     /**
      * Set a new value to the given property
-     * @param option
-     * @param value
+     *
+     * @param option property to set
+     * @param value  new value
      */
-    protected static void setOptionValue(Property option, Object value){
+    protected static void setOptionValue(Property option, Object value) {
         option.setValue(value);
     }
 
@@ -169,19 +175,20 @@ public class OptionsHelper {
      * Search for the environment option and will set the given value.
      * Test will fail if not found. Case and White space non-sensitive.
      * See: getEnvironmentOption for more detail
-     * @param category
-     * @param optionName
-     * @param value
+     *
+     * @param category   name of the category (General, OMF, OMF ORGANIZER)
+     * @param optionName name of the option
+     * @param value      new value to set
      */
     public static void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value) throws LegacyOMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);
-        if(optOption.isEmpty())
+        if (optOption.isEmpty())
             throw new LegacyOMFException("Option: " + optionName + " not found in category: " + category, GenericException.ECriticality.ALERT);
 
         setOptionValue(optOption.get(), value);
     }
 
     public static boolean compareStringsNoCaseNoSpace(String s1, String s2) {
-        return StringUtils.deleteWhitespace(s1).equalsIgnoreCase( StringUtils.deleteWhitespace(s2));
+        return StringUtils.deleteWhitespace(s1).equalsIgnoreCase(StringUtils.deleteWhitespace(s2));
     }
 }

@@ -9,35 +9,56 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.live
 
 
 import com.nomagic.magicdraw.utils.PriorityProvider;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction;
 
-import java.beans.PropertyChangeEvent;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
-public interface LiveActionEngine extends PriorityProvider, RegistrableFeatureItem {
-    Optional<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getMatchingLiveAction(PropertyChangeEvent evt);
+public interface LiveActionEngine<EVT> extends PriorityProvider, RegistrableFeatureItem {
 
-    List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getAllMatchingLiveActions(PropertyChangeEvent evt);
 
-    boolean processAllMatchingLiveActions(PropertyChangeEvent evt);
 
-    boolean skipLiveActions(PropertyChangeEvent evt);
+    /* *************************** OLD METHODS DEPRECATED ******************************* */
+    Optional<LiveAction<EVT, EVT>> getMatchingLiveAction(EVT evt);
 
-    void addLiveAction(LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction);
+    List<LiveAction<EVT, EVT>> getAllMatchingLiveActions(EVT evt);
 
-    void addAllLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions);
+    boolean processAllMatchingLiveActions(EVT evt);
 
-    List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> getLiveActions();
+    boolean skipLiveActions(EVT evt);
 
-    void removeLiveAction(LiveAction<PropertyChangeEvent, PropertyChangeEvent> liveAction);
+    void addLiveAction(LiveAction<EVT, EVT> liveAction);
 
-    void removeLiveActions(List<LiveAction<PropertyChangeEvent, PropertyChangeEvent>> liveActions);
+    void addAllLiveActions(List<LiveAction<EVT, EVT>> liveActions);
+
+    List<LiveAction<EVT, EVT>> getLiveActions();
+
+    void removeLiveAction(LiveAction<EVT, EVT> liveAction);
+
+    void removeLiveActions(List<LiveAction<EVT, EVT>> liveActions);
 
     void removeAllLiveActions();
 
     void setPriority(int priority);
+
+    default <T> boolean checkLiveActionEngineType(Class<T> clazz) {
+        Type[] genericInterfaces = getClass().getGenericInterfaces();
+        if (genericInterfaces.length == 0) return false;
+        ParameterizedType genericInterface = (ParameterizedType) genericInterfaces[0];
+        return clazz.isAssignableFrom((Class<?>) genericInterface.getActualTypeArguments()[0]);
+    }
+
+    default boolean hasAutomationTriggered(){
+        return OMFAutomationManager.getInstance().noAutomationTriggered();
+    }
+
+    default boolean noAutomationTriggered(){
+        return OMFAutomationManager.getInstance().noAutomationTriggered();
+    }
 
     String getType();
     void setType(String category);

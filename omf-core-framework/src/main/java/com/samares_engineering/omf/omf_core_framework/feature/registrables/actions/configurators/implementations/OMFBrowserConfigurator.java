@@ -6,6 +6,7 @@
  ******************************************************************************/
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations;
 
+import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.BrowserContextAMConfigurator;
 import com.nomagic.magicdraw.ui.browser.Tree;
@@ -24,12 +25,28 @@ import java.util.ArrayList;
  * 'checkBrowserAvailability' condition.
  * To add an Action to the List call 'addNewAction'.
  */
-public class OMFBrowserConfigurator extends AUIActionConfigurator implements BrowserContextAMConfigurator {
+public class OMFBrowserConfigurator extends AUIActionConfigurator implements BrowserContextAMConfigurator, AMConfigurator {
     @Override
     public int getPriority() {
         return PriorityProvider.MEDIUM_PRIORITY;
     }
 
+    /**
+     * Called when MagicDraw is launched when a project is Opened. Not sure if the behavior is useful.
+     * @param actionsManager the actions manager
+     */
+    @Override
+    public void configure(ActionsManager actionsManager) {
+//        new ArrayList<>(registeredActions).stream()
+//                .filter(UIAction::isBrowserAction)
+//                .filter(UIAction::checkBrowserAvailability)
+//                .forEach(action -> this.registerBrowserAction(actionsManager, action));
+    }
+
+    /**
+     * Called when the right click is made on the browser, or when "create new XXX" is triggered
+     * Register an action into the category, if the category doesn't exist, it will register it.
+     */
     @Override
     public void configure(ActionsManager actionsManager, Tree tree) {
         new ArrayList<>(registeredActions).stream()

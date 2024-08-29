@@ -34,6 +34,8 @@ public interface IListenerManager {
 
     IElementListener getAnalysisListener();
 
+    IElementListener getHistoryListener();
+
     IElementListener getCreationListener();
 
     IElementListener getUpdateListener();

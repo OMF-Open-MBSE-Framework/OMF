@@ -95,6 +95,9 @@ public abstract class AUIAction implements UIAction {
         this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
+                if(OMFUtils.isProjectVoid() || OMFUtils.getProject().getActiveDiagram() == null) return;//CalledBy ConfiguratorAM on MD startup/Project Opening,
+                // for some reason, the action is triggered before the updateState, so we need to check availability here ?
+                if (!checkDiagramAvailability()) return; //when called with shortcuts,
                 super.actionPerformed(actionEvent);
                 init();
                 diagramAction.setDiagram(this.getDiagram()); //TODO: temporary fix, to be removed when the diagram action will be fixed
@@ -111,15 +114,26 @@ public abstract class AUIAction implements UIAction {
             @Override
             public void updateState() {
                 super.updateState();
+                if(OMFUtils.isProjectVoid() || OMFUtils.getProject().getActiveDiagram() == null) {
+                    setEnabled(false);
+                    return;
+                }
                 setEnabled(checkDiagramAvailability());
             }
         };
     }
 
+    /**
+     * Initialize the Browser Action, register the action and set the behavior.
+     *
+     */
     private void initTreeActions() {
         this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
+                if(OMFUtils.isProjectVoid()) return;
+                if(!checkBrowserAvailability()) return; //when called with shortcuts,
+                // action is triggered before updateState, so we need to check availability here
                 super.actionPerformed(actionEvent);
                 init();
                 executeBrowserAction(browserSelectedElements);
@@ -129,6 +143,10 @@ public abstract class AUIAction implements UIAction {
             @Override
             public void updateState() {
                 super.updateState();
+                if(OMFUtils.isProjectVoid()) {
+                    setEnabled(false);
+                    return;
+                }
                 setEnabled(checkBrowserAvailability());
             }
         };
@@ -256,7 +274,7 @@ public abstract class AUIAction implements UIAction {
 
     /**
      * Get the selected Nodes inside the Containment Tree.
-     * Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order corresponds to the user element selection one.
      *
      * @return selected node list.
      */

@@ -48,6 +48,7 @@ public interface IListener {
 
     /**
      * Setting the isRegistered attribute
+     * @param isRegistered true if the listener is registered
      */
 
     void setIsRegistered(boolean isRegistered);

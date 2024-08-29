@@ -14,6 +14,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.nomagic.uml2.impl.PropertyNames;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
 import java.beans.PropertyChangeEvent;
@@ -32,6 +33,16 @@ public class EventChecker {
     public boolean test(PropertyChangeEvent evt){
         return predicates.stream()
                 .allMatch(predicate -> predicate.test(evt));
+    }
+
+    public EventChecker noAutomationTriggered(){
+        isTrue(evt -> OMFAutomationManager.getInstance().noAutomationTriggered());
+        return this;
+    }
+
+    public EventChecker hasAutomationTriggered(){
+        isTrue(evt -> OMFAutomationManager.getInstance().hasAutomationBeenTriggered());
+        return this;
     }
 
     public EventChecker isInstanceCreated(){

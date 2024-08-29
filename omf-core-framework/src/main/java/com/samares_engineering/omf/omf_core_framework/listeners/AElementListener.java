@@ -45,7 +45,7 @@ public abstract class AElementListener extends AListener implements IElementList
     @Override
     public boolean manageAfterAutomation(Collection<PropertyChangeEvent> l_events) {
         List<LiveActionEngine> liveActionEngines = getLiveActionEngineMap().get(LiveActionType.AFTER_AUTOMATION.toString());
-        return l_events.stream().map(event -> processAllMatchingLiveActions(liveActionEngines, event)).anyMatch(b -> b);
+        return l_events.stream().anyMatch(event -> processAllMatchingLiveActions(liveActionEngines, event));
     }
 
     /**
@@ -54,6 +54,7 @@ public abstract class AElementListener extends AListener implements IElementList
     private boolean processAllMatchingLiveActions(List<LiveActionEngine> liveActionEngines, PropertyChangeEvent event) {
         if(liveActionEngines == null) return false;
         boolean hasLiveActionsBeenTriggered = liveActionEngines.stream()
+                .filter(liveActionEngine -> liveActionEngine.checkLiveActionEngineType(event.getClass()))
                 .map(liveActionEngine -> liveActionEngine.processAllMatchingLiveActions(event))
                 .collect(Collectors.toList())
                 .contains(true);

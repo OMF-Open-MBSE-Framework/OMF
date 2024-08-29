@@ -15,7 +15,7 @@ import java.beans.PropertyChangeEvent;
  * Abstract class for a liveAction, contains the basic methods for a LiveAction liveAction.
  */
 public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, PropertyChangeEvent> {
-    protected LiveActionEngine liveActionEngine;
+    protected LiveActionEngine<PropertyChangeEvent> liveActionEngine;
     public String id = "";
     public boolean isActivated = true;
 
@@ -64,17 +64,19 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
     }
 
     @Override
-    public void setLiveActionEngine(LiveActionEngine liveActionEngine) {
+    public void setLiveActionEngine(LiveActionEngine<PropertyChangeEvent> liveActionEngine) {
         this.liveActionEngine = liveActionEngine;
     }
 
 
     @Override
-    public LiveActionEngine getLiveActionEngine() {
+    public LiveActionEngine<PropertyChangeEvent> getLiveActionEngine() {
         return liveActionEngine;
     }
 
     public OMFFeature getFeature() {
         return liveActionEngine.getFeature();
     }
+
+
 }

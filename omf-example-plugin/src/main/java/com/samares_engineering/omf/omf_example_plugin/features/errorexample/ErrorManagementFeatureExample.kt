@@ -32,7 +32,7 @@ class ErrorManagementFeatureExample : SimpleFeature("ERROR MANAGEMENT TEST FEATU
         )
     }
 
-    public override fun initLiveActions(): List<LiveActionEngine> {
+    public override fun initLiveActions(): List<LiveActionEngine<*>> {
         val creationRE = ALiveActionEngine(LiveActionType.CREATE)
         creationRE.addLiveAction(LiveActionErrorExample())
         return java.util.List.of(creationRE)

@@ -7,6 +7,7 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations;
 
 
+import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.DiagramContextAMConfigurator;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
@@ -21,12 +22,23 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import javax.annotation.CheckForNull;
 import java.util.ArrayList;
 
-public class OMFDiagramConfigurator extends AUIActionConfigurator implements DiagramContextAMConfigurator {
+public class OMFDiagramConfigurator extends AUIActionConfigurator implements DiagramContextAMConfigurator, AMConfigurator {
     @Override
     public int getPriority() {
         return PriorityProvider.MEDIUM_PRIORITY;
     }
 
+    /**
+     * Called when MagicDraw is launched when a project is Opened. Not sure if the behavior is useful.
+     * @param actionsManager the actions manager
+     */
+    @Override
+    public void configure(ActionsManager actionsManager){
+//        new ArrayList<>(registeredActions).stream()
+//                .filter(UIAction::isDiagramAction)
+//                .filter(UIAction::checkDiagramAvailability)
+//                .forEach(action -> this.registerDiagramAction(actionsManager, action));
+    }
     @Override
     public void configure(ActionsManager actionsManager, DiagramPresentationElement diagramPresentationElement,
                           PresentationElement[] presentationElements, @CheckForNull PresentationElement presentationElement) {

@@ -20,7 +20,7 @@ import java.util.stream.Collectors
 @MDAction(actionName = "Display Inner layer", category = "")
 class DisplayInnerLayer : AUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
-        if (OMFUtils.getProject() == null) return false
+        if (OMFUtils.isProjectVoid()) return false
         val activeDiagram = OMFUtils.getProject().activeDiagram ?: return false
         val diagramType = activeDiagram.diagramType.type
         return diagramType == SysMLConstants.SYSML_INTERNAL_BLOCK_DIAGRAM
@@ -53,16 +53,16 @@ class DisplayInnerLayer : AUIAction() {
     }
 
     private fun displayInnerLevel(owner: Class?, layoutManager: LayoutManager) {
-        val parts = owner!!.ownedAttribute.stream()
+        val micParts = owner!!.ownedAttribute.stream()
             .filter { element: Property? -> Profile._getSysmlAdditionalStereotypes().partProperty().`is`(element) }
             .collect(Collectors.toSet())
         val portsPresentationElements: List<PresentationElement> = ArrayList()
 
-        for (part in parts) {
-            layoutManager.refreshPart(part)
-            layoutManager.refreshAllPorts(part.type as Class?, part) //TODO: check if it has a type
+        for (micPart in micParts) {
+            layoutManager.refreshPart(micPart)
+            layoutManager.refreshAllPorts(micPart.type as Class?, micPart) //TODO: check if it has a type
 
-            part.type!!.ownedElement
+            micPart.type!!.ownedElement
                 .stream()
                 .filter { obj: Element? -> Port::class.java.isInstance(obj) }
                 .map { obj: Element? -> Port::class.java.cast(obj) }

@@ -19,5 +19,7 @@ public interface FeatureItemRegisterer<I extends RegistrableFeatureItem> {
 
     FeatureRegisterer getFeatureRegisterer();
 
+    List<I> getRegisteredFeatureItems();
+
     void setFeatureRegisterer(FeatureRegisterer featureRegisterer);
 }

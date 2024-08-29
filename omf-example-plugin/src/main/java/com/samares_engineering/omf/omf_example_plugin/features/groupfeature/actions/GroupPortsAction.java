@@ -37,11 +37,13 @@ public class GroupPortsAction extends AUIAction {
 
     @Override
     public void actionToPerform(List<Element> selectedElements) {
-        List<Port> selectedPorts = selectedElements.stream().map(Port.class::cast)
+        List<Port> selectedMICPorts = selectedElements.stream().map(Port.class::cast)
                 .collect(Collectors.toList());
-        ProgressStatusRunner.runWithProgressStatus(progressStatus -> groupSelectedPorts(selectedPorts),
+        ProgressStatusRunner.runWithProgressStatus(progressStatus -> groupSelectedPorts(selectedMICPorts),
                 "Grouping Ports in progress", false, 0);
     }
+
+
 
     protected void groupSelectedPorts(List<Port> selectedPorts) {
         PresentationElement partHost =  getSelectedDiagramPresentationElements().get(1).getParent();

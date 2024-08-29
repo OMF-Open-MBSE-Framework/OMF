@@ -142,7 +142,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //    }
 
     /**
-     * Display a warning message if profil version is not correct
+     * Display a warning message if a profile version is not correct
+     * @param isValidVersion boolean
      */
     protected void notifyUserAboutPluginCompatibility(boolean isValidVersion){
         if(!isValidVersion) {
@@ -218,7 +219,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     private void projectOnlyFeatureRegistering(List<OMFFeature> registeredFeatures) {
         try {
-            plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(registeredFeatures);
+            plugin.getFeatureRegisterer().registerProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
             LegacyErrorHandler.handleException(
                     new CoreException("Error occurred during Project opening Feature initialisation",
@@ -272,7 +273,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     private void projectOnlyFeatureUnRegistering(List<OMFFeature> registeredFeatures) {
         try {
-            plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
+            plugin.getFeatureRegisterer().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
             LegacyErrorHandler.handleException(
                     new CoreException("Error occurred during Project closing Feature removal",

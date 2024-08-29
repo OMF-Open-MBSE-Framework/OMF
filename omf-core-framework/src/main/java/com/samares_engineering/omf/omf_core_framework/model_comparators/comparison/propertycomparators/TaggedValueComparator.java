@@ -26,6 +26,9 @@ public class TaggedValueComparator {
      * are equal and there is an isomorphic (one to one) match of their values (which can be either Elements of primitive
      * objects like Boolean or String).
      * Logs the changes if they are not equal.
+     * @param elemLeft  the first element.
+     * @param elemRight the second element.
+     * @return a list of PropertyDiff objects representing the differences between the tagged values.
      */
     public List<PropertyDiff> compareTaggedValues(Element elemLeft, Element elemRight) {
         // During comparison, equal tagged values are removed from the list of unmatched tagged values, leaving only the

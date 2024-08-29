@@ -140,6 +140,9 @@ public class ListenerManager implements IListenerManager {
     }
 
     @Override
+    public IElementListener getHistoryListener() {return transactionElementListener;}
+
+    @Override
     public IElementListener getCreationListener() {
         return transactionElementListener;
     }

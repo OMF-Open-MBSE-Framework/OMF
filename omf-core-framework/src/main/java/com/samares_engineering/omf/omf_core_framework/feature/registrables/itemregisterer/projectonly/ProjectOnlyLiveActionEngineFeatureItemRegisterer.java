@@ -36,6 +36,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
      */
     private  IListenerManager listenerManager;
     private FeatureRegisterer featureRegisterer;
+    List<LiveActionEngine> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -45,7 +46,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
 
     /**
      * Register all LiveActions in the ListenerManager
-     * @param LiveActions
+     * @param LiveActions the LiveActions to register
      */
     public void registerFeatureItems(List<LiveActionEngine> LiveActions) {
         try {
@@ -57,7 +58,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
 
     /**
      * Unregister all LiveActions in the ListenerManager
-     * @param LiveActions
+     * @param LiveActions the LiveActions to unregister
      */
     public void unregisterFeatureItems(List<LiveActionEngine> LiveActions) {
         try {
@@ -83,6 +84,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
         liveActionMap.computeIfAbsent(category, LiveActions ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
         liveActionMap.get(category).add(liveAction);
+        registeredFeatureItems.add(liveAction);
     }
 
     /**
@@ -97,6 +99,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
         HashMap<String, List<LiveActionEngine>> liveActionMap = listener.getLiveActionEngineMap();
         if (liveActionMap.containsKey(category))
             liveActionMap.get(category).remove(liveAction);
+        registeredFeatureItems.remove(liveAction);
     }
 
 
@@ -171,5 +174,9 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegisterer = featureRegisterer;
+    }
+    @Override
+    public List<LiveActionEngine> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

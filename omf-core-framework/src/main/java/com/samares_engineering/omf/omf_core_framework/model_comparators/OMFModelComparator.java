@@ -41,7 +41,10 @@ public class OMFModelComparator implements ModelComparator {
     }
 
     /***
-     * UNTESTED !
+     * Compares two collections of packages.
+     * WARNING: this method has not been tested yet.
+     * @param model1Packages packages to compare
+     * @param model2Packages other packages to compare
      */
     public boolean comparePackages(Collection<Package> model1Packages, Collection<Package> model2Packages) {
         ElementComparator elementComparator = new ElementComparator(filters);
@@ -60,7 +63,7 @@ public class OMFModelComparator implements ModelComparator {
         return true;
     }
 
-    /***
+    /*
      * UNTESTED !
      */
     public boolean comparePackages(Package subModelRoot1, Package subModelRoot2) {

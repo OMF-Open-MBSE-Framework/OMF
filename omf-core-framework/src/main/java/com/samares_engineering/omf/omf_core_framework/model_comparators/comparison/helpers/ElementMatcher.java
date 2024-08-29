@@ -29,11 +29,13 @@ public class ElementMatcher {
     }
 
     /**
+     * Returns the first element in the list of elements to match that is similar to the element.
+     * Two elements are considered similar if they have the same meta-class and the same name.
      *
-     * @param element
-     * @param elementsToMatch
-     * @return
+     * @param element         The element we are trying to match for
+     * @param elementsToMatch The list of elements we are trying to match to
      */
+
     public Optional<Element> findUniqueElementOfSameType(Element element, List<Element> elementsToMatch) {
         // We compare IDs as the elements compared might be in different projects
         List<Element> candidateElems = elementsToMatch.stream()
@@ -49,6 +51,7 @@ public class ElementMatcher {
      *
      * @param element         The element we are trying to match for
      * @param elementsToMatch The list of elements we are trying to match to
+     * @param <T>             The type of the element
      */
     public <T extends Element> Optional<T> findBestMatchingElement(T element, List<T> elementsToMatch) {
         return ComparatorUtils.getIsMappedToElementInList(element, elementsToMatch).or(() ->
