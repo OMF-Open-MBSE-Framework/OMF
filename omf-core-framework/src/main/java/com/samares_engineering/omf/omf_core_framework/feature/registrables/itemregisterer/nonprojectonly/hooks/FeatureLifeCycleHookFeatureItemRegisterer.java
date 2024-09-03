@@ -48,6 +48,7 @@ public class FeatureLifeCycleHookFeatureItemRegisterer implements FeatureItemReg
             if(hook == null || !hook.isActivated()) return;
             featureRegisterer.getFeatureHookExecutor().addHook(hook);
             registeredFeatureItems.add(hook);
+
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not register HookExecutor: " + hook.getClass().getSimpleName()

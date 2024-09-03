@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.listeners
 
 import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager
+import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
@@ -143,6 +144,26 @@ class DeleteInterfaceOnPortDeletion : ALiveAction() {
         val port = event.source as Port
         ModelElementsManager.getInstance().removeElement(port.type)
         return event
+    }
+
+    override fun isBlocking(): Boolean {
+        return false
+    }
+}
+class OnSatisfyDeletion : ALiveActionCharacterizedEvent() {
+    override fun eventMatches(history: CharacterizedEvent): Boolean {
+      return CharacterizedEventChecker()
+//            .isInstanceDeleted() not needed, it is already checked in the engine registration
+            .isInstanceOf(Dependency::class.java)
+            .hasStereotype(Profile._getSysml().satisfy().stereotype)
+            .test(history)
+    }
+
+    override fun process(history: CharacterizedEvent): CharacterizedEvent {
+        val port = history.element as Dependency
+        history.relatedEvents
+
+        return history
     }
 
     override fun isBlocking(): Boolean {

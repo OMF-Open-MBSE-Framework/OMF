@@ -153,6 +153,7 @@ public class OptionsHelper {
      * @param optionName name of the option
      * @param value      value to compare
      * @return true if the value is the same, false otherwise
+     * @throws LegacyOMFException if the option is not found
      */
     protected static boolean compareOptionValueByCategoryName(String category, String optionName, Object value) throws LegacyOMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);

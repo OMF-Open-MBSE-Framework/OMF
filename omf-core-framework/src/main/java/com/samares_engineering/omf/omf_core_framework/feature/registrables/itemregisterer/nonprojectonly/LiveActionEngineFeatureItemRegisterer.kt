@@ -60,8 +60,8 @@ class LiveActionEngineFeatureItemRegisterer : FeatureItemRegisterer<LiveActionEn
     }
 
     /**
-     * Allow LiveActionEnginet registration in the listener. Depending on the Category the LiveActionEngine will be triggered and LiveActions will be evaluated.
-     * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * Allow LiveActionEngine registration in the listener. Depending on the Category the LiveActionEngine will be triggered and LiveActions will be evaluated.
+     * Category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyze, Create, Update, Delete, AfterAutomation).
      * @param liveActionEngine: The LiveActionEngine to register
      */
     override fun registerFeatureItem(liveActionEngine: LiveActionEngine<*>?) {
@@ -77,7 +77,7 @@ class LiveActionEngineFeatureItemRegisterer : FeatureItemRegisterer<LiveActionEn
 
     /**
      * Remove a specific LiveActionEngine if registered.
-     * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * Category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyze, Create, Update, Delete, AfterAutomation).
      * @param LiveActionEngine: The LiveActionEngine to remove
      */
     override fun unregisterFeatureItem(LiveActionEngine: LiveActionEngine<*>?) {
@@ -90,7 +90,7 @@ class LiveActionEngineFeatureItemRegisterer : FeatureItemRegisterer<LiveActionEn
 
     /**
      * Allow LiveActionEngine registration in the listener with a specific Priority. Depending on the Category the LiveActionEngine will be triggered and LiveActions will be evaluated.
-     * -category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * Category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyze, Create, Update, Delete, AfterAutomation).
      * @param LiveActionEngine: The LiveActionEngine to register
      * @param featurePriority: will help to order the LiveActionEngine execution by its priority.
      */
@@ -107,7 +107,7 @@ class LiveActionEngineFeatureItemRegisterer : FeatureItemRegisterer<LiveActionEn
     //TODO: Rethink priority management: does the priority is guaranteed ? Priority shall be linked to the RE/Feature
     /**
      * Move LiveActionEngine registration in the listener with to specific, RE will be removed, then add again in the list decreasing the priority of all the other features.
-     * - category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyse, Create, Update, Delete, AfterAutomation).
+     * Category: based on LiveActionEngineUsage it will be used to register the LiveActionEngine in the right place by default (Analyze, Create, Update, Delete, AfterAutomation).
      * @param LiveActionEngine: The LiveActionEngine to register
      * @param featurePriority: The new pr.
      */
@@ -132,10 +132,10 @@ class LiveActionEngineFeatureItemRegisterer : FeatureItemRegisterer<LiveActionEn
             LiveActionType.DELETE -> return listenerManager!!.deletionListener
             LiveActionType.AFTER_AUTOMATION -> return listenerManager!!.afterAutomationListener
             LiveActionType.ANALYSE_UNDO_REDO -> return listenerManager!!.analysisListener
-            LiveActionType.CREATE_UNDO_REDO -> return listenerManager!!.creationListener
-            LiveActionType.UPDATE_UNDO_REDO -> return listenerManager!!.updateListener
-            LiveActionType.HISTORY_UNDO_REDO -> return listenerManager!!.historyListener
-            LiveActionType.DELETE_UNDO_REDO -> return listenerManager!!.deletionListener
+            LiveActionType.CREATE_UNDO_REDO -> return listenerManager!!.undoRedoCreationListener
+            LiveActionType.UPDATE_UNDO_REDO -> return listenerManager!!.undoRedoUpdateListener
+            LiveActionType.HISTORY_UNDO_REDO -> return listenerManager!!.undoRedoHistoryListener
+            LiveActionType.DELETE_UNDO_REDO -> return listenerManager!!.undoRedoDeletionListener
             LiveActionType.AFTER_AUTOMATION_UNDO_REDO -> return listenerManager!!.afterAutomationListener
 
 

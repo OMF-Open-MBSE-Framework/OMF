@@ -133,8 +133,9 @@ public class TwcAccessor
 
     /**
      * Create new project in the twc server
+     * @param projectName String
      * @return created project
-     * @throws LegacyOMFException Exception
+     * @throws LegacyOMFException Exception if project cannot be created
      */
     public Project createProject(String projectName) throws LegacyOMFException {
         final Project project;
@@ -182,6 +183,7 @@ public class TwcAccessor
      * Find project descriptor using project name
      * @param projectName project name
      * @return project descriptor or null
+     * @throws LegacyOMFException Exception if project descriptor not found
      */
     @CheckForNull
     public ProjectDescriptor getExistingProjectDescriptor(String projectName) throws LegacyOMFException {

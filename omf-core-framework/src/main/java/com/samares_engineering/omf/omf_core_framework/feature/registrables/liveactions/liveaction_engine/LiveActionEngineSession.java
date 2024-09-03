@@ -31,7 +31,12 @@ public class LiveActionEngineSession implements LiveActionEngine<SessionHistory>
         this("HISTORY", -1);
     }
 
+    public LiveActionEngineSession(String history){
+        this(history, -1);
+    }
+
     public LiveActionEngineSession(String history, int priority) {
+        this.category = history;
         this.priority = priority;
     }
 

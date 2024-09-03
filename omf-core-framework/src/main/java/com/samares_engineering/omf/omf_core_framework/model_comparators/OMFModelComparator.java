@@ -32,6 +32,10 @@ public class OMFModelComparator implements ModelComparator {
 
     /***
      * UNTESTED !
+     * Compares two projects.
+     * @param project1 project to compare (the project to compare with the second project)
+     * @param project2 other project to compare
+     * @return true if the projects are identical, false otherwise
      */
     @Override
     public boolean compareModels(Project project1, Project project2) {
@@ -45,6 +49,7 @@ public class OMFModelComparator implements ModelComparator {
      * WARNING: this method has not been tested yet.
      * @param model1Packages packages to compare
      * @param model2Packages other packages to compare
+     * @return true if the packages are identical, false otherwise
      */
     public boolean comparePackages(Collection<Package> model1Packages, Collection<Package> model2Packages) {
         ElementComparator elementComparator = new ElementComparator(filters);
