@@ -86,12 +86,12 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
             List<OMFFeature> features = getAllFeaturesToRegister().stream()
                     .filter(exceptThisFeature) // get all feature except this one
                     .collect(Collectors.toList());
-            getPlugin().getFeatureRegister().registerFeatures(features);
+            getPlugin().getFeatureRegisterer().registerFeatures(features);
         } else {
             List<OMFFeature> unregisteredFeatures = getAllFeaturesToUnregistered().stream()
                     .filter(exceptThisFeature)
                     .collect(Collectors.toList());
-            getPlugin().getFeatureRegister().unregisterFeatures(unregisteredFeatures);
+            getPlugin().getFeatureRegisterer().unregisterFeatures(unregisteredFeatures);
         }
     }
 
@@ -100,7 +100,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
      * @return the list of features to unregister when the option is deactivated.
      */
     private List<OMFFeature> getAllFeaturesToUnregistered() {
-        return getPlugin().getFeatureRegister().getRegisteredFeatures();
+        return getPlugin().getFeatureRegisterer().getRegisteredFeatures();
     }
 
     /**

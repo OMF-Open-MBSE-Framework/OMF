@@ -7,21 +7,20 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.CharacterizedEvent;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
-import java.beans.PropertyChangeEvent;
-
 /**
- * Abstract class for a liveAction, contains the basic methods for a LiveAction liveAction.
+ * Abstract class for a liveAction, contains the basic methods for a LiveAction.
  */
-public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, PropertyChangeEvent> {
-    protected LiveActionEngine<PropertyChangeEvent> liveActionEngine;
+public abstract class ALiveActionCharacterizedEvent implements LiveAction<CharacterizedEvent, CharacterizedEvent> {
+    protected LiveActionEngine<CharacterizedEvent> liveActionEngine;
     public String id = "";
     public boolean isActivated = true;
 
-    public ALiveAction(){id = getClass().getSimpleName();}
+    public ALiveActionCharacterizedEvent(){id = getClass().getSimpleName();}
 
-    public ALiveAction(String id){
+    public ALiveActionCharacterizedEvent(String id){
         this.id = id;
     }
 
@@ -32,7 +31,7 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
      * @return true if the event matches the liveAction, false otherwise
      */
     @Override
-    public final boolean matches(PropertyChangeEvent evt) {
+    public final boolean matches(CharacterizedEvent evt) {
         return isActivated && eventMatches(evt);
     }
 
@@ -43,7 +42,7 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
      * @param evt the event to check
      * @return true if the event matches the liveAction, false otherwise
      */
-    protected abstract boolean eventMatches(PropertyChangeEvent evt);
+    protected abstract boolean eventMatches(CharacterizedEvent evt);
 
     @Deprecated
     public void debug(Object o){}
@@ -64,19 +63,17 @@ public abstract class ALiveAction implements LiveAction<PropertyChangeEvent, Pro
     }
 
     @Override
-    public void setLiveActionEngine(LiveActionEngine<PropertyChangeEvent> liveActionEngine) {
+    public void setLiveActionEngine(LiveActionEngine<CharacterizedEvent> liveActionEngine) {
         this.liveActionEngine = liveActionEngine;
     }
 
 
     @Override
-    public LiveActionEngine<PropertyChangeEvent> getLiveActionEngine() {
+    public LiveActionEngine<CharacterizedEvent> getLiveActionEngine() {
         return liveActionEngine;
     }
 
     public OMFFeature getFeature() {
         return liveActionEngine.getFeature();
     }
-
-
 }

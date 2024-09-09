@@ -43,10 +43,6 @@ class UpdatePortInterfaceFlowNames : ALiveAction() {
         return evt
     }
 
-    override fun debug(o: Any) {
-    }
-
-
     override fun isBlocking(): Boolean {
         return false
     }

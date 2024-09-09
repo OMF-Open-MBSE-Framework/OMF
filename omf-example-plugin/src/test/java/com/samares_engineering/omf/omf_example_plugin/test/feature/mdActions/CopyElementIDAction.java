@@ -21,7 +21,8 @@ import java.util.List;
 
 @DiagramAction
 @BrowserAction
-@MDAction(actionName = "Copy Element ID", category = "OMF Test",
+@MDAction(actionName = "Copy Element ID",
+        category = "OMF Test",
         keyStroke = "control shift c")
 public class CopyElementIDAction extends AUIAction {
     @Override

@@ -22,7 +22,7 @@ public class SaveDiagramAsSVG extends AUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-        if (OMFUtils.getProject() == null) return false;
+        if (OMFUtils.isProjectVoid()) return false;
         DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
         return activeDiagram != null;
 

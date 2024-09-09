@@ -138,7 +138,7 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
 
 
     private FeatureRegisterer getFeatureRegister() {
-        return getPlugin().getFeatureRegister();
+        return getPlugin().getFeatureRegisterer();
     }
 
 }

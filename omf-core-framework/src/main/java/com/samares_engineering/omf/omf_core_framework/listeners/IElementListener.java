@@ -50,6 +50,7 @@ public interface IElementListener extends IListener {
         try {
             addingListener();
             setIsRegistered(true);
+            activate();
         }catch (Exception e){
             deactivate();
             LegacyErrorHandler.handleException(new LegacyOMFException("Error while registering listener", e, GenericException.ECriticality.ALERT), false);
@@ -65,6 +66,7 @@ public interface IElementListener extends IListener {
         try {
             removingListener();
             setIsRegistered(false);
+            deactivate();
         }catch (Exception e){
             LegacyErrorHandler.handleException(new LegacyOMFException("Error while unregistering listener", e, GenericException.ECriticality.ALERT));
         }

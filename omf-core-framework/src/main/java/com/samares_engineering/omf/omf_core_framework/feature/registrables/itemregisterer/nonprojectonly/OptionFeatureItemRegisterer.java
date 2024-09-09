@@ -15,10 +15,12 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<Option> {
     FeatureRegisterer featureRegisterer;
+    final List<Option> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -35,7 +37,7 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<Option
     }
 
     /**
-     * unregister all the options of the feature depending on its kind.
+     * Unregister all the options of the feature depending on its kind.
      * By default, the removal will be delegated to the IOptions itself.
      * @param options the options to unregister
      */
@@ -49,6 +51,7 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<Option
             if (option.getKind() == OptionKind.Project && OMFUtils.isProjectVoid()) return;
 
             option.register();
+            registeredFeatureItems.add(option);
         }catch (Exception e){
             throw new FeatureRegisteringException("Could not register " + option.getKind().toString()
                     + " option for mdFeature: " + option.getFeature().getName());
@@ -59,6 +62,7 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<Option
         try {
             if (option == null) return;
             option.unregister();
+            registeredFeatureItems.remove(option);
         }catch (Exception e){
             throw new FeatureRegisteringException("Could not unregister " + option.getKind().toString()
                     + " option from mdFeature: " + option.getFeature().getName());
@@ -83,5 +87,9 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<Option
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegisterer = featureRegisterer;
+    }
+    @Override
+    public List<Option> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

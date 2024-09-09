@@ -34,11 +34,13 @@ public class BaseHookFeatureItem implements Hook {
 
     @Override
     public void executeHook(Runnable runnable, String event) {
-        OMFBarrierExecutor.executeWithinBarrier(runnable, event, getFeature());
+        OMFBarrierExecutor.executeWithinBarrier(runnable, getFeature(), shallDeactivateListener());
 
     }
     @Override
-    public void executeInSessionHook(Runnable runnable, String event) {
-        OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, event, getFeature());
+    public void executeInSessionHook(Runnable runnable, String event, boolean deactivateListener) {
+        OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, event, getFeature(), shallDeactivateListener());
     }
+
+
 }

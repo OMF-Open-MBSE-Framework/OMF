@@ -218,7 +218,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     private void projectOnlyFeatureRegistering(List<OMFFeature> registeredFeatures) {
         try {
-            plugin.getFeatureRegister().registerProjectOnlyItemsOfFeatures(registeredFeatures);
+            plugin.getFeatureRegisterer().registerProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
             LegacyErrorHandler.handleException(
                     new CoreException("Error occurred during Project opening Feature initialisation",
@@ -272,7 +272,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     private void projectOnlyFeatureUnRegistering(List<OMFFeature> registeredFeatures) {
         try {
-            plugin.getFeatureRegister().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
+            plugin.getFeatureRegisterer().unregisterProjectOnlyItemsOfFeatures(registeredFeatures);
         }catch (Exception exception) {
             LegacyErrorHandler.handleException(
                     new CoreException("Error occurred during Project closing Feature removal",
