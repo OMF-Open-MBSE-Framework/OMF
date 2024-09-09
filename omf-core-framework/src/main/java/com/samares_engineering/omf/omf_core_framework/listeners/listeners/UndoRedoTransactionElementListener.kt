@@ -22,7 +22,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import java.beans.PropertyChangeEvent
 import java.util.function.Consumer
 
-class TransactionElementListener : AElementListener(), TransactionCommitListener {
+class UndoRedoTransactionElementListener : AElementListener(), TransactionCommitListener {
     private var stopHandlingThisBatch = false
     private var allTriggeredEventsInThisBatch: List<PropertyChangeEvent>? = null
     var shallListenToUndoEvent = false
@@ -111,10 +111,7 @@ class TransactionElementListener : AElementListener(), TransactionCommitListener
     }
 
     override fun addingListener() {
-        if (shallListenToUndoEvent)
             OMFUtils.getProject().repository.transactionManager.addTransactionCommitListenerIncludingUndoAndRedo(this)
-        else
-            OMFUtils.getProject().repository.transactionManager.addTransactionCommitListener(this)
     }
 
     override fun removingListener() {
@@ -127,21 +124,21 @@ class TransactionElementListener : AElementListener(), TransactionCommitListener
 
     /********************** ENGINE *********************/
     private fun manageHistory(history: CharacterizedEvent): Boolean {
-        val liveActionEngines = liveActionEngineMap[LiveActionType.CREATE.toString()]?: return false
+        val liveActionEngines = liveActionEngineMap[LiveActionType.CREATE_UNDO_REDO.toString()]?: return false
         return processAllMatchingLiveActions(liveActionEngines, history)
     }
     private fun manageHistory(history: SessionHistory): Boolean {
-        val liveActionEngines = liveActionEngineMap[LiveActionType.HISTORY.toString()]?: return false
+        val liveActionEngines = liveActionEngineMap[LiveActionType.HISTORY_UNDO_REDO.toString()]?: return false
         return processAllMatchingLiveActions(liveActionEngines, history)
     }
 
     private fun manageUpdate(history: CharacterizedEvent): Boolean{
-        val liveActionEngines = liveActionEngineMap[LiveActionType.UPDATE.toString()]?: return false
+        val liveActionEngines = liveActionEngineMap[LiveActionType.UPDATE_UNDO_REDO.toString()]?: return false
         return processAllMatchingLiveActions(liveActionEngines, history)
     }
 
     private fun manageDeletion(history: CharacterizedEvent): Boolean{
-        val liveActionEngines = liveActionEngineMap[LiveActionType.DELETE.toString()] ?: return false
+        val liveActionEngines = liveActionEngineMap[LiveActionType.DELETE_UNDO_REDO.toString()] ?: return false
         return processAllMatchingLiveActions(liveActionEngines, history)
     }
 

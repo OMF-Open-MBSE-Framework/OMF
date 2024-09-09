@@ -57,6 +57,10 @@ public class ElementComparator {
      * elements are not matched, "UNMATCHED", "ADDED" or "REMOVED" element diffs are created for them. "ADDED" or "REMOVED"
      * diffs are created when the unmatched elements are only present in one of the lists (and we can thus be sure they
      * have been created or removed rather than modified beyond our ability to match them).
+     *
+     * @param elemsLeft  The list of elements to compare (the elements of this list will be compared to the elements of the right list)
+     * @param elemsRight The other list of elements to compare
+     * @return The list of element diffs created for the elements of the two lists
      */
     public List<ElementDiff> compareElementLists(List<Element> elemsLeft, List<Element> elemsRight) {
 

@@ -75,10 +75,10 @@ public class InternalDiagramManagement {
 
     /**
      * Display all ports hosted by a property in a diagram
-     * @param portToRefresh
-     * @param propertyHostingThePort
-     * @param diagram
-     * @return
+     * @param portToRefresh the port to refresh
+     * @param propertyHostingThePort the property hosting the port
+     * @param diagram the diagram
+     * @return the list of displayed ports
      */
     public static List<PresentationElement> refreshSinglePort(Port portToRefresh, Property propertyHostingThePort, Diagram diagram) {
         DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);

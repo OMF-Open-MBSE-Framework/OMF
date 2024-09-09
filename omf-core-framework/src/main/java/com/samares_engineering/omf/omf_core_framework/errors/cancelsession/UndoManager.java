@@ -146,6 +146,7 @@ public class UndoManager {
 
     /**
      * Performing directly the undo on the given project
+     * @param project project where the undo shall be processed
      */
     public static void undo(Project project) {
         project.getCommandHistory().undo();
@@ -166,6 +167,8 @@ public class UndoManager {
 
     /**
      * Performing directly the redo on the given project
+     *
+     * @param project project where the redo shall be processed
      */
     public static void redo(Project project) {
         project.getCommandHistory().redo();
@@ -180,6 +183,7 @@ public class UndoManager {
 
     /**
      * Deactivate the first redo command actions for the given project, it will still be available for the user but will not do anything
+     @param project project where the redo shall be processed
      */
     public static void deactivateFirstRedo(Project project) {
         if (project.getCommandHistory().getCommandForRedo() != null)

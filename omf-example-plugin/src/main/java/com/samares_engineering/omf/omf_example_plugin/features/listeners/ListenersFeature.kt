@@ -2,6 +2,8 @@ package com.samares_engineering.omf.omf_example_plugin.features.listeners
 
 import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager
+import com.nomagic.uml2.ext.magicdraw.classes.mddependencies.Dependency
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type
@@ -18,9 +20,11 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.AOnProjectOpenedHook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.project.OnProjectClosedHook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.events.CharacterizedEvent
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.ALiveActionCharacterizedEvent
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.*
+import com.samares_engineering.omf.omf_core_framework.listeners.CharacterizedEventChecker
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
 import java.beans.PropertyChangeEvent
@@ -44,24 +48,36 @@ class ListenersFeature: SimpleFeature("Listeners Feature") {
         }
     }
 
-    override fun initLiveActions(): MutableList<LiveActionEngine<*>> {
-        val creation = LiveActionEngineImpl(LiveActionType.CREATE).apply {
-            addLiveAction(CreateAnotherPortOnPortCreation())
-            addLiveAction(RenamePartCreation())
-        }
-        val update = LiveActionEngineImpl(LiveActionType.UPDATE).apply {
-            addLiveAction(UpdatePortOnInterfaceNameChanges())
-            addLiveAction(UpdatePortInterfaceFlowNames())
-        }
-
-        val deletion2 = LiveActionEngineImpl(LiveActionType.DELETE).apply {
-            addLiveAction(DeleteInterfaceOnPortDeletionCharacterizedEvent())
-        }
-        val deletion = ALiveActionEngine(LiveActionType.DELETE).apply {
-            addLiveAction(DeleteInterfaceOnPortDeletion())
-        }
-
-        return mutableListOf(creation, update, deletion, deletion2)
+    override fun initLiveActions(): List<LiveActionEngine<*>> {
+//        val creation = LiveActionEngineCharacterized(
+//            LiveActionType.CREATE
+//        ).apply {
+//            addLiveAction(CreateInterfaceOnPortCreation())
+//            addLiveAction(RenamePartCreation())
+//            addLiveAction(CreateFlowPropertyOnInterfaceCreation2())
+//        }
+//        val update = LiveActionEngineCharacterized(
+//            LiveActionType.UPDATE
+//        ).apply {
+//            addLiveAction(UpdatePortOnInterfaceNameChanges())
+//            addLiveAction(UpdatePortInterfaceFlowNames())
+//        }
+//
+//        val creation2 = ALiveActionEngine(LiveActionType.CREATE).apply {
+//            addLiveAction(CreateFlowPropertyOnInterfaceCreation())
+//        }
+//        val deletion2 = LiveActionEngineCharacterized(
+//            LiveActionType.DELETE
+//        ).apply {
+//            addLiveAction(DeleteInterfaceOnPortDeletionCharacterizedEvent())
+//        }
+//        val deletion = ALiveActionEngine(LiveActionType.DELETE).apply {
+//            addLiveAction(DeleteInterfaceOnPortDeletion())
+//        }
+//
+//        return mutableListOf(creation, creation2, update, deletion, deletion2)
+        val historyEngine = LiveActionEngineSession().apply { addLiveAction(TestSessionLiveAction()) }
+        return listOf(historyEngine)
 
     }
 
@@ -89,6 +105,30 @@ class ActivateDeactivateListeners : AUIAction() {
 
 
 @KeepListenerActivated
+class CreateFlowPropertyOnInterfaceCreation : ALiveAction() {
+    override fun eventMatches(event: PropertyChangeEvent): Boolean {
+    if (!isListenerActivated) return false
+
+      return EventChecker()
+            .isElementCreated()
+            .isPort()
+            .isTrue { (event.source as Port).type != null }
+            .isTrue {Profile._getSysml().interfaceBlock().`is`((event.source as Port).type) }
+            .test(event)
+    }
+
+    override fun process(event: PropertyChangeEvent): PropertyChangeEvent {
+        val interfaceBlock = (event.source as Port).type as Class
+        val flowProperty = SysMLFactory.getInstance().createFlowProperty(interfaceBlock)
+        flowProperty.name = "flow"
+        return event
+    }
+
+    override fun isBlocking(): Boolean {
+        return false
+    }
+}
+
 class DeleteInterfaceOnPortDeletion : ALiveAction() {
     override fun eventMatches(event: PropertyChangeEvent): Boolean {
     if (!isListenerActivated) return false
@@ -110,12 +150,35 @@ class DeleteInterfaceOnPortDeletion : ALiveAction() {
         return false
     }
 }
+class OnSatisfyDeletion : ALiveActionCharacterizedEvent() {
+    override fun eventMatches(history: CharacterizedEvent): Boolean {
+      return CharacterizedEventChecker()
+//            .isInstanceDeleted() not needed, it is already checked in the engine registration
+            .isInstanceOf(Dependency::class.java)
+            .hasStereotype(Profile._getSysml().satisfy().stereotype)
+            .test(history)
+    }
 
+    override fun process(history: CharacterizedEvent): CharacterizedEvent {
+        val port = history.element as Dependency
+        history.relatedEvents
+
+        return history
+    }
+
+    override fun isBlocking(): Boolean {
+        return false
+    }
+}
 @KeepListenerActivated
 class DeleteInterfaceOnPortDeletionCharacterizedEvent : ALiveActionCharacterizedEvent() {
     override fun eventMatches(history: CharacterizedEvent): Boolean {
         if (!isListenerActivated) return false
-        return history.element is Port && history.relatedEvents.contains("type")
+        return CharacterizedEventChecker()
+            .isInstanceDeleted
+            .isPort
+            .isPortTyped
+            .test(history)
 
     }
 
@@ -131,19 +194,44 @@ class DeleteInterfaceOnPortDeletionCharacterizedEvent : ALiveActionCharacterized
 }
 
 
-
-
-
-
-class CreateAnotherPortOnPortCreation : ALiveActionCharacterizedEvent() {
+//----------------- Characterized Events -----------------//
+//@KeepListenerActivated
+class CreateInterfaceOnPortCreation : ALiveActionCharacterizedEvent() {
     override fun eventMatches(history: CharacterizedEvent): Boolean {
-        return Profile._getSysml().proxyPort().`is`(history.element)
+        if (!isListenerActivated) return false
+        return CharacterizedEventChecker()
+            .isElementCreated
+            .isPort
+            .isPortUntyped
+            .test(history)
     }
 
     override fun process(history: CharacterizedEvent): CharacterizedEvent {
         val port = history.element as Port
-        val newPort = SysMLFactory.getInstance().createProxyPort(port.owner)
-        newPort.name = port.name + "_copy" + (port.owner?.ownedElement?.size ?: "")
+        val createInterfaceBlock = SysMLFactory.getInstance().createInterfaceBlock(port.owner)
+        createInterfaceBlock.name = port.name + "_type"
+        port.type = createInterfaceBlock
+        return history
+    }
+
+    override fun isBlocking(): Boolean {
+        return false
+    }
+}
+
+class CreateFlowPropertyOnInterfaceCreation2 : ALiveActionCharacterizedEvent() {
+    override fun eventMatches(history: CharacterizedEvent): Boolean {
+        if (!isListenerActivated) return false
+        return CharacterizedEventChecker()
+            .isElementCreated
+            .isInterfaceBlock
+            .test(history)
+    }
+
+    override fun process(history: CharacterizedEvent): CharacterizedEvent {
+        val interfaceBlock = history.element as Class
+        val flowProperty = SysMLFactory.getInstance().createFlowProperty(interfaceBlock)
+        flowProperty.name = "flow"
         return history
     }
 
@@ -154,7 +242,10 @@ class CreateAnotherPortOnPortCreation : ALiveActionCharacterizedEvent() {
 
 class RenamePartCreation : ALiveActionCharacterizedEvent() {
     override fun eventMatches(history: CharacterizedEvent): Boolean {
-        return Profile._getSysmlAdditionalStereotypes().partProperty().`is`(history.element)
+        return CharacterizedEventChecker()
+            .isElementCreated
+            .isPart
+            .test(history)
     }
 
     override fun process(history: CharacterizedEvent): CharacterizedEvent {
@@ -167,7 +258,6 @@ class RenamePartCreation : ALiveActionCharacterizedEvent() {
         return false
     }
 }
-
 class UpdatePortInterfaceFlowNames : ALiveActionCharacterizedEvent() {
     /**
      * Triggered only when a ProxyPort is renamed
@@ -175,7 +265,11 @@ class UpdatePortInterfaceFlowNames : ALiveActionCharacterizedEvent() {
      * @return true if the event matches the rule
      */
     override fun eventMatches(history: CharacterizedEvent): Boolean {
-        return history.element is Port && (history.element as Port).type != null && history.relatedEvents.contains("name")
+        return CharacterizedEventChecker()
+            .isElementRenamed
+            .isPort
+            .isPortTyped
+            .test(history)
     }
 
 

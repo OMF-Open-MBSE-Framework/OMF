@@ -38,8 +38,6 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorH
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
-import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_test_framework.BatchLauncher;
 import com.samares_engineering.omf.omf_test_framework.errors.AmbiguousElementException;
@@ -187,46 +185,24 @@ public abstract class AbstractTestCase extends MagicDrawTestCase {
     @Test
     public void test() {
         //Action to test
-        List<Runnable> testActions = testActions();
-        if (!testActions.isEmpty()) {
-            boolean deactivateListenersForTestActions = isMethodAnnotatedToDeactivateListeners("testActions");
-            if(initProject != null) {
-                if (deactivateListenersForTestActions) {
-                    ListenerManager.getInstance().deactivateAllListeners();
-                }
-                testActions.forEach(this::executeInsideSession);
-                if (deactivateListenersForTestActions) {
-                    ListenerManager.getInstance().activateAllListeners();
-                }
-            } else {
-                testActions.forEach(Runnable::run);
-            }
-        } else {
-            if(initProject != null) {
-                boolean deactivateListenersForTestAction = isMethodAnnotatedToDeactivateListeners("testAction");
-                if (deactivateListenersForTestAction) {
-                    ListenerManager.getInstance().deactivateAllListeners();
-                }
+        List<Runnable> runnableList = testActions();
+        if (!runnableList.isEmpty()) {
+            if(initProject != null)
+                runnableList.forEach(action -> executeInsideSession(action));
+            else
+                runnableList.forEach(action -> action.run());
+        }
+
+        else {
+            if(initProject != null)
                 executeInsideSession(this::testAction);
-                if (deactivateListenersForTestAction) {
-                    ListenerManager.getInstance().activateAllListeners();
-                }
-            } else {
+            else
                 testAction();
-            }
         }
 
         //Verify
         verifyResults();
         closeSession();
-    }
-
-    private boolean isMethodAnnotatedToDeactivateListeners(String methodName) {
-        try {
-            return getClass().getMethod(methodName).isAnnotationPresent(DeactivateListener.class);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException("Error finding method 'testAction' is might have been renamed", e);
-        }
     }
 
     /**
@@ -264,10 +240,15 @@ public abstract class AbstractTestCase extends MagicDrawTestCase {
      */
     public abstract void reInitEnvOptions();
 
+
     /**
      * Verifying final result. E.g. with model comparator, or a wizard state.
      */
     public abstract void verifyResults();
+
+
+    
+
 
     //------------------------                           -----------------------------------------//
     //------------------------ CORE TEST Functions       -----------------------------------------//

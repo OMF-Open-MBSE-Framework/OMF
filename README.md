@@ -98,8 +98,8 @@ by libraries). These exceptions are handled with the default behaviour explained
 - Create a new branch from `0-DEV` with the name `RELEASE/<version>` (e.g. `RELEASE/1.0.0`)
 - On the release branch, change the version in `gradle.properties`. Version must follow Semver : **3 numbers, be > to previous version. Don't forget to remove SNAPSHOT suffix !**
 - Commit and push. 
-- Publish to nexus & maven central staging repo. The CI/CD will build the plugin and publish it 
-to Nexus & Maven Central staging (this is broken at the moment, so you will have to do it manually) => gradle task `_delivery/publish`
+- Publish to nexus & maven central staging repo => gradle task `publish` The CI/CD will build the plugin and publish it 
+to Nexus & Maven Central staging (this is broken at the moment, so you will have to do it manually)
 
 ** Manual Publish task **
 1) Follow the 'First time setup' section of [Our guide on how to release to maven central](https://samaresengineering.atlassian.net/wiki/spaces/ST/pages/2514026503/Publish+to+Maven+Central)

@@ -10,14 +10,13 @@ import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.CharacterizedEvent
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.events.CharacterizedEvent
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
 import com.samares_engineering.omf.omf_core_framework.listeners.AElementListener
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
-import java.util.HashMap
 
 class DeletionPropertyChangeElementListener : AElementListener(), PropertyChangeListener {
     override fun propertyChange(evt: PropertyChangeEvent) {

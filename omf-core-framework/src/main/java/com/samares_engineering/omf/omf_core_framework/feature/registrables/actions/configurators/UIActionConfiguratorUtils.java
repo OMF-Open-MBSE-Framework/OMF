@@ -14,12 +14,14 @@ public class UIActionConfiguratorUtils {
 
     public static final String CATEGORY_SEPARATOR_REGEX = "\\.";
 
-    private UIActionConfiguratorUtils() {}
+    private UIActionConfiguratorUtils() {
+    }
 
     /**
      * Finds the parent category of the action, as defined by the user in the MDAction annotation.
      * Subcategories are separated by a dot in the category string; in that case, the last category is returned.
      * The category and any parent categories are created if they do not exist.
+     *
      * @return the parent category of the action
      */
     public static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, UIAction action) {
@@ -37,7 +39,7 @@ public class UIActionConfiguratorUtils {
     }
 
     /**
-     * @param parentCategory the parent category of the subcategories we want to find or create
+     * @param parentCategory     the parent category of the subcategories we want to find or create
      * @param subCategoriesNames names of the subcategories we want to find or create
      * @return The list of subcategories found or created, including the parent category which is the first element of the list.
      */
@@ -56,12 +58,13 @@ public class UIActionConfiguratorUtils {
 
     /**
      * Find the top level category with the given name if it exists, if not it is created
+     *
      * @return the category
      */
     private static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, String categoryName) {
         Optional<MDActionsCategory> optCategory = findCategory(actionsManager, categoryName);
         MDActionsCategory category = optCategory.orElseGet(() -> instantiateNewCategory(categoryName));
-        if(!actionsManager.getCategories().contains(category) ) {
+        if (!actionsManager.getCategories().contains(category)) {
             actionsManager.addCategory(category);
             category.setNested(true);
         }
@@ -70,12 +73,13 @@ public class UIActionConfiguratorUtils {
 
     /**
      * Find the subcategory with the given name in the given category if it exists, if not it is created
+     *
      * @return the subcategory
      */
     private static MDActionsCategory findOrCreateSubCategory(MDActionsCategory category, String subCategoryName) {
         Optional<MDActionsCategory> optCategory = findSubCategory(category, subCategoryName);
         MDActionsCategory subCategory = optCategory.orElseGet(() -> instantiateNewCategory(subCategoryName));
-        if(!category.getCategories().contains(subCategory) ) {
+        if (!category.getCategories().contains(subCategory)) {
             // To nest a category we use the addAction method, I know it's weird, but categories are derived from actions
             category.addAction(subCategory);
             subCategory.setNested(true);
@@ -85,6 +89,7 @@ public class UIActionConfiguratorUtils {
 
     /**
      * Find the top level category with the given name if it exists
+     *
      * @return an optional containing the category if it exists
      */
     public static Optional<MDActionsCategory> findCategory(ActionsManager actionsManager, String categoryName) {
@@ -96,6 +101,9 @@ public class UIActionConfiguratorUtils {
 
     /**
      * Find the subcategory with the given name in the given category if it exists
+     *
+     * @param category        the category in which to search for the subcategory
+     * @param subCategoryName the name of the subcategory to find
      * @return an optional containing the subcategory if it exists
      */
     public static Optional<MDActionsCategory> findSubCategory(MDActionsCategory category, String subCategoryName) {

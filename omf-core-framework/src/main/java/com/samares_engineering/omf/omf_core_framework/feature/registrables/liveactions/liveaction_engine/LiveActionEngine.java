@@ -9,6 +9,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.live
 
 
 import com.nomagic.magicdraw.utils.PriorityProvider;
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction;
 
@@ -21,7 +22,7 @@ public interface LiveActionEngine<EVT> extends PriorityProvider, RegistrableFeat
 
 
 
-    /**************************** OLD METHODS DEPRECATED ********************************/
+    /* *************************** OLD METHODS DEPRECATED ******************************* */
     Optional<LiveAction<EVT, EVT>> getMatchingLiveAction(EVT evt);
 
     List<LiveAction<EVT, EVT>> getAllMatchingLiveActions(EVT evt);
@@ -51,6 +52,13 @@ public interface LiveActionEngine<EVT> extends PriorityProvider, RegistrableFeat
         return clazz.isAssignableFrom((Class<?>) genericInterface.getActualTypeArguments()[0]);
     }
 
+    default boolean hasAutomationTriggered(){
+        return OMFAutomationManager.getInstance().noAutomationTriggered();
+    }
+
+    default boolean noAutomationTriggered(){
+        return OMFAutomationManager.getInstance().noAutomationTriggered();
+    }
 
     String getType();
     void setType(String category);

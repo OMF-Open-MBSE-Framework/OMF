@@ -46,7 +46,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
 
     /**
      * Register all LiveActions in the ListenerManager
-     * @param LiveActions
+     * @param LiveActions the LiveActions to register
      */
     public void registerFeatureItems(List<LiveActionEngine> LiveActions) {
         try {
@@ -58,7 +58,7 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
 
     /**
      * Unregister all LiveActions in the ListenerManager
-     * @param LiveActions
+     * @param LiveActions the LiveActions to unregister
      */
     public void unregisterFeatureItems(List<LiveActionEngine> LiveActions) {
         try {
@@ -135,8 +135,8 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
 
     /**
      * Will return the listener instance
-     * @param category
-     * @return
+     * @param category the category of the LiveAction
+     * @return the listener instance
      */
     private IElementListener getListenerFromCategory(String category) {
         switch (LiveActionType.valueOf(category)){
@@ -148,8 +148,21 @@ public class ProjectOnlyLiveActionEngineFeatureItemRegisterer implements Project
                 return listenerManager.getUpdateListener();
             case DELETE:
                 return listenerManager.getDeletionListener();
+            case HISTORY:
+                return listenerManager.getHistoryListener();
             case AFTER_AUTOMATION:
                 return listenerManager.getAfterAutomationListener();
+            case ANALYSE_UNDO_REDO:
+                return listenerManager.getUndoRedoAnalysisListener();
+            case CREATE_UNDO_REDO:
+                return listenerManager.getUndoRedoCreationListener();
+            case UPDATE_UNDO_REDO:
+                return listenerManager.getUndoRedoUpdateListener();
+            case DELETE_UNDO_REDO:
+                return listenerManager.getUndoRedoDeletionListener();
+            case HISTORY_UNDO_REDO:
+                return listenerManager.getUndoRedoHistoryListener();
+
             default:
                 LegacyErrorHandler.handleException(new DevelopmentException("No Listener found for this category"));
                 return null;

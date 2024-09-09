@@ -284,22 +284,23 @@ public class SysMLFactory extends AMagicDrawFactory {
     }
     /**
      * Create a LiteralString with the given value
-     * @param s the value of the LiteralString
+     * @param stringValue the value of the LiteralString
      * @return the created LiteralString
      */
-    private LiteralString createLiteralString(String s) {
+    private LiteralString createLiteralString(String stringValue) {
         LiteralString literalString = getMagicDrawFactory().createLiteralStringInstance();
-        literalString.setValue(s);
+        literalString.setValue(stringValue);
         return literalString;
     }
 
     /**
      * Create a LiteralString with the given value
-     * @param s the value of the LiteralString
+     * @param owner the owner of the LiteralString
+     * @param stringValue the value of the LiteralString
      * @return the created LiteralString
      */
-    public LiteralString createLiteralString(Element owner, String s) {
-        LiteralString literalString = createLiteralString(s);
+    public LiteralString createLiteralString(Element owner, String stringValue) {
+        LiteralString literalString = createLiteralString(stringValue);
         literalString.setOwner(owner);
         return literalString;
     }

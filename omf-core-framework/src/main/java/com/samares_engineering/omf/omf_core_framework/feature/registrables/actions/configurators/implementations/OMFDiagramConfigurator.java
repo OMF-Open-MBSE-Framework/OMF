@@ -34,10 +34,10 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
      */
     @Override
     public void configure(ActionsManager actionsManager){
-        new ArrayList<>(registeredActions).stream()
-                .filter(UIAction::isDiagramAction)
-                .filter(UIAction::checkDiagramAvailability)
-                .forEach(action -> this.registerDiagramAction(actionsManager, action));
+//        new ArrayList<>(registeredActions).stream()
+//                .filter(UIAction::isDiagramAction)
+//                .filter(UIAction::checkDiagramAvailability)
+//                .forEach(action -> this.registerDiagramAction(actionsManager, action));
     }
     @Override
     public void configure(ActionsManager actionsManager, DiagramPresentationElement diagramPresentationElement,

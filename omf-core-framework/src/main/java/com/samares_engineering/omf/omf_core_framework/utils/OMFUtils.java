@@ -98,8 +98,8 @@ public class OMFUtils {
 
     /**
      * return true if all flow properties of the type are OUT;
-     * @param type
-     * @return
+     * @param type the type
+     * @return true if all flow properties of the type are OUT
      */
     public static boolean isTypeOut(Type type) {
         return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.OUT));
@@ -107,8 +107,8 @@ public class OMFUtils {
 
     /**
      * return true if all flow properties of the type are IN;
-     * @param type
-     * @return
+     * @param type the type
+     * @return true if all flow properties of the type are IN
      */
     public static boolean isTypeIn(Type type) {
         return type.getOwnedElement().stream().filter(Property.class::isInstance).anyMatch(flow -> Objects.equals(Profile.getInstance().getSysml().flowProperty().getDirection(flow), SysMLProfile.FlowDirectionKindEnum.IN));
@@ -123,8 +123,9 @@ public class OMFUtils {
     /**
      * Gets get all parts typed by partType in a given context.
      * @param partType the part type
+     * @param availableParts the available parts
      * @return the part
-     * @deprecated This methods sustains legacy code and will be removed in a near future.
+     * @deprecated This method sustains legacy code and will be removed in the near future.
      */
 //    @Deprecated(since = "1.0.0", forRemoval = true)
     @Deprecated

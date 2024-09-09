@@ -32,5 +32,6 @@ public abstract class AModelComparatorTestCase extends AbstractTestCase{
     public void compareModel(){
         assertTrue("Model Comparator failed, see System Out for more details: ", TestHelper.compareTestProjects(this));
     }
+
 }
 

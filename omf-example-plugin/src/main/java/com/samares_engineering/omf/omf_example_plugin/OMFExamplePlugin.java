@@ -16,10 +16,11 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.DiagramListenerFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
+import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
+import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
 
 import java.util.List;
 
@@ -30,9 +31,9 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new FeaturesDeactivationFeature(),
                 //USEFUL
 //                new EnhancedDisplayFeature(),
-//                new HyperLinkFeature(),
+                new HyperLinkFeature(),
 //                new LockSafeFeature(),
-//                new APIServerFeature("http://localhost", 9850),
+                new APIServerFeature("http://localhost", 9850),
 //
 //                //USEFUL for Modeling
 //                new StereotypesFeature(),
@@ -47,7 +48,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
 ////                new GeneratePluginModelArchi(),
 ////                new SysmlGptExploFeature(),
 ////                new TemplateFeature(),
-                new DiagramListenerFeature(),
+//                new DiagramListenerFeature(),
 //                new ElementSpecificationExample(),
 //                new ExportDiagramImagesFeature(),
 

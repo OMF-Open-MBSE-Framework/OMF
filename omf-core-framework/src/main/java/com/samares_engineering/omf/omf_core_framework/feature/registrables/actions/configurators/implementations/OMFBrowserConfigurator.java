@@ -37,10 +37,10 @@ public class OMFBrowserConfigurator extends AUIActionConfigurator implements Bro
      */
     @Override
     public void configure(ActionsManager actionsManager) {
-        new ArrayList<>(registeredActions).stream()
-                .filter(UIAction::isBrowserAction)
-                .filter(UIAction::checkBrowserAvailability)
-                .forEach(action -> this.registerBrowserAction(actionsManager, action));
+//        new ArrayList<>(registeredActions).stream()
+//                .filter(UIAction::isBrowserAction)
+//                .filter(UIAction::checkBrowserAvailability)
+//                .forEach(action -> this.registerBrowserAction(actionsManager, action));
     }
 
     /**

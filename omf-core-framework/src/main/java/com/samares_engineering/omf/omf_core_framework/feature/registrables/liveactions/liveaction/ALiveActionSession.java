@@ -7,20 +7,20 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction;
 
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.events.CharacterizedEvent;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.events.SessionHistory;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine;
 
 /**
  * Abstract class for a liveAction, contains the basic methods for a LiveAction.
  */
-public abstract class ALiveActionCharacterizedEvent implements LiveAction<CharacterizedEvent, CharacterizedEvent> {
-    protected LiveActionEngine<CharacterizedEvent> liveActionEngine;
+public abstract class ALiveActionSession implements LiveAction<SessionHistory, SessionHistory> {
+    protected LiveActionEngine<SessionHistory> liveActionEngine;
     public String id = "";
     public boolean isActivated = true;
 
-    public ALiveActionCharacterizedEvent(){id = getClass().getSimpleName();}
+    public ALiveActionSession(){id = getClass().getSimpleName();}
 
-    public ALiveActionCharacterizedEvent(String id){
+    public ALiveActionSession(String id){
         this.id = id;
     }
 
@@ -31,7 +31,7 @@ public abstract class ALiveActionCharacterizedEvent implements LiveAction<Charac
      * @return true if the event matches the liveAction, false otherwise
      */
     @Override
-    public final boolean matches(CharacterizedEvent evt) {
+    public final boolean matches(SessionHistory evt) {
         return isActivated && eventMatches(evt);
     }
 
@@ -42,7 +42,7 @@ public abstract class ALiveActionCharacterizedEvent implements LiveAction<Charac
      * @param evt the event to check
      * @return true if the event matches the liveAction, false otherwise
      */
-    protected abstract boolean eventMatches(CharacterizedEvent evt);
+    protected abstract boolean eventMatches(SessionHistory evt);
 
     @Deprecated
     public void debug(Object o){}
@@ -63,13 +63,13 @@ public abstract class ALiveActionCharacterizedEvent implements LiveAction<Charac
     }
 
     @Override
-    public void setLiveActionEngine(LiveActionEngine<CharacterizedEvent> liveActionEngine) {
+    public void setLiveActionEngine(LiveActionEngine<SessionHistory> liveActionEngine) {
         this.liveActionEngine = liveActionEngine;
     }
 
 
     @Override
-    public LiveActionEngine<CharacterizedEvent> getLiveActionEngine() {
+    public LiveActionEngine<SessionHistory> getLiveActionEngine() {
         return liveActionEngine;
     }
 

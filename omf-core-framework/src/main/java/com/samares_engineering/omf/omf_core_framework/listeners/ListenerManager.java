@@ -10,6 +10,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.S
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.DeletionPropertyChangeElementListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.OrchestratorListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.TransactionElementListener;
+import com.samares_engineering.omf.omf_core_framework.listeners.listeners.UndoRedoTransactionElementListener;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class ListenerManager implements IListenerManager {
     public List<IElementListener> coreListeners;
     public IElementListener deletionListener = new DeletionPropertyChangeElementListener();
     public IElementListener transactionElementListener = new TransactionElementListener();
+    public IElementListener undoRedoListener = new UndoRedoTransactionElementListener();
 
     private static class ListenerManagerHolder {
         private static final ListenerManager instance = new ListenerManager();
@@ -34,7 +36,8 @@ public class ListenerManager implements IListenerManager {
         this.coreListeners = new ArrayList<>(Arrays.asList(orchestratorListener));
         this.featureListeners = new ArrayList<>(Arrays.asList(
                 deletionListener,
-                transactionElementListener
+                transactionElementListener,
+                undoRedoListener
         ));
     }
 
@@ -134,10 +137,14 @@ public class ListenerManager implements IListenerManager {
         SysoutColorPrinter.status("Listeners Removed");
     }
 
+    //Standard
     @Override
     public IElementListener getAnalysisListener() {
         return transactionElementListener;
     }
+
+    @Override
+    public IElementListener getHistoryListener() {return transactionElementListener;}
 
     @Override
     public IElementListener getCreationListener() {
@@ -148,6 +155,34 @@ public class ListenerManager implements IListenerManager {
     public IElementListener getUpdateListener() {
         return transactionElementListener;
     }
+
+    //UndoRedo
+    @Override
+    public IElementListener getUndoRedoAnalysisListener() {
+        return undoRedoListener;
+    }
+
+    @Override
+    public IElementListener getUndoRedoHistoryListener() {
+        return undoRedoListener;
+    }
+
+    @Override
+    public IElementListener getUndoRedoCreationListener() {
+        return undoRedoListener;
+    }
+    @Override
+    public IElementListener getUndoRedoUpdateListener() {
+        return undoRedoListener;
+    }
+    @Override
+    public IElementListener getUndoRedoDeletionListener() {
+        return undoRedoListener;
+    }
+
+
+
+
 
     @Override
     public IElementListener getAfterAutomationListener() {

@@ -53,16 +53,16 @@ class DisplayInnerLayer : AUIAction() {
     }
 
     private fun displayInnerLevel(owner: Class?, layoutManager: LayoutManager) {
-        val parts = owner!!.ownedAttribute.stream()
+        val micParts = owner!!.ownedAttribute.stream()
             .filter { element: Property? -> Profile._getSysmlAdditionalStereotypes().partProperty().`is`(element) }
             .collect(Collectors.toSet())
         val portsPresentationElements: List<PresentationElement> = ArrayList()
 
-        for (part in parts) {
-            layoutManager.refreshPart(part)
-            layoutManager.refreshAllPorts(part.type as Class?, part) //TODO: check if it has a type
+        for (micPart in micParts) {
+            layoutManager.refreshPart(micPart)
+            layoutManager.refreshAllPorts(micPart.type as Class?, micPart) //TODO: check if it has a type
 
-            part.type!!.ownedElement
+            micPart.type!!.ownedElement
                 .stream()
                 .filter { obj: Element? -> Port::class.java.isInstance(obj) }
                 .map { obj: Element? -> Port::class.java.cast(obj) }

@@ -142,7 +142,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
 //    }
 
     /**
-     * Display a warning message if profil version is not correct
+     * Display a warning message if a profile version is not correct
+     * @param isValidVersion boolean
      */
     protected void notifyUserAboutPluginCompatibility(boolean isValidVersion){
         if(!isValidVersion) {
