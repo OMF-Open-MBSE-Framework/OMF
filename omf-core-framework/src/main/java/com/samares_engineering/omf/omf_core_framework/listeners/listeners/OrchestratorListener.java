@@ -23,7 +23,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
 
     @CheckForNull
     @Override
-    public Runnable transactionCommited(Collection<PropertyChangeEvent> collection) {
+    public Runnable transactionCommited(Collection<PropertyChangeEvent> sessionHistory) {
         return null;
     }
 
@@ -45,7 +45,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
 
     @Override
     public void removingListener() {
-        final boolean isListenerRemovable = (null != OMFUtils.getProject());
+        final boolean isListenerRemovable = (OMFUtils.isProjectOpened());
         if (isListenerRemovable) {
             try {
                 OMFUtils.getProject().getRepository().getTransactionManager().removeTransactionCommitListener(this);

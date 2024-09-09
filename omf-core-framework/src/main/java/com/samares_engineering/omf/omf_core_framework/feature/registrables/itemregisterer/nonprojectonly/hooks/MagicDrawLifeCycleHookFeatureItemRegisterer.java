@@ -8,6 +8,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemRegisterer<MagicdrawLifeCycleHook> {
     private FeatureRegisterer featureRegister;
     private OMFPlugin plugin;
+    final List<MagicdrawLifeCycleHook> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -49,6 +51,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
         try {
             if(MagicdrawLifeCycleHook == null || !MagicdrawLifeCycleHook.isActivated()) return;
             plugin.getMagicDrawHookExecutor().addHook(MagicdrawLifeCycleHook);
+            registeredFeatureItems.add(MagicdrawLifeCycleHook);
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not register hook: " + MagicdrawLifeCycleHook.getClass().getSimpleName()
@@ -74,6 +77,7 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
         try {
             if(hook == null) return;
             plugin.getMagicDrawHookExecutor().removeHook(hook);
+            registeredFeatureItems.remove(hook);
         }catch (Exception e) {
             throw new FeatureRegisteringException(
                     "[Feature] Could not unregister hook: " + hook.getClass().getSimpleName()
@@ -113,5 +117,10 @@ public class MagicDrawLifeCycleHookFeatureItemRegisterer implements FeatureItemR
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegister = featureRegisterer;
+    }
+
+    @Override
+    public List<MagicdrawLifeCycleHook> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

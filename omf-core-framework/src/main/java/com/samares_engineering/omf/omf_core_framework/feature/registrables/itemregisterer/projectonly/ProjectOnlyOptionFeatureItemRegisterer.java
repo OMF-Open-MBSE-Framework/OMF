@@ -15,6 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.optio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.OptionKind;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ import java.util.List;
  */
 public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatureItemRegisterer<Option> {
     private FeatureRegisterer featureRegister;
+    final List<Option> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -53,6 +55,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
             if (option == null || !option.isActivated()) return;
             if (option.getKind() == OptionKind.Project && OMFUtils.isProjectVoid()) return;
             option.register();
+            registeredFeatureItems.add(option);
         }catch (Exception e){
             throw new FeatureRegisteringException(
                     "[Feature] Could not register " + option.getKind().toString()
@@ -64,6 +67,7 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
         try {
             if (option == null) return;
             option.unregister();
+            registeredFeatureItems.remove(option);
         }catch (Exception e){
             throw new FeatureRegisteringException(
                     "[Feature] Could not unregister " + option.getKind().toString() + " option from mdFeature: " +
@@ -89,5 +93,10 @@ public class ProjectOnlyOptionFeatureItemRegisterer implements ProjectOnlyFeatur
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegister = featureRegisterer;
+    }
+
+    @Override
+    public List<Option> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }

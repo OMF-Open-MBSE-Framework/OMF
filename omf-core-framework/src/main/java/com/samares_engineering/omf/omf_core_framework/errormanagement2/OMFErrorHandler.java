@@ -10,7 +10,6 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
-import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import javax.annotation.CheckForNull;
@@ -166,7 +165,7 @@ public class OMFErrorHandler {
         new OMFLog().text("Deactivating feature").bold(impactedFeature.getName()).text("as it suffered a critical error.")
                 .text("You can reactivate it in the environment options.")
                 .logToUiConsole(OMFLogLevel.ERROR);
-        impactedFeature.getPlugin().getFeatureRegister().unregisterFeature(impactedFeature);
+        impactedFeature.getPlugin().getFeatureRegisterer().unregisterFeature(impactedFeature);
     }
 
     private static void rollbackChanges() {

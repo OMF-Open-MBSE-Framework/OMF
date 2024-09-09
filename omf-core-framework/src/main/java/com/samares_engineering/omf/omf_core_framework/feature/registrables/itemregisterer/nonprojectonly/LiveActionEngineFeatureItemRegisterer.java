@@ -28,6 +28,7 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
      */
     private IListenerManager listenerManager;
     private FeatureRegisterer featureRegisterer;
+    List<LiveActionEngine> registeredFeatureItems = new ArrayList<>();
 
     @Override
     public void init(FeatureRegisterer featureRegisterer) {
@@ -69,6 +70,7 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
         liveActionEngineMap.computeIfAbsent(category, LiveActionEngines ->  new ArrayList<>()); //If category absent -> create a new ArrayList
 
         liveActionEngineMap.get(category).add(liveActionEngine);
+        registeredFeatureItems.add(liveActionEngine);
     }
 
     /**
@@ -83,6 +85,7 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
         HashMap<String, List<LiveActionEngine>> LiveActionEngineMap = listener.getLiveActionEngineMap();
         if (LiveActionEngineMap.containsKey(category))
             LiveActionEngineMap.get(category).remove(LiveActionEngine);
+        registeredFeatureItems.remove(LiveActionEngine);
     }
     
     /**
@@ -156,5 +159,9 @@ public class LiveActionEngineFeatureItemRegisterer implements FeatureItemRegiste
     @Override
     public void setFeatureRegisterer(FeatureRegisterer featureRegisterer) {
         this.featureRegisterer = featureRegisterer;
+    }
+    @Override
+    public List<LiveActionEngine> getRegisteredFeatureItems() {
+        return registeredFeatureItems;
     }
 }
