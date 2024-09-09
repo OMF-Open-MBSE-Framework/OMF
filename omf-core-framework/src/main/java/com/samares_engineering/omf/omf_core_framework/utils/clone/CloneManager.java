@@ -326,7 +326,11 @@ public class CloneManager {
                 .filter(Port.class::isInstance)
                 .map(Port.class::cast)
                 .filter(this::isNOTFilteredElement)
-                .map(elementGetter::getAllNestedPortFromPort)
+                .map(port -> {
+                    List<Port> portsToClone = elementGetter.getAllNestedPortFromPort(port);
+                    portsToClone.add(port);
+                    return portsToClone;
+                })
                 .flatMap(Collection::stream)
                 .filter(this::isNOTFilteredElement)
                 .map(elementGetter::getAllConnectorsFromPort)

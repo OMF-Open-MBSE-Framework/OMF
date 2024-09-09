@@ -31,21 +31,6 @@ public class CodeGenerationUtils {
         }
     }
 
-    /**
-     * Transform a string to a camelCase formatted string
-     * @param str : string to transform
-     * @return the camelCase formatted string
-     *
-     * Example: from "this is an example" to "thisIsAnExample"
-     */
-    public static String toCamelCase(String str) {
-        String[] words = str.toLowerCase().split("[^a-zA-Z]+"); // TODO : may want to keep number at some point, just not in first position
-        StringBuilder sb = new StringBuilder(words[0]);
-        for (int i = 1; i < words.length; i++) {
-            sb.append(words[i].substring(0, 1).toUpperCase());
-            sb.append(words[i].substring(1));
-        }
-        return sb.toString();
-    }
+
 }
 

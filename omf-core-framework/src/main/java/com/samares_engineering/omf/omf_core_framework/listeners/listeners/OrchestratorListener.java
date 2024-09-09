@@ -23,7 +23,7 @@ public class OrchestratorListener extends AElementListener implements Transactio
 
     @CheckForNull
     @Override
-    public Runnable transactionCommited(Collection<PropertyChangeEvent> collection) {
+    public Runnable transactionCommited(Collection<PropertyChangeEvent> sessionHistory) {
         return null;
     }
 

@@ -12,7 +12,7 @@ import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
-import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.CodeGenerationUtils;
+import com.samares_engineering.omf.omf_core_framework.utils.utils.StringUtils;
 import com.samares_engineering.omf.omf_public_features.testGeneration.codeGeneration.OptionsCodeGenerator;
 import com.samares_engineering.omf.omf_public_features.testGeneration.utils.OptionsBaseline;
 import com.samares_engineering.omf.omf_test_framework.templates.AbstractTestCase;
@@ -70,7 +70,7 @@ public class CreationTestGenerator {
         MethodSpec verifyResults = generateVerifyResults();
 
         // Class builder
-        TypeSpec testClass = TypeSpec.classBuilder(CodeGenerationUtils.toCamelCase(getTestPackageName()))
+        TypeSpec testClass = TypeSpec.classBuilder(StringUtils.toCamelCase(getTestPackageName()))
                 .addModifiers(Modifier.PUBLIC)
                 .superclass(AbstractTestCase.class)
                 .addMethod(initVariables)
