@@ -37,6 +37,7 @@ public class ConnectorUtils {
      * @param untilObject    the until object
      * @param availableParts the available parts
      * @return the common ancestor
+     * @throws LegacyOMFException the legacy omf exception
      */
     public static Class getCommonAncestor(Property part1, Property part2, Class untilObject, List<Property> availableParts) throws LegacyOMFException {
         Class commonAncestor = null;
@@ -86,6 +87,7 @@ public class ConnectorUtils {
      * @param untilObject    the until object
      * @param availableParts the available parts
      * @return the list
+     * @throws LegacyOMFException the legacy omf exception
      */
     public static List<Property> oldCalculateNestedPath(List<Property> nestedPath, Property currentPart,
                                                         Class untilObject,

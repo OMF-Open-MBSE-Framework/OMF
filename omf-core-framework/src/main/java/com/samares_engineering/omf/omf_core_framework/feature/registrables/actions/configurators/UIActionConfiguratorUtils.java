@@ -22,6 +22,8 @@ public class UIActionConfiguratorUtils {
      * Subcategories are separated by a dot in the category string; in that case, the last category is returned.
      * The category and any parent categories are created if they do not exist.
      *
+     * @param actionsManager the actions manager
+     * @param action         the action
      * @return the parent category of the action
      */
     public static MDActionsCategory findOrCreateCategory(ActionsManager actionsManager, UIAction action) {
@@ -90,6 +92,8 @@ public class UIActionConfiguratorUtils {
     /**
      * Find the top level category with the given name if it exists
      *
+     * @param actionsManager the actions manager
+     * @param categoryName   the name of the category to find (the name of the category as defined in the MDAction annotation)
      * @return an optional containing the category if it exists
      */
     public static Optional<MDActionsCategory> findCategory(ActionsManager actionsManager, String categoryName) {
@@ -115,6 +119,10 @@ public class UIActionConfiguratorUtils {
 
     /**
      * Instantiates a new category (but does not create it in MagicDraw)
+     * The category is disabled by default, and its state is updated based on the state of its actions.
+     *
+     * @param categoryName the name of the category (as defined in the MDAction annotation)
+     * @return the new category
      */
     public static MDActionsCategory instantiateNewCategory(String categoryName) {
         return new MDActionsCategory("FeatureCategoryID-"

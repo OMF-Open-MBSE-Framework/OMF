@@ -54,6 +54,8 @@ public class OMFErrorHandler {
     /**
      * Case where the framework user threw the OMF runtime exception to signal to the framework that an irrecoverable
      * error occurred
+     *
+     * @param exception The exception to handle
      */
     public void handleException(OMFLogException exception) {
         if (exception instanceof OMFCriticalException) {
@@ -66,6 +68,9 @@ public class OMFErrorHandler {
     /**
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
+     * <br>Throws a RollbackException if the exception requires a rollback.
+     * <br>Throws a CoreException2 if the exception is a CoreException2.
+     * @param exception       The exception to handle
      */
     public void handleException(Exception exception, OMFFeature impactedFeature) {
         exception.printStackTrace();
@@ -77,6 +82,9 @@ public class OMFErrorHandler {
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
      * <br><b>Call the version of the method with the impacted feature if possible.</b>
+     * <br>Throws a RollbackException if the exception requires a rollback.
+     * <br>Throws a CoreException2 if the exception is a CoreException2.
+     * @param exception The exception to handle
      */
     public void handleException(Exception exception) {
         exception.printStackTrace();
@@ -87,6 +95,9 @@ public class OMFErrorHandler {
     /**
      * Catches all other unchecked exceptions that have not been wrapped by the framework user into a OMFCriticalException2.
      * In that case, we will just display a generic error to the user.
+     *
+     * @param exception       The exception to handle
+     * @param impactedFeature The feature that was impacted by the exception. This can be null.
      */
     public void handleException(Error exception, OMFFeature impactedFeature) {
         exception.printStackTrace();

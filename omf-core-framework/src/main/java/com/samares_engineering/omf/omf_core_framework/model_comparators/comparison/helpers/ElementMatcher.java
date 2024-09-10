@@ -34,6 +34,7 @@ public class ElementMatcher {
      *
      * @param element         The element we are trying to match for
      * @param elementsToMatch The list of elements we are trying to match to
+     * @return The first similar element if one exists
      */
 
     public Optional<Element> findUniqueElementOfSameType(Element element, List<Element> elementsToMatch) {
@@ -52,6 +53,7 @@ public class ElementMatcher {
      * @param element         The element we are trying to match for
      * @param elementsToMatch The list of elements we are trying to match to
      * @param <T>             The type of the element
+     * @return The best matching element if one exists
      */
     public <T extends Element> Optional<T> findBestMatchingElement(T element, List<T> elementsToMatch) {
         return ComparatorUtils.getIsMappedToElementInList(element, elementsToMatch).or(() ->

@@ -194,6 +194,7 @@ public class FeatureRegisterer {
     /**
      * Checks if a feature is already registered
      * @param OMFFeature the feature to check
+     * @return true if the feature is already registered
      */
     public boolean isAlreadyRegistered(OMFFeature OMFFeature) {
         return registeredFeatures.stream().anyMatch(OMFFeature.getClass()::isInstance);

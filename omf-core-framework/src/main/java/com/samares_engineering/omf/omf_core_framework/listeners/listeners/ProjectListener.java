@@ -159,6 +159,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
 
     /**
      * Check if project using a defined profile (e.g. SysML project). Enable/disable automations accordingly
+     * @param profileName String
      * @return boolean isCurrentProjectIsUsingProfile
      */
     protected boolean doesProjectUseProfile(String profileName){

@@ -251,7 +251,7 @@ public abstract class AUIAction implements UIAction {
     /**
      * Evaluate if the action shall appear inside the predefined category for all configurators (Menu, Diagram, Browser).
      * If there is a need to distinguish check from different action type, override the according function.
-     *
+     * @param selectedElements selected elements
      * @return isAvailable
      */
     public abstract boolean checkAvailability(List<Element> selectedElements);

@@ -18,24 +18,28 @@ public interface IElementListener extends IListener {
 
     /**
      * Manage the event after the analysis
+     * @param event the event
      * @return true if at least one liveAction matched
      */
     boolean manageAnalysis(PropertyChangeEvent event);
 
     /**
      * Manage the event after the creation
+     * @param event the event
      * @return true if at least one liveAction matched
      */
     boolean manageCreation(PropertyChangeEvent event);
 
     /**
      * Manage the event after the update
+     * @param event the event
      * @return true if at least one liveAction matched
      */
     boolean manageUpdate(PropertyChangeEvent event);
 
     /**
      * Manage the event after the deletion
+     * @param event the event
      * @return true if at least one liveAction matched
      */
     boolean manageDeletion(PropertyChangeEvent event);

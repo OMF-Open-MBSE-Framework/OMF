@@ -71,8 +71,8 @@ public class ElementGetter {
 
     /**
      * Get all the relationship links from the element (source and target)
-     * @param element
-     * @return
+     * @param element the element to get the relationship links from
+     * @return the relationship links
      */
     public List<Element> getRelationshipsFromElement(Element element) {
         List<Element> traceability = new ArrayList<>(element.get_directedRelationshipOfSource());

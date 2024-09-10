@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_core_framework.factory;
@@ -106,7 +106,7 @@ public class OMFFactory extends AMagicDrawFactory {
     }
 
     public void conjugateFlowProperty(Property flowProperty) {
-        if(Profile.getInstance().getSysml().flowProperty().getDirection(flowProperty) == SysMLProfile.FlowDirectionKindEnum.IN) {
+        if (Profile.getInstance().getSysml().flowProperty().getDirection(flowProperty) == SysMLProfile.FlowDirectionKindEnum.IN) {
             Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.OUT);
         } else {
             Profile.getInstance().getSysml().flowProperty().setDirection(flowProperty, SysMLProfile.FlowDirectionKindEnum.IN);
@@ -241,7 +241,7 @@ public class OMFFactory extends AMagicDrawFactory {
         connector.setOwner(connectorOwner);
         ce1.set_connectorOfEnd(connector);
         ce2.set_connectorOfEnd(connector);
-        
+
         setConnectorEnd(ce1, srcPart, srcPort, availableParts);
         setConnectorEnd(ce2, targetPart, targetPort, availableParts);
 
@@ -276,9 +276,11 @@ public class OMFFactory extends AMagicDrawFactory {
 
     /**
      * Return the list of ports from a connector list
+     *
      * @param connectorsList the list of connectors
+     * @return the list of ports
      */
-    public List<Port> getPortsListFromConnectorsList(List<Connector> connectorsList){
+    public List<Port> getPortsListFromConnectorsList(List<Connector> connectorsList) {
         return connectorsList.stream()
                 .map(Connector::getEnd)
                 .flatMap(Collection::stream)

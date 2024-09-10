@@ -46,6 +46,11 @@ public class DiffManager {
 
     /**
      * If an equivalent diff already has been created, return it. Otherwise, create it and return it.
+     *
+     * @param elementLeft  the left element
+     * @param elementRight the right element
+     * @param diffKind     the kind of diff to create
+     * @return the diff
      */
     public ElementDiff createDiff(Element elementLeft, Element elementRight, @Nonnull DiffKind diffKind) {
         if (elementLeft != null && elementRight != null && diffKind.isSingleElementDiffKind()) {

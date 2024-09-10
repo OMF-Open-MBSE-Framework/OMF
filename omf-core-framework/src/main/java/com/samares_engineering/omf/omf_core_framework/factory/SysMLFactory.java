@@ -252,11 +252,12 @@ public class SysMLFactory extends AMagicDrawFactory {
 
     /**
      * Create a LiteralBoolean with the given value
-     * @param b the value of the LiteralBoolean
+     * @param owner the owner of the LiteralBoolean
+     * @param defaultValue the value of the LiteralBoolean
      * @return the created LiteralBoolean
      */
-    public LiteralBoolean createLiteralBoolean(Element owner, boolean b) {
-        LiteralBoolean literalBoolean = createLiteralBoolean(b);
+    public LiteralBoolean createLiteralBoolean(Element owner, boolean defaultValue) {
+        LiteralBoolean literalBoolean = createLiteralBoolean(defaultValue);
         literalBoolean.setOwner(owner);
         return literalBoolean;
     }

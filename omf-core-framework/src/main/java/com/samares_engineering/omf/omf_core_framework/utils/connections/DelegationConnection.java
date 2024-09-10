@@ -40,6 +40,7 @@ public class DelegationConnection {
 
     /**
      * Create a connection with full port and interface delegation from a connector.
+     *
      * @param connector the connector to create the delegation from.
      * @return the list of created connectors.
      */
@@ -60,29 +61,30 @@ public class DelegationConnection {
     /**
      * create a connection between two connectableElements, creating if needed all delegation ports with their interfaces.
      * General algorithm: Src Port (if exist, else DST Port) will be used to create the delegation through all source parents functions,
-     *                    then it will create a conjugate which will be used to create the destination delegation.
-     *                    NOTE: in case of Port2port connection, destination port will be replaced by the created delegation;
+     * then it will create a conjugate which will be used to create the destination delegation.
+     * NOTE: in case of Port2port connection, destination port will be replaced by the created delegation;
      * CASES:
-     *  --- Port to Port
-     *  --- Part to Port/Port to part
-     *  --- Part to Part
-     *  --- Part to diagram border
-     *  --- port to Diagram border
-     *  --- diagram border to port
-     *  --- diagram border to part
-     *  --- all listed cases take into account the following situation
-     *      - child to mother
-     *      - mother to child
-     *      - cousins
-     *      - sisters
-     *      - Single instance
-     *      - Multi Instances: when the SAME part is used multiple times in the same context. E.g Car has 4 wheels typed by WHEEL, WHEEL contains a part tyre:TYRE, there is only one tyre part in this context. For maximum complexity add another level.
+     * --- Port to Port
+     * --- Part to Port/Port to part
+     * --- Part to Part
+     * --- Part to diagram border
+     * --- port to Diagram border
+     * --- diagram border to port
+     * --- diagram border to part
+     * --- all listed cases take into account the following situation
+     * - child to mother
+     * - mother to child
+     * - cousins
+     * - sisters
+     * - Single instance
+     * - Multi Instances: when the SAME part is used multiple times in the same context. E.g Car has 4 wheels typed by WHEEL, WHEEL contains a part tyre:TYRE, there is only one tyre part in this context. For maximum complexity add another level.
      *
-     * @param src: Connectable element, a part or a port.
-     * @param dst: Connectable element, a part or a port.
-     * @param commonAncestor: common ancestor between the two connectable elements, generally the connector owner.
+     * @param src:             Connectable element, a part or a port.
+     * @param dst:             Connectable element, a part or a port.
+     * @param commonAncestor:  common ancestor between the two connectable elements, generally the connector owner.
      * @param propertyPathSRC: the source property path list indicating the exact part to connect
      * @param propertyPathDST: the target property path list indicating the exact part to connect
+     * @param contextOwner:    the owner of the context, generally the diagram owner.
      * @return : the list of created connectors
      */
     public List<Connector> createConnectionWithDelegation(Element src, Element dst,
@@ -176,8 +178,8 @@ public class DelegationConnection {
 
         //Conjugate source Interface
         executeSrcInterfaceConjugation(targetTypedByInterface, isSrcConnectionDirectFromMotherToPart, isTargetConnectionDirectFromMotherToPart);
-       
-       //Actual connection delegation creation
+
+        //Actual connection delegation creation
         List<Connector> allConnectors = createActualConnectorDelegation(commonAncestor, propertyPathSRC, propertyPathDST, isSrcDiagramOwner, isDstDiagramOwner);
         return allConnectors;
     }
@@ -186,11 +188,12 @@ public class DelegationConnection {
      * Execute the target interface conjugation.
      * Default algorithm: if the source is typed by an interface, the target will be typed by the same interface.
      * Target delegation will create conjugated interface
-     * @param srcIsTypedByInterfaceBlock if true, the source is typed by an interface.
-     * @param isSrcConnectionDirectFromMotherToPart if true, the source connection is direct from mother to part.
+     *
+     * @param srcIsTypedByInterfaceBlock               if true, the source is typed by an interface.
+     * @param isSrcConnectionDirectFromMotherToPart    if true, the source connection is direct from mother to part.
      * @param isTargetConnectionDirectFromMotherToPart if true, the target connection is direct from mother to part.
-     * @param originalInterfaceBlock the original interface block.
-     * @param targetTypedByInterface if true, the target is typed by an interface.
+     * @param originalInterfaceBlock                   the original interface block.
+     * @param targetTypedByInterface                   if true, the target is typed by an interface.
      * @return true if the target is typed by an interface.
      */
     private boolean executeTargetInterfaceConjugation(boolean srcIsTypedByInterfaceBlock, boolean isSrcConnectionDirectFromMotherToPart, boolean isTargetConnectionDirectFromMotherToPart, Class originalInterfaceBlock, boolean targetTypedByInterface) {
@@ -209,10 +212,12 @@ public class DelegationConnection {
         }
         return targetTypedByInterface;
     }
+
     /**
      * Execute the source interface conjugation.
-     * @param targetTypedByInterface if true, the target is typed by an interface.
-     * @param isSrcConnectionDirectFromMotherToPart if true, the source connection is direct from mother to part.
+     *
+     * @param targetTypedByInterface                   if true, the target is typed by an interface.
+     * @param isSrcConnectionDirectFromMotherToPart    if true, the source connection is direct from mother to part.
      * @param isTargetConnectionDirectFromMotherToPart if true, the target connection is direct from mother to part.
      */
     private void executeSrcInterfaceConjugation(boolean targetTypedByInterface, boolean isSrcConnectionDirectFromMotherToPart, boolean isTargetConnectionDirectFromMotherToPart) {
@@ -234,9 +239,10 @@ public class DelegationConnection {
 
     /**
      * Create the actual connectors for the delegation connection.
-     * @param commonAncestor the common ancestor between the two elements.
-     * @param propertyPathSRC the property path list of the source element.
-     * @param propertyPathDST the property path list of the destination element.
+     *
+     * @param commonAncestor    the common ancestor between the two elements.
+     * @param propertyPathSRC   the property path list of the source element.
+     * @param propertyPathDST   the property path list of the destination element.
      * @param isSrcDiagramOwner if true the source element is the diagram owner.
      * @param isDstDiagramOwner if true the destination element is the diagram owner.
      * @return the list of created connectors.
@@ -245,7 +251,7 @@ public class DelegationConnection {
                                                             List<Property> propertyPathSRC,
                                                             List<Property> propertyPathDST,
                                                             boolean isSrcDiagramOwner,
-                                                            boolean isDstDiagramOwner)  {
+                                                            boolean isDstDiagramOwner) {
         //-----------------------------------------------------
         //   Connector Part
         // -----------------------------------------------------
@@ -310,9 +316,10 @@ public class DelegationConnection {
     /**
      * Clone the interface block for delegation with conjugation.
      * Override this method to create a custom interface block when delegating a connection.
-     * @param port the port to clone the interface block from.
+     *
+     * @param port                   the port to clone the interface block from.
      * @param originalInterfaceBlock the original interface block to clone.
-     * @param interfaceOwner the owner of the new interface block.
+     * @param interfaceOwner         the owner of the new interface block.
      * @return the cloned interface block.
      */
     public Class cloneConjugatedInterfaceBlockForDelegation(Port port, Class originalInterfaceBlock, Element interfaceOwner) {
@@ -322,12 +329,14 @@ public class DelegationConnection {
         conjugatePortAndInterface(port, clonedInterfaceBlock);
         return clonedInterfaceBlock;
     }
+
     /**
      * Clone the interface block for delegation.
      * Override this method to create a custom interface block when delegating a connection.
-     * @param port the port to clone the interface block from.
+     *
+     * @param port                   the port to clone the interface block from.
      * @param originalInterfaceBlock the original interface block to clone.
-     * @param interfaceOwner the owner of the new interface block.
+     * @param interfaceOwner         the owner of the new interface block.
      * @return the cloned interface block.
      */
     public Class cloneInterfaceBlockForDelegation(Port port, Class originalInterfaceBlock, Element interfaceOwner) {
@@ -337,27 +346,29 @@ public class DelegationConnection {
     /**
      * Conjugate the port and the interface block.
      * Override this method to conjugate a custom port and interface block.
-     * @param port the port to conjugate.
+     *
+     * @param port            the port to conjugate.
      * @param targetInterface the interface block to conjugate.
      */
     public void conjugatePortAndInterface(Port port, Class targetInterface) {
 //        if (!port.equals(sourcePort) && !port.equals(targetPort)) {
-            port.setConjugated(!port.isConjugated());
+        port.setConjugated(!port.isConjugated());
     }
 
 
     /**
      * Create a default interface block with a flow property.
      * Override this method to create a custom interface block.
-     * @param port the port to create the interface block from.
+     *
+     * @param port              the port to create the interface block from.
      * @param srcInterfaceOwner the owner of the interface block.
-     * @param direction the direction of the flow property.
+     * @param direction         the direction of the flow property.
      * @return the created interface block.
      */
     public Class createDefaultInterfaceBlock(Port port, Element srcInterfaceOwner, SysMLProfile.FlowDirectionKindEnum direction) {
         Class interfaceBlock = SysMLFactory.getInstance().createInterfaceBlock(srcInterfaceOwner);
         Property flowProperty = SysMLFactory.getInstance().createFlowProperty(interfaceBlock);
-        if(direction == SysMLProfile.FlowDirectionKindEnum.IN)
+        if (direction == SysMLProfile.FlowDirectionKindEnum.IN)
             port.setConjugated(true);
         return interfaceBlock;
     }
@@ -365,6 +376,7 @@ public class DelegationConnection {
     /**
      * Check if the interface block has the stereotype.
      * Override this method to check for a custom stereotype.
+     *
      * @param originalInterfaceBlock the interface block to check.
      * @return true if the interface block has the stereotype.
      */
@@ -375,18 +387,19 @@ public class DelegationConnection {
 
     /**
      * will create the all delegations fom son to mother (commonAncestor) following the propertyPath list
-     * @param sonPart the part to connect
-     * @param sonPort the port to connect
-     * @param commonAncestor the common ancestor between the two elements
+     *
+     * @param sonPart             the part to connect
+     * @param sonPort             the port to connect
+     * @param commonAncestor      the common ancestor between the two elements
      * @param listPropertyPathSRC the property path list of the source element
      * @param listPropertyPathDST the property path list of the destination element
-     * @param isSRC if true the connection is from son to mother, else from mother to son
+     * @param isSRC               if true the connection is from son to mother, else from mother to son
      * @return the set of created connectors
      */
     public Set<Connector> connectDelegationConnectionFromSonToMother(Property sonPart, Port sonPort,
                                                                      Element commonAncestor,
                                                                      List<Property> listPropertyPathSRC, List<Property> listPropertyPathDST,
-                                                                     boolean isSRC)  {
+                                                                     boolean isSRC) {
         Element motherElement = sonPart.getOwner();
         Set<Connector> setConnector = new HashSet<>();
 
@@ -421,7 +434,8 @@ public class DelegationConnection {
     /**
      * Create a proxy port with an interface block and a flow property.
      * Override this method to create a custom ports
-     * @param name the name of the port, if null the name will be the same as the interface block.
+     *
+     * @param name      the name of the port, if null the name will be the same as the interface block.
      * @param portOwner the owner of the port.
      * @return the created port.
      */
@@ -432,7 +446,7 @@ public class DelegationConnection {
         Property flowProperty = SysMLFactory.getInstance().createFlowProperty(interfaceBlock);
 
 
-        if (!Strings.isNullOrEmpty(name)){
+        if (!Strings.isNullOrEmpty(name)) {
             port.setName(name);
             interfaceBlock.setName(name);
             flowProperty.setName(name);
@@ -443,8 +457,9 @@ public class DelegationConnection {
     /**
      * Clone the port for delegation with its type.
      * Override this method to create a custom port when delegating a connection.
+     *
      * @param originalPort the original port to clone.
-     * @param Owner the owner of the new port.
+     * @param Owner        the owner of the new port.
      * @return the cloned port.
      */
     public Port clonePortForDelegation(Port originalPort, Element Owner) {

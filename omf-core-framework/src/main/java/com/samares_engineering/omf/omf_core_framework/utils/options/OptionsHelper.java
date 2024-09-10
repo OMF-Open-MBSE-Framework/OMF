@@ -180,6 +180,7 @@ public class OptionsHelper {
      * @param category   name of the category (General, OMF, OMF ORGANIZER)
      * @param optionName name of the option
      * @param value      new value to set
+     * @throws LegacyOMFException if the option is not found
      */
     public static void setEnvironmentOptionValueByCategoryName(String category, String optionName, Object value) throws LegacyOMFException {
         Optional<Property> optOption = getEnvironmentOptionByCategoryName(category, optionName);

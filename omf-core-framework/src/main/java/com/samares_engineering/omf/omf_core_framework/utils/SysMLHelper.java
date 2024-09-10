@@ -18,9 +18,9 @@ public class SysMLHelper {
     /**
      * Gets the port direction calculated using the flow properties directions of the port type.
      * If the port has no type, or if the type has no flow properties, an exception is thrown.
-     * @param port
+     * @param port the port to get the direction from
      * @return the port direction: IN, OUT or INOUT;
-     * @throws LegacyOMFException
+     * @throws LegacyOMFException if the port has no type or if the type has no flow properties
      */
     public static SysMLProfile.FlowDirectionKindEnum getPortDirection(Port port) throws LegacyOMFException {
         Type type = port.getType();
