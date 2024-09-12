@@ -27,9 +27,9 @@ public class OptionsUtils {
 
     /**
      * Return the property belonging to the provided group with the provided id
-     * @param groupId
-     * @param propertyId
-     * @return
+     * @param groupId the id of the Option group
+     * @param propertyId  the id of the property
+     * @return the property
      */
     public static Property getEnvOptionProperty(String groupId, String propertyId) {
         try {
