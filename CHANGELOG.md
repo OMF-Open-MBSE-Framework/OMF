@@ -10,14 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Fixed
 
-## [2.0.1] 2024-09-08
+## [2.1.1] 2024-09-08
 ### Added
+- UMLUtils: 
+  - DerivedProperty: Allows getting the value of a derived property from an element or stereotype instance
+  - MetaClass: Allows getting the metaclass of an element or stereotype
 ### Changed
 ### Fixed
-- display expanded text to ui console as well
 
 ## [2.0.1] 2024-09-08
 ### Added
+- display expanded text to ui console as well
 - new notification method in OMFLog allowing to expand extra text
 ### Changed
 ### Fixed

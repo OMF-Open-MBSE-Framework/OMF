@@ -11,12 +11,16 @@ import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UMLUtils {
     private UMLUtils() {}
@@ -44,4 +48,28 @@ public class UMLUtils {
                     e, GenericException.ECriticality.CRITICAL);
         }
     }
+
+    public static Set<Property> getAllDerivedProperties(Stereotype stereotype) {
+        return StereotypesHelper.getPropertiesWithDerived(stereotype);
+    }
+
+    public static Set<Property> getAllDerivedProperties(Element element) {
+        return element.getAppliedStereotype().stream()
+                .map(UMLUtils::getAllDerivedProperties)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
+    }
+
+    public static Optional<Property> getDerivedPropertyByName(Stereotype stereotype, String propertyName) {
+        return getAllDerivedProperties(stereotype).stream()
+                .filter(property -> property.getName().equals(propertyName))
+                .findAny();
+    }
+
+    public static Optional<Property> getDerivedPropertyByName(Element element, String propertyName) {
+        return getAllDerivedProperties(element).stream()
+                .filter(property -> property.getName().equals(propertyName))
+                .findAny();
+    }
+
 }
