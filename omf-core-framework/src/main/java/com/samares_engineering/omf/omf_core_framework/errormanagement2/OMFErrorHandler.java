@@ -70,7 +70,8 @@ public class OMFErrorHandler {
      * In that case, we will just display a generic error to the user.
      * <br>Throws a RollbackException if the exception requires a rollback.
      * <br>Throws a CoreException2 if the exception is a CoreException2.
-     * @param exception       The exception to handle
+     * @param exception       The exception to handle*
+     * @param impactedFeature The feature that was impacted by the exception. This can be null.
      */
     public void handleException(Exception exception, OMFFeature impactedFeature) {
         exception.printStackTrace();

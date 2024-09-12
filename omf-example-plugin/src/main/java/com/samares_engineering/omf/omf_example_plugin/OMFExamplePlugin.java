@@ -16,11 +16,17 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
+import com.samares_engineering.omf.omf_example_plugin.features.connection.ConnectionFeatureExample;
+import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
+import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
+import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 
 import java.util.List;
 
@@ -30,24 +36,24 @@ public class OMFExamplePlugin extends AOMFPlugin {
         return List.of(
                 new FeaturesDeactivationFeature(),
                 //USEFUL
-//                new EnhancedDisplayFeature(),
+                new EnhancedDisplayFeature(),
                 new HyperLinkFeature(),
 //                new LockSafeFeature(),
                 new APIServerFeature("http://localhost", 9850),
 //
 //                //USEFUL for Modeling
 //                new StereotypesFeature(),
-//                new CloneElementFeature(),
-//                new GroupElementFeature(),
-//                new SysMLBasicFeature(),
-//                new ConnectionFeatureExample(),
-//                new PatternCreationFeature(),
+                new CloneElementFeature(),
+                new GroupElementFeature(),
+                new SysMLBasicFeature(),
+                new ConnectionFeatureExample(),
+                new PatternCreationFeature(),
 //
 //                //Examples
-//                //new ErrorManagementFeatureExample(),
-////                new GeneratePluginModelArchi(),
-////                new SysmlGptExploFeature(),
-////                new TemplateFeature(),
+                //new ErrorManagementFeatureExample(),
+//                new GeneratePluginModelArchi(),
+//                new SysmlGptExploFeature(),
+//                new TemplateFeature(),
 //                new DiagramListenerFeature(),
 //                new ElementSpecificationExample(),
 //                new ExportDiagramImagesFeature(),

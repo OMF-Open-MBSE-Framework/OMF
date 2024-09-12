@@ -31,7 +31,7 @@ public class CloneManager {
     public static final String DEFAULT_CLONED_ELEMENT_SUFFIX = "_CLONED";
     public Map<Element, Element> taggedElementForCopy;
 
-    private List<Element> allStereotypes;
+    private List<Element> taggedElementList;
     private Map<Element, Element> orignialClonedMap;
     private Map<Element, Element> reversedMap;
     private int iTaggedElement; //Incremental index to tag the elements with the stereotypes (to map the original and the cloned elements)
@@ -69,7 +69,7 @@ public class CloneManager {
         orignialClonedMap = new HashMap<>();
         reversedMap = new HashMap<>();
         elementGetter = new ElementGetter();
-        allStereotypes = Profile._getSysml().getAllStereotypes().stream().collect(Collectors.toList()); //TODO use the previous element to copy to tag the elements
+        taggedElementList = new ArrayList<>();
     }
 
     /**
@@ -542,11 +542,21 @@ public class CloneManager {
     /**
      * Tag the elements to copy using synchElement to be able to retrieve them later
      * It is temporary using the stereotypes from SysML to tag the elements.
+     * //TODO Store first then set back the syncElement property
      * @param elements the elements to tag
      */
     private void tagsElementForCopy(Collection<? extends Element> elements) {
-        //TODO: use the previous element to copy to tag the elements
-        List<Element> elementsToTagRef = allStereotypes;
+        List<Element> elementsToTagRef;
+        //The elements used as tag shall be different from the original one
+        // (as the copy will change the syncElement to make the copy consistent)
+        if(elements.size() == 1){
+            //We need any other element as tag,
+            // this one has been chosen randomly in the MagicDraw profile as it is always present
+            elementsToTagRef = List.of(Profile._getMagicDraw().diagramInfo().getStereotype());
+        } else{
+            elementsToTagRef = new ArrayList<>(elements);
+            Collections.reverse(elementsToTagRef);
+        }
         for (Element element : elements) {
             Element tagElement = getNextElementToTag(elementsToTagRef);
             tagElementForCopy(element, tagElement);
@@ -725,12 +735,12 @@ public class CloneManager {
         this.taggedElementForCopy = taggedElementForCopy;
     }
 
-    public List<Element> getAllStereotypes() {
-        return allStereotypes;
+    public List<Element> getTaggedElementList() {
+        return taggedElementList;
     }
 
-    public void setAllStereotypes(List<Element> allStereotypes) {
-        this.allStereotypes = allStereotypes;
+    public void setTaggedElementList(List<Element> taggedElementList) {
+        this.taggedElementList = taggedElementList;
     }
 
     public void setOriginalClonedMap(Map<Element, Element> orignialClonedMap) {

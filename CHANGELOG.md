@@ -15,8 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UMLUtils: 
   - DerivedProperty: Allows getting the value of a derived property from an element or stereotype instance
   - MetaClass: Allows getting the metaclass of an element or stereotype
+
 ### Changed
 ### Fixed
+- CloneManager: 
+  - Fixed an issue where the clone manager would not clone the connectors anymore
+  - Fixed the limitation of 93 max elements to clone
 
 ## [2.0.1] 2024-09-08
 ### Added

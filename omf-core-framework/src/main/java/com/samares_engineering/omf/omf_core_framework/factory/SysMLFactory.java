@@ -275,6 +275,7 @@ public class SysMLFactory extends AMagicDrawFactory {
 
     /**
      * Create a LiteralInteger with the given value
+     * @param owner the owner of the LiteralInteger
      * @param i the value of the LiteralInteger
      * @return the created LiteralInteger
      */
