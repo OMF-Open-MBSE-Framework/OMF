@@ -1,6 +1,8 @@
 package com.samares_engineering.omf.omf_core_framework.utils.clone;
 
 import com.nomagic.magicdraw.copypaste.CopyPasting;
+import com.nomagic.magicdraw.openapi.uml.ModelElementsManager;
+import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
@@ -8,8 +10,11 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
+import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
+import com.samares_engineering.omf.omf_core_framework.factory.OMFFactory;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.clone.exceptions.CloneFailedException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 import com.samares_engineering.omf.omf_core_framework.utils.utils.ConnectorUtils;
@@ -31,7 +36,6 @@ public class CloneManager {
     public static final String DEFAULT_CLONED_ELEMENT_SUFFIX = "_CLONED";
     public Map<Element, Element> taggedElementForCopy;
 
-    private List<Element> taggedElementList;
     private Map<Element, Element> orignialClonedMap;
     private Map<Element, Element> reversedMap;
     private int iTaggedElement; //Incremental index to tag the elements with the stereotypes (to map the original and the cloned elements)
@@ -39,6 +43,7 @@ public class CloneManager {
     private final List<java.lang.Class<? extends Element>> metaClassToFilter;
     private final List<Stereotype> stereotypeToFilter;
 
+    private Property originalElementTag;
     private ElementGetter elementGetter;
 
     /**
@@ -69,7 +74,15 @@ public class CloneManager {
         orignialClonedMap = new HashMap<>();
         reversedMap = new HashMap<>();
         elementGetter = new ElementGetter();
-        taggedElementList = new ArrayList<>();
+
+        createTMPTagValue();
+
+    }
+
+    private void createTMPTagValue() {
+        ElementsFactory factory = OMFFactory.getInstance().getMagicDrawFactory();
+        originalElementTag = factory.createPropertyInstance();
+        originalElementTag.setName("originalElementID - WILL BE DELETED");
     }
 
     /**
@@ -253,7 +266,16 @@ public class CloneManager {
         setSuffix(clonedElements);
         setOwnerCopiedElementOwnerShip();
 
+        removeTMPElementTag();
         return clonedElements;
+    }
+
+    private void removeTMPElementTag() {
+        try {
+            ModelElementsManager.getInstance().removeElement(originalElementTag);
+        } catch (ReadOnlyElementException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -533,10 +555,24 @@ public class CloneManager {
      * It will clear the syncElement of the original elements and the cloned elements
      */
     private void buildClonedElementMap() {
-        clonedElements.forEach(clonedElement -> taggedElementForCopy.put(clonedElement.getSyncElement(), clonedElement));
-        getElementsToCopy()
-                .forEach(originalElement -> orignialClonedMap.put(originalElement, retrieveClonedElementFromTag(originalElement)));
+//        clonedElements.forEach(clonedElement ->
+//                taggedElementForCopy.put(clonedElement.getSyncElement(), clonedElement));
+
+//        getElementsToCopy()
+//                .forEach(originalElement -> orignialClonedMap.put(originalElement, retrieveClonedElementFromTag(originalElement)));
+        getClonedElements()
+            .forEach(originalElement -> orignialClonedMap.put(getElementFromTag(originalElement), originalElement));
         reversedMap = MapUtils.invertMap(orignialClonedMap);
+    }
+
+    private Element getElementFromTag(Element clonedElement) {
+        Optional<TaggedValue> taggedValue = clonedElement.getTaggedValue().stream()
+                .filter(tag -> tag.getTagDefinition() == originalElementTag)
+                .findAny();
+
+        String originalID = (String) taggedValue.get().getValue().get(0);
+
+        return (Element) OMFUtils.getProject().getElementByID(originalID);
     }
 
     /**
@@ -546,20 +582,10 @@ public class CloneManager {
      * @param elements the elements to tag
      */
     private void tagsElementForCopy(Collection<? extends Element> elements) {
-        List<Element> elementsToTagRef;
-        //The elements used as tag shall be different from the original one
-        // (as the copy will change the syncElement to make the copy consistent)
-        if(elements.size() == 1){
-            //We need any other element as tag,
-            // this one has been chosen randomly in the MagicDraw profile as it is always present
-            elementsToTagRef = List.of(Profile._getMagicDraw().diagramInfo().getStereotype());
-        } else{
-            elementsToTagRef = new ArrayList<>(elements);
-            Collections.reverse(elementsToTagRef);
-        }
+
         for (Element element : elements) {
-            Element tagElement = getNextElementToTag(elementsToTagRef);
-            tagElementForCopy(element, tagElement);
+//            Element tagElement = getNextElementToTag(elementsToTagRef);
+            tagElementForCopy(element);
         }
     }
 
@@ -576,6 +602,20 @@ public class CloneManager {
         originalElement.setSyncElement(tagElement);
         taggedElementForCopy.put(tagElement, null);
     }
+
+    /**
+     * Tag the element to copy using synchElement to be able to retrieve it later
+     * @param originalElement the original element
+     */
+    private void tagElementForCopy(Element originalElement) {
+        ElementsFactory factory = OMFFactory.getInstance().getMagicDrawFactory();
+        StringTaggedValue stringTaggedValue = factory.createStringTaggedValueInstance();
+        stringTaggedValue.setTagDefinition(originalElementTag);
+        stringTaggedValue.getValue().add(originalElement.getID());
+        stringTaggedValue.setOwner(originalElement);
+//        taggedElementForCopy.put(tagElement, null);
+    }
+
 
 
     /**
@@ -735,13 +775,13 @@ public class CloneManager {
         this.taggedElementForCopy = taggedElementForCopy;
     }
 
-    public List<Element> getTaggedElementList() {
-        return taggedElementList;
-    }
-
-    public void setTaggedElementList(List<Element> taggedElementList) {
-        this.taggedElementList = taggedElementList;
-    }
+//    public List<Element> getTagsList() {
+//        return tagsList;
+//    }
+//
+//    public void setTagsList(List<Element> tagsList) {
+//        this.tagsList = tagsList;
+//    }
 
     public void setOriginalClonedMap(Map<Element, Element> orignialClonedMap) {
         this.orignialClonedMap = orignialClonedMap;

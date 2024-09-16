@@ -24,8 +24,6 @@ class UIActionErrorExample : AUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return true
     }
-
-
     override fun actionToPerform(selectedElements: List<Element>) {
         try {
             createBlock(selectedElements)

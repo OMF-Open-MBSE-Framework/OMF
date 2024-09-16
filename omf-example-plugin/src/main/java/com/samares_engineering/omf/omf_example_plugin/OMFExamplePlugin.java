@@ -20,6 +20,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.connection.Connec
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.sandbox.SandboxFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
@@ -50,6 +51,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new PatternCreationFeature(),
 //
 //                //Examples
+                new SandboxFeature(),
                 //new ErrorManagementFeatureExample(),
 //                new GeneratePluginModelArchi(),
 //                new SysmlGptExploFeature(),
