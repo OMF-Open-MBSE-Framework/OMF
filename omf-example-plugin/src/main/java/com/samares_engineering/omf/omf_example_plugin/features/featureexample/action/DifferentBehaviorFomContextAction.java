@@ -77,16 +77,16 @@ public class DifferentBehaviorFomContextAction extends AUIAction {
     }
 
     @Override
-    protected void executeMenuAction(List<Element> selectedElements) {
+    public void executeMenuAction(List<Element> selectedElements) {
         executeAUIActionWithinBarrier(() -> actionExecutedFromMenu(selectedElements));
     }
 
     @Override
-    protected void executeBrowserAction(List<Element> selectedElements) {
+    public void executeBrowserAction(List<Element> selectedElements) {
         executeAUIActionWithinBarrier(() -> actionExecutedFromBrowser(selectedElements));
     }
     @Override
-    protected void executeDiagramAction(List<Element> selectedElements) {
+    public void executeDiagramAction(List<Element> selectedElements) {
         executeAUIActionWithinBarrier(() -> actionExecutedFromDiagram(selectedElements));
     }
 

@@ -165,17 +165,6 @@ public abstract class AUIAction implements UIAction {
     }
 
     /**
-     * Execute the behavior defined for DiagramAction, listener will be deactivated during the action, and it will be executed inside a session.
-     * By default, the actionToPerfom() method. Override it if there is a need to distinguish DiagramAction of the other
-     *
-     * @param selectedElements selected elements
-     */
-    protected void executeDiagramAction(List<Element> selectedElements) {
-        executeAUIActionWithinBarrier((() -> actionToPerform(selectedElements)));
-    }
-
-
-    /**
      * Executes the provided Runnable within a barrier. This method is used to ensure that the UI action
      * is executed within a controlled environment where certain conditions are met before and after execution.
      * The barrier controls the execution of the action, handles exceptions, and manages the state of the action.
@@ -188,12 +177,23 @@ public abstract class AUIAction implements UIAction {
     }
 
     /**
+     * Execute the behavior defined for DiagramAction, listener will be deactivated during the action, and it will be executed inside a session.
+     * By default, the actionToPerfom() method. Override it if there is a need to distinguish DiagramAction of the other
+     *
+     * @param selectedElements selected elements
+     */
+    public void executeDiagramAction(List<Element> selectedElements) {
+        executeAUIActionWithinBarrier((() -> actionToPerform(selectedElements)));
+    }
+
+
+    /**
      * Execute the behavior defined for BrowserAction, listener will be deactivated during the action, and it will be executed inside a session.
      * By default, the actionToPerform() method. Override it if there is a need to distinguish BrowserAction of the other
      *
      * @param selectedElements selected elements
      */
-    protected void executeBrowserAction(List<Element> selectedElements) {
+    public void executeBrowserAction(List<Element> selectedElements) {
        executeAUIActionWithinBarrier(() -> actionToPerform(selectedElements));
     }
 
@@ -203,7 +203,7 @@ public abstract class AUIAction implements UIAction {
      *
      * @param selectedElements selected elements
      */
-    protected void executeMenuAction(List<Element> selectedElements) {
+    public void executeMenuAction(List<Element> selectedElements) {
        executeAUIActionWithinBarrier(() -> actionToPerform(selectedElements));
     }
 
