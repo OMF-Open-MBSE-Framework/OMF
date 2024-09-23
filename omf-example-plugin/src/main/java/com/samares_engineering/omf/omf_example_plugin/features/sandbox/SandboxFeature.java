@@ -19,6 +19,7 @@ public class SandboxFeature extends SimpleFeature  {
                 new TestErrorHandling(),
                 new TestCompartmentsUIAction(),
                 new CreateStateMachineAction(),
+                new CreateCustomTree(),
                 new CreateTaggedValue()
         );
     }

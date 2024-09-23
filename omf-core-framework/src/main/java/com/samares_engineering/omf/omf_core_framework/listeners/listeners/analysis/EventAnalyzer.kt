@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.listeners.listeners.analy
 
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.events.CharacterizedEvent
 import java.beans.PropertyChangeEvent
 import java.util.HashMap
 
@@ -9,6 +10,21 @@ class EventAnalyzer {
     val createdEvents = HashMap<Element, MutableList<PropertyChangeEvent>>()
     val updatedEvents = HashMap<Element, MutableList<PropertyChangeEvent>>()
     val deletedEvents = HashMap<Element, MutableList<PropertyChangeEvent>>()
+
+    fun toCharacterizedEvents(events:HashMap<Element, MutableList<PropertyChangeEvent>>): List<CharacterizedEvent> {
+        return events.map { CharacterizedEvent(it.key, it.value) }
+    }
+
+    fun characterizeCreatedEvents(): List<CharacterizedEvent> {
+        return toCharacterizedEvents(createdEvents)
+    }
+    fun characterizeUpdatedEvents(): List<CharacterizedEvent> {
+        return toCharacterizedEvents(updatedEvents)
+    }
+    fun characterizeDeletedEvents(): List<CharacterizedEvent> {
+        return toCharacterizedEvents(deletedEvents)
+    }
+
 
     fun analyzeSessionBatch(allEventsInSession: List<PropertyChangeEvent>): EventAnalyzer {
         val uncategorizedEvents = allEventsInSession.toMutableList()
