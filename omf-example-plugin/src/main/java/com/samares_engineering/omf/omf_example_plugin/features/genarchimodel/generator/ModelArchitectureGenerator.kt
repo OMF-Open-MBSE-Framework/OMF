@@ -1,15 +1,10 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.actions
+package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
 
 import com.google.common.reflect.ClassPath
-import com.nomagic.magicdraw.core.Application
-import com.nomagic.magicdraw.uml.Finder
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type
-import com.nomagic.uml2.impl.ElementsFactory
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import java.io.IOException
 import java.lang.reflect.*
 import kotlin.reflect.*
@@ -18,9 +13,7 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.superclasses
 
 class ModelArchitectureGenerator {
-
-    private val magicdrawFactory: ElementsFactory
-        get() = Application.getInstance().project!!.elementsFactory
+    val elementCreator = ElementCreator()
 
     fun generateCodeModelArchitecture(owner: Element, domain: String) {
         generatedPackage = owner as Package
@@ -36,7 +29,7 @@ class ModelArchitectureGenerator {
             if (shouldSkipClass(pluginClass)) continue
 
             val packageName = pluginClass.packageName
-            val clazz = findOrCreateClass(findOrCreatePackage(packageName), pluginClass.simpleName)
+            val clazz = elementCreator.findOrCreateClass(packageName, pluginClass.simpleName)
             clazz?.name = pluginClass.simpleName
 
             try {
@@ -104,31 +97,24 @@ class ModelArchitectureGenerator {
         clazz: Class?
     ): Property? {
         val propertyName = property.name
-        val propertyType = property.returnType
-
         val attribute = SysMLFactory.getInstance().createProperty(clazz)
         attribute.name = propertyName
 
-        val (typeName, multiplicity, typePackageName) = getTypeNameAndMultiplicityFromKType(propertyType)
-
-        // Exclude 'kotlin.' or 'java.' packages if desired
-        val finalPackageName = if (typePackageName.startsWith("kotlin.") || typePackageName.startsWith("java.")) {
-            "DefaultPackage"
-        } else {
-            typePackageName
-        }
-
-        val type = findOrCreateClass(findOrCreatePackage(finalPackageName), typeName)
-        if (type != null) {
-            attribute.type = type
-        } else {
-            // Handle cases where type is null
+        val typeInfo = extractTypeInfoFromKType(property.returnType)
+        if (typeInfo == null || typeInfo.rawType == null) {
+            // Handle unresolved types
             return null
         }
 
+        val typeElement = elementCreator.createTypeElement(typeInfo, packageName)
+        attribute.type = typeElement
+
         // Handle multiplicity if needed
+
         return attribute
     }
+
+
 
     private fun processKotlinFunctions(
         kClass: KClass<*>,
@@ -154,16 +140,14 @@ class ModelArchitectureGenerator {
     ): Operation? {
         val functionName = function.name
 
-        val operation = magicdrawFactory.createOperationInstance()
-        operation.name = functionName
-        operation.owner = clazz
+        val operation = PluginArchitectureFactory.createOperation(clazz, functionName)
 
         // Return type
         val returnTypeName = getTypeNameFromKType(function.returnType)
-        PluginArchitectureFactory.getInstance().createParameter(
+        PluginArchitectureFactory.createParameter(
             operation,
             "return",
-            findOrCreateClass(findOrCreatePackage(packageName), returnTypeName),
+            elementCreator.findOrCreateClass(packageName, returnTypeName),
             ParameterDirectionKindEnum.RETURN
         )
 
@@ -175,10 +159,10 @@ class ModelArchitectureGenerator {
             val parameterName = parameter.name ?: "param"
             val parameterTypeName = getTypeNameFromKType(parameter.type)
 
-            PluginArchitectureFactory.getInstance().createParameter(
+            PluginArchitectureFactory.createParameter(
                 operation,
                 parameterName,
-                findOrCreateClass(findOrCreatePackage(packageName), parameterTypeName),
+                elementCreator.findOrCreateClass(packageName, parameterTypeName),
                 ParameterDirectionKindEnum.IN
             )
         }
@@ -196,12 +180,9 @@ class ModelArchitectureGenerator {
                 try {
                     val superclassName = superclassKClass.simpleName ?: "Unknown"
                     val superclassPackageName = superclassKClass.java.packageName
-                    val upperClassPackage = findOrCreatePackage(superclassPackageName)
-                    val upperClass = findOrCreateClass(upperClassPackage, superclassName)
-                    val generalization = magicdrawFactory.createGeneralizationInstance()
-                    generalization.specific = clazz
-                    generalization.general = upperClass
-                    generalization.owner = clazz // Set the owner of the generalization
+                    val upperClassPackage = elementCreator.findOrCreatePackage(superclassPackageName)
+                    val upperClass = elementCreator.findOrCreateClass(upperClassPackage, superclassName)
+                    PluginArchitectureFactory.createGeneralization(clazz!!, upperClass!!)
                 } catch (e: Exception) {
                     OMFLogger.err(e)
                 }
@@ -228,20 +209,11 @@ class ModelArchitectureGenerator {
     // Method to process Java Enums
     private fun processJavaEnum(pluginClass: java.lang.Class<*>, packageName: String) {
         val enumName = pluginClass.simpleName
-        val ownerPackage = findOrCreatePackage(packageName)
+        val ownerPackage = elementCreator.findOrCreatePackage(packageName)
 
         // Create Enumeration
-        val enumeration = magicdrawFactory.createEnumerationInstance()
-        enumeration.name = enumName
-        enumeration.owner = ownerPackage
-
-        // Add EnumerationLiterals
-        val enumConstants = pluginClass.enumConstants
-        for (constant in enumConstants) {
-            val literal = magicdrawFactory.createEnumerationLiteralInstance()
-            literal.name = constant.toString()
-            literal.enumeration = enumeration
-        }
+        val enumConstants = pluginClass.enumConstants.map { it.toString() }
+        val enumeration = elementCreator.findOrCreateEnumeration(ownerPackage, enumName, enumConstants)
     }
 
     private fun processJavaFields(
@@ -270,25 +242,17 @@ class ModelArchitectureGenerator {
         val attribute = SysMLFactory.getInstance().createProperty(clazz)
         attribute.name = fieldName
 
-        val (typeName, multiplicity, typePackageName) = getTypeNameAndMultiplicityFromJavaType(field.genericType, field.type)
-
-        // Exclude 'java.' packages if desired
-        val finalPackageName = if (typePackageName.startsWith("java.") || typePackageName.startsWith("javax.")) {
-            "DefaultPackage" // Or skip creating the type
-        } else {
-            typePackageName
-        }
-
-        val type = findOrCreateClass(findOrCreatePackage(finalPackageName), typeName)
-        if (type != null) {
-            attribute.type = type
-        } else {
-            // Handle cases where type is null (e.g., unresolved types)
-            // You can choose to skip adding this attribute or assign a default type
+        val typeInfo = extractTypeInfoFromType(field.genericType)
+        if (typeInfo == null || typeInfo.rawType == null) {
+            // Handle unresolved types
             return null
         }
 
+        val typeElement = elementCreator.createTypeElement(typeInfo, packageName)
+        attribute.type = typeElement
+
         // Handle multiplicity if needed
+
         return attribute
     }
 
@@ -316,30 +280,33 @@ class ModelArchitectureGenerator {
     ): Operation? {
         val methodName = method.name
 
-        val operation = magicdrawFactory.createOperationInstance()
-        operation.name = methodName
-        operation.owner = clazz
+        val operation = PluginArchitectureFactory.createOperation(clazz, methodName)
 
         // Return type
-        val returnTypeName = getTypeNameFromJavaType(method.genericReturnType, method.returnType)
-        PluginArchitectureFactory.getInstance().createParameter(
-            operation,
-            "return",
-            findOrCreateClass(findOrCreatePackage(packageName), returnTypeName),
-            ParameterDirectionKindEnum.RETURN
-        )
+        val returnTypeInfo = extractTypeInfoFromType(method.genericReturnType)
+        if (returnTypeInfo?.rawType != null) {
+            val returnTypeElement = elementCreator.createTypeElement(returnTypeInfo, packageName)
+            PluginArchitectureFactory.createParameter(
+                operation,
+                "return",
+                returnTypeElement,
+                ParameterDirectionKindEnum.RETURN
+            )
+        }
 
         // Parameters
         for (parameter in method.parameters) {
             val parameterName = parameter.name
-            val parameterTypeName = getTypeNameFromJavaType(parameter.parameterizedType, parameter.type)
-
-            PluginArchitectureFactory.getInstance().createParameter(
-                operation,
-                parameterName,
-                findOrCreateClass(findOrCreatePackage(packageName), parameterTypeName),
-                ParameterDirectionKindEnum.IN
-            )
+            val parameterTypeInfo = extractTypeInfoFromType(parameter.parameterizedType)
+            if (parameterTypeInfo?.rawType != null) {
+                val parameterTypeElement = elementCreator.createTypeElement(parameterTypeInfo, packageName)
+                PluginArchitectureFactory.createParameter(
+                    operation,
+                    parameterName,
+                    parameterTypeElement,
+                    ParameterDirectionKindEnum.IN
+                )
+            }
         }
 
         return operation
@@ -355,12 +322,9 @@ class ModelArchitectureGenerator {
             try {
                 val superclassName = superclass.simpleName
                 val superclassPackageName = superclass.packageName
-                val upperClassPackage = findOrCreatePackage(superclassPackageName)
-                val upperClass = findOrCreateClass(upperClassPackage, superclassName)
-                val generalization = magicdrawFactory.createGeneralizationInstance()
-                generalization.specific = clazz
-                generalization.general = upperClass
-                generalization.owner = clazz // Set the owner of the generalization
+                val upperClassPackage = elementCreator.findOrCreatePackage(superclassPackageName)
+                val upperClass = elementCreator.findOrCreateClass(upperClassPackage, superclassName)
+                PluginArchitectureFactory.createGeneralization(clazz!!, upperClass!!)
             } catch (e: Exception) {
                 OMFLogger.err(e)
             }
@@ -546,46 +510,11 @@ class ModelArchitectureGenerator {
         }
     }
 
-    // Find or create package
 
-    private fun findOrCreatePackage(packageName: String): Package? {
-        var currentPackage = generatedPackage
-
-        val packageParts = packageName.split(".")
-        for (packagePart in packageParts) {
-            val existingPackage = currentPackage?.nestedPackage?.firstOrNull { it.name == packagePart }
-            currentPackage = if (existingPackage == null) {
-                createPackage(packagePart, currentPackage)
-            } else {
-                existingPackage
-            }
-        }
-
-        return currentPackage
-    }
-
-    private fun createPackage(packageName: String, parentPackage: Package?): Package {
-        val createdPackage = OMFUtils.getProject().elementsFactory.createPackageInstance()
-        createdPackage.name = packageName
-        createdPackage.owner = parentPackage
-        return createdPackage
-    }
 
     // Find or create class
 
-    private fun findOrCreateClass(
-        owner: Element?,
-        className: String
-    ): Class? {
-        var type = Finder.byNameRecursively()
-            .find<Type>(owner, Class::class.java, className)
-        if (type == null) {
-            type = SysMLFactory.getInstance().createBlock(owner)
-            type.name = className
-            type.owner = owner // Ensure owner is set correctly
-        }
-        return type as? Class
-    }
+
 
     // Get all plugin classes
 
