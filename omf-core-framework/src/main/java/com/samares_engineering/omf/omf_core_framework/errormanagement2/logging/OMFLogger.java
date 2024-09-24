@@ -278,13 +278,13 @@ public class OMFLogger {
 
     public static void success(String message) {
         infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
-        infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
-        infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
+        errorToUIConsole(new OMFLog().color(message, OMFColors.GREEN));
+        errorToSystemConsole(new OMFLog().color(message, OMFColors.GREEN));
     }
 
     public static void status(String message) {
         infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
-        infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
-        infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
+        errorToUIConsole(new OMFLog().color(message, OMFColors.BLUE));
+        errorToSystemConsole(new OMFLog().color(message, OMFColors.BLUE));
     }
 }

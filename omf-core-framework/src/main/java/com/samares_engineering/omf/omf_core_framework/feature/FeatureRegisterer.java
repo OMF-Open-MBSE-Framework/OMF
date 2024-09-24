@@ -247,7 +247,7 @@ public class FeatureRegisterer {
     }
 
     /**
-     * Adds a project only feature item registerer to the list of item registerers.
+     * Adds a project only feature item registerer to the list of item registers.
      * The registerer is initialised with the current instance of the FeatureRegisterer
      * ProjectOnlyFeatureItemRegisterer are used to register/unregister project only feature items of a feature
      * and will be called when a feature is registered/unregistered

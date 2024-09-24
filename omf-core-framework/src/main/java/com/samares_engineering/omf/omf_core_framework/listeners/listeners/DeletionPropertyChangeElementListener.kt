@@ -34,7 +34,7 @@ class DeletionPropertyChangeElementListener : AElementListener(), PropertyChange
     }
 
     private fun manageDeletion(history: CharacterizedEvent): Boolean{
-        val liveActionEngines = liveActionEngineMap[LiveActionType.DELETE.toString()]!!
+        val liveActionEngines = liveActionEngineMap[LiveActionType.DELETE.toString()]
         return processAllMatchingLiveActions(liveActionEngines, history)
     }
 

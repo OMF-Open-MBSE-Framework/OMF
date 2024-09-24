@@ -223,12 +223,12 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
             this.featureLifeCycleHookFeatureItemRegisterer = new FeatureLifeCycleHookFeatureItemRegisterer();
 
             List<FeatureItemRegisterer> defaultFeatureRegisterer = List.of(
-                    uiActionFeatureItemRegisterer,
-                    liveActionEngineFeatureItemRegisterer,
-                    optionFeatureItemRegisterer,
-                    projectLifeCycleHookFeatureItemRegisterer,
-                    magicDrawLifeCycleHookFeatureItemRegisterer,
-                    featureLifeCycleHookFeatureItemRegisterer
+                    getUiActionFeatureItemRegisterer(),
+                    getLiveActionEngineRegisterer(),
+                    getOptionRegisterer(),
+                    getProjectLifeCycleHookFeatureItemRegisterer(),
+                    getMagicDrawLifeCycleHookFeatureItemRegisterer(),
+                    getFeatureLifeCycleHookFeatureItemRegisterer()
             );
 
             List<ProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,

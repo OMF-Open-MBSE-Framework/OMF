@@ -119,4 +119,8 @@ public class UIActionFeatureItemRegisterer implements FeatureItemRegisterer<UIAc
     public List<UIAction> getRegisteredFeatureItems() {
         return registeredFeatureItems;
     }
+
+    public List<UIActionConfigurator> getConfigurators() {
+        return configurators;
+    }
 }
