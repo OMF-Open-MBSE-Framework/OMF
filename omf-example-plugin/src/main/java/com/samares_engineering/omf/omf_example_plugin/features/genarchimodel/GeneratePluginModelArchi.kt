@@ -3,27 +3,18 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
- ******************************************************************************/
+ */
+package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel
 
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel;
+import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
+import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.actions.GenerateArchiModel_V3
+import java.util.*
 
-import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.actions.GenerateArchiModel;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class GeneratePluginModelArchi extends SimpleFeature {
-
-    public GeneratePluginModelArchi(){
-       super("GeneratePluginModelArchi");
-    }
-
-    @Override
-    public List<UIAction> initFeatureActions() {
-        return Arrays.asList(
-                new GenerateArchiModel()
-        );
+class GeneratePluginModelArchi : SimpleFeature("GeneratePluginModelArchi") {
+    public override fun initFeatureActions(): List<UIAction> {
+        return Arrays.asList<UIAction>(
+            GenerateArchiModel_V3()
+        )
     }
 }

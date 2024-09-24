@@ -77,6 +77,7 @@ dependencies {
 
     pluginLibrary 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
     pluginLibrary 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
+    pluginLibrary 'org.jetbrains.kotlin:kotlin-reflect:2.0.20'
 
     pluginLibrary "org.jetbrains.kotlin:kotlin-stdlib"
 
