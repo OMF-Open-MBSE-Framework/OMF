@@ -102,12 +102,14 @@ public class OMFLogger {
     public static void logToSystemConsole(OMFLog logMessage, OMFLogLevel logLevel) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
             switch (logLevel) {
-
                 case WARNING:
                     SysoutColorPrinter.warn(logMessage.toString());
                     break;
                 case ERROR:
                     SysoutColorPrinter.err(logMessage.toString());
+                    break;
+                case SUCCESS:
+                    SysoutColorPrinter.success(logMessage.toString());
                     break;
                 case INFO:
                 default:
@@ -145,6 +147,10 @@ public class OMFLogger {
         logToNotification(message, OMFLogLevel.ERROR);
     }
 
+    public static void successToNotification(String message) {
+        logToNotification(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.SUCCESS);
+    }
+
     public static void infoToNotification(String message) {
         logToNotification(message, OMFLogLevel.INFO);
     }
@@ -171,6 +177,9 @@ public class OMFLogger {
 
     public static void errorToUIConsole(String message) {
         logToUIConsole(message, OMFLogLevel.ERROR);
+    }
+    public static void successToUIConsole(String message) {
+        logToUIConsole(new OMFLog().color(message, OMFColors.RED), OMFLogLevel.ERROR);
     }
 
     public static void errorToUIConsole(OMFLog message) {
@@ -277,9 +286,9 @@ public class OMFLogger {
     }
 
     public static void success(String message) {
-        infoToNotification(new OMFLog().color(message, OMFColors.GREEN));
-        errorToUIConsole(new OMFLog().color(message, OMFColors.GREEN));
-        errorToSystemConsole(new OMFLog().color(message, OMFColors.GREEN));
+        successToNotification(message);
+        successToUIConsole(message);
+        successToSystemConsole(message);
     }
 
     public static void status(String message) {
