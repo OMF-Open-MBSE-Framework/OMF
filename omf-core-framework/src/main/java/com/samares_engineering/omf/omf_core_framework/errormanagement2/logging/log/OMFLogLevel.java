@@ -9,5 +9,6 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.
 public enum OMFLogLevel {
     INFO,
     WARNING,
+    SUCCESS,
     ERROR;
 }

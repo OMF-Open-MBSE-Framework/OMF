@@ -16,7 +16,7 @@ public class OMFLog {
     private OMFLog expandedLog;
 
     public OMFLog text(String string) {
-        messageComponents.add(string);
+        messageComponents.add(string == null ? "" : string);
         return this;
     }
 

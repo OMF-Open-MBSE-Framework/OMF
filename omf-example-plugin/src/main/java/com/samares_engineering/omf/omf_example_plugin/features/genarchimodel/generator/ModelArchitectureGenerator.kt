@@ -2,9 +2,12 @@ package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.ge
 
 import com.google.common.reflect.ClassPath
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
+import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.profile
+import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.setModifiers
 import java.io.IOException
 import java.lang.reflect.*
 import kotlin.reflect.*
@@ -12,24 +15,36 @@ import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.superclasses
 
-class ModelArchitectureGenerator {
-    val modelElementManager = ModelElementManager()
+class ModelArchitectureGenerator(val domain: String, val pathToFiles: String) {
+    val elementManager = ModelElementManager()
+    val updater: ModelUpdater = ModelUpdater(this)
+    val docImporter = JDocImporter(elementManager)
+    val factory: PluginArchitectureFactory
+        get() = PluginArchitectureFactory
 
-    fun generateCodeModelArchitecture(owner: Element, domain: String) {
+    fun generateCodeModelArchitecture(owner: Element) {
+//        generatedPackage = owner as Package
+//        val architectureOwner = SysMLFactory.getInstance().createBlock(owner)
+//        architectureOwner.name = "ArchitectureOwner"
+//
+//        val pluginClasses = getAllPluginClasses(domain)
+//        generatePluginModel(pluginClasses)
         generatedPackage = owner as Package
-        val architectureOwner = SysMLFactory.getInstance().createBlock(owner)
-        architectureOwner.name = "ArchitectureOwner"
 
         val pluginClasses = getAllPluginClasses(domain)
-        generatePluginModel(pluginClasses, architectureOwner)
+        for (pluginClass in pluginClasses) {
+            updater.processClass(pluginClass)
+        }
     }
 
-    private fun generatePluginModel(pluginClassList: List<java.lang.Class<*>>, owner: Element?) {
+
+
+    private fun generatePluginModel(pluginClassList: List<java.lang.Class<*>>) {
         for (pluginClass in pluginClassList) {
             if (shouldSkipClass(pluginClass)) continue
 
             val packageName = pluginClass.packageName
-            val clazz = modelElementManager.findOrCreateClass(packageName, pluginClass.simpleName)
+            val clazz = elementManager.findOrCreateClass(packageName, pluginClass.simpleName)
             clazz.name = pluginClass.simpleName
 
             try {
@@ -46,7 +61,7 @@ class ModelArchitectureGenerator {
 
     // Helper methods
 
-    private fun shouldSkipClass(pluginClass: java.lang.Class<*>): Boolean {
+    fun shouldSkipClass(pluginClass: java.lang.Class<*>): Boolean {
         return pluginClass.isSynthetic || pluginClass.isAnonymousClass || pluginClass.isLocalClass
     }
 
@@ -67,7 +82,7 @@ class ModelArchitectureGenerator {
 
         processKotlinProperties(kClass, packageName, clazz)
         processKotlinFunctions(kClass, packageName, clazz)
-        processKotlinSuperclasses(kClass, packageName, clazz)
+        processKotlinSuperclasses(kClass, clazz)
     }
 
     private fun shouldSkipKotlinClass(kClass: KClass<*>): Boolean {
@@ -106,7 +121,7 @@ class ModelArchitectureGenerator {
             return null
         }
 
-        val typeElement = modelElementManager.createTypeElement(typeInfo, packageName)
+        val typeElement = createTypeElement(typeInfo, packageName)
         attribute.type = typeElement
 
         // Handle multiplicity if needed
@@ -124,9 +139,7 @@ class ModelArchitectureGenerator {
         for (function in kClass.memberFunctions) {
             try {
                 val operation = createOperationFromKotlinFunction(function, packageName, clazz)
-                if (operation != null) {
-                    clazz?.ownedElement?.add(operation)
-                }
+                clazz?.ownedElement?.add(operation)
             } catch (e: Exception) {
                 OMFLogger.err(e)
             }
@@ -137,7 +150,7 @@ class ModelArchitectureGenerator {
         function: KFunction<*>,
         packageName: String,
         clazz: Classifier?
-    ): Operation? {
+    ): Operation {
         val functionName = function.name
 
         val operation = PluginArchitectureFactory.createOperation(clazz, functionName)
@@ -147,7 +160,7 @@ class ModelArchitectureGenerator {
         PluginArchitectureFactory.createParameter(
             operation,
             "return",
-            modelElementManager.findOrCreateClass(packageName, returnTypeName),
+            elementManager.findOrCreateClass(packageName, returnTypeName),
             ParameterDirectionKindEnum.RETURN
         )
 
@@ -162,7 +175,7 @@ class ModelArchitectureGenerator {
             PluginArchitectureFactory.createParameter(
                 operation,
                 parameterName,
-                modelElementManager.findOrCreateClass(packageName, parameterTypeName),
+                elementManager.findOrCreateClass(packageName, parameterTypeName),
                 ParameterDirectionKindEnum.IN
             )
         }
@@ -172,7 +185,6 @@ class ModelArchitectureGenerator {
 
     private fun processKotlinSuperclasses(
         kClass: KClass<*>,
-        packageName: String,
         clazz: Classifier?
     ) {
         for (superclassKClass in kClass.superclasses) {
@@ -180,9 +192,12 @@ class ModelArchitectureGenerator {
                 try {
                     val superclassName = superclassKClass.simpleName ?: "Unknown"
                     val superclassPackageName = superclassKClass.java.packageName
-                    val upperClassPackage = modelElementManager.findOrCreatePackage(superclassPackageName)
-                    val upperClass = modelElementManager.findOrCreateClass(upperClassPackage!!, superclassName)
+                    val upperClassPackage = elementManager.findOrCreatePackage(superclassPackageName)
+                    val upperClass = elementManager.findOrCreateClass(upperClassPackage!!, superclassName)
                     PluginArchitectureFactory.createGeneralization(clazz!!, upperClass)
+
+                    // Apply stereotypes based on superclass
+                    if (clazz is Class) elementManager.applyInheritedStereotypes(clazz, superclassKClass.java)
                 } catch (e: Exception) {
                     OMFLogger.err(e)
                 }
@@ -199,21 +214,24 @@ class ModelArchitectureGenerator {
     ) {
         if (pluginClass.isEnum) {
             processJavaEnum(pluginClass, packageName)
+        }else if (pluginClass.isAnnotation) {
+            profile.annotation().apply(clazz)
         } else {
             processJavaFields(pluginClass, packageName, clazz)
             processJavaMethods(pluginClass, packageName, clazz)
-            processJavaSuperclass(pluginClass, packageName, clazz)
+            processJavaSuperclass(pluginClass, clazz)
+
         }
     }
 
     // Method to process Java Enums
     private fun processJavaEnum(pluginClass: java.lang.Class<*>, packageName: String) {
         val enumName = pluginClass.simpleName
-        val ownerPackage = modelElementManager.findOrCreatePackage(packageName)
+        val ownerPackage = elementManager.findOrCreatePackage(packageName)
 
         // Create Enumeration
         val enumConstants = pluginClass.enumConstants.map { it.toString() }
-        val enumeration = modelElementManager.findOrCreateEnumeration(ownerPackage!!, enumName, enumConstants)
+        elementManager.findOrCreateEnumeration(ownerPackage!!, enumName, enumConstants)
     }
 
     private fun processJavaFields(
@@ -244,17 +262,22 @@ class ModelArchitectureGenerator {
 
         val typeInfo = extractTypeInfoFromType(field.genericType)
         if (typeInfo?.rawType == null) {
-            // Handle unresolved types
-            return null
+            return null // Handle unresolved types
         }
 
-        val typeElement = modelElementManager.createTypeElement(typeInfo, packageName)
+        val typeElement = createTypeElement(typeInfo, packageName)
         attribute.type = typeElement
 
         // Handle multiplicity if needed
 
+        factory.setModifiers(attribute, field.modifiers)
+
         return attribute
     }
+
+
+
+
 
     private fun processJavaMethods(
         pluginClass: java.lang.Class<*>,
@@ -264,9 +287,7 @@ class ModelArchitectureGenerator {
         for (method in pluginClass.declaredMethods) {
             try {
                 val operation = createOperationFromJavaMethod(method, packageName, clazz)
-                if (operation != null) {
-                    clazz?.ownedElement?.add(operation)
-                }
+                clazz?.ownedElement?.add(operation)
             } catch (e: Exception) {
                 OMFLogger.err(e)
             }
@@ -281,11 +302,14 @@ class ModelArchitectureGenerator {
         val methodName = method.name
 
         val operation = PluginArchitectureFactory.createOperation(clazz, methodName)
+        profile.method().apply(operation)
+
+        setModifiers(operation, method.modifiers)
 
         // Return type
         val returnTypeInfo = extractTypeInfoFromType(method.genericReturnType)
         if (returnTypeInfo?.rawType != null) {
-            val returnTypeElement = modelElementManager.createTypeElement(returnTypeInfo, packageName)
+            val returnTypeElement = createTypeElement(returnTypeInfo, packageName)
             PluginArchitectureFactory.createParameter(
                 operation,
                 "return",
@@ -299,7 +323,7 @@ class ModelArchitectureGenerator {
             val parameterName = parameter.name
             val parameterTypeInfo = extractTypeInfoFromType(parameter.parameterizedType)
             if (parameterTypeInfo?.rawType != null) {
-                val parameterTypeElement = modelElementManager.createTypeElement(parameterTypeInfo, packageName)
+                val parameterTypeElement = createTypeElement(parameterTypeInfo, packageName)
                 PluginArchitectureFactory.createParameter(
                     operation,
                     parameterName,
@@ -314,7 +338,6 @@ class ModelArchitectureGenerator {
 
     private fun processJavaSuperclass(
         pluginClass: java.lang.Class<*>,
-        packageName: String,
         clazz: Classifier?
     ) {
         val superclass = pluginClass.superclass
@@ -322,16 +345,18 @@ class ModelArchitectureGenerator {
             try {
                 val superclassName = superclass.simpleName
                 val superclassPackageName = superclass.packageName
-                val upperClassPackage = modelElementManager.findOrCreatePackage(superclassPackageName)
-                val upperClass = modelElementManager.findOrCreateClass(upperClassPackage!!, superclassName)
+                val upperClassPackage = elementManager.findOrCreatePackage(superclassPackageName)
+                val upperClass = elementManager.findOrCreateClass(upperClassPackage!!, superclassName)
                 PluginArchitectureFactory.createGeneralization(clazz!!, upperClass)
+                // Apply stereotypes based on superclass
+                if (clazz is Class) elementManager.applyInheritedStereotypes(clazz, superclass)
             } catch (e: Exception) {
                 OMFLogger.err(e)
             }
         }
     }
 
-    private fun extractTypeInfoFromType(type: java.lang.reflect.Type): TypeInfo? {
+    fun extractTypeInfoFromType(type: java.lang.reflect.Type): TypeInfo? {
         return when (type) {
             is java.lang.Class<*> -> TypeInfo(rawType = type)
             is ParameterizedType -> {
@@ -585,6 +610,47 @@ class ModelArchitectureGenerator {
         */
 
     }
+
+    fun createTypeElement(
+        typeInfo: TypeInfo,
+        defaultPackageName: String
+    ): Type? {
+        val rawTypeClass = typeInfo.rawType ?: return null
+        val typeName = rawTypeClass.simpleName
+        val packageName = rawTypeClass.packageName
+
+        // Create or find the raw type in the model
+        val rawTypeElement = elementManager.findOrCreateClass(packageName, typeName)
+
+        // If there are no type arguments, return the raw type
+        if (typeInfo.typeArguments.isEmpty()) {
+            return rawTypeElement
+        }
+
+        // Create a new Classifier to represent the parameterized type
+        val parameterizedTypeName = elementManager.buildParameterizedTypeName(typeInfo)
+        val parameterizedTypeElement = elementManager.findOrCreateClass(defaultPackageName, parameterizedTypeName)
+
+        factory.applyClassTypeSTR(rawTypeClass, rawTypeElement)
+
+        // Create a property 'generic' to hold the type arguments
+        for ((index, typeArgInfo) in typeInfo.typeArguments.withIndex()) {
+            val typeArgElement = createTypeElement(typeArgInfo, defaultPackageName)
+            if (typeArgElement != null) {
+                val genericProperty = SysMLFactory.getInstance().createProperty(parameterizedTypeElement)
+                genericProperty.name = "T$index"
+                genericProperty.type = typeArgElement
+                // Optionally set property as read-only, derived, etc.
+            }
+        }
+
+        // Optionally, set the raw type as a generalization or association
+        factory.createGeneralization(rawTypeElement, parameterizedTypeElement)
+
+        return parameterizedTypeElement
+    }
+
+
 
     // Multiplicity enum
 
