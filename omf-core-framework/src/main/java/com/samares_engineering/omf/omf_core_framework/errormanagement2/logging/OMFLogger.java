@@ -179,7 +179,7 @@ public class OMFLogger {
         logToUIConsole(message, OMFLogLevel.ERROR);
     }
     public static void successToUIConsole(String message) {
-        logToUIConsole(new OMFLog().color(message, OMFColors.RED), OMFLogLevel.ERROR);
+        logToUIConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.ERROR);
     }
 
     public static void errorToUIConsole(OMFLog message) {

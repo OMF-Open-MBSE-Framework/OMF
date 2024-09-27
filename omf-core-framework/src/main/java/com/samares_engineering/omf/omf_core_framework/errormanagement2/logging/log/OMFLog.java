@@ -5,10 +5,8 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.O
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.utils.ElementAction;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class OMFLog {
     private final List<String> messageComponents = new ArrayList<>();
@@ -260,7 +258,11 @@ public class OMFLog {
             return null;
         }
 
-        expandedLog.messageComponents.replaceAll(s -> s.replaceAll("\n", "<BR>"));
+        expandedLog
+                .messageComponents
+                .stream().filter(Objects::nonNull)
+                .collect(Collectors.toList())
+                .replaceAll(s -> s.replaceAll("\n", "<BR>"));
         return this;
     }
 }
