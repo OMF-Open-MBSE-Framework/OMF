@@ -47,7 +47,6 @@ public class OMFBarrierExecutor {
     public static <V> V executeWithinBarrier(Callable<V> callable, @CheckForNull OMFFeature feature, boolean deactivateListener) {
         if (deactivateListener)
             ListenerManager.getInstance().deactivateAllListeners();
-
         try {
             return callable.call();
         } catch (OMFLogException omfLogException) {
@@ -60,6 +59,8 @@ public class OMFBarrierExecutor {
                 OMFErrorHandler.getInstance().handleException(uncaughtException, feature);
             else
                 OMFErrorHandler.getInstance().handleException(uncaughtException);
+        } finally {
+            ListenerManager.getInstance().activateAllListeners();
         }
        return null;
     }
