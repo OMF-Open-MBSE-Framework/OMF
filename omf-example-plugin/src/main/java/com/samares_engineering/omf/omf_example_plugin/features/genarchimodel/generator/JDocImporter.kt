@@ -4,6 +4,7 @@ import com.github.javaparser.JavaParser
 import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
+import com.nomagic.esi.emf.a.F
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Classifier
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
@@ -13,6 +14,7 @@ import java.lang.reflect.Method
 
 class JDocImporter(val elementManager: ModelElementManager) {
     val files = HashMap<String, File>()
+    val parsedClass = HashMap<File, CompilationUnit>()
 
     fun getClassJavadoc(pluginClass: Class<*>, pathToFiles: String, domain: String): String? {
         val sourceFile = try {
@@ -22,9 +24,8 @@ class JDocImporter(val elementManager: ModelElementManager) {
             return ""
         }
 
-        // Crée une instance de JavaParser
         val parser = JavaParser()
-        val compilationUnit: CompilationUnit = parser.parse(sourceFile).result.orElse(null) ?: return null
+        val compilationUnit: CompilationUnit = parseClass(sourceFile, parser)?: return ""
 
         val className = pluginClass.simpleName
 
@@ -48,12 +49,12 @@ class JDocImporter(val elementManager: ModelElementManager) {
         val sourceFile = try {
             getSourceFilePath(pluginClass, pathToFiles, domain)
         } catch (e: FileNotFoundException) {
-//            OMFLogger.errorToSystemConsole(OMFLog().err("Error while getting source file for class: ${pluginClass.name}").expandText(OMFLog().text(e.message)))
+            OMFLogger.errorToSystemConsole(OMFLog().err("Error while getting source file for class: ${pluginClass.name}").expandText(OMFLog().text(e.message)))
             return ""
         }
 
         val parser = JavaParser()
-        val compilationUnit: CompilationUnit = parser.parse(sourceFile).result.orElse(null) ?: return ""
+        val compilationUnit: CompilationUnit = parseClass(sourceFile, parser)?: return ""
 
         val className = pluginClass.simpleName
 
@@ -74,29 +75,31 @@ class JDocImporter(val elementManager: ModelElementManager) {
         return methodDeclaration.javadocComment?.orElse(null)?.content ?: ""
     }
 
-
-
     @Throws(FileNotFoundException::class)
     fun getSourceFilePath(clazz: Class<*>, pathToFiles: String, domain: String): File {
-        val basePackagePath = clazz.name.replace('.', '/')
-        if (!basePackagePath.contains(domain)) throw FileNotFoundException("File not part of the generated plugin: ${clazz.name}")
+        if (!clazz.name.contains(domain)) throw FileNotFoundException("File not part of the generated plugin: ${clazz.name}")
+        if(clazz.name[0] == '[') throw FileNotFoundException("Array class not supported: ${clazz.name}")
+        val basePackagePath = clazz.name.replace('.', File.separatorChar).replace(Regex("\\$.*$"), "")
+
         if (files.containsKey(basePackagePath)) {
             return files[basePackagePath]!!
         }
 
-        // optimization: use subdirectories to search for the source file
+        // Recherche dans les sous-répertoires
         val possibleDirectories = File(pathToFiles).walkTopDown()
             .filter { it.isDirectory && it.name == "com" }
 
-        // search for the source file in the possible directories
+        // Recherche du fichier source
         possibleDirectories.forEach { srcDir ->
-            var sourceFile = File(srcDir, "${basePackagePath.replaceFirst("com.", "")}.java")
+            val relativePath = basePackagePath.removePrefix("com${File.separatorChar}")
+
+            var sourceFile = File(srcDir, "$relativePath.java")
             if (sourceFile.exists()) {
                 files[basePackagePath] = sourceFile
                 return sourceFile
             }
 
-            sourceFile = File(srcDir, "$basePackagePath.kt")
+            sourceFile = File(srcDir, "$relativePath.kt")
             if (sourceFile.exists()) {
                 files[basePackagePath] = sourceFile
                 return sourceFile
@@ -105,6 +108,16 @@ class JDocImporter(val elementManager: ModelElementManager) {
 
         throw FileNotFoundException("Source file not found for class: ${clazz.name}")
     }
+
+
+    private fun parseClass(sourceFile: File, parser: JavaParser): CompilationUnit? {
+        if (parsedClass.containsKey(sourceFile)) return parsedClass[sourceFile]
+
+        val compilationUnit = parser.parse(sourceFile).result.orElse(null) ?: return null
+        parsedClass[sourceFile] = compilationUnit
+        return compilationUnit
+    }
+
 
 
 }

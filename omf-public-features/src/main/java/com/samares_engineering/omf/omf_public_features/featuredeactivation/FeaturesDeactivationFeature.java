@@ -77,7 +77,7 @@ public class FeaturesDeactivationFeature extends SimpleFeature {
 
     /**
      * Activate or deactivate all the features registered except this one.
-     * @param featureShallBeRegistered
+     * @param featureShallBeRegistered true if the features shall be registered, false otherwise.
      */
     private void activateDeactivateAllFeatures(boolean featureShallBeRegistered) {
         AFeature deactivationFeature = this;

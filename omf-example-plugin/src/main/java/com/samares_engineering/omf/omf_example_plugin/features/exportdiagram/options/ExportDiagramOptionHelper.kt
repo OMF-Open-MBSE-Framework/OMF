@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.connection.options
+package com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.options
 
 import com.nomagic.magicdraw.properties.StringProperty
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.FeatureRegisteringException

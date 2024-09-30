@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
 
+import com.nomagic.ci.persistence.local.a.E
 import com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
@@ -8,9 +9,11 @@ import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.OMFMBSWProfile
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.ModelArchitectureGenerator.Companion.generatedPackage
+import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.computeNameSpace
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.factory
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.getClassName
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.profile
+import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.setNameSpace
 import org.bouncycastle.asn1.x500.style.RFC4519Style.owner
 import java.io.FileNotFoundException
 import java.lang.reflect.ParameterizedType
@@ -23,7 +26,7 @@ class ModelElementManager {
         get() = OMFMBSWProfile.getInstance()
 
     val mapClassNameElement: MutableMap<String, Element> = mutableMapOf()
-    val mapClassNameClass: MutableMap<String, Classifier> = mutableMapOf()
+    val mapElementClass: MutableMap<Element, java.lang.Class<*>> = mutableMapOf()
 
 
 
@@ -70,7 +73,9 @@ class ModelElementManager {
         ownerClass: String,
         clazz: java.lang.Class<*>
     ): Classifier {
-        return findOrCreateClass(findOrCreatePackage(ownerClass)!!, clazz)
+        val createdElement = findOrCreateClass(findOrCreatePackage(ownerClass)!!, clazz)
+        mapElementClass[createdElement] = clazz
+        return createdElement
     }
 
     fun findOrCreateClass(
@@ -111,13 +116,14 @@ class ModelElementManager {
         owner: Element,
         className: String
     ) = owner.ownedElement?.filterIsInstance<Class>()
-        ?.firstOrNull { it.name == className && architectureFactory.areNamespacesEqual(it, className) }
+        ?.firstOrNull { it.name == className }
 
     private fun findExistingClass(
         owner: Element,
         clazz: java.lang.Class<*>
     ) = owner.ownedElement?.filterIsInstance<Class>()
-        ?.firstOrNull { it.name == getClassName(clazz)  && architectureFactory.areNamespacesEqual(it, clazz.name) }
+//        ?.firstOrNull { it.name == getClassName(clazz)  && architectureFactory.areNamespacesEqual(it, clazz.packageName) }
+        ?.firstOrNull { it.name == getClassName(clazz)  }
 
 
 
@@ -142,7 +148,6 @@ class ModelElementManager {
             }
         }
         mapClassNameElement[className] = createdElement
-        mapClassNameClass[className] = createdElement
         return createdElement
     }
 
@@ -170,7 +175,6 @@ class ModelElementManager {
         val newEnum = PluginArchitectureFactory.createEnumeration(ownerPackage, enumName, enumLiterals)
 
         mapClassNameElement[enumName] = newEnum
-        mapClassNameClass[enumName] = newEnum
         return newEnum
     }
 
@@ -225,7 +229,7 @@ class ModelElementManager {
     @Throws(FileNotFoundException::class)
     fun getClassFromClassifier(classifier: Classifier): java.lang.Class<*> {
         val className = classifier.name
-        return mapClassNameClass[className]?.javaClass ?: throw IllegalArgumentException("Class not found")
+        return mapElementClass[classifier] ?: throw IllegalArgumentException("Class not found")
     }
 
 

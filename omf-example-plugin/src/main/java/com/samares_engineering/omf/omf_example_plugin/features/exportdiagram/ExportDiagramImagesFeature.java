@@ -11,7 +11,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option;
-import com.samares_engineering.omf.omf_example_plugin.features.connection.options.ExportDiagramOptionHelper;
+import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.options.ExportDiagramOptionHelper;
 import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.actions.SaveDiagramAsSVG;
 
 import java.util.List;

@@ -2,8 +2,6 @@ package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.ge
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
 import com.nomagic.uml2.impl.ElementsFactory
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.OMFMBSWProfile
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.PluginArchitectureProfile
@@ -65,7 +63,7 @@ object PluginArchitectureFactory {
         val enumeration = factory.createEnumerationInstance()
         enumeration.name = enumName
         enumeration.owner = owner
-       profile.enumClass().apply(enumeration)
+        profile.enumClass().apply(enumeration)
 
         setNameSpace(enumeration, owner as NamedElement)
 
@@ -83,7 +81,7 @@ object PluginArchitectureFactory {
         element: Element,
         owner: NamedElement
     ) {
-        val nameSpaceSTR = profile.wwithNameSpace()
+        val nameSpaceSTR = profile.withNameSpace()
         //if the owner is a nameSpaceSTR,the namespace is the ownerNameSpace + owner name else the namespace is the owner name
         val namespace = computeNameSpace(owner)
 
@@ -91,21 +89,21 @@ object PluginArchitectureFactory {
     }
 
     fun areNamespacesEqual(owner: Element, owner1: Element): Boolean {
-        val nameSpaceSTR = profile.wwithNameSpace()
+        val nameSpaceSTR = profile.withNameSpace()
         val namespace = nameSpaceSTR.getNamespace(owner)
         val namespace1 = nameSpaceSTR.getNamespace(owner1)
         return namespace == namespace1
     }
-    fun areNamespacesEqual(owner: Element, className: String): Boolean {
-        val nameSpaceSTR = profile.wwithNameSpace()
+    fun areNamespacesEqual(owner: Element, nameSpaceClazz: String): Boolean {
+        val nameSpaceSTR = profile.withNameSpace()
         val namespace = nameSpaceSTR.getNamespace(owner)
-        return namespace == className
+        return namespace == nameSpaceClazz
     }
 
-    private fun computeNameSpace(
+    fun computeNameSpace(
         owner: NamedElement
     ): String {
-        val nameSpaceSTR = profile.wwithNameSpace()
+        val nameSpaceSTR = profile.withNameSpace()
         val namespace = ("${nameSpaceSTR.getNamespace(owner)}.".takeIf { nameSpaceSTR.`is`(owner) } ?: "") + owner.name
         return namespace
     }

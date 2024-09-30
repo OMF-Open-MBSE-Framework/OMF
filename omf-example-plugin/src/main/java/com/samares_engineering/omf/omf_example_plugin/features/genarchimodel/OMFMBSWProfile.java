@@ -41,9 +41,10 @@ public class OMFMBSWProfile extends ProfileImplementation
     private final OptionStereotype optionStereotype;
     private final PluginStereotype pluginStereotype;
     private final UiActionStereotype uiActionStereotype;
-    private final WwithNameSpaceStereotype wwithNameSpaceStereotype;
+    private final WithNameSpaceStereotype withNameSpaceStereotype;
 
     private final ClassTypeEnumeration classTypeEnumeration;
+    private final ModifiersEnumeration modifiersEnumeration;
     public static OMFMBSWProfile getInstance(){
         return getInstance(OMFUtils.getProject());
     }
@@ -83,8 +84,9 @@ public class OMFMBSWProfile extends ProfileImplementation
         optionStereotype = new OptionStereotype(this);
         pluginStereotype = new PluginStereotype(this);
         uiActionStereotype = new UiActionStereotype(this);
-        wwithNameSpaceStereotype = new WwithNameSpaceStereotype(this);
+        withNameSpaceStereotype = new WithNameSpaceStereotype(this);
         classTypeEnumeration = new ClassTypeEnumeration(this);
+        modifiersEnumeration = new ModifiersEnumeration(this);
 
     }
     public AnnotationStereotype annotation()
@@ -147,19 +149,27 @@ public class OMFMBSWProfile extends ProfileImplementation
     {
         return uiActionStereotype;
     }
-    public WwithNameSpaceStereotype wwithNameSpace()
+    public WithNameSpaceStereotype withNameSpace()
     {
-        return wwithNameSpaceStereotype;
+        return withNameSpaceStereotype;
     }
 
 
 
     public static final String CLASSTYPE_DATATYPE = "ClassType";
 
+    public static final String MODIFIERS_DATATYPE = "Modifiers";
+
     @SuppressWarnings("ConstantConditions")
     public Enumeration getClassType()
     {
         return classTypeEnumeration.getEnumeration();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public Enumeration getModifiers()
+    {
+        return modifiersEnumeration.getEnumeration();
     }
 
 
@@ -215,6 +225,92 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
     }
 
+
+    //enumeration Modifiers literals
+    public enum ModifiersEnum implements TextProvider
+    {
+        PUBLIC(ModifiersEnumeration.PUBLIC),
+        PRIVATE(ModifiersEnumeration.PRIVATE);
+        private final String text;
+
+        ModifiersEnum(String text)
+        {
+            this.text = text;
+        }
+
+        @Override
+        public String getText()
+        {
+            return this.text;
+        }
+        @CheckForNull
+        public static ModifiersEnum from(@CheckForNull Object o)
+        {
+            return valueFromString(ModifiersEnum.class, o);
+        }
+        @CheckForNull
+        public static ModifiersEnum toEnum(EnumerationLiteral literal)
+        {
+            return from(literal);
+        }
+        @CheckForNull
+        public static EnumerationLiteral toEnumerationLiteral(OMFMBSWProfile profile, ModifiersEnum anEnum)
+        {
+            if (anEnum == PUBLIC)
+            {
+                return profile.modifiersEnumeration.getPublicEnumerationLiteral();
+            }
+            if (anEnum == PRIVATE)
+            {
+                return profile.modifiersEnumeration.getPrivateEnumerationLiteral();
+            }
+            return null;
+        }
+    }
+    private static class ModifiersEnumeration extends EnumerationWrapper
+    {
+        public static final String PUBLIC =  "public";
+        public static final String PRIVATE =  "private";
+        @CheckForNull
+        private EnumerationLiteral _public;
+        @CheckForNull
+        private EnumerationLiteral _private;
+        private  ModifiersEnumeration(OMFMBSWProfile profile)
+        {
+            super(profile);
+        }
+        @CheckForNull
+        public Enumeration getEnumeration()
+        {
+            return getElementByName(MODIFIERS_DATATYPE);
+        }
+        @CheckForNull
+        public EnumerationLiteral getPublicEnumerationLiteral()
+        {
+            if (_public == null)
+            {
+                _public = getEnumerationLiteralByName(getEnumeration(), PUBLIC);
+            }
+            return _public;
+        }
+        @CheckForNull
+        public EnumerationLiteral getPrivateEnumerationLiteral()
+        {
+            if (_private == null)
+            {
+                _private = getEnumerationLiteralByName(getEnumeration(), PRIVATE);
+            }
+            return _private;
+        }
+        @Override
+        protected void clear()
+        {
+            super.clear();
+            _public = null;
+            _private = null;
+        }
+    }
+
     public static class AnnotationStereotype extends StereotypeWrapper
     {
 
@@ -222,6 +318,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         //stereotype Annotation and its tags
         public static final String STEREOTYPE_NAME =  "Annotation";
         public static final String ISSTATIC =  "isStatic";
+        public static final String ISSTATIC1 =  "isStatic1";
         public static final String TYPE =  "type";
         public static final String CODE_DOCUMENTATION =  "code documentation";
         public static final String NAMESPACE =  "namespace";
@@ -245,6 +342,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
 
         @CheckForNull
+        public Property getIsStatic1Property()
+        {
+            return _p.codeFile().getIsStatic1Property();
+        }
+
+        @CheckForNull
         public Property getTypeProperty()
         {
             return _p.codeFile().getTypeProperty();
@@ -259,7 +362,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         @CheckForNull
         public Property getNamespaceProperty()
         {
-            return _p.wwithNameSpace().getNamespaceProperty();
+            return _p.withNameSpace().getNamespaceProperty();
         }
 
         public void setIsStatic(Element element, @CheckForNull Boolean value)
@@ -274,6 +377,19 @@ public class OMFMBSWProfile extends ProfileImplementation
         public Boolean isIsStatic(Element element)
         {
             return _p.codeFile().isIsStatic(element);
+        }
+        public void setIsStatic1(Element element, @CheckForNull Boolean value)
+        {
+            Profiles.setValue(element, getStereotype(), getIsStatic1Property(), value);
+        }
+        public void clearIsStatic1(Element element)
+        {
+            _p.codeFile().clearIsStatic1(element);
+        }
+        @CheckForNull
+        public Boolean isIsStatic1(Element element)
+        {
+            return _p.codeFile().isIsStatic1(element);
         }
         public void setType(Element element, @CheckForNull ClassTypeEnum value)
         {
@@ -307,12 +423,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
         public void clearNamespace(Element element)
         {
-            _p.wwithNameSpace().clearNamespace(element);
+            _p.withNameSpace().clearNamespace(element);
         }
         @CheckForNull
         public String getNamespace(Element element)
         {
-            return _p.wwithNameSpace().getNamespace(element);
+            return _p.withNameSpace().getNamespace(element);
         }
         @Override
         public boolean is(@CheckForNull Element element)
@@ -339,6 +455,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         //stereotype CodeClass and its tags
         public static final String STEREOTYPE_NAME =  "CodeClass";
         public static final String ISSTATIC =  "isStatic";
+        public static final String ISSTATIC1 =  "isStatic1";
         public static final String TYPE =  "type";
         public static final String CODE_DOCUMENTATION =  "code documentation";
         public static final String NAMESPACE =  "namespace";
@@ -368,6 +485,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
 
         @CheckForNull
+        public Property getIsStatic1Property()
+        {
+            return _p.codeFile().getIsStatic1Property();
+        }
+
+        @CheckForNull
         public Property getTypeProperty()
         {
             return _p.codeFile().getTypeProperty();
@@ -382,7 +505,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         @CheckForNull
         public Property getNamespaceProperty()
         {
-            return _p.wwithNameSpace().getNamespaceProperty();
+            return _p.withNameSpace().getNamespaceProperty();
         }
 
         @CheckForNull
@@ -407,6 +530,19 @@ public class OMFMBSWProfile extends ProfileImplementation
         public Boolean isIsStatic(Element element)
         {
             return _p.codeFile().isIsStatic(element);
+        }
+        public void setIsStatic1(Element element, @CheckForNull Boolean value)
+        {
+            Profiles.setValue(element, getStereotype(), getIsStatic1Property(), value);
+        }
+        public void clearIsStatic1(Element element)
+        {
+            _p.codeFile().clearIsStatic1(element);
+        }
+        @CheckForNull
+        public Boolean isIsStatic1(Element element)
+        {
+            return _p.codeFile().isIsStatic1(element);
         }
         public void setType(Element element, @CheckForNull ClassTypeEnum value)
         {
@@ -440,12 +576,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
         public void clearNamespace(Element element)
         {
-            _p.wwithNameSpace().clearNamespace(element);
+            _p.withNameSpace().clearNamespace(element);
         }
         @CheckForNull
         public String getNamespace(Element element)
         {
-            return _p.wwithNameSpace().getNamespace(element);
+            return _p.withNameSpace().getNamespace(element);
         }
         public void setIsEncapsulated(Element element, @CheckForNull Boolean value)
         {
@@ -564,6 +700,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         //stereotype CodeFile and its tags
         public static final String STEREOTYPE_NAME =  "CodeFile";
         public static final String ISSTATIC =  "isStatic";
+        public static final String ISSTATIC1 =  "isStatic1";
         public static final String TYPE =  "type";
         public static final String CODE_DOCUMENTATION =  "code documentation";
         public static final String NAMESPACE =  "namespace";
@@ -571,6 +708,8 @@ public class OMFMBSWProfile extends ProfileImplementation
         private final OMFMBSWProfile _p;
         @CheckForNull
         private Property isStatic;
+        @CheckForNull
+        private Property isStatic1;
         @CheckForNull
         private Property type;
         protected  CodeFileStereotype(OMFMBSWProfile profile)
@@ -595,6 +734,16 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
 
         @CheckForNull
+        public Property getIsStatic1Property()
+        {
+            if (isStatic1 == null)
+            {
+                isStatic1 = getTagByName(getStereotype(), ISSTATIC1);
+            }
+            return isStatic1;
+        }
+
+        @CheckForNull
         public Property getTypeProperty()
         {
             if (type == null)
@@ -613,7 +762,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         @CheckForNull
         public Property getNamespaceProperty()
         {
-            return _p.wwithNameSpace().getNamespaceProperty();
+            return _p.withNameSpace().getNamespaceProperty();
         }
 
         public void setIsStatic(Element element, @CheckForNull Boolean value)
@@ -629,6 +778,21 @@ public class OMFMBSWProfile extends ProfileImplementation
         public Boolean isIsStatic(Element element)
         {
             return toBoolean(Profiles.getFirstValue(element, getIsStaticProperty()));
+        }
+
+        public void setIsStatic1(Element element, @CheckForNull Boolean value)
+        {
+            Profiles.setValue(element, getStereotype(), getIsStatic1Property(), value);
+        }
+        public void clearIsStatic1(Element element)
+        {
+            Profiles.clearValue(element, getIsStatic1Property());
+        }
+
+        @CheckForNull
+        public Boolean isIsStatic1(Element element)
+        {
+            return toBoolean(Profiles.getFirstValue(element, getIsStatic1Property()));
         }
 
         public void setType(Element element, @CheckForNull ClassTypeEnum value)
@@ -665,18 +829,19 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
         public void clearNamespace(Element element)
         {
-            _p.wwithNameSpace().clearNamespace(element);
+            _p.withNameSpace().clearNamespace(element);
         }
         @CheckForNull
         public String getNamespace(Element element)
         {
-            return _p.wwithNameSpace().getNamespace(element);
+            return _p.withNameSpace().getNamespace(element);
         }
         @Override
         protected void clear()
         {
             super.clear();
             isStatic = null;
+            isStatic1 = null;
             type = null;
         }
         @Override
@@ -704,6 +869,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         //stereotype EnumClass and its tags
         public static final String STEREOTYPE_NAME =  "EnumClass";
         public static final String ISSTATIC =  "isStatic";
+        public static final String ISSTATIC1 =  "isStatic1";
         public static final String TYPE =  "type";
         public static final String CODE_DOCUMENTATION =  "code documentation";
         public static final String NAMESPACE =  "namespace";
@@ -727,6 +893,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
 
         @CheckForNull
+        public Property getIsStatic1Property()
+        {
+            return _p.codeFile().getIsStatic1Property();
+        }
+
+        @CheckForNull
         public Property getTypeProperty()
         {
             return _p.codeFile().getTypeProperty();
@@ -741,7 +913,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         @CheckForNull
         public Property getNamespaceProperty()
         {
-            return _p.wwithNameSpace().getNamespaceProperty();
+            return _p.withNameSpace().getNamespaceProperty();
         }
 
         public void setIsStatic(Element element, @CheckForNull Boolean value)
@@ -756,6 +928,19 @@ public class OMFMBSWProfile extends ProfileImplementation
         public Boolean isIsStatic(Element element)
         {
             return _p.codeFile().isIsStatic(element);
+        }
+        public void setIsStatic1(Element element, @CheckForNull Boolean value)
+        {
+            Profiles.setValue(element, getStereotype(), getIsStatic1Property(), value);
+        }
+        public void clearIsStatic1(Element element)
+        {
+            _p.codeFile().clearIsStatic1(element);
+        }
+        @CheckForNull
+        public Boolean isIsStatic1(Element element)
+        {
+            return _p.codeFile().isIsStatic1(element);
         }
         public void setType(Element element, @CheckForNull ClassTypeEnum value)
         {
@@ -789,12 +974,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
         public void clearNamespace(Element element)
         {
-            _p.wwithNameSpace().clearNamespace(element);
+            _p.withNameSpace().clearNamespace(element);
         }
         @CheckForNull
         public String getNamespace(Element element)
         {
-            return _p.wwithNameSpace().getNamespace(element);
+            return _p.withNameSpace().getNamespace(element);
         }
         @Override
         public boolean is(@CheckForNull Element element)
@@ -1478,7 +1663,7 @@ public class OMFMBSWProfile extends ProfileImplementation
         @CheckForNull
         public Property getNamespaceProperty()
         {
-            return _p.wwithNameSpace().getNamespaceProperty();
+            return _p.withNameSpace().getNamespaceProperty();
         }
 
         public void setNamespace(Element element, @CheckForNull String value)
@@ -1487,12 +1672,12 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
         public void clearNamespace(Element element)
         {
-            _p.wwithNameSpace().clearNamespace(element);
+            _p.withNameSpace().clearNamespace(element);
         }
         @CheckForNull
         public String getNamespace(Element element)
         {
-            return _p.wwithNameSpace().getNamespace(element);
+            return _p.withNameSpace().getNamespace(element);
         }
         @Override
         public boolean is(@CheckForNull Element element)
@@ -1831,18 +2016,18 @@ public class OMFMBSWProfile extends ProfileImplementation
         }
 
     }
-    public static class WwithNameSpaceStereotype extends StereotypeWrapper
+    public static class WithNameSpaceStereotype extends StereotypeWrapper
     {
 
 
-        //stereotype WwithNameSpace and its tags
-        public static final String STEREOTYPE_NAME =  "WwithNameSpace";
+        //stereotype WithNameSpace and its tags
+        public static final String STEREOTYPE_NAME =  "WithNameSpace";
         public static final String NAMESPACE =  "namespace";
 
         private final OMFMBSWProfile _p;
         @CheckForNull
         private Property namespace;
-        protected  WwithNameSpaceStereotype(OMFMBSWProfile profile)
+        protected  WithNameSpaceStereotype(OMFMBSWProfile profile)
         {
             super(profile);
             _p = profile;
@@ -1896,7 +2081,7 @@ public class OMFMBSWProfile extends ProfileImplementation
             if(element != null)
             {
                 OMFMBSWProfile instance = getInstance(element);
-                return instance.isTypeOf(element, instance.wwithNameSpace().getStereotype());
+                return instance.isTypeOf(element, instance.withNameSpace().getStereotype());
             }
             return false;
         }
@@ -1922,8 +2107,9 @@ public class OMFMBSWProfile extends ProfileImplementation
         wrappers.add(optionStereotype);
         wrappers.add(pluginStereotype);
         wrappers.add(uiActionStereotype);
-        wrappers.add(wwithNameSpaceStereotype);
+        wrappers.add(withNameSpaceStereotype);
         wrappers.add(classTypeEnumeration);
+        wrappers.add(modifiersEnumeration);
         return wrappers;
     }
 
@@ -1950,7 +2136,7 @@ public class OMFMBSWProfile extends ProfileImplementation
             stereotypes.add(optionStereotype.getStereotype());
             stereotypes.add(pluginStereotype.getStereotype());
             stereotypes.add(uiActionStereotype.getStereotype());
-            stereotypes.add(wwithNameSpaceStereotype.getStereotype());
+            stereotypes.add(withNameSpaceStereotype.getStereotype());
 
             return stereotypes;
         }
@@ -1960,4 +2146,4 @@ public class OMFMBSWProfile extends ProfileImplementation
 
 
 }
-//MD5sum:3B33B8DC550B6E1CA0D75A5216941701
+//MD5sum:902934DC883F75A85A99BCCCCC08CC30

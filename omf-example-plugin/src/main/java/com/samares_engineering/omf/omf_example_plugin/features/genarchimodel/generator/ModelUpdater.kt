@@ -3,11 +3,16 @@ package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.ge
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ParameterDirectionKindEnum
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Classifier
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Feature
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Operation
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.profile
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -39,6 +44,8 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
              val packageName = pluginClass.packageName
              val className = factory.getClassName(pluginClass)
              val clazz = elementManager.findOrCreateClass(packageName, pluginClass)
+
+             if(!pluginClass.name.contains(generator.domain)) return
 
              applyClassAttributes(pluginClass, clazz)
 
@@ -164,10 +171,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
             factory.setVisibility(clazz, pluginClass.modifiers)
 
             // Parse and set Javadoc
-            val javadoc = docImporter.getClassJavadoc(pluginClass, generator.domain, generator.pathToFiles)
-            if (javadoc != "") {
-                profile.codeDoc().setCodedocumentation(clazz, javadoc)
-            }
+            parseClassJavaDoc(pluginClass, clazz)
 
             // Process annotations
             for (annotation in pluginClass.annotations) {
@@ -205,10 +209,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
         profile.codeClass().setIsStatic(attribute, isStatic)
 
         // Parse and set Javadoc
-        val javadoc = getFieldJavadoc(field)
-        if (javadoc != "") {
-            profile.codeDoc().setCodedocumentation(attribute, javadoc)
-        }
+        parseFieldJavaDoc(field, attribute)
 
         // Process annotations
         for (annotation in field.annotations) {
@@ -229,10 +230,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
         factory.setModifiers(operation, method.modifiers)
 
         // Parse and set Javadoc
-        val javadoc = docImporter.getMethodJavadoc(clazz, method, generator.pathToFiles, generator.domain)
-        if (javadoc != "") {
-            profile.codeDoc().setCodedocumentation(operation, javadoc)
-        }
+        parseMethodJavaDoc(clazz, method, operation)
 
         // Process annotations
         for (annotation in method.annotations) {
@@ -278,7 +276,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
             }
         }
 
-        clazz?.ownedElement?.add(operation)
+        clazz.ownedElement?.add(operation)
     }
 
     private fun processAnnotation(annotation: Annotation, element: Element) {
@@ -302,32 +300,55 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
             is Property -> element.owner!!.ownedElement.add(property)
         }
     }
-
-
     private fun applyInheritedStereotypes(clazz: Classifier?, superclass: java.lang.Class<*>) {
 
            val superclassName = superclass.simpleName
+            // Based on the superclass name, apply the appropriate stereotypes
+        when {
+            Hook::class.java.isAssignableFrom(superclass) -> profile.hook().apply(clazz)
+            UIAction::class.java.isAssignableFrom(superclass) -> profile.uiAction().apply(clazz)
+            LiveAction::class.java.isAssignableFrom(superclass) -> profile.liveAction().apply(clazz)
+            Option::class.java.isAssignableFrom(superclass) -> profile
+            Feature::class.java.isAssignableFrom(superclass) -> profile.feature().apply(clazz)
+        }
 
-           when (superclassName) {
-               "Hook" -> profile.hook().apply(clazz)
-               "UIAction" -> profile.uiAction().apply(clazz)
-               "LiveAction" -> profile.liveAction().apply(clazz)
-               "Option" -> profile.option().apply(clazz)
-               "Feature" -> {
-                   profile.feature().apply(clazz)
-                   // Find and set associated elements
-                   elementManager.setFeatureAssociations(clazz)
-               }
-           }
+    }
+
+    private fun parseClassJavaDoc(
+        pluginClass: Class<*>,
+        clazz: Classifier
+    ) {
+        val javadoc = docImporter.getClassJavadoc(pluginClass, generator.pathToFiles, generator.domain)
+        if (javadoc != "") {
+            profile.codeDoc().setCodedocumentation(clazz, javadoc)
+        }
+    }
+
+    fun parseMethodJavaDoc(
+        clazz: Classifier,
+        method: Method,
+        operation: Operation
+    ) {
+        val javadoc = docImporter.getMethodJavadoc(clazz, method, generator.pathToFiles, generator.domain)
+        if (javadoc != "") {
+            profile.codeDoc().setCodedocumentation(operation, javadoc)
+//        }
+        }
+    }
+
+    fun parseFieldJavaDoc(
+        field: Field,
+        attribute: Property?
+    ) {
+        val javadoc = getFieldJavadoc(field)
+        if (javadoc != "") {
+            profile.codeDoc().setCodedocumentation(attribute, javadoc)
+        }
     }
 
 
-    private fun getFieldJavadoc(field: Field): String {
+    fun getFieldJavadoc(field: Field): String {
         // TODO: Implement method to get Javadoc comments of the field
         return ""
     }
-
-
-
-
 }
