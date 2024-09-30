@@ -179,7 +179,7 @@ public class OMFLogger {
         logToUIConsole(message, OMFLogLevel.ERROR);
     }
     public static void successToUIConsole(String message) {
-        logToUIConsole(new OMFLog().color(message, OMFColors.RED), OMFLogLevel.ERROR);
+        logToUIConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.SUCCESS);
     }
 
     public static void errorToUIConsole(OMFLog message) {
@@ -206,7 +206,7 @@ public class OMFLogger {
         logToSystemConsole(message, OMFLogLevel.INFO);
     }
     public static void successToSystemConsole(String message) {
-        logToSystemConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.INFO);
+        logToSystemConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.SUCCESS);
     }
     public static void statusToSystemConsole(String message) {
         logToSystemConsole(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
