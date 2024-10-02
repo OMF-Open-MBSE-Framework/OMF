@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.ge
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
 import com.nomagic.uml2.impl.ElementsFactory
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.OMFMBSWProfile
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.PluginArchitectureProfile
@@ -194,5 +195,14 @@ object PluginArchitectureFactory {
 //            )
             return ""
         }
+    }
+
+    fun createOption(featureElement: Classifier, option: Option) {
+        val optionClass = factory.createPropertyInstance().apply {
+            name = option.property.name
+            profile.option().apply(this)
+            setNameSpace(this, featureElement as NamedElement)
+        }
+        optionClass.owner = featureElement
     }
 }

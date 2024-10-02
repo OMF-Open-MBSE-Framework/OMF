@@ -26,7 +26,9 @@ class GenerateArchiModel_V3 : AUIAction() {
     override fun actionToPerform(selectedElements: List<Element>) {
         val owner = selectedElements[0]
 
-        ModelArchitectureGenerator("com.samares_engineering.omf", "C:\\Workspace\\Plugins\\OMF_Private").generateCodeModelArchitecture(owner)
+        ModelArchitectureGenerator("com.samares_engineering.omf",
+            "C:\\Workspace\\Plugins\\OMF_Private",
+            feature.plugin).generateCodeModelArchitecture(owner)
     }
 
 }

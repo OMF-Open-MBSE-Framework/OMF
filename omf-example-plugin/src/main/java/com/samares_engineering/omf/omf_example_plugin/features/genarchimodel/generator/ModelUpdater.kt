@@ -122,6 +122,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
     private fun processInnerClasses(pluginClass: Class<*>) {
         for (innerClass in pluginClass.declaredClasses) {
             processClass(innerClass)
+            //TODO: use javaParser to get the inner class and documentation
         }
     }
 
