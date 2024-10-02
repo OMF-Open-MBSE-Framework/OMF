@@ -1,6 +1,7 @@
 package com.samares_engineering.omf.omf_example_plugin.features.display.actions
 
 import com.nomagic.magicdraw.sysml.util.SysMLConstants
+import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction
 import com.nomagic.magicdraw.uml.symbols.PresentationElement
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
@@ -28,7 +29,7 @@ class DisplayInnerLayer : AUIAction() {
 
     override fun actionToPerform(selectedElements: List<Element>) {
         val layoutManager = LayoutManager(
-            diagramAction.diagram
+                (diagramAction as DefaultDiagramAction).diagram
         )
         if (selectedElements.isEmpty()) {
             displayDiagramFirstLevel(layoutManager)

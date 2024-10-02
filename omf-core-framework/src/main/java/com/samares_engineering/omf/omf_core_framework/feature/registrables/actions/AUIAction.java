@@ -9,6 +9,8 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 
 import com.google.common.base.Strings;
+import com.nomagic.actions.NMAction;
+import com.nomagic.actions.NMStateAction;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction;
 import com.nomagic.magicdraw.ui.browser.Browser;
@@ -43,11 +45,11 @@ public abstract class AUIAction implements UIAction {
     private List<PresentationElement> diagramSelectedPresentationElements;
     private List<Element> diagramSelectedElements;
 
-    private DefaultBrowserAction browserAction;
+    NMAction browserAction;
 
-    private DefaultDiagramAction diagramAction;
+    NMAction diagramAction;
 
-    private com.nomagic.magicdraw.actions.MDAction menuAction;
+    NMAction menuAction;
 
     private String name;
     private String categoryName;
@@ -70,10 +72,12 @@ public abstract class AUIAction implements UIAction {
         initTreeActions();
         initDiagramActions();
         initMenuActions();
-
     }
 
-    private void initMenuActions() {
+    /**
+     * Initialize the MenuActions, register the action and set the behavior.
+     */
+    protected void initMenuActions() {
         this.menuAction = new com.nomagic.magicdraw.actions.MDAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
@@ -91,7 +95,10 @@ public abstract class AUIAction implements UIAction {
         };
     }
 
-    private void initDiagramActions() {
+    /**
+     * Initialize the DiagramActions, register the action and set the behavior.
+     */
+    protected void initDiagramActions() {
         this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
@@ -100,7 +107,7 @@ public abstract class AUIAction implements UIAction {
                 if (!checkDiagramAvailability()) return; //when called with shortcuts,
                 super.actionPerformed(actionEvent);
                 init();
-                diagramAction.setDiagram(this.getDiagram()); //TODO: temporary fix, to be removed when the diagram action will be fixed
+                ((com.nomagic.magicdraw.actions.DiagramAction) diagramAction).setDiagram(this.getDiagram()); //TODO: temporary fix, to be removed when the diagram action will be fixed
                 executeDiagramAction(diagramSelectedElements);
                 OMFAutomationManager.getInstance().automationTriggered();
             }
@@ -124,10 +131,9 @@ public abstract class AUIAction implements UIAction {
     }
 
     /**
-     * Initialize the Browser Action, register the action and set the behavior.
-     *
+     * Initialize the BrowserActions, register the action and set the behavior.
      */
-    private void initTreeActions() {
+    protected void initTreeActions() {
         this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
             @Override
             public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
@@ -183,7 +189,6 @@ public abstract class AUIAction implements UIAction {
      * @param runnable The Runnable representing the UI action to be executed.
      */
     protected void executeAUIActionWithinBarrier(Runnable runnable) {
-
         OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
     }
 
@@ -339,7 +344,7 @@ public abstract class AUIAction implements UIAction {
      *
      * @return DefaultBrowserAction
      */
-    public DefaultBrowserAction getBrowserAction() {
+    public NMAction getBrowserAction() {
         checkAnnotationPresence();
         return browserAction;
     }
@@ -347,9 +352,9 @@ public abstract class AUIAction implements UIAction {
     /**
      * get the Diagram MDAction called by the user.
      *
-     * @return DefaultBrowserAction
+     * @return DefaultDiagramAction
      */
-    public DefaultDiagramAction getDiagramAction() {
+    public NMAction getDiagramAction() {
         checkAnnotationPresence();
 
         return diagramAction;
@@ -360,7 +365,7 @@ public abstract class AUIAction implements UIAction {
      *
      * @return MDAction
      */
-    public com.nomagic.magicdraw.actions.MDAction getMenuAction() {
+    public NMAction getMenuAction() {
         checkAnnotationPresence();
 
         return menuAction;
@@ -430,7 +435,7 @@ public abstract class AUIAction implements UIAction {
         return getClass().getAnnotation(DeactivateListener.class) != null;
     }
 
-    public List<com.nomagic.magicdraw.actions.MDAction> getAllActions() {
+    public List<NMAction> getAllActions() {
         return Arrays.asList(
                 getBrowserAction(),
                 getDiagramAction(),
@@ -498,6 +503,17 @@ public abstract class AUIAction implements UIAction {
     public boolean isProjectOpened() {
         return OMFUtils.isProjectOpened();
     }
-    
 
+
+    public void setBrowserAction(NMAction browserAction) {
+        this.browserAction = browserAction;
+    }
+
+    public void setDiagramAction(NMAction diagramAction) {
+        this.diagramAction = diagramAction;
+    }
+
+    public void setMenuAction(NMAction menuAction) {
+        this.menuAction = menuAction;
+    }
 }

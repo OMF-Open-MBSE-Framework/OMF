@@ -71,7 +71,7 @@ public class GroupPortsAction extends AUIAction {
      */
     private void refreshAllDiagramPresentationElements(List<Port> selectedPorts, List<Connector> allConnectorsFromPorts,
                                                        PresentationElement partHost, Port newPort) {
-        DiagramPresentationElement activeDiagram = getDiagramAction().getDiagram();
+        DiagramPresentationElement activeDiagram = getDiagram();
 
         //Deleting the previous representation elements
         deletePreviousRepresentationElements(selectedPorts, allConnectorsFromPorts);
@@ -94,7 +94,7 @@ public class GroupPortsAction extends AUIAction {
      * @param listConnectors the connectors to delete
      */
     private void deletePreviousRepresentationElements(List<Port> portsToDelete, List<Connector> listConnectors) {
-        DiagramPresentationElement diagramPE = getDiagramAction().getDiagram();
+        DiagramPresentationElement diagramPE = getDiagram();
         listConnectors.forEach(connector -> InternalDiagramManagement.deleteRepresentationElement(connector, diagramPE));
         portsToDelete.forEach(port -> InternalDiagramManagement.deleteRepresentationElement(port, diagramPE));
     }
