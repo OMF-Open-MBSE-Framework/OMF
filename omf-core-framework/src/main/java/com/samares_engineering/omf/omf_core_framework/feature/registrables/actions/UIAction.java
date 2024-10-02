@@ -16,9 +16,9 @@ public interface UIAction extends RegistrableFeatureItem {
 
     boolean checkMenuAvailability();
 
-    List<MDAction> getAllActions();
+    List<NMAction> getAllActions();
 
-    MDAction getMenuAction();
+    NMAction getMenuAction();
 
     boolean isBrowserAction();
 
