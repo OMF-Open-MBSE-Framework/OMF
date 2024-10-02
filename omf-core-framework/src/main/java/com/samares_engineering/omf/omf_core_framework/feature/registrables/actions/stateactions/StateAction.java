@@ -30,7 +30,8 @@ import java.util.List;
 public abstract class StateAction extends AUIAction {
 
     boolean isChecked = false;
-    private StateBrowserAction browserAction;
+//    private StateBrowserAction browserAction;
+    private NMAction browserAction;
     private NMAction diagramAction;
     private NMAction menuAction;
 
@@ -190,7 +191,7 @@ public abstract class StateAction extends AUIAction {
     public abstract boolean checkState(List<Element> selectedElement);
 
     public StateBrowserAction getStateBrowserAction() {
-        return browserAction;
+        return (StateBrowserAction) browserAction;
     }
 
     public StateDiagramAction getStateDiagramAction() {
