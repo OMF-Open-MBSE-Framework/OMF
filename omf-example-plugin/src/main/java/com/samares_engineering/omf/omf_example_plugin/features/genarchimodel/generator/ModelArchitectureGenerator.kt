@@ -7,10 +7,9 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
-import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.factory
 import java.io.IOException
 import java.lang.Class
 import java.lang.reflect.*
@@ -64,8 +63,14 @@ class ModelArchitectureGenerator(val domain: String,
         feature.uiActions.forEach {treatAction(it, featureElement)}
     }
 
-    private fun treatAction(action: Any, featureElement: Classifier) {
-        factory.createAction(featureElement, action)
+    private fun treatAction(action: UIAction, featureElement: Classifier) {
+        factory.applyUIAction(elementManager.findOrCreateClass(action::class.java.packageName, action::class.java))
+    }
+
+
+    private fun treatHooks(feature: OMFFeature) {
+        val featureElement = findFeatureElement(feature)
+        feature.hooks.forEach {treatHook(it, featureElement)}
     }
 
     private fun findFeatureElement(feature: OMFFeature): Classifier {

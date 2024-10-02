@@ -60,7 +60,7 @@ object PluginArchitectureFactory {
         return generalization
     }
 
-    fun createEnumeration(owner: Element, enumName: String, enumLiterals:List<String> = emptyList()): Enumeration {
+    fun createEnumeration(owner: Element, enumName: String, enumLiterals: List<String> = emptyList()): Enumeration {
         val enumeration = factory.createEnumerationInstance()
         enumeration.name = enumName
         enumeration.owner = owner
@@ -95,6 +95,7 @@ object PluginArchitectureFactory {
         val namespace1 = nameSpaceSTR.getNamespace(owner1)
         return namespace == namespace1
     }
+
     fun areNamespacesEqual(owner: Element, nameSpaceClazz: String): Boolean {
         val nameSpaceSTR = profile.withNameSpace()
         val namespace = nameSpaceSTR.getNamespace(owner)
@@ -205,4 +206,11 @@ object PluginArchitectureFactory {
         }
         optionClass.owner = featureElement
     }
+
+
+    fun applyUIAction(uiAction: Classifier) {
+
+
+    }
 }
+
