@@ -10,10 +10,8 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 
 import java.util.List;
 
-@MenuAction
-@BrowserAction
 @DiagramAction
-@MDAction(actionName = "State Action example", category = "OMF")
+@MDAction(actionName = "State Action example", category = "")
 public class CreateStateAction extends StateAction {
     boolean isChecked = false;
 

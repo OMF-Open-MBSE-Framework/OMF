@@ -54,8 +54,6 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
      * register an action into the category, If the category doesn't exist it will register it.
      */
     private void registerDiagramAction(ActionsManager actionsManager, UIAction action) {
-        if(action instanceof StateAction)
-           return;
        try {
             UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getDiagramAction());
         }catch (Exception e){
