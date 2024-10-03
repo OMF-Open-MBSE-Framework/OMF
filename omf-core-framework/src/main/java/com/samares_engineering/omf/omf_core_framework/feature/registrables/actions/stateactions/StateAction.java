@@ -158,7 +158,7 @@ public abstract class StateAction extends AUIAction {
 
     /**
      * Check the state of the selected elements when using StateBrowserAction then return boolean
-     * @param selectedElement List<Element> selectedElement
+     * @param selectedElement List&lt;Element&gt;
      * @return boolean
      */
     protected boolean checkBrowserState(List<Element> selectedElement){
@@ -167,7 +167,7 @@ public abstract class StateAction extends AUIAction {
 
     /**
      * Check the state of the selected elements when using DiagramStateAction then return boolean
-     * @param selectedElement List<Element> selectedElement
+     * @param selectedElement List&lt;Element&gt;
      * @return boolean
      */
     protected boolean checkDiagramState(List<Element> selectedElement){
@@ -176,7 +176,7 @@ public abstract class StateAction extends AUIAction {
 
     /**
      * Check the state of the selected elements when using MenuStateAction then return boolean
-     * @param selectedElement List<Element> selectedElement
+     * @param selectedElement List&lt;Element&gt;
      * @return boolean
      */
     protected boolean checkMenuState(List<Element> selectedElement){
@@ -185,7 +185,7 @@ public abstract class StateAction extends AUIAction {
 
     /**
      * Check the state of the selected elements when using StateAction then return boolean
-     * @param selectedElement List<Element> selectedElement
+     * @param selectedElement List&lt;Element&gt;
      * @return boolean
      */
     public abstract boolean checkState(List<Element> selectedElement);
