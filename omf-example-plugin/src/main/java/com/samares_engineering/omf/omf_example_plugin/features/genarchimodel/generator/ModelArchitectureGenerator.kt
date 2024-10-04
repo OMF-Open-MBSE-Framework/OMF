@@ -8,6 +8,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.O
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin
 import java.io.IOException
@@ -45,9 +46,10 @@ class ModelArchitectureGenerator(val domain: String,
 
     private fun processFeaturesItems(pluginClass: OMFPlugin) {
         val features = pluginClass.features
-        features.forEach {treatOptions(it)} }
-        features.forEach {treatActions(it)}
-        features.forEach {treatHooks(it)}
+        features.forEach { treatOptions(it) }
+        features.forEach { treatActions(it) }
+        features.forEach { treatHooks(it) }
+    }
 
     private fun treatOptions(feature: OMFFeature) {
         val featureElement = findFeatureElement(feature)
@@ -70,7 +72,12 @@ class ModelArchitectureGenerator(val domain: String,
 
     private fun treatHooks(feature: OMFFeature) {
         val featureElement = findFeatureElement(feature)
-        feature.hooks.forEach {treatHook(it, featureElement)}
+        feature.lifeCycleHooks.forEach {treatHook(it, featureElement)}
+    }
+
+    private fun treatHook(hooks: Hook, featureElement: Classifier) {
+        val hookElement =
+            factory.createHook(elementManager.findOrCreateClass(hooks::class.java.packageName, hooks::class.java), hooks)
     }
 
     private fun findFeatureElement(feature: OMFFeature): Classifier {
@@ -80,7 +87,7 @@ class ModelArchitectureGenerator(val domain: String,
 
 
     // Helper methods
-    fun shouldSkipClass(pluginClass: java.lang.Class<*>): Boolean {
+    fun shouldSkipClass(pluginClass: Class<*>): Boolean {
         return pluginClass.isSynthetic || pluginClass.isAnonymousClass || pluginClass.isLocalClass
     }
 
@@ -91,9 +98,9 @@ class ModelArchitectureGenerator(val domain: String,
 
     fun extractTypeInfoFromType(type: java.lang.reflect.Type): TypeInfo? {
         return when (type) {
-            is java.lang.Class<*> -> TypeInfo(rawType = type)
+            is Class<*> -> TypeInfo(rawType = type)
             is ParameterizedType -> {
-                val rawType = type.rawType as? java.lang.Class<*>
+                val rawType = type.rawType as? Class<*>
                 val typeArgs = type.actualTypeArguments.mapNotNull { extractTypeInfoFromType(it) }
                 TypeInfo(rawType = rawType, typeArguments = typeArgs)
             }
@@ -116,8 +123,8 @@ class ModelArchitectureGenerator(val domain: String,
 
     // Get all plugin classes
 
-    fun getAllPluginClasses(domain: String): List<java.lang.Class<*>> {
-        val classes: MutableList<java.lang.Class<*>> = ArrayList()
+    fun getAllPluginClasses(domain: String): List<Class<*>> {
+        val classes: MutableList<Class<*>> = ArrayList()
 
         val pluginClassLoader = javaClass.classLoader
 

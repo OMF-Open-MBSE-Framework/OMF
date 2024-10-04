@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.ge
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
 import com.nomagic.uml2.impl.ElementsFactory
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.OMFMBSWProfile
@@ -198,19 +199,34 @@ object PluginArchitectureFactory {
         }
     }
 
-    fun createOption(featureElement: Classifier, option: Option) {
-        val optionClass = factory.createPropertyInstance().apply {
+    fun createOption(featureElement: Classifier, option: Option): Property? {
+        val optionElement = factory.createPropertyInstance().apply {
             name = option.property.name
             profile.option().apply(this)
             setNameSpace(this, featureElement as NamedElement)
         }
-        optionClass.owner = featureElement
+        optionElement.owner = featureElement
+        return optionElement
     }
 
 
     fun applyUIAction(uiAction: Classifier) {
+        profile.uiAction().apply(uiAction)
+        val optActionPerformed = uiAction.ownedElement.filterIsInstance<Operation>().find { it.name == "actionToPerform" }
+        if(optActionPerformed != null) profile.uiAction().setActionToPerformed(uiAction, optActionPerformed)
+        val optCheckAvailability = uiAction.ownedElement.filterIsInstance<Operation>().find { it.name == "checkAvailability" }
+        if(optCheckAvailability != null) profile.uiAction().setCheckAvaibility(uiAction, optCheckAvailability)
 
+    }
 
+    fun createHook(featureElement: Classifier, hook: Hook): Property? {
+        val hookElement = factory.createPropertyInstance().apply {
+            name = getClassName(hook.javaClass)
+            profile.hook().apply(this)
+            setNameSpace(this, featureElement as NamedElement)
+        }
+        hookElement.owner = featureElement
+        return hookElement
     }
 }
 
