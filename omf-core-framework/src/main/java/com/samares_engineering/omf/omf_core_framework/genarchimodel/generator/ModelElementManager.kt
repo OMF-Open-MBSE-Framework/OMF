@@ -1,22 +1,12 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
+package com.samares_engineering.omf.omf_core_framework.genarchimodel.generator
 
-import com.nomagic.ci.persistence.local.a.E
 import com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
-import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.OMFMBSWProfile
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.ModelArchitectureGenerator.Companion.generatedPackage
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.computeNameSpace
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.factory
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.getClassName
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.profile
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.setNameSpace
-import org.bouncycastle.asn1.x500.style.RFC4519Style.owner
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.OMFMBSWProfile
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.generator.ModelArchitectureGenerator.Companion.generatedPackage
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.generator.PluginArchitectureFactory.getClassName
 import java.io.FileNotFoundException
-import java.lang.reflect.ParameterizedType
 
 class ModelElementManager {
 
@@ -82,7 +72,8 @@ class ModelElementManager {
         owner: Element,
         className: String,
         isEnum: Boolean = false,
-        isAnnotation: Boolean = false
+        isAnnotation: Boolean = false,
+        isInterface: Boolean = false
     ): Classifier {
         // Try to find the class by name under the given owner
         val existingType = findExistingClass(owner, className)
@@ -91,15 +82,13 @@ class ModelElementManager {
             return existingType
         }
         // Apply stereotypes
-        val createdElement = createAccordingClassifier(isEnum, owner, className, isAnnotation)
+        val createdElement = createAccordingClassifier(owner, className, isEnum, isAnnotation, isInterface)
         return createdElement
 
     }
     fun findOrCreateClass(
         owner: Element,
         clazz: java.lang.Class<*>,
-        isEnum: Boolean = false,
-        isAnnotation: Boolean = false
     ): Classifier {
         // Try to find the class by name under the given owner
         val existingType = findExistingClass(owner, clazz)
@@ -108,7 +97,10 @@ class ModelElementManager {
             return existingType
         }
         // Apply stereotypes
-        val createdElement = createAccordingClassifier(isEnum, owner, getClassName(clazz), isAnnotation)
+        val isEnum = clazz.isEnum
+        val isAnnotation = clazz.isAnnotation
+        val isInterface = clazz.isInterface
+        val createdElement = createAccordingClassifier(owner, getClassName(clazz), isEnum, isAnnotation, isInterface)
         return createdElement
     }
 
@@ -123,28 +115,33 @@ class ModelElementManager {
         clazz: java.lang.Class<*>
     ) = owner.ownedElement?.filterIsInstance<Class>()
 //        ?.firstOrNull { it.name == getClassName(clazz)  && architectureFactory.areNamespacesEqual(it, clazz.packageName) }
-        ?.firstOrNull { it.name == getClassName(clazz)  }
+        ?.firstOrNull { it.name == getClassName(clazz) || it.name == buildParameterizedTypeName(clazz) }
 
 
 
 
     private fun createAccordingClassifier(
-        isEnum: Boolean,
         owner: Element,
         className: String,
-        isAnnotation: Boolean
+        isEnum: Boolean,
+        isAnnotation: Boolean,
+        isInterface: Boolean
     ): Classifier {
         val createdElement = when {
             isEnum -> {
-                architectureFactory.createEnumeration(owner, className)
+                PluginArchitectureFactory.createEnumeration(owner, className)
             }
 
             isAnnotation -> {
-                architectureFactory.createAnnotation(owner, className)
+                PluginArchitectureFactory.createAnnotation(owner, className)
+            }
+
+            isInterface -> {
+                PluginArchitectureFactory.createInterface(owner, className)
             }
 
             else -> {
-                architectureFactory.createCodeClass(owner, className)
+                PluginArchitectureFactory.createCodeClass(owner, className)
             }
         }
         mapClassNameElement[className] = createdElement
@@ -159,6 +156,11 @@ class ModelElementManager {
         }
         val typeArgsNames = typeInfo.typeArguments.joinToString(", ") { buildParameterizedTypeName(it) }
         return "$rawTypeName<$typeArgsNames>"
+    }
+
+    fun buildParameterizedTypeName(clazz: java.lang.Class<*>): String {
+        val typeInfo = TypeInfo(clazz)
+        return buildParameterizedTypeName(typeInfo)
     }
 
     fun findOrCreateEnumeration(

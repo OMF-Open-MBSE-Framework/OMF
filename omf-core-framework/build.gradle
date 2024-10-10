@@ -22,5 +22,6 @@ dependencies {
     compileOnly 'org.apache.commons:commons-lang3:3.12.0'
     api project(":omf-utils")
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23"
+    api 'com.github.javaparser:javaparser-core:3.26.2'
 }
 

@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel;
+package com.samares_engineering.omf.omf_core_framework.genarchimodel;
 
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml2.Profiles;

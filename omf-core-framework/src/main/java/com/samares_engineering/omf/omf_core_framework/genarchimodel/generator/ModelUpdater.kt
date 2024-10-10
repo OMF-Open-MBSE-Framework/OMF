@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
+package com.samares_engineering.omf.omf_core_framework.genarchimodel.generator
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ParameterDirectionKindEnum
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Classifier
@@ -9,11 +9,12 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator.PluginArchitectureFactory.profile
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.generator.PluginArchitectureFactory.profile
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
@@ -42,7 +43,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
              processedClasses.add(pluginClass)
 
              val packageName = pluginClass.packageName
-             val className = factory.getClassName(pluginClass)
+             val className = PluginArchitectureFactory.getClassName(pluginClass)
              val clazz = elementManager.findOrCreateClass(packageName, pluginClass)
 
              if(!pluginClass.name.contains(generator.domain)) return
@@ -97,9 +98,9 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
 
             // Create realization
             val interfacePackage = interfaceClass.packageName
-            val interfaceName = factory.getClassName(interfaceClass)
+            val interfaceName = PluginArchitectureFactory.getClassName(interfaceClass)
             val interfaceElement = elementManager.findOrCreateClass(interfacePackage, interfaceClass)
-            factory.createGeneralization(clazz, interfaceElement)
+            PluginArchitectureFactory.createGeneralization(clazz, interfaceElement)
         }
     }
 
@@ -113,9 +114,9 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
 
             // Create generalization
             val superclassPackage = superclass.packageName
-            val superclassName = factory.getClassName(superclass)
+            val superclassName = PluginArchitectureFactory.getClassName(superclass)
             val superclassElement = elementManager.findOrCreateClass(superclassPackage, superclass)
-             factory.createGeneralization(clazz, superclassElement)
+            PluginArchitectureFactory.createGeneralization(clazz, superclassElement)
         }
     }
 
@@ -166,10 +167,10 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
     private fun applyClassAttributes(pluginClass: java.lang.Class<*>, clazz: Classifier) {
         try {
             // Apply stereotypes (Class, Interface, Enum, Annotation)
-            factory.applyClassTypeSTR(pluginClass, clazz)
+            PluginArchitectureFactory.applyClassTypeSTR(pluginClass, clazz)
 
             // Set isStatic if applicable
-            factory.setVisibility(clazz, pluginClass.modifiers)
+            PluginArchitectureFactory.setVisibility(clazz, pluginClass.modifiers)
 
             // Parse and set Javadoc
             parseClassJavaDoc(pluginClass, clazz)
@@ -222,13 +223,13 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
 
     private fun processMethod(method: Method, clazz: Classifier) {
         val methodName = method.name
-        val operation = factory.createOperation(clazz, methodName)
+        val operation = PluginArchitectureFactory.createOperation(clazz, methodName)
 
         // Apply Method stereotype
         profile.method().apply(operation)
 
         // Set isStatic
-        factory.setModifiers(operation, method.modifiers)
+        PluginArchitectureFactory.setModifiers(operation, method.modifiers)
 
         // Parse and set Javadoc
         parseMethodJavaDoc(clazz, method, operation)
@@ -242,7 +243,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
         val returnTypeInfo = generator.extractTypeInfoFromType(method.genericReturnType)
         if (returnTypeInfo?.rawType != null) {
             val returnTypeElement = generator.createTypeElement(returnTypeInfo, method.returnType.packageName)
-            factory.createParameter(
+            PluginArchitectureFactory.createParameter(
                 operation,
                 "return",
                 returnTypeElement,
@@ -259,7 +260,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
             val parameterTypeInfo = generator.extractTypeInfoFromType(parameter.parameterizedType)
             if (parameterTypeInfo?.rawType != null) {
                 val parameterTypeElement = generator.createTypeElement(parameterTypeInfo, parameter.type.packageName)
-                factory.createParameter(
+                PluginArchitectureFactory.createParameter(
                     operation,
                     parameterName,
                     parameterTypeElement,
@@ -289,7 +290,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
         processClass(annotationClass)
 
         // Create a property typed by the annotation
-        val annotationElement = elementManager.findOrCreateClass(annotationClass.packageName, annotationName)
+        val annotationElement = elementManager.findOrCreateClass(annotationClass.packageName, annotationClass)
         val property = SysMLFactory.getInstance().createProperty(if((element is Classifier)) element else element.owner)
         property.name = "annotation:${annotationName}"
         property.type = annotationElement
@@ -310,7 +311,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
             UIAction::class.java.isAssignableFrom(superclass) -> profile.uiAction().apply(clazz)
             LiveAction::class.java.isAssignableFrom(superclass) -> profile.liveAction().apply(clazz)
             Option::class.java.isAssignableFrom(superclass) -> profile
-            Feature::class.java.isAssignableFrom(superclass) -> profile.feature().apply(clazz)
+            OMFFeature::class.java.isAssignableFrom(superclass) -> profile.feature().apply(clazz)
         }
 
     }

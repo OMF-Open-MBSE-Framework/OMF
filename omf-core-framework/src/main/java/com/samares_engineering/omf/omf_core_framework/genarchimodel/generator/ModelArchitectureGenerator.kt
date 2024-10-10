@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
+package com.samares_engineering.omf.omf_core_framework.genarchimodel.generator
 
 import com.google.common.reflect.ClassPath
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
@@ -57,7 +57,7 @@ class ModelArchitectureGenerator(val domain: String,
     }
 
     private fun treatOption(option: Option, featureElement: Classifier) {
-        factory.createOption(featureElement, option)
+        PluginArchitectureFactory.createOption(featureElement, option)
     }
 
     private fun treatActions(feature: OMFFeature) {
@@ -66,7 +66,12 @@ class ModelArchitectureGenerator(val domain: String,
     }
 
     private fun treatAction(action: UIAction, featureElement: Classifier) {
-        factory.applyUIAction(elementManager.findOrCreateClass(action::class.java.packageName, action::class.java))
+        PluginArchitectureFactory.applyUIAction(
+            elementManager.findOrCreateClass(
+                action::class.java.packageName,
+                action::class.java
+            )
+        )
     }
 
 
@@ -77,7 +82,12 @@ class ModelArchitectureGenerator(val domain: String,
 
     private fun treatHook(hooks: Hook, featureElement: Classifier) {
         val hookElement =
-            factory.createHook(elementManager.findOrCreateClass(hooks::class.java.packageName, hooks::class.java), hooks)
+            PluginArchitectureFactory.createHook(
+                elementManager.findOrCreateClass(
+                    hooks::class.java.packageName,
+                    hooks::class.java
+                ), hooks
+            )
     }
 
     private fun findFeatureElement(feature: OMFFeature): Classifier {
@@ -180,7 +190,7 @@ class ModelArchitectureGenerator(val domain: String,
         val parameterizedTypeName = elementManager.buildParameterizedTypeName(typeInfo)
         val parameterizedTypeElement = elementManager.findOrCreateClass(defaultPackageName, parameterizedTypeName)
 
-        factory.applyClassTypeSTR(rawTypeClass, rawTypeElement)
+        PluginArchitectureFactory.applyClassTypeSTR(rawTypeClass, rawTypeElement)
 
         // Create a property 'generic' to hold the type arguments
         for ((index, typeArgInfo) in typeInfo.typeArguments.withIndex()) {
@@ -194,7 +204,7 @@ class ModelArchitectureGenerator(val domain: String,
         }
 
         // Optionally, set the raw type as a generalization or association
-        factory.createGeneralization(rawTypeElement, parameterizedTypeElement)
+        PluginArchitectureFactory.createGeneralization(rawTypeElement, parameterizedTypeElement)
 
         return parameterizedTypeElement
     }

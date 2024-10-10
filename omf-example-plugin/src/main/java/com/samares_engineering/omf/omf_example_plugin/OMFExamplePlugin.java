@@ -18,7 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.connection.ConnectionFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.GeneratePluginModelArchi;
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sandbox.SandboxFeature;

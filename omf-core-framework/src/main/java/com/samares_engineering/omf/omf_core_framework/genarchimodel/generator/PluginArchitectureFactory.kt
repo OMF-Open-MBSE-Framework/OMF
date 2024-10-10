@@ -1,12 +1,12 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
+package com.samares_engineering.omf.omf_core_framework.genarchimodel.generator
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
 import com.nomagic.uml2.impl.ElementsFactory
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.base.Hook
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.OMFMBSWProfile
-import com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.PluginArchitectureProfile
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.OMFMBSWProfile
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.PluginArchitectureProfile
 import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 
@@ -52,7 +52,9 @@ object PluginArchitectureFactory {
     }
 
     val mapGeneralizationSrcTarget: MutableMap<Classifier, Classifier> = mutableMapOf()
-    fun createGeneralization(specificClass: Classifier, generalClass: Classifier): Generalization {
+    fun createGeneralization(specificClass: Classifier, generalClass: Classifier): Generalization? {
+        if(specificClass == generalClass) return null
+        if (mapGeneralizationSrcTarget[generalClass] == specificClass) return null
         val generalization = factory.createGeneralizationInstance()
         generalization.specific = specificClass
         generalization.general = generalClass
@@ -132,6 +134,17 @@ object PluginArchitectureFactory {
         return annotation
     }
 
+    fun createInterface(owner: Element, className: String): Classifier {
+        val interfaceElement = factory.createInterfaceInstance().apply {
+            name = className
+            profile._interface().apply(this)
+            setNameSpace(this, owner as NamedElement)
+        }
+        interfaceElement.owner = owner
+        return interfaceElement
+
+    }
+
     fun setModifiers(operation: Operation, modifiers: Int) {
         operation.isStatic = Modifier.isStatic(modifiers)
         operation.isLeaf = Modifier.isFinal(modifiers)
@@ -176,8 +189,8 @@ object PluginArchitectureFactory {
             }
         }
     }
-
     fun getClassName(clazz: java.lang.Class<*>): String = clazz.simpleName + getGenericSimpleType(clazz)
+
     fun <T> getGenericSimpleType(clazz: java.lang.Class<T>): String {
         try {
             val genericSuperclass = clazz.genericSuperclass
@@ -199,6 +212,7 @@ object PluginArchitectureFactory {
         }
     }
 
+
     fun createOption(featureElement: Classifier, option: Option): Property? {
         val optionElement = factory.createPropertyInstance().apply {
             name = option.property.name
@@ -208,7 +222,6 @@ object PluginArchitectureFactory {
         optionElement.owner = featureElement
         return optionElement
     }
-
 
     fun applyUIAction(uiAction: Classifier) {
         profile.uiAction().apply(uiAction)

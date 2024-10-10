@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.genarchimodel.generator
+package com.samares_engineering.omf.omf_core_framework.genarchimodel.generator
 
 import com.github.javaparser.JavaParser
 import com.github.javaparser.ast.CompilationUnit
