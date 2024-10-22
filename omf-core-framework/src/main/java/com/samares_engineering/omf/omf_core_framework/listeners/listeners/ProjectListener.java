@@ -39,6 +39,7 @@ public class ProjectListener implements ProjectPartLoadedListener {
     @Override
     public void projectOpened(Project project) {
         openProject(project);
+        projectHookExecutor.triggerOnProjectOpenedHooks(project);
     }
 
     @Override
@@ -51,9 +52,11 @@ public class ProjectListener implements ProjectPartLoadedListener {
         projectHookExecutor.triggerOnProjectSavedHooks(project);
     }
 
+    // Switching from one opened project to another opened project
     @Override
     public void projectActivated(Project project) {
         openProject(project);
+        projectHookExecutor.triggerOnProjectOpenedHooks(project);
     }
     @Override
     public void projectDeActivated(Project project) {
@@ -66,6 +69,8 @@ public class ProjectListener implements ProjectPartLoadedListener {
         openProject(project);
     }
 
+
+    // TODO Check when this is triggered, doesn't seem to be triggered when creating new project
     @Override
     public void projectCreated(Project project) {
         openProject(project);
@@ -186,7 +191,6 @@ public class ProjectListener implements ProjectPartLoadedListener {
         coreInitialisation(project);
         listenerInitialisation();
 //        featureOpenProjectHandling();//TODO: Delete this line
-        projectHookExecutor.triggerOnProjectOpenedHooks(project);
     }
 
     protected void closeProject(Project project) {
