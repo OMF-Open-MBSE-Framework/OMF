@@ -15,6 +15,7 @@ import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.stateactions.StateAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.AUIActionConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.UIActionConfiguratorUtils;
@@ -53,7 +54,7 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
      * register an action into the category, If the category doesn't exist it will register it.
      */
     private void registerDiagramAction(ActionsManager actionsManager, UIAction action) {
-        try {
+       try {
             UIActionConfiguratorUtils.findOrCreateCategory(actionsManager, action).addAction(action.getDiagramAction());
         }catch (Exception e){
             String actionName = action != null? action.getClass().getSimpleName(): "Unknown";
