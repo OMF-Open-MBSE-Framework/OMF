@@ -10,26 +10,28 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
+import com.samares_engineering.omf.omf_core_framework.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.connection.ConnectionFeatureExample;
+import com.samares_engineering.omf.omf_example_plugin.features.derivedproperty.DerivedPropertyExample;
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
-import com.samares_engineering.omf.omf_core_framework.genarchimodel.GeneratePluginModelArchi;
+import com.samares_engineering.omf.omf_example_plugin.features.elementspecification.ElementSpecificationExample;
+import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.DiagramListenerFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.ExportDiagramImagesFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.sandbox.SandboxFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.stateactionfeature.StateActionExample;
+import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
-import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new EnhancedDisplayFeature(),
                 new HyperLinkFeature(),
 //                new LockSafeFeature(),
+                new DerivedPropertyExample(),
                 new APIServerFeature("http://localhost", 9850),
 //
 //                //USEFUL for Modeling
@@ -49,23 +52,23 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new CloneElementFeature(),
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),
-                new ConnectionFeatureExample(),
-                new PatternCreationFeature(),
-                new StateActionExample(),
+//                new ConnectionFeatureExample(),
+//                new PatternCreationFeature(),
+//                new StateActionExample(),
 //
 //                //Examples
-                new SandboxFeature(),
+//                new SandboxFeature(),
                 new GeneratePluginModelArchi(),
-                //new ErrorManagementFeatureExample(),
+//                new ErrorManagementFeatureExample(),
 //                new GeneratePluginModelArchi(),
-//                new SysmlGptExploFeature(),
-//                new TemplateFeature(),
-//                new DiagramListenerFeature(),
-//                new ElementSpecificationExample(),
-//                new ExportDiagramImagesFeature(),
+                new SysmlGptExploFeature(),
+                new TemplateFeature(),
+                new DiagramListenerFeature(),
+                new ElementSpecificationExample(),
+                new ExportDiagramImagesFeature(),
 
                 new ListenersFeature(),
-//                // Deactivation of features
+                // Deactivation of features
                 new FeatureActivationFromOptionFeature()
         );
     }

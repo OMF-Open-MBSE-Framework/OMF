@@ -103,6 +103,7 @@ public class CloneManager {
         reset();
         setOriginalElementToClone(port);
         addAllElementsToCopy(getPortElementToCopy(port));
+        addAllElementsToCopy(elementGetter.getAllConnectorsFromPort(port));
 
         List<Port> list = elementGetter.getAllNestedPortFromPort(port);
         List<Connector> connectorList = elementGetter.getAllConnectorsFromPorts(list);
@@ -381,6 +382,7 @@ public class CloneManager {
      */
     public List<Element> getPropertyElementToCopy(Property property) {
         List<Element> elementsToCopy = filterElements(elementGetter.getRelationshipsFromElement(property));
+        addAllElementsToCopy(elementGetter.getAllConnectorsFromProperty(property));
         elementsToCopy.add(property);
         Type type = property.getType();
         if (type == null) return elementsToCopy;

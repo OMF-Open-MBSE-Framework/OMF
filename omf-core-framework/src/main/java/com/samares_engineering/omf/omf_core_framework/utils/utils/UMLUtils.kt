@@ -6,6 +6,7 @@
  */
 package com.samares_engineering.omf.omf_core_framework.utils.utils
 
+import com.nomagic.uml2.MagicDrawProfile
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement
@@ -14,10 +15,7 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
-import com.samares_engineering.omf.omf_core_framework.utils.utils.UMLUtils.getAllDerivedProperties
 import java.util.*
-import java.util.function.Function
-import java.util.stream.Collectors
 
 object UMLUtils {
     @JvmStatic
@@ -55,7 +53,7 @@ object UMLUtils {
     @JvmStatic
     fun getAllMetaClasses(stereotypes: Collection<Stereotype>): List<Class<*>> {
         return  stereotypes.asSequence()
-            .map { str: Stereotype -> UMLUtils.getStereotypeMetaClass(str) }
+            .map { str: Stereotype -> getStereotypeMetaClass(str) }
             .flatten()
             .distinct()
             .filter(Objects::nonNull)
@@ -80,7 +78,19 @@ object UMLUtils {
 
     @JvmStatic
     fun getAllDerivedProperties(stereotype: Stereotype): Set<Property> {
-        return StereotypesHelper.getPropertiesWithDerived(stereotype)
+//        return StereotypesHelper.getPropertiesWithDerived(stereotype)
+        val mdProfile = MagicDrawProfile.getInstance(stereotype);
+        return stereotype._elementTaggedValue
+            .asSequence()
+            .filterNotNull()
+            .map { it.owner }
+            .filterIsInstance<com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class>()
+            .filter{mdProfile.customization().`is`(it)}
+            .map { it.ownedAttribute }
+            .flatten()
+            .filter { mdProfile.derivedPropertySpecification().`is`(it) }
+            .toSet()
+
     }
 
     @JvmStatic
@@ -103,4 +113,20 @@ object UMLUtils {
         return getAllDerivedProperties(element)
             .find { property: Property -> property.name == propertyName }
     }
+
+    @JvmStatic
+    fun getDerivedPropertyValue(element: Element, derivedProperty: Property): Any? {
+       return getDerivedPropertyValueByName(element, derivedProperty)
+    }
+
+    @JvmStatic
+    private fun getDerivedPropertyValueByName(element: Element, derivedProperty: Property
+    ) = element.refGetValue(derivedProperty.name)
+
+    @JvmStatic
+    fun getDerivedPropertyValue(element: Element, propertyName: String): Any? {
+        return getDerivedPropertyByName(element, propertyName)?.let { getDerivedPropertyValue(element, it) }
+    }
+
+
 }

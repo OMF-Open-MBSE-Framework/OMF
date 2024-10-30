@@ -120,6 +120,9 @@ public class ElementGetter {
     public List<Connector> getAllConnectorsFromPort(Port port) {
         return (List<Connector>) Connectors.collectConnectors(port);
     }
+    public Collection<? extends Element> getAllConnectorsFromProperty(Property property) {
+        return Connectors.collectConnectors(property);
+    }
 
 
     /**
@@ -146,4 +149,6 @@ public class ElementGetter {
                         connector.getSupplierDependency().stream())
                 .collect(Collectors.toList());
     }
+
+
 }
