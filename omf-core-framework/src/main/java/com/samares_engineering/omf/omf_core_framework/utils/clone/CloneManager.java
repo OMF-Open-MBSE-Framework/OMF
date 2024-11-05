@@ -103,7 +103,7 @@ public class CloneManager {
         reset();
         setOriginalElementToClone(port);
         addAllElementsToCopy(getPortElementToCopy(port));
-
+        addAllElementsToCopy(elementGetter.getAllConnectorsFromPort(port));
         List<Port> list = elementGetter.getAllNestedPortFromPort(port);
         List<Connector> connectorList = elementGetter.getAllConnectorsFromPorts(list);
         addAllElementsToCopy(connectorList);
