@@ -20,13 +20,15 @@ import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureP
 import com.samares_engineering.omf.omf_example_plugin.features.derivedproperty.DerivedPropertyExample;
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.elementspecification.ElementSpecificationExample;
-import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.DiagramListenerFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut.DiagramListenerFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ExcelToParametricFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.ExportDiagramImagesFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.uinavigation.UINavigationFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
@@ -40,6 +42,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
     public List<OMFFeature> initFeatures() {
         return List.of(
                 new FeaturesDeactivationFeature(),
+                new ExcelToParametricFeature(),
                 //USEFUL
                 new EnhancedDisplayFeature(),
                 new HyperLinkFeature(),
@@ -68,6 +71,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new ExportDiagramImagesFeature(),
 
                 new ListenersFeature(),
+                new UINavigationFeature(),
                 // Deactivation of features
                 new FeatureActivationFromOptionFeature()
         );

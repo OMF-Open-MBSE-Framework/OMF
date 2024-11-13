@@ -10,6 +10,7 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.magicdraw.ui.browser.BrowserTabTree;
+import com.nomagic.magicdraw.ui.browser.Node;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
@@ -19,11 +20,14 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectableElement;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.nomagic.utils.Utilities;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.NoElementFoundException;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
+import javax.swing.tree.TreePath;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class OMFUtils {
@@ -181,8 +185,36 @@ public class OMFUtils {
      */
     public static void selectElementInContainmentTree(BaseElement element) {
         try {
-            BrowserTabTree containmentTree = Application.getInstance().getMainFrame().getBrowser().getActiveTree();
-            containmentTree.openNode(element);
+            openNode(element, false);
+        }catch (Exception e){
+            throw new OMFCriticalException("SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible", e);
+        }
+    }
+
+    private static void openNode(BaseElement element, boolean appendSelection) {
+        BrowserTabTree containmentTree = Application.getInstance().getMainFrame().getBrowser().getActiveTree();
+        AtomicReference<TreePath> atomic = new AtomicReference<>();
+        Utilities.invokeAndWaitOnDispatcher(() -> {
+            boolean var6 = Node.isLocked();
+            long var7 = Node.setLocked(false);
+
+            try {
+                atomic.set(containmentTree.openNode(element, true, appendSelection, true));
+            } finally {
+                Node.resetLock(var6, var7);
+            }
+
+        });
+    }
+
+    /**
+     * Select an element in the containment tree.
+     * MagicDraw containment tree shall be accessible in the API.
+     * @param elements: elements to select
+     */
+    public static void selectElementInContainmentTree(List<BaseElement> elements) {
+        try {
+            elements.forEach(element -> openNode(element, true));
         }catch (Exception e){
             throw new OMFCriticalException("SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible", e);
         }

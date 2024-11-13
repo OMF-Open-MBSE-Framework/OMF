@@ -8,8 +8,10 @@ package com.samares_engineering.omf.omf_core_framework.factory;
 
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
+import com.nomagic.magicdraw.uml.Finder;
 import com.nomagic.uml2.ext.jmi.helpers.StereotypesHelper;
 import com.nomagic.uml2.ext.magicdraw.activities.mdfundamentalactivities.Activity;
+import com.nomagic.uml2.ext.magicdraw.auxiliaryconstructs.mdmodels.Model;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*;
@@ -17,6 +19,7 @@ import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
+import com.samares_engineering.omf.omf_core_framework.utils.OMFConstants;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -37,8 +40,16 @@ public class SysMLFactory extends AMagicDrawFactory {
     }
 
     public Package createPackage( String name, Element owner) {
-        Package mdPackage = getMagicDrawFactory().createPackageInstance();
+        Package mdPackage = createPackage();
         mdPackage.setName(name);
+        mdPackage.setOwner(owner);
+        return mdPackage;
+    }
+    public Package createPackage() {
+        return getMagicDrawFactory().createPackageInstance();
+    }
+    public Package createPackage(Element owner) {
+        var mdPackage = getMagicDrawFactory().createPackageInstance();
         mdPackage.setOwner(owner);
         return mdPackage;
     }
@@ -98,6 +109,54 @@ public class SysMLFactory extends AMagicDrawFactory {
         block.setOwner(owner);
         return block;
     }
+
+
+    public Class createConstraintBlock() {
+        Class constraintBlock = getMagicDrawFactory().createClassInstance();
+        Profile.getInstance().getSysml().constraintBlock().apply(constraintBlock);
+        return constraintBlock;
+    }
+
+    public Class createConstraintBlock(Element owner) {
+        Class constraintBlock = createConstraintBlock();
+        constraintBlock.setOwner(owner);
+        return constraintBlock;
+    }
+
+    public OpaqueExpression createOpaqueExpression() {
+        return getMagicDrawFactory().createOpaqueExpressionInstance();
+    }
+
+    public OpaqueExpression createOpaqueExpression(Element owner) {
+        OpaqueExpression opaqueExpression = createOpaqueExpression();
+        opaqueExpression.setOwner(owner);
+        return opaqueExpression;
+    }
+
+    public OpaqueExpression createOpaqueExpression(Element owner, String body) {
+        OpaqueExpression opaqueExpression = createOpaqueExpression(owner);
+        opaqueExpression.getBody().add(body);
+        return opaqueExpression;
+    }
+
+
+    public Constraint createConstraint() {
+        return getMagicDrawFactory().createConstraintInstance();
+    }
+
+    public Constraint createConstraint(Element owner) {
+        Constraint constraint = createConstraint();
+        constraint.setOwner(owner);
+        return constraint;
+    }
+
+    public Constraint createConstraint(Element owner, String specification) {
+        Constraint constraint = createConstraint(owner);
+        var valueSpecification = createOpaqueExpression(constraint, specification);
+        constraint.setSpecification(valueSpecification);
+        return constraint;
+    }
+
 
     /*
     Property
@@ -192,6 +251,18 @@ public class SysMLFactory extends AMagicDrawFactory {
         return p;
     }
 
+    public Port createConstraintParameter() {
+        Port port = getMagicDrawFactory().createPortInstance();
+        Profile._getSysmlAdditionalStereotypes().constraintParameter().apply(port);
+        return port;
+    }
+
+    public Port createConstraintParameter(Element owner) {
+        Port port = createConstraintParameter();
+        port.setOwner(owner);
+        return port;
+    }
+
     /*
     Connector
      */
@@ -284,6 +355,19 @@ public class SysMLFactory extends AMagicDrawFactory {
         literalInteger.setOwner(owner);
         return literalInteger;
     }
+
+    public LiteralReal createLiteralReal(double value) {
+        LiteralReal literalReal = getMagicDrawFactory().createLiteralRealInstance();
+        literalReal.setValue(value);
+        return literalReal;
+    }
+
+    public LiteralReal createLiteralReal(Element owner, double value) {
+        LiteralReal literalReal = createLiteralReal(value);
+        literalReal.setOwner(owner);
+        return literalReal;
+    }
+
     /**
      * Create a LiteralString with the given value
      * @param stringValue the value of the LiteralString
@@ -306,5 +390,15 @@ public class SysMLFactory extends AMagicDrawFactory {
         literalString.setOwner(owner);
         return literalString;
     }
+
+
+    //Packages
+    public Package getSysMLTypeLibraryPackage() {
+        Model sysmlModel = Finder.byNameRecursively().find(OMFUtils.getProject(), Model.class, OMFConstants.SYSML_PACKAGE_NAME);
+        return Finder.byNameRecursively().find(sysmlModel, Package.class, OMFConstants.SYSML_LIBRARY_PACKAGE_NAME);
+    }
+
 }
+
+
 

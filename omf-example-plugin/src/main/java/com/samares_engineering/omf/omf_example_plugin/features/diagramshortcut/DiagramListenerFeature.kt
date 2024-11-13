@@ -4,7 +4,7 @@
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since     0.0.0
  */
-package com.samares_engineering.omf.omf_example_plugin.features.ergodiagram
+package com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut
 
 import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.uml.symbols.DiagramListenerAdapter
@@ -16,7 +16,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.ALiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.DiagramListenerConstants
-import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.diagramlistener.OnDiagramOpeningListener
+import com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut.diagramlistener.OnDiagramOpeningListener
 import java.beans.PropertyChangeEvent
 import java.util.stream.Collectors
 
