@@ -9,6 +9,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ValueSpecification
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
+import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 
@@ -40,7 +41,8 @@ class ExcelParametricImporter(private val file: File) {
         while (rowIterator.hasNext()) {
             val row = rowIterator.next()
             val nameCell = row.getCell(0)
-            val valueCell = row.getCell(1) // Assume the result value is in the second column
+            val unit = row.getCell(1)
+            val valueCell = row.getCell(2) // Assume the result value is in the second column
             val cellReference = valueCell.address.formatAsString() // Cell reference (e.g., "B2")
 
             if (nameCell != null && valueCell != null) {
@@ -88,7 +90,8 @@ class ExcelParametricImporter(private val file: File) {
         while (rowIterator.hasNext()) {
             val row = rowIterator.next()
             val constraintNameCell = row.getCell(0) // Name of the constraint/result property
-            val equationCell = row.getCell(2) // Equation cell
+            val unit = row.getCell(2) //
+            val equationCell = row.getCell(3) // Equation cell
 
             if (constraintNameCell == null || equationCell == null) continue
 
@@ -99,7 +102,7 @@ class ExcelParametricImporter(private val file: File) {
             cellToMDElementMap[equationCell.address.formatAsString()] = constraintBlock!!
 
             // Store the equation for the next phase
-            val equation = equationCell.cellFormula
+            val equation = "$constraintName = " + equationCell.cellFormula
             constraintsToCreate.add(constraintBlock to equation)
 
             listImportedConstraints.add(constraintName)
@@ -147,6 +150,11 @@ class ExcelParametricImporter(private val file: File) {
                 linkConstraintParameterToValueProperty(constraintParameter, valueProperty)
             }
         }
+        val outputParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock).let { outputParameter ->
+            outputParameter.name = constraintBlock!!.name
+            outputParameter.type = realType
+        }
+        
     }
 
     private fun createConstraintBlock(

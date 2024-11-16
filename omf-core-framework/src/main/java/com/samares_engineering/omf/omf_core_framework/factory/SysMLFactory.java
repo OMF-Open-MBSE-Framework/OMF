@@ -154,6 +154,7 @@ public class SysMLFactory extends AMagicDrawFactory {
         Constraint constraint = createConstraint(owner);
         var valueSpecification = createOpaqueExpression(constraint, specification);
         constraint.setSpecification(valueSpecification);
+        constraint.getConstrainedElement().add(owner);
         return constraint;
     }
 
