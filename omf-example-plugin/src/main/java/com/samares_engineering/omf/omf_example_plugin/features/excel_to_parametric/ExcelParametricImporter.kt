@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric
 
+import com.github.javaparser.resolution.Navigator.findType
 import com.nomagic.magicdraw.uml.Finder
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Classifier
@@ -9,9 +10,10 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ValueSpecification
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
-import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
+
+
 
 class ExcelParametricImporter(private val file: File) {
 
@@ -19,10 +21,20 @@ class ExcelParametricImporter(private val file: File) {
     val realType: DataType by lazy { findType("Real") as DataType }
     val stringType: DataType by lazy { findType("String") as DataType }
     val workbook = open()
+    private val valuesSheetName = "ValueProperties"
+    private val regexCell = "([A-Z]+\\d+)" // ex:
+
+
+    private fun regexValueFromSheet(sheetName:String): String { return """($sheetName![A-Z]+\d+)"""}
+    private val regexRefCellPropertySheet:String
+        get(){val sheetNameRegex = regexValueFromSheet(valuesSheetName)
+            return """$sheetNameRegex|$regexCell"""}
 
     // Maps for easy access to ValueProperties and cells
-    private val nameToCellMap = mutableMapOf<String, String>() // Map name to cell reference
-    private val cellToMDElementMap = mutableMapOf<String, NamedElement>() // Map cell to ValueProperty or ConstraintBlock
+    private val propertyNameToCellMap = mutableMapOf<String, String>() // "Name" -> "Cell reference"
+    private val constraintNameToCell = mutableMapOf<String, String>() // "Name" -> "Cell reference"
+    private val cellToValueProperty = mutableMapOf<String, NamedElement>() // "Cell reference" -> ValueProperty
+    private val cellToConstraint = mutableMapOf<String, NamedElement>() // "Cell reference" -> Constraint
 
     private fun open(): XSSFWorkbook {
         return XSSFWorkbook(file)
@@ -65,8 +77,8 @@ class ExcelParametricImporter(private val file: File) {
                 listImportedProperties.add(propertyName)
 
                 // Store mappings for cell reference and ValueProperty
-                nameToCellMap[propertyName] = cellReference // Map name to cell
-                cellToMDElementMap[cellReference] = valueProperty // Map cell to ValueProperty
+                propertyNameToCellMap[propertyName] = cellReference // Map name to cell
+                cellToValueProperty["$valuesSheetName!$cellReference"] = valueProperty // Map cell to ValueProperty
             }
         }
         return listImportedProperties
@@ -99,11 +111,14 @@ class ExcelParametricImporter(private val file: File) {
 
             // Create the constraint block
             val constraintBlock = createConstraintBlock(owner, constraintName)
-            cellToMDElementMap[equationCell.address.formatAsString()] = constraintBlock!!
+            cellToConstraint[equationCell.address.formatAsString()] = constraintBlock!!
 
             // Store the equation for the next phase
             val equation = "$constraintName = " + equationCell.cellFormula
             constraintsToCreate.add(constraintBlock to equation)
+
+            constraintNameToCell[constraintName] = equationCell.address.formatAsString()
+            cellToConstraint[equationCell.address.formatAsString()] = constraintBlock
 
             listImportedConstraints.add(constraintName)
         }
@@ -111,7 +126,7 @@ class ExcelParametricImporter(private val file: File) {
         // Phase 2: Create all Constraints (link constraint parameters and set the equations)
         for ((constraintBlock, equation) in constraintsToCreate) {
             // Parse formula to determine dependencies (e.g., cell references)
-            val dependentCells = parseFormula(equation)
+            val dependentCells = parseFormula(equation, valuesSheetName)
 
             // Create constraint parameters for each dependent cell
             createConstraintParameters(dependentCells, constraintBlock)
@@ -126,7 +141,7 @@ class ExcelParametricImporter(private val file: File) {
 
     private fun createConstraint(
         constraintBlock: Class?,
-        dependentCells: List<String>,
+        dependentCells: FormulaReferences,
         equation: String
     ) {
         val constraintSpecification =
@@ -134,27 +149,44 @@ class ExcelParametricImporter(private val file: File) {
     }
 
     private fun createConstraintParameters(
-        dependentCells: List<String>,
+        dependentCells: FormulaReferences,
         constraintBlock: Class?
     ) {
-        dependentCells.forEach { cellReference ->
-            cellToMDElementMap[cellReference]?.let { valueProperty ->
-                val constraintParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock)
-                constraintParameter.name = valueProperty.name
-                constraintParameter.type = when (valueProperty) {
-                    is Classifier -> valueProperty
-                    is Property -> valueProperty.type
-                    else -> throw IllegalArgumentException("Referenced element is not a Classifier or Property")
-                }
-                // Link the constraint parameter to the corresponding ValueProperty
-                linkConstraintParameterToValueProperty(constraintParameter, valueProperty)
+        dependentCells.valueReferences
+            .filter {cellToValueProperty[it] != null}
+            .map {cellToValueProperty[it]}
+            .forEach {namedElement ->
+                createConstraintParameter(constraintBlock, namedElement)
             }
-        }
+
+
+        dependentCells.constraintReferences
+            .filter {cellToConstraint[it] != null}
+            .map {cellToConstraint[it]}
+            .forEach {namedElement ->
+                createConstraintParameter(constraintBlock, namedElement)
+            }
+
         val outputParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock).let { outputParameter ->
             outputParameter.name = constraintBlock!!.name
             outputParameter.type = realType
         }
-        
+
+    }
+
+    private fun createConstraintParameter(
+        constraintBlock: Class?,
+        namedElement: NamedElement?
+    ) {
+        val constraintParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock)
+        constraintParameter.name = namedElement?.name
+        constraintParameter.type = when (namedElement) {
+            is Classifier -> namedElement
+            is Property -> namedElement.type
+            else -> throw IllegalArgumentException("Referenced element is not a Classifier or Property")
+        }
+        // Link the constraint parameter to the corresponding ValueProperty
+        linkConstraintParameterToValueProperty(constraintParameter, namedElement)
     }
 
     private fun createConstraintBlock(
@@ -166,58 +198,68 @@ class ExcelParametricImporter(private val file: File) {
         return constraintBlock
     }
 
-    // Parse Excel formula to find referenced cell names
-    private fun parseFormula(formula: String): List<String> {
-        val references = mutableListOf<String>()
 
-        // Mise à jour du regex pour couvrir :
-        // 1. Les références du type ValueProperties!B3
-        // 2. Les références locales comme C2, C9, etc.
-        val regex = Regex("""(ValueProperties![A-Z]+\d+)|([A-Z]+\d+)""")
+
+    private fun parseFormula(formula: String, sheetName: String): FormulaReferences {
+        val valueReferences = mutableListOf<String>()
+        val constraintReferences = mutableListOf<String>()
+
+        // Regex combiné pour trouver les deux types de références
+        val regex = Regex(regexRefCellPropertySheet)
+
+//        println("Parsing formula: $formula")
+//        println("Regex: $regex")
+//
+//        regex.findAll(formula).forEach { matchResult ->
+//            println("Full match: ${matchResult.value}")
+//            println("Group 1 (ValueProperties): ${matchResult.groups[1]?.value}")
+//            println("Group 2 (Local): ${matchResult.groups[2]?.value}")
+//        }
+
 
         regex.findAll(formula).forEach { matchResult ->
-            val valuePropertiesReference = matchResult.groups[1]?.value
-            val localReference = matchResult.groups[2]?.value
+            val valuePropertiesReference = matchResult.groups[1]?.value // Match `ValueProperties!B3`
+            val localReference = matchResult.groups[2]?.value           // Match `C2`
 
             if (!valuePropertiesReference.isNullOrEmpty()) {
-                references.add(valuePropertiesReference)
+                valueReferences.add(valuePropertiesReference)
             }
 
             if (!localReference.isNullOrEmpty()) {
-                references.add(localReference)
+                constraintReferences.add(localReference)
             }
         }
 
-        return references
+        return FormulaReferences(valueReferences, constraintReferences)
     }
 
 
 
-    private fun buildEquationString(cells: List<String>, formula: String): String {
+    private fun buildEquationString(
+        references: FormulaReferences,
+        formula: String
+    ): String {
         var equation = formula
 
-        val referenceRegex = Regex("""ValueProperties!([A-Z]+\d+|[\w\s\(\)]+)""")
-
-        referenceRegex.findAll(formula).forEach { matchResult ->
-            val reference = matchResult.groupValues[1]
-
-            // Chercher dans la map pour obtenir le bon nom de la propriété
-            cellToMDElementMap[reference]?.name?.let { propertyName ->
-                equation = equation.replace("ValueProperties!$reference", propertyName)
+        // Remplacer les références `ValueProperties!B3` par les noms des propriétés
+        references.valueReferences.forEach { reference ->
+            val propertyName = cellToValueProperty[reference]?.name
+            if (propertyName != null) {
+                equation = equation.replace(reference, propertyName)
             }
         }
 
-        // Traitement des références locales dans le même onglet
-        cells.forEach { cellReference ->
-            if (!referenceRegex.containsMatchIn(cellReference)) {
-                cellToMDElementMap[cellReference]?.name?.let { propertyName ->
-                    equation = equation.replace(cellReference, propertyName)
-                }
+        // Remplacer les références locales (`C2`, `C9`, etc.) par les noms des contraintes
+        references.constraintReferences.forEach { reference ->
+            val propertyName = cellToConstraint[reference]?.name
+            if (propertyName != null) {
+                equation = equation.replace(reference, propertyName)
             }
         }
 
         return equation
     }
+
 
 
     private fun findType(typeName: String): Classifier? {
@@ -234,4 +276,29 @@ class ExcelParametricImporter(private val file: File) {
         // Here, link the constraint parameter to the value property
         // Adapt this function according to the tools and APIs available in your project
     }
+
+    data class FormulaReferences(
+        val valueReferences: List<String>,
+        val constraintReferences: List<String>
+    )
+
+    open class EquationParameter(
+        val name: String,
+        val type: String,
+        var concreteElement: NamedElement? = null
+    )
+
+    class ValuePropertyBean(
+        name: String,
+        type: String,
+        val value: String,
+        val unit: String
+    ) : EquationParameter(name, type)
+
+    class ConstraintBean(
+        name: String,
+        type: String,
+        val equation: String,
+        val mapParameterNameToConstraintBean: Map<String, ConstraintBean>
+    ) : EquationParameter(name, type)
 }
