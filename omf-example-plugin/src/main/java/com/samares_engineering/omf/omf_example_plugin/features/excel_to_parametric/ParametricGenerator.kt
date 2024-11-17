@@ -1,18 +1,21 @@
 package com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric
 
+import com.nomagic.esi.common.a.C
+import com.nomagic.magicdraw.actions.ActionsID
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.*
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.nomagic.magicdraw.openapi.uml.ModelElementsManager
 import com.nomagic.magicdraw.openapi.uml.PresentationElementsManager
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement
-import com.nomagic.magicdraw.uml.DiagramTypeConstants
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
+import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.LayoutManager
 
 class ParametricGenerator(
     private val importer: ExcelParametricImporter,
     private val owner: Class
 ) {
+    lateinit var diagram: Diagram
 
     fun generateParametric() {
         // Step 1: Generate ConstraintProperties
@@ -22,10 +25,13 @@ class ParametricGenerator(
         generateConnectors()
 
         // Step 3: Generate Diagram
-        val diagram = generateDiagram()
+        diagram = generateDiagram()
 
+    }
+
+    fun displayElements(): LayoutManager {
         // Step 4: Display Elements
-        displayElementsOnDiagram(diagram)
+        return displayElementsOnDiagram(diagram)
     }
 
     private fun generateConstraintProperties() {
@@ -50,30 +56,41 @@ class ParametricGenerator(
             val constraintProperty = constraintBean.constraintPropertyElement as? Property
             val constraintBlock = constraintBean.concreteElement as? Class
 
-            if (constraintProperty != null && constraintBlock != null) {
+            if (constraintProperty == null || constraintBlock == null)  continue
                 // Get constraint parameters
-                val constraintParameters = constraintBlock.ownedAttribute.filter { Profile._getSysmlAdditionalStereotypes().constraintProperty().`is`(it)
-                }
-
-                for (parameter in constraintParameters) {
-                    val parameterName = parameter.name
-                    val equationParameter = constraintBean.mapParameterNameToEquationParameter[parameterName]
-
-                    if (equationParameter != null) {
-                        val targetElement = equationParameter.concreteElement
-
-                        if (targetElement != null) {
-                            // Create binding connector between constraint parameter and target element
-                            createBindingConnector(
-                                owner,
-                                constraintProperty,
-                                parameter,
-                                targetElement
-                            )
-                        }
-                    }
-                }
+            val constraintParameters = constraintBlock.ownedAttribute
+                .filter { Profile._getSysmlAdditionalStereotypes().constraintParameter().`is`(it)
             }
+
+            for (parameter in constraintParameters) {
+                val parameterName = parameter.name
+                val equationParameter = constraintBean.mapParameterNameToEquationParameter[parameterName] ?: continue
+
+                val targetName = (equationParameter.concreteElement as NamedElement).name
+                val targetParameterBean = constraintBean.mapParameterNameToEquationParameter[targetName]
+                val targetElementConstraintProperty: Property?
+
+                val targetElement:Property?
+
+                if (targetParameterBean is ExcelParametricImporter.ConstraintBean){
+                    targetElementConstraintProperty = targetParameterBean.constraintPropertyElement
+                    targetElement = targetParameterBean.outputParameter
+                } else {
+                    targetElementConstraintProperty = null
+                    targetElement = targetParameterBean?.concreteElement as Property
+                }
+                if (targetElement == null) continue
+
+                // Create binding connector between constraint parameter and target element
+                createBindingConnector(
+                    owner,
+                    constraintProperty,
+                    parameter,
+                    targetElementConstraintProperty,
+                    targetElement
+                )
+            }
+
         }
     }
 
@@ -81,19 +98,27 @@ class ParametricGenerator(
         context: Classifier,
         constraintProperty: Property,
         constraintParameter: Property,
-        targetElement: NamedElement
+        targetElementConstraintProperty: Property?,
+        targetElement: Property
     ) {
         val connector = SysMLFactory.getInstance().createConnector(context)
 
         // Create ConnectorEnds
-        val connectorEnd1 = connector.end.get(0)
-        val connectorEnd2 = connector.end.get(1)
+        val connectorEnd1 = connector.end[0]
+        val connectorEnd2 = connector.end[1]
 
         // Set roles and parts
         connectorEnd1.role = constraintParameter
         connectorEnd1.partWithPort = constraintProperty
+        Profile._getSysml().nestedConnectorEnd().apply(connectorEnd1)
+        Profile._getSysml().nestedConnectorEnd().setPropertyPath(connectorEnd1, listOf(constraintProperty))
 
         connectorEnd2.role = targetElement as? Property
+        if (targetElementConstraintProperty != null) {
+            connectorEnd2.partWithPort = targetElementConstraintProperty
+            Profile._getSysml().nestedConnectorEnd().apply(connectorEnd2)
+            Profile._getSysml().nestedConnectorEnd().setPropertyPath(connectorEnd2, listOf(targetElementConstraintProperty))
+        }
 
         // Set the connector type to 'binding connector' stereotype
         Profile._getSysml().bindingConnector().apply(connector)
@@ -111,24 +136,29 @@ class ParametricGenerator(
         return diagram
     }
 
-    private fun displayElementsOnDiagram(diagram: Diagram) {
+    private fun displayElementsOnDiagram(diagram: Diagram): LayoutManager {
         val presentationElementsManager = PresentationElementsManager.getInstance()
         val diagramPresentationElement = OMFUtils.getProject().getDiagram(diagram) as DiagramPresentationElement
-
+        val layoutManager = LayoutManager(diagramPresentationElement)
         // Add properties to the diagram
         for (valuePropertyBean in importer.valuePropertyBeans) {
             val valueProperty = valuePropertyBean.concreteElement as? Property
             if (valueProperty != null) {
-                presentationElementsManager.createShapeElement(valueProperty, diagramPresentationElement)
+                layoutManager.refreshPart(valueProperty)
             }
         }
 
         // Add constraint properties to the diagram
         for (constraintBean in importer.constraintBeans) {
             val constraintProperty = constraintBean.constraintPropertyElement as? Property
+
             if (constraintProperty != null) {
-                presentationElementsManager.createShapeElement(constraintProperty, diagramPresentationElement)
+                val partPresentationElement = layoutManager.refreshPart(constraintProperty)
+                layoutManager.refreshAllPorts(constraintProperty.type as Class, constraintProperty)
+                ActionsID.QUICK_DIAGRAM_LAYOUT
             }
+
+
         }
 
         // Add connectors to the diagram
@@ -137,7 +167,10 @@ class ParametricGenerator(
 //        }
 
         // Refresh the diagram to display all elements
+        layoutManager.displayAllPaths()
         diagramPresentationElement.open()
+
+        return layoutManager
 //        diagramPresentationElement.diagramSurface.update()
     }
 }

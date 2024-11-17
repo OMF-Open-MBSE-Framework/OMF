@@ -8,6 +8,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DataType
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ValueSpecification
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -76,7 +77,7 @@ class ExcelParametricImporter(private val file: File) {
                 val unit = unitCell?.stringCellValue ?: ""
 
                 val valuePropertyBean = ValuePropertyBean(
-                    name = propertyName,
+                    name = "$propertyName $unit",
                     type = getTypeFromValue(propertyValue).name,
                     value = propertyValue,
                     unit = unit
@@ -97,7 +98,7 @@ class ExcelParametricImporter(private val file: File) {
         while (rowIterator.hasNext()) {
             val row = rowIterator.next()
             val constraintNameCell = row.getCell(0) // Name of the constraint/result property
-            val unitCell = row.getCell(2)
+            val unitCell = row.getCell(1) // Unit of the constraint
             val equationCell = row.getCell(3) // Equation cell
             val cellReference = equationCell.address.formatAsString()
 
@@ -108,7 +109,7 @@ class ExcelParametricImporter(private val file: File) {
             val equation = "$constraintName = " + equationCell.cellFormula
 
             val constraintBean = ConstraintBean(
-                name = constraintName,
+                name = "$constraintName $unit",
                 type = realType.name,
                 equation = equation,
                 mapParameterNameToEquationParameter = mutableMapOf()
@@ -228,7 +229,7 @@ class ExcelParametricImporter(private val file: File) {
             constraintParameter.type = findType(equationParameter.type)
 
             // Update concreteElement in the EquationParameter
-            equationParameter.concreteElement = constraintParameter
+//            equationParameter.concreteElement = constraintParameter
 
             // Link the constraint parameter to the corresponding ValueProperty or Constraint
             linkConstraintParameterToEquationParameter(constraintParameter, equationParameter)
@@ -240,7 +241,7 @@ class ExcelParametricImporter(private val file: File) {
             type = realType
         }
         // Update concreteElement for the output parameter
-        constraintBean.concreteElement = outputParameter
+        constraintBean.outputParameter = outputParameter
     }
 
     private fun createConstraint(
@@ -341,6 +342,7 @@ class ExcelParametricImporter(private val file: File) {
         val mapParameterNameToEquationParameter: MutableMap<String, EquationParameter>,
        concreteElement: NamedElement? = null
     ) : EquationParameter(name, type, concreteElement) {
+        var outputParameter: Port? = null
         var constraintPropertyElement: Property? = null
     }
 }
