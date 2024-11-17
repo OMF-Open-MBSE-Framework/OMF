@@ -222,6 +222,17 @@ public class SysMLFactory extends AMagicDrawFactory {
         return valueProperty;
     }
 
+    public Property createConstraintProperty(Element owner) {
+        Property constraintProperty = createConstraintProperty();
+        constraintProperty.setOwner(owner);
+        return constraintProperty;
+    }
+    public Property createConstraintProperty() {
+        Property constraintProperty = createProperty();
+        Profile._getSysmlAdditionalStereotypes().constraintProperty().apply(constraintProperty);
+        return constraintProperty;
+    }
+
     /*
     Signal
      */

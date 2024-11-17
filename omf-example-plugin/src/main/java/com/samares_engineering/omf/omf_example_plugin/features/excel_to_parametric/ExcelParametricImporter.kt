@@ -13,8 +13,6 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 
-
-
 class ExcelParametricImporter(private val file: File) {
 
     val integerType: DataType by lazy { findType("Integer") as DataType }
@@ -22,19 +20,31 @@ class ExcelParametricImporter(private val file: File) {
     val stringType: DataType by lazy { findType("String") as DataType }
     val workbook = open()
     private val valuesSheetName = "ValueProperties"
-    private val regexCell = "([A-Z]+\\d+)" // ex:
+    private val regexCell = "([A-Z]+\\d+)" // ex: B3
 
+    private fun regexValueFromSheet(sheetName: String): String {
+        return """($sheetName![A-Z]+\d+)"""
+    }
 
-    private fun regexValueFromSheet(sheetName:String): String { return """($sheetName![A-Z]+\d+)"""}
-    private val regexRefCellPropertySheet:String
-        get(){val sheetNameRegex = regexValueFromSheet(valuesSheetName)
-            return """$sheetNameRegex|$regexCell"""}
+    private val regexRefCellPropertySheet: String
+        get() {
+            val sheetNameRegex = regexValueFromSheet(valuesSheetName)
+            return """$sheetNameRegex|$regexCell"""
+        }
 
     // Maps for easy access to ValueProperties and cells
     private val propertyNameToCellMap = mutableMapOf<String, String>() // "Name" -> "Cell reference"
     private val constraintNameToCell = mutableMapOf<String, String>() // "Name" -> "Cell reference"
     private val cellToValueProperty = mutableMapOf<String, NamedElement>() // "Cell reference" -> ValueProperty
     private val cellToConstraint = mutableMapOf<String, NamedElement>() // "Cell reference" -> Constraint
+
+    // Beans to store the parsed data
+    val valuePropertyBeans = mutableListOf<ValuePropertyBean>()
+    val constraintBeans = mutableListOf<ConstraintBean>()
+    val beans: List<EquationParameter>
+        get() = valuePropertyBeans + constraintBeans
+    private val cellToValuePropertyBean = mutableMapOf<String, ValuePropertyBean>()
+    private val cellToConstraintBean = mutableMapOf<String, ConstraintBean>()
 
     private fun open(): XSSFWorkbook {
         return XSSFWorkbook(file)
@@ -44,44 +54,70 @@ class ExcelParametricImporter(private val file: File) {
         workbook.close()
     }
 
-    fun importValueProperties(owner: Classifier): MutableList<String> {
-        val sheet = workbook.getSheetAt(0)  // Get the first sheet
-        val listImportedProperties = mutableListOf<String>()
+    fun generateBeans() {
+        parseValueProperties()
+        parseConstraints()
+    }
 
+    private fun parseValueProperties() {
+        val sheet = workbook.getSheetAt(0)  // Get the first sheet
         val rowIterator = sheet.rowIterator()
         rowIterator.next() // Skip the first row (header)
         while (rowIterator.hasNext()) {
             val row = rowIterator.next()
             val nameCell = row.getCell(0)
-            val unit = row.getCell(1)
-            val valueCell = row.getCell(2) // Assume the result value is in the second column
-            val cellReference = valueCell.address.formatAsString() // Cell reference (e.g., "B2")
+            val unitCell = row.getCell(1)
+            val valueCell = row.getCell(2) // Assume the value is in the third column
+            val cellReference = valueCell.address.formatAsString() // Cell reference (e.g., "C2")
 
             if (nameCell != null && valueCell != null) {
                 val propertyName = nameCell.stringCellValue
                 val propertyValue = valueCell.toString()
+                val unit = unitCell?.stringCellValue ?: ""
 
-                // Create ValueProperty
-                val valueProperty = SysMLFactory.getInstance().createValueProperty(owner)
-                valueProperty.name = propertyName
+                val valuePropertyBean = ValuePropertyBean(
+                    name = propertyName,
+                    type = getTypeFromValue(propertyValue).name,
+                    value = propertyValue,
+                    unit = unit
+                )
 
-                val defaultValue: ValueSpecification = when {
-                    propertyValue.toIntOrNull() != null -> SysMLFactory.getInstance().createLiteralInteger(valueProperty, propertyValue.toInt())
-                    propertyValue.toDoubleOrNull() != null -> SysMLFactory.getInstance().createLiteralReal(valueProperty, propertyValue.toDouble())
-                    else -> SysMLFactory.getInstance().createLiteralString(valueProperty, propertyValue)
-                }
-                valueProperty.defaultValue = defaultValue
-
-                valueProperty.type = getTypeFromValue(propertyValue)
-
-                listImportedProperties.add(propertyName)
-
-                // Store mappings for cell reference and ValueProperty
+                valuePropertyBeans.add(valuePropertyBean)
                 propertyNameToCellMap[propertyName] = cellReference // Map name to cell
-                cellToValueProperty["$valuesSheetName!$cellReference"] = valueProperty // Map cell to ValueProperty
+                cellToValuePropertyBean["$valuesSheetName!$cellReference"] = valuePropertyBean // Map cell to ValuePropertyBean
             }
         }
-        return listImportedProperties
+    }
+
+    private fun parseConstraints() {
+        val sheet = workbook.getSheetAt(1)
+        val rowIterator = sheet.rowIterator()
+        rowIterator.next() // Skip the first row (header)
+
+        while (rowIterator.hasNext()) {
+            val row = rowIterator.next()
+            val constraintNameCell = row.getCell(0) // Name of the constraint/result property
+            val unitCell = row.getCell(2)
+            val equationCell = row.getCell(3) // Equation cell
+            val cellReference = equationCell.address.formatAsString()
+
+            if (constraintNameCell == null || equationCell == null) continue
+
+            val constraintName = constraintNameCell.stringCellValue
+            val unit = unitCell?.stringCellValue ?: ""
+            val equation = "$constraintName = " + equationCell.cellFormula
+
+            val constraintBean = ConstraintBean(
+                name = constraintName,
+                type = realType.name,
+                equation = equation,
+                mapParameterNameToEquationParameter = mutableMapOf()
+            )
+
+            constraintBeans.add(constraintBean)
+            constraintNameToCell[constraintName] = cellReference
+            cellToConstraintBean[cellReference] = constraintBean
+        }
     }
 
     private fun getTypeFromValue(propertyValue: String) = when {
@@ -90,136 +126,142 @@ class ExcelParametricImporter(private val file: File) {
         else -> stringType
     }
 
-    fun importConstraints(owner: Classifier): MutableList<String> {
-        val sheet = workbook.getSheetAt(1)
-        val listImportedConstraints = mutableListOf<String>()
-        val constraintsToCreate = mutableListOf<Pair<Class, String>>() // Stores pairs of (ConstraintBlock, Equation)
+    fun createSysMLElements(owner: Classifier) {
+        // Create ValueProperties
+        val valuePropertyNameToElement = mutableMapOf<String, Property>()
+        for (valuePropertyBean in valuePropertyBeans) {
+            val valueProperty = SysMLFactory.getInstance().createValueProperty(owner)
+            valueProperty.name = valuePropertyBean.name
 
-        val rowIterator = sheet.rowIterator()
-        rowIterator.next() // Skip the first row (header)
+            val propertyValue = valuePropertyBean.value
+            val defaultValue: ValueSpecification = when {
+                propertyValue.toIntOrNull() != null -> SysMLFactory.getInstance()
+                    .createLiteralInteger(valueProperty, propertyValue.toInt())
+                propertyValue.toDoubleOrNull() != null -> SysMLFactory.getInstance()
+                    .createLiteralReal(valueProperty, propertyValue.toDouble())
+                else -> SysMLFactory.getInstance()
+                    .createLiteralString(valueProperty, propertyValue)
+            }
+            valueProperty.defaultValue = defaultValue
 
-        // Phase 1: Create all ConstraintBlocks
-        while (rowIterator.hasNext()) {
-            val row = rowIterator.next()
-            val constraintNameCell = row.getCell(0) // Name of the constraint/result property
-            val unit = row.getCell(2) //
-            val equationCell = row.getCell(3) // Equation cell
+            valueProperty.type = findType(valuePropertyBean.type)
 
-            if (constraintNameCell == null || equationCell == null) continue
+            // Update concreteElement in the bean
+            valuePropertyBean.concreteElement = valueProperty
 
-            val constraintName = constraintNameCell.stringCellValue
+            valuePropertyNameToElement[valuePropertyBean.name] = valueProperty
 
-            // Create the constraint block
-            val constraintBlock = createConstraintBlock(owner, constraintName)
-            cellToConstraint[equationCell.address.formatAsString()] = constraintBlock!!
-
-            // Store the equation for the next phase
-            val equation = "$constraintName = " + equationCell.cellFormula
-            constraintsToCreate.add(constraintBlock to equation)
-
-            constraintNameToCell[constraintName] = equationCell.address.formatAsString()
-            cellToConstraint[equationCell.address.formatAsString()] = constraintBlock
-
-            listImportedConstraints.add(constraintName)
+            // Map cell reference to ValueProperty
+            val cellReference = propertyNameToCellMap[valuePropertyBean.name]
+            if (cellReference != null) {
+                cellToValueProperty["$valuesSheetName!$cellReference"] = valueProperty
+            }
         }
 
-        // Phase 2: Create all Constraints (link constraint parameters and set the equations)
-        for ((constraintBlock, equation) in constraintsToCreate) {
-            // Parse formula to determine dependencies (e.g., cell references)
-            val dependentCells = parseFormula(equation, valuesSheetName)
+        // Create Constraints
+        val constraintNameToElement = mutableMapOf<String, Class>()
+        for (constraintBean in constraintBeans) {
+            // Create ConstraintBlock
+            val constraintBlock = SysMLFactory.getInstance().createConstraintBlock(owner)
+            constraintBlock.name = constraintBean.name
 
-            // Create constraint parameters for each dependent cell
-            createConstraintParameters(dependentCells, constraintBlock)
+            // Update concreteElement in the bean
+            constraintBean.concreteElement = constraintBlock
 
-            // Set up the equation for the constraint
-            createConstraint(constraintBlock, dependentCells, equation)
+            // Map cell reference to ConstraintBlock
+            val cellReference = constraintNameToCell[constraintBean.name]
+            if (cellReference != null) {
+                cellToConstraint[cellReference] = constraintBlock
+            }
+
+            constraintNameToElement[constraintBean.name] = constraintBlock
         }
 
-        return listImportedConstraints
+        // Now, create constraint parameters and constraints
+        for (constraintBean in constraintBeans) {
+            val constraintBlock = constraintNameToElement[constraintBean.name]
+            if (constraintBlock != null) {
+                val equation = constraintBean.equation
+                val dependentCells = parseFormula(equation, valuesSheetName)
+
+                // Map parameter names to EquationParameters (beans)
+                mapParametersToEquationParameters(constraintBean, dependentCells)
+
+                // Create constraint parameters
+                createConstraintParameters(constraintBean, constraintBlock)
+
+                // Set up the equation for the constraint
+                createConstraint(constraintBlock, dependentCells, equation)
+            }
+        }
     }
 
-
-    private fun createConstraint(
-        constraintBlock: Class?,
-        dependentCells: FormulaReferences,
-        equation: String
+    private fun mapParametersToEquationParameters(
+        constraintBean: ConstraintBean,
+        dependentCells: FormulaReferences
     ) {
-        val constraintSpecification =
-            SysMLFactory.getInstance().createConstraint(constraintBlock, buildEquationString(dependentCells, equation))
+        // Map ValueProperty references
+        dependentCells.valueReferences.forEach { reference ->
+            val valuePropertyBean = cellToValuePropertyBean[reference]
+            if (valuePropertyBean != null) {
+                constraintBean.mapParameterNameToEquationParameter[valuePropertyBean.name] = valuePropertyBean
+            }
+        }
+
+        // Map Constraint references
+        dependentCells.constraintReferences.forEach { reference ->
+            val constraintBeanRef = cellToConstraintBean[reference]
+            if (constraintBeanRef != null) {
+                constraintBean.mapParameterNameToEquationParameter[constraintBeanRef.name] = constraintBeanRef
+            }
+        }
     }
 
     private fun createConstraintParameters(
+        constraintBean: ConstraintBean,
+        constraintBlock: Class
+    ) {
+        // Create constraint parameters for each mapped parameter
+        constraintBean.mapParameterNameToEquationParameter.forEach { (paramName, equationParameter) ->
+            val constraintParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock)
+            constraintParameter.name = paramName
+            constraintParameter.type = findType(equationParameter.type)
+
+            // Update concreteElement in the EquationParameter
+            equationParameter.concreteElement = constraintParameter
+
+            // Link the constraint parameter to the corresponding ValueProperty or Constraint
+            linkConstraintParameterToEquationParameter(constraintParameter, equationParameter)
+        }
+
+        // Create output parameter
+        val outputParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock).apply {
+            name = constraintBlock.name
+            type = realType
+        }
+        // Update concreteElement for the output parameter
+        constraintBean.concreteElement = outputParameter
+    }
+
+    private fun createConstraint(
+        constraintBlock: Class,
         dependentCells: FormulaReferences,
-        constraintBlock: Class?
+        equation: String
     ) {
-        dependentCells.valueReferences
-            .filter {cellToValueProperty[it] != null}
-            .map {cellToValueProperty[it]}
-            .forEach {namedElement ->
-                createConstraintParameter(constraintBlock, namedElement)
-            }
-
-
-        dependentCells.constraintReferences
-            .filter {cellToConstraint[it] != null}
-            .map {cellToConstraint[it]}
-            .forEach {namedElement ->
-                createConstraintParameter(constraintBlock, namedElement)
-            }
-
-        val outputParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock).let { outputParameter ->
-            outputParameter.name = constraintBlock!!.name
-            outputParameter.type = realType
-        }
-
+        val constraintSpecification = SysMLFactory.getInstance()
+            .createConstraint(constraintBlock, buildEquationString(dependentCells, equation))
     }
-
-    private fun createConstraintParameter(
-        constraintBlock: Class?,
-        namedElement: NamedElement?
-    ) {
-        val constraintParameter = SysMLFactory.getInstance().createConstraintParameter(constraintBlock)
-        constraintParameter.name = namedElement?.name
-        constraintParameter.type = when (namedElement) {
-            is Classifier -> namedElement
-            is Property -> namedElement.type
-            else -> throw IllegalArgumentException("Referenced element is not a Classifier or Property")
-        }
-        // Link the constraint parameter to the corresponding ValueProperty
-        linkConstraintParameterToValueProperty(constraintParameter, namedElement)
-    }
-
-    private fun createConstraintBlock(
-        owner: Classifier,
-        constraintName: String
-    ): Class? {
-        val constraintBlock = SysMLFactory.getInstance().createConstraintBlock(owner)
-        constraintBlock.name = constraintName
-        return constraintBlock
-    }
-
-
 
     private fun parseFormula(formula: String, sheetName: String): FormulaReferences {
         val valueReferences = mutableListOf<String>()
         val constraintReferences = mutableListOf<String>()
 
-        // Regex combiné pour trouver les deux types de références
+        // Combined regex to find both types of references
         val regex = Regex(regexRefCellPropertySheet)
 
-//        println("Parsing formula: $formula")
-//        println("Regex: $regex")
-//
-//        regex.findAll(formula).forEach { matchResult ->
-//            println("Full match: ${matchResult.value}")
-//            println("Group 1 (ValueProperties): ${matchResult.groups[1]?.value}")
-//            println("Group 2 (Local): ${matchResult.groups[2]?.value}")
-//        }
-
-
         regex.findAll(formula).forEach { matchResult ->
-            val valuePropertiesReference = matchResult.groups[1]?.value // Match `ValueProperties!B3`
-            val localReference = matchResult.groups[2]?.value           // Match `C2`
+            val valuePropertiesReference = matchResult.groups[1]?.value // Match ValueProperties!B3
+            val localReference = matchResult.groups[2]?.value           // Match C2
 
             if (!valuePropertiesReference.isNullOrEmpty()) {
                 valueReferences.add(valuePropertiesReference)
@@ -233,15 +275,13 @@ class ExcelParametricImporter(private val file: File) {
         return FormulaReferences(valueReferences, constraintReferences)
     }
 
-
-
     private fun buildEquationString(
         references: FormulaReferences,
         formula: String
     ): String {
         var equation = formula
 
-        // Remplacer les références `ValueProperties!B3` par les noms des propriétés
+        // Replace ValueProperties!B3 references with property names
         references.valueReferences.forEach { reference ->
             val propertyName = cellToValueProperty[reference]?.name
             if (propertyName != null) {
@@ -249,7 +289,7 @@ class ExcelParametricImporter(private val file: File) {
             }
         }
 
-        // Remplacer les références locales (`C2`, `C9`, etc.) par les noms des contraintes
+        // Replace local references (C2, C9, etc.) with constraint names
         references.constraintReferences.forEach { reference ->
             val propertyName = cellToConstraint[reference]?.name
             if (propertyName != null) {
@@ -260,21 +300,19 @@ class ExcelParametricImporter(private val file: File) {
         return equation
     }
 
-
-
     private fun findType(typeName: String): Classifier? {
         return Finder.byTypeRecursively()
             .find<DataType>(OMFUtils.getProject(), arrayOf(DataType::class.java))
             .firstOrNull { it.name == typeName }
     }
 
-    // Function to link a constraint parameter to a value property (can be adapted to MagicDraw APIs)
-    private fun linkConstraintParameterToValueProperty(
+    // Function to link a constraint parameter to a value property or constraint
+    private fun linkConstraintParameterToEquationParameter(
         constraintParameter: NamedElement,
-        valueProperty: NamedElement
+        equationParameter: EquationParameter
     ) {
-        // Here, link the constraint parameter to the value property
-        // Adapt this function according to the tools and APIs available in your project
+        // Implement the logic to link the constraint parameter to the corresponding element
+        // For example, create a binding or association between constraintParameter and equationParameter.concreteElement
     }
 
     data class FormulaReferences(
@@ -289,16 +327,20 @@ class ExcelParametricImporter(private val file: File) {
     )
 
     class ValuePropertyBean(
-        name: String,
-        type: String,
+       name: String,
+       type: String,
         val value: String,
-        val unit: String
-    ) : EquationParameter(name, type)
+        val unit: String,
+        concreteElement: NamedElement? = null
+    ) : EquationParameter(name, type, concreteElement)
 
     class ConstraintBean(
-        name: String,
-        type: String,
+       name: String,
+       type: String,
         val equation: String,
-        val mapParameterNameToConstraintBean: Map<String, ConstraintBean>
-    ) : EquationParameter(name, type)
+        val mapParameterNameToEquationParameter: MutableMap<String, EquationParameter>,
+       concreteElement: NamedElement? = null
+    ) : EquationParameter(name, type, concreteElement) {
+        var constraintPropertyElement: Property? = null
+    }
 }

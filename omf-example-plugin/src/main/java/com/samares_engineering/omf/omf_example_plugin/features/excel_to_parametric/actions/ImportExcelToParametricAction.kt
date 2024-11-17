@@ -12,6 +12,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ElementSelector
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ExcelParametricImporter
+import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ParametricGenerator
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.XLSFileChooser
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.DialogCanceledByUser
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.NoOwnerSelectedException
@@ -39,8 +40,10 @@ class ImportExcelToParametricAction : AUIAction() {
             val ownerProperties = SysMLFactory.getInstance().createBlock(importOwner)
             val ownerConstraint = SysMLFactory.getInstance().createPackage(importOwner)
             importer = ExcelParametricImporter(excelFile)
-            importer.importValueProperties(ownerProperties)
-            importer.importConstraints(ownerProperties)
+            importer.generateBeans()
+            importer.createSysMLElements(ownerProperties)
+            ParametricGenerator(importer, ownerProperties).generateParametric()
+
         } catch (canceled: DialogCanceledByUser) {
             OMFLogger.warnToSystemConsole("Import canceled by user.")
         } catch (unchecked: Exception) {
