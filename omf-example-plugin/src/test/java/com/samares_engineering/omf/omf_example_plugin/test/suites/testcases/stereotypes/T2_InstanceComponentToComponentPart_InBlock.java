@@ -39,6 +39,7 @@ public class T2_InstanceComponentToComponentPart_InBlock extends AModelComparato
     public void testAction() {
     }
 
+    @Override
     public List<Runnable> testActions() {
         List<Runnable> userActions = List.of(
                 this::triggerRefreshStereotypesRulesBasedOnConfigFiles,

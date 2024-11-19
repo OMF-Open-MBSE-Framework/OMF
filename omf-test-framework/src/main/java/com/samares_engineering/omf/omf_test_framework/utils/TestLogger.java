@@ -10,8 +10,8 @@ package com.samares_engineering.omf.omf_test_framework.utils;
 import org.apache.log4j.Logger;
 
 public class TestLogger{
-    private TestLogBuilder logBuilder;
-    private Logger mdLogger;
+    private final TestLogBuilder logBuilder;
+    private final Logger mdLogger;
 
     public TestLogger(Logger mdLogger){
         logBuilder = new TestLogBuilder();

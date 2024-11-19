@@ -38,6 +38,7 @@ public class T3_InstanceMetamorphtToFctPart_InFunction extends AModelComparatorT
     @Override
     public void testAction() {}
 
+    @Override
     public List<Runnable> testActions() {
         List<Runnable> userActions = List.of(
                 this::triggerRefreshStereotypesRulesBasedOnConfigFiles,

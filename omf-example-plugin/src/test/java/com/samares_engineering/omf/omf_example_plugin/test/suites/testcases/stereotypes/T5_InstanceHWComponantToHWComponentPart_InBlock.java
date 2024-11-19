@@ -38,6 +38,7 @@ public class T5_InstanceHWComponantToHWComponentPart_InBlock extends AModelCompa
     @Override
     public void testAction() {}
 
+    @Override
     public List<Runnable> testActions() {
         List<Runnable> userActions = List.of(
                 this::triggerRefreshStereotypesRulesBasedOnConfigFiles,

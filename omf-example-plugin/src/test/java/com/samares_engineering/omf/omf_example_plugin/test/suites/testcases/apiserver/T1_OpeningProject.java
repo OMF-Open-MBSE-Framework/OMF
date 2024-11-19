@@ -11,7 +11,7 @@ import com.samares_engineering.omf.omf_test_framework.templates.AModelComparator
 
 import java.io.File;
 
-public class T1OpeningProject extends AModelComparatorTestCase {
+public class T1_OpeningProject extends AModelComparatorTestCase {
 
 //
 //    String projectName;

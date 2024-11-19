@@ -6,11 +6,9 @@
  */
 package com.samares_engineering.omf.omf_example_plugin.features.testlockfeature
 
-import com.nomagic.magicdraw.sysml.util.SysMLProfile
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
-import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
@@ -24,8 +22,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
 import com.samares_engineering.omf.omf_core_framework.listeners.EventChecker
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation
 import java.beans.PropertyChangeEvent
 import java.util.function.Predicate
 

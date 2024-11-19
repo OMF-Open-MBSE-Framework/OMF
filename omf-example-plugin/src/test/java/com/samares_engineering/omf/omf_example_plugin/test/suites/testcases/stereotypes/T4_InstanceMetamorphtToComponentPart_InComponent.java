@@ -38,6 +38,7 @@ public class T4_InstanceMetamorphtToComponentPart_InComponent extends AModelComp
     @Override
     public void testAction() {}
 
+    @Override
     public List<Runnable> testActions() {
         List<Runnable> userActions = List.of(
                 this::triggerRefreshStereotypesRulesBasedOnConfigFiles,

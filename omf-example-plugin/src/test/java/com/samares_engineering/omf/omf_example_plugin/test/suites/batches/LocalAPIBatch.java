@@ -7,7 +7,7 @@
 
 package com.samares_engineering.omf.omf_example_plugin.test.suites.batches;
 
-import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver.T1OpeningProject;
+import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver.T1_OpeningProject;
 import com.samares_engineering.omf.omf_example_plugin.test.suites.testcases.apiserver.T2SelectElementInContainmentTree;
 import com.samares_engineering.omf.omf_test_framework.templates.batches.ATestBatch;
 import org.junit.runner.RunWith;
@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
         //Creation
-        T1OpeningProject.class,
+        T1_OpeningProject.class,
 
         //Deletion
         T2SelectElementInContainmentTree.class,

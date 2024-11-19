@@ -10,5 +10,5 @@ public enum OMFLogLevel {
     INFO,
     WARNING,
     SUCCESS,
-    ERROR;
+    ERROR
 }
