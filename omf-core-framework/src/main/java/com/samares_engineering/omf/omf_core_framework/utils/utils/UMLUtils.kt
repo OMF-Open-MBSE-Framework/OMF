@@ -1,7 +1,7 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+ * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
  * @since     0.0.0
  */
 package com.samares_engineering.omf.omf_core_framework.utils.utils
@@ -12,9 +12,12 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype
+import com.nomagic.uml2.ext.magicdraw.metadata.UMLPackage
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EStructuralFeature
 import java.util.*
 
 object UMLUtils {
@@ -52,7 +55,7 @@ object UMLUtils {
 
     @JvmStatic
     fun getAllMetaClasses(stereotypes: Collection<Stereotype>): List<Class<*>> {
-        return  stereotypes.asSequence()
+        return stereotypes.asSequence()
             .map { str: Stereotype -> getStereotypeMetaClass(str) }
             .flatten()
             .distinct()
@@ -71,7 +74,6 @@ object UMLUtils {
     }
 
 
-
     /* ********************************************************************************************************************
      *  Get all derived properties of a stereotype
      * ********************************************************************************************************************/
@@ -85,7 +87,7 @@ object UMLUtils {
             .filterNotNull()
             .map { it.owner }
             .filterIsInstance<com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class>()
-            .filter{mdProfile.customization().`is`(it)}
+            .filter { mdProfile.customization().`is`(it) }
             .map { it.ownedAttribute }
             .flatten()
             .filter { mdProfile.derivedPropertySpecification().`is`(it) }
@@ -96,7 +98,7 @@ object UMLUtils {
     @JvmStatic
     fun getAllDerivedProperties(element: Element): Set<Property> {
         return element.appliedStereotype
-            .map{getAllDerivedProperties(it)}
+            .map { getAllDerivedProperties(it) }
             .flatten()
             .toSet()
     }
@@ -116,11 +118,12 @@ object UMLUtils {
 
     @JvmStatic
     fun getDerivedPropertyValue(element: Element, derivedProperty: Property): Any? {
-       return getDerivedPropertyValueByName(element, derivedProperty)
+        return getDerivedPropertyValueByName(element, derivedProperty)
     }
 
     @JvmStatic
-    private fun getDerivedPropertyValueByName(element: Element, derivedProperty: Property
+    private fun getDerivedPropertyValueByName(
+        element: Element, derivedProperty: Property
     ) = element.refGetValue(derivedProperty.name)
 
     @JvmStatic
@@ -128,5 +131,41 @@ object UMLUtils {
         return getDerivedPropertyByName(element, propertyName)?.let { getDerivedPropertyValue(element, it) }
     }
 
+
+    //UML Properties
+    /**
+     * Get all the UML properties of the stereotype
+     * @param stereotype the stereotype to get the UML properties from
+     * @return a list with all the UML properties of the stereotype
+     */
+    @JvmStatic
+    fun getAllStereotypeUMLProperties(stereotype: Stereotype): List<EStructuralFeature> {
+        return StereotypesHelper.getBaseClasses(stereotype)
+            .map { UMLPackage.eINSTANCE.getEClassifier(it.name) }
+            .filterIsInstance<EClass>()
+            .map { it.eAllStructuralFeatures }
+            .flatten()
+    }
+
+    /**
+     * Get all the UML properties of the element
+     * @param element the element to get the UML properties from
+     * @return a list with all the UML properties of the element
+     */
+    @JvmStatic
+    fun getAllStereotypeUMLProperties(element: Element): List<EStructuralFeature> {
+        return element.appliedStereotype
+            .map { getAllStereotypeUMLProperties(it) }
+            .flatten()
+    }
+
+
+    @JvmStatic
+    fun getUMLPropertyValue(property: EStructuralFeature, element: Element): List<*> {
+        val value: Any? = element.refGetValue(property.name)
+        return if (value is List<*>) value
+        else if (value != null) listOf(value)
+        else emptyList()
+    }
 
 }

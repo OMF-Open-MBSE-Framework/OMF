@@ -7,7 +7,7 @@ import com.nomagic.magicdraw.ui.dialogs.selection.TypeFilter
 import com.nomagic.magicdraw.ui.dialogs.selection.TypeFilterImpl
 import com.nomagic.magicdraw.uml.BaseElement
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.DialogCanceledByUser
+import com.samares_engineering.omf.omf_core_framework.ui.elementselector.exception.DialogCanceledByUser
 import java.util.*
 import java.util.function.Predicate
 import java.util.stream.Collectors
