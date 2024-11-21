@@ -12,8 +12,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.LayoutManager
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ElementSelector
-import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ExcelParametricImporter
-import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ParametricGenerator
+import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.importer.ExcelParametricImporter
+import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.importer.ParametricGenerator
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.XLSFileChooser
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.DialogCanceledByUser
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.NoOwnerSelectedException
