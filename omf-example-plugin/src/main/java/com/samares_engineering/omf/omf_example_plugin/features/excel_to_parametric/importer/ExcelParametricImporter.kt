@@ -55,7 +55,7 @@ class ExcelParametricImporter(private val file: File) {
                 continue
             }
             val equation = constraintBean.equation
-            val dependentCells = parseFormula(equation, valuesSheetName)
+            val dependentCells = parseFormula(equation)
 
             // Map parameter names to EquationParameters (beans)
             mapParametersToEquationParameters(constraintBean, dependentCells)
@@ -63,6 +63,16 @@ class ExcelParametricImporter(private val file: File) {
             // Build the equation string with the correct names
             constraintBean.humanEquation = buildEquationString(dependentCells, equation)
         }
+    }
+
+    fun createSysMLElements(ownerProperties: Class) {
+        ConcreteSysMLElementFactory(
+            valuePropertyBeans,
+            constraintBeans,
+            valuesSheetName,
+            beanMapping)
+            .createSysMLElements(ownerProperties)
+
     }
 
 
@@ -162,7 +172,7 @@ class ExcelParametricImporter(private val file: File) {
         }
     }
 
-    fun getTypeFromValue(propertyValue: String) = when {
+    private fun getTypeFromValue(propertyValue: String) = when {
         propertyValue.toIntOrNull() != null -> integerType
         propertyValue.toDoubleOrNull() != null -> realType
         else -> stringType
@@ -170,8 +180,7 @@ class ExcelParametricImporter(private val file: File) {
 
 
 
-
-    fun parseFormula(formula: String, sheetName: String): FormulaReferences {
+    private fun parseFormula(formula: String): FormulaReferences {
         val valueReferences = mutableListOf<String>()
         val constraintReferences = mutableListOf<String>()
 
@@ -225,14 +234,5 @@ class ExcelParametricImporter(private val file: File) {
         return equation
     }
 
-    fun createSysMLElements(ownerProperties: Class) {
-        ConcreteSysMLElementFactory(
-            valuePropertyBeans,
-            constraintBeans,
-            valuesSheetName,
-            beanMapping)
-            .createSysMLElements(ownerProperties)
-
-    }
 
 }
