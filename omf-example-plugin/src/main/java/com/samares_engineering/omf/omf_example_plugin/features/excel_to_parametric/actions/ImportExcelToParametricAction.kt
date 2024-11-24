@@ -23,7 +23,7 @@ import java.util.function.Predicate
 
 @BrowserAction
 @DeactivateListener
-@MDAction(actionName = "Import Parametric from Excel", category = "OMF EXAMPLE")
+@MDAction(actionName = "Import Parametric from Excel", category = "MOE/MOP Transition")
 class ImportExcelToParametricAction : AUIAction() {
     lateinit var importer: ExcelParametricImporter
     lateinit var parametricGenerator: ParametricGenerator
