@@ -12,8 +12,8 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams.LayoutManager
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ElementSelector
-import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ExcelParametricImporter
-import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ParametricGenerator
+import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.importer.ExcelParametricImporter
+import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.importer.ParametricGenerator
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.XLSFileChooser
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.DialogCanceledByUser
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.exception.NoOwnerSelectedException
@@ -36,13 +36,26 @@ class ImportExcelToParametricAction : AUIAction() {
     }
 
     override fun executeBrowserAction(selectedElements: MutableList<Element>) {
-        OMFBarrierExecutor.executeInSessionWithinBarrier { importExcelToParametric(selectedElements) }
+        OMFBarrierExecutor.executeInSessionWithinBarrier(
+            { importExcelToParametric(selectedElements) },
+            "Importing Excel to Parametric",
+            feature
+        )
+
         var layoutManager: LayoutManager? = null
-        OMFBarrierExecutor.executeInSessionWithinBarrier { layoutManager = displayElementsOnDiagram(parametricGenerator.diagram) }
-        OMFBarrierExecutor.executeInSessionWithinBarrier{ layoutManager?.applyQuickLayout() }
+        OMFBarrierExecutor.executeInSessionWithinBarrier(
+            { layoutManager = displayElementsOnDiagram(parametricGenerator.diagram) },
+            "Displaying elements on diagram",
+            feature
+        )
+        OMFBarrierExecutor.executeInSessionWithinBarrier(
+            { layoutManager?.applyQuickLayout() },
+            "Applying quick layout",
+            feature
+        )
     }
 
-    fun importExcelToParametric(selectedElements: List<Element>) {
+    private fun importExcelToParametric(selectedElements: List<Element>) {
         try {
             val excelFile = chooseExcelFile()
             val importOwner: Element = selectedElements[0]
@@ -60,7 +73,6 @@ class ImportExcelToParametricAction : AUIAction() {
             OMFLogger.err("An error occurred during the import process.", unchecked)
         } finally {
             importer.close()
-
         }
     }
 
