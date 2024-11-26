@@ -10,30 +10,15 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFBrowserConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFDiagramConfigurator;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.configurators.implementations.OMFMainMenuConfigurator;
-import com.samares_engineering.omf.omf_core_framework.genarchimodel.GeneratePluginModelArchi;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.ListenerManager;
 import com.samares_engineering.omf.omf_core_framework.listeners.listeners.ProjectListener;
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
-import com.samares_engineering.omf.omf_example_plugin.features.derivedproperty.DerivedPropertyExample;
-import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.elementspecification.ElementSpecificationExample;
-import com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut.DiagramListenerFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.excel_to_parametric.ExcelToParametricFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.ExportDiagramImagesFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
-import com.samares_engineering.omf.omf_example_plugin.features.uinavigation.UINavigationFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
-import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
-import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
-import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
 
 import java.util.List;
 
@@ -44,34 +29,34 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new FeaturesDeactivationFeature(),
                 new ExcelToParametricFeature(),
                 //USEFUL
-                new EnhancedDisplayFeature(),
-                new HyperLinkFeature(),
-//                new LockSafeFeature(),
-                new DerivedPropertyExample(),
-                new APIServerFeature("http://localhost", 9850),
-//
-//                //USEFUL for Modeling
-//                new StereotypesFeature(),
-                new CloneElementFeature(),
-                new GroupElementFeature(),
-                new SysMLBasicFeature(),
-//                new ConnectionFeatureExample(),
-//                new PatternCreationFeature(),
-//                new StateActionExample(),
-//
-//                //Examples
-//                new SandboxFeature(),
-                new GeneratePluginModelArchi(),
-//                new ErrorManagementFeatureExample(),
+//                new EnhancedDisplayFeature(),
+//                new HyperLinkFeature(),
+////                new LockSafeFeature(),
+//                new DerivedPropertyExample(),
+//                new APIServerFeature("http://localhost", 9850),
+////
+////                //USEFUL for Modeling
+////                new StereotypesFeature(),
+//                new CloneElementFeature(),
+//                new GroupElementFeature(),
+//                new SysMLBasicFeature(),
+////                new ConnectionFeatureExample(),
+////                new PatternCreationFeature(),
+////                new StateActionExample(),
+////
+////                //Examples
+////                new SandboxFeature(),
 //                new GeneratePluginModelArchi(),
-                new SysmlGptExploFeature(),
-                new TemplateFeature(),
-                new DiagramListenerFeature(),
-                new ElementSpecificationExample(),
-                new ExportDiagramImagesFeature(),
-
-                new ListenersFeature(),
-                new UINavigationFeature(),
+////                new ErrorManagementFeatureExample(),
+////                new GeneratePluginModelArchi(),
+//                new SysmlGptExploFeature(),
+//                new TemplateFeature(),
+//                new DiagramListenerFeature(),
+//                new ElementSpecificationExample(),
+//                new ExportDiagramImagesFeature(),
+//
+//                new ListenersFeature(),
+//                new UINavigationFeature(),
                 // Deactivation of features
                 new FeatureActivationFromOptionFeature()
         );
