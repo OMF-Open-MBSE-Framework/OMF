@@ -154,6 +154,9 @@ public class OMFLogger {
     public static void infoToNotification(String message) {
         logToNotification(message, OMFLogLevel.INFO);
     }
+    public static void statusToNotification(String message) {
+        logToNotification(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
+    }
 
     public static void warnToUIConsole(String message) {
         logToUIConsole(message, OMFLogLevel.WARNING);
@@ -166,20 +169,33 @@ public class OMFLogger {
     public static void errorToNotification(OMFLog message) {
         logToNotification(message, OMFLogLevel.ERROR);
     }
+    public static void successToNotification(OMFLog message) {
+        logToNotification(message, OMFLogLevel.SUCCESS);
+    }
 
     public static void infoToNotification(OMFLog message) {
         logToNotification(message, OMFLogLevel.INFO);
     }
-
-    public static void warnToUIConsole(OMFLog message) {
-        logToUIConsole(message, OMFLogLevel.WARNING);
+    public static void statusToNotification(OMFLog message) {
+        logToNotification(message, OMFLogLevel.INFO);
     }
 
     public static void errorToUIConsole(String message) {
         logToUIConsole(message, OMFLogLevel.ERROR);
     }
+
     public static void successToUIConsole(String message) {
         logToUIConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.SUCCESS);
+    }
+    public static void statusToUIConsole(String message) {
+        logToUIConsole(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
+    }
+
+    public static void warnToUIConsole(OMFLog message) {
+        logToUIConsole(message, OMFLogLevel.WARNING);
+    }
+    public static void successToUIConsole(OMFLog message) {
+        logToUIConsole(message, OMFLogLevel.SUCCESS);
     }
 
     public static void errorToUIConsole(OMFLog message) {
@@ -187,6 +203,9 @@ public class OMFLogger {
     }
 
     public static void infoToUIConsole(OMFLog message) {
+        logToUIConsole(message, OMFLogLevel.INFO);
+    }
+    public static void statusToUIConsole(OMFLog message) {
         logToUIConsole(message, OMFLogLevel.INFO);
     }
 
@@ -219,8 +238,14 @@ public class OMFLogger {
     public static void errorToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.ERROR);
     }
+    public static void successToSystemConsole(OMFLog message) {
+        logToSystemConsole(message, OMFLogLevel.SUCCESS);
+    }
 
     public static void infoToSystemConsole(OMFLog message) {
+        logToSystemConsole(message, OMFLogLevel.INFO);
+    }
+    public static void statusToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
     }
 
@@ -292,8 +317,21 @@ public class OMFLogger {
     }
 
     public static void status(String message) {
-        infoToNotification(new OMFLog().color(message, OMFColors.BLUE));
-        errorToUIConsole(new OMFLog().color(message, OMFColors.BLUE));
-        errorToSystemConsole(new OMFLog().color(message, OMFColors.BLUE));
+        statusToNotification(new OMFLog().color(message, OMFColors.BLUE));
+        statusToUIConsole(new OMFLog().color(message, OMFColors.BLUE));
+        statusToSystemConsole(new OMFLog().color(message, OMFColors.BLUE));
+    }
+
+
+    public static void success(OMFLog message) {
+        successToNotification(message);
+        successToUIConsole(message);
+        successToSystemConsole(message);
+    }
+
+    public static void status(OMFLog message) {
+        statusToNotification(message);
+        statusToUIConsole(message);
+        statusToSystemConsole(message);
     }
 }

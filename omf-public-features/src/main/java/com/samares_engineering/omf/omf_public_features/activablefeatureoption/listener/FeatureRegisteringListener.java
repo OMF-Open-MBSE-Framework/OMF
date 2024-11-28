@@ -1,6 +1,8 @@
 package com.samares_engineering.omf.omf_public_features.activablefeatureoption.listener;
 
 import com.nomagic.magicdraw.properties.Property;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.CoreException;
@@ -39,6 +41,9 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
             optionProperty.setValue(false);
         }catch (OptionNotFound e) {
             LegacyErrorHandler.handleException(new CoreException("Cannot actualize :" + feature.getName() + ". The related option was not found...", e, GenericException.ECriticality.ALERT), false);
+        }catch (Exception unknown) {
+            OMFLogger.err(new OMFLog().err("Cannot actualize :" + feature.getName() + ". An unknown error occurred...")
+                    .expandText(new OMFLog().err(unknown.getMessage())));
         }
     }
 
@@ -50,11 +55,18 @@ public class FeatureRegisteringListener extends RegisteringPropertyChangeListene
      */
     @Override
     public void featureRegistered(PropertyChangeEvent evt) throws LegacyOMFException {
-        OMFFeature feature = (OMFFeature) evt.getNewValue();
-        if(feature == null) return;
-        Property optionProperty = getOptionFromFeature(feature);
-        if(optionProperty == null) throw new OptionNotFound(feature.getName());
-        optionProperty.setValue(true);
+        OMFFeature feature = null;
+        try {
+            feature = (OMFFeature) evt.getNewValue();
+            if (feature == null) return;
+            Property optionProperty = getOptionFromFeature(feature);
+            if (optionProperty == null) throw new OptionNotFound(feature.getName());
+            optionProperty.setValue(true);
+        } catch (OptionNotFound e) {
+            LegacyErrorHandler.handleException(new CoreException("Cannot actualize :" + ((OMFFeature) evt.getNewValue()).getName() + ". The related option was not found...", e, GenericException.ECriticality.ALERT), false);
+        } catch (Exception unknown) {
+            throw new LegacyOMFException("Cannot actualize :" + feature.getName() + ". An unknown error occurred...", unknown, GenericException.ECriticality.CRITICAL);
+        }
     }
 
     /**
