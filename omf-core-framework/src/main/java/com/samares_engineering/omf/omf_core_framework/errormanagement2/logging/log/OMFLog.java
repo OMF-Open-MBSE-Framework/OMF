@@ -13,6 +13,13 @@ public class OMFLog {
     private final Map<String, Runnable> linkActionMapping = new HashMap<>();
     private OMFLog expandedLog;
 
+    public OMFLog() {
+    }
+
+    public OMFLog(String string) {
+        text(string);
+    }
+
     public OMFLog text(String string) {
         messageComponents.add(string == null ? "" : string);
         return this;
@@ -59,6 +66,12 @@ public class OMFLog {
     public OMFLog color(String string, String color) {
         return text("<font color=" + color + ">" + string + "</font>");
     }
+
+    public OMFLog colorAll(String color) {
+        messageComponents.replaceAll(s -> "<font color=" + color + ">" + s + "</font>");
+        return this;
+    }
+
 
     public OMFLog warn(String string) {
         return color(string, OMFColors.WARN);
@@ -186,7 +199,6 @@ public class OMFLog {
     /*
      * Syntaxic sugar to reduced boilerplate of logging
      */
-
     public OMFLog logToUiConsole(OMFLogLevel logLevel) {
         OMFLogger.logToUIConsole(this, logLevel);
         return this;
@@ -266,3 +278,5 @@ public class OMFLog {
         return this;
     }
 }
+
+
