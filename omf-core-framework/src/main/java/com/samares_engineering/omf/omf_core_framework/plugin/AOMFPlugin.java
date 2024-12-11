@@ -12,11 +12,11 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
-import com.nomagic.magicdraw.uml.DiagramType;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.PluginRegisteringException;
@@ -28,14 +28,14 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.hooks.executors.magicdraw.MagicDrawHookExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.ProjectOnlyFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.LiveActionEngineFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.OptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.UIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.FeatureLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.MagicDrawLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.ProjectLifeCycleHookFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyLiveActionEngineFeatureItemRegisterer;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyUIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
@@ -134,6 +134,7 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
 
     protected void initLogger() {
         OMFLogger.init(this);
+        OMFLogger2.init(this);
     }
 
     // Helper methods
@@ -317,8 +318,8 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
             if (diagramConfigurator == null)
                 SysoutColorPrinter.warn("[OMF] NO DIAGRAM CONFIGURATOR REGISTERED");
             else {
-                actionManager.addDiagramContextConfigurator(DiagramTypeConstants.UML_ANY_DIAGRAM, diagramConfigurator);
-                actionManager.addDiagramShortcutsConfigurator(DiagramType.UML_CLASS_DIAGRAM, diagramConfigurator);
+                DiagramTypeConstants.STANDARD_TYPES.forEach(diagramType -> actionManager.addDiagramContextConfigurator(diagramType, diagramConfigurator));
+                DiagramTypeConstants.STANDARD_TYPES.forEach(diagramType -> actionManager.addDiagramShortcutsConfigurator(diagramType, diagramConfigurator));
 
             }
         } catch (Exception e) {

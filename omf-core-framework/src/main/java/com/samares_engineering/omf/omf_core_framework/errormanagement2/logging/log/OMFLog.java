@@ -158,7 +158,8 @@ public class OMFLog {
     }
 
     public static String getPrefix(OMFLogLevel logLevel, String pluginName, String featureName) {
-        return getPrefix(logLevel, pluginName) + "[" + featureName + "]";
+        String featureTag = "[" + featureName + "]";
+        return getPrefix(logLevel, pluginName) + featureTag;
     }
 
     private static String getLogLevelPrefix(OMFLogLevel logLevel) {
