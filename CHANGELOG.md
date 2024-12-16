@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OMFDiagramConfigurator is now available for any diagram type
 - AutoLayout Utility: Allows to apply the auto-layout on a diagram
 - Parametric Elements available in Factory
+- ElementAction add a new method to open specification dialog for a given element
 
 Examples
 - Parametric Diagram Generation example
