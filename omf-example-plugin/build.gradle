@@ -61,6 +61,7 @@ dependencies {
     }
 
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
+    mdLibrary fileTree(dir: 'build/install/plugins', include: ['*.jar', '**/*.jar'])
 
     pluginLibrary project(':omf-test-framework')
     pluginLibrary project(":omf-core-framework")
@@ -86,10 +87,10 @@ dependencies {
 
     zippedMDPlugin 'com.nomagic.magicdraw:devtools:2022x_Refresh2@ZIP'
 //    zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2021x_Refresh2@zip"
-    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
-    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.matlab', include: ['**/*.jar'])
-    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.scxml', include: ['**/*.jar'])
-    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.magicupsell', include: ['**/*.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.matlab', include: ['**/*.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.scxml', include: ['**/*.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.magicupsell', include: ['**/*.jar'])
 }
 
 jar.dependsOn(':omf-test-framework:jar', ':omf-core-framework:jar', ':omf-public-features:jar', ':smart-private:jar')

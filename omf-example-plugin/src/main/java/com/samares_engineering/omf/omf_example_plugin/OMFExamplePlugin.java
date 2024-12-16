@@ -25,6 +25,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.Exp
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.miscergo.MiscErgonomicFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
@@ -49,6 +50,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
 //
 //                //USEFUL for Modeling
 //                new StereotypesFeature(),
+                new MiscErgonomicFeature(),
                 new CloneElementFeature(),
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),

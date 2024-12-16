@@ -13,6 +13,7 @@ import com.nomagic.magicdraw.core.options.EnvironmentOptions;
 import com.nomagic.magicdraw.core.options.ProjectOptions;
 import com.nomagic.magicdraw.plugins.Plugin;
 import com.nomagic.magicdraw.uml.DiagramTypeConstants;
+import com.nomagic.uml2.diagram.DiagramTypes;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
@@ -320,6 +321,9 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
             else {
                 DiagramTypeConstants.STANDARD_TYPES.forEach(diagramType -> actionManager.addDiagramContextConfigurator(diagramType, diagramConfigurator));
                 DiagramTypeConstants.STANDARD_TYPES.forEach(diagramType -> actionManager.addDiagramShortcutsConfigurator(diagramType, diagramConfigurator));
+                actionManager.addDiagramContextConfigurator(DiagramTypes.GENERIC_TABLE, diagramConfigurator);
+                actionManager.addDiagramContextConfigurator(DiagramTypes.DEPENDENCY_MATRIX, diagramConfigurator);
+                actionManager.addDiagramContextConfigurator(DiagramTypes.GLOSSARY_TABLE, diagramConfigurator);
 
             }
         } catch (Exception e) {
