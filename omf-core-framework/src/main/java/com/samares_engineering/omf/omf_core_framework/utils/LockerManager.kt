@@ -3,58 +3,52 @@
  * @Licence: EPL 2.0
  * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
  * @since     0.0.0
- ******************************************************************************/
-package com.samares_engineering.omf.omf_core_framework.utils;
+ */
+package com.samares_engineering.omf.omf_core_framework.utils
 
-import com.nomagic.magicdraw.core.Project;
-import com.nomagic.magicdraw.core.ProjectUtilities;
-import com.nomagic.magicdraw.teamwork2.locks.ILockProjectService;
-import com.nomagic.magicdraw.teamwork2.locks.LockInfo;
-import com.nomagic.magicdraw.teamwork2.locks.LockService;
-import com.nomagic.uml2.ext.jmi.helpers.ModelHelper;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ElementTaggedValue;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue;
-import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd;
-import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
-import com.nomagic.uml2.transaction.ModelValidationResult;
-import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException;
+import com.nomagic.ci.persistence.local.a.E
+import com.nomagic.ci.persistence.local.a.S
+import com.nomagic.magicdraw.core.Project
+import com.nomagic.magicdraw.core.ProjectUtilities
+import com.nomagic.magicdraw.teamwork2.locks.ILockProjectService
+import com.nomagic.magicdraw.teamwork2.locks.LockInfo
+import com.nomagic.magicdraw.teamwork2.locks.LockService
+import com.nomagic.uml2.ext.jmi.helpers.ModelHelper
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.ElementTaggedValue
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.ConnectorEnd
+import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype
+import com.nomagic.uml2.transaction.ModelValidationResult
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException
+import java.beans.PropertyChangeEvent
+import java.util.*
+import java.util.function.Function
+import java.util.function.Predicate
+import java.util.stream.Collectors
 
-import javax.annotation.CheckForNull;
-import java.beans.PropertyChangeEvent;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+class LockerManager private constructor(project: Project) {
+    private val project: Project
+    private var projectService: ILockProjectService? = null
 
-public class LockerManager {
-
-    private Project project;
-    private ILockProjectService projectService = null;
-    private static LockerManager instance;
-
-    private LockerManager(Project project){
-        this.projectService = LockService.getLockService(project);
-        this.project = project;
+    init {
+        this.projectService = LockService.getLockService(project)
+        this.project = project
     }
 
-    public static LockerManager getInstance(){
-        return getInstance(OMFUtils.getProject());
+
+    fun canEdit(element: Element): Boolean {
+        return isEditable(element) &&
+                !isLockedByOther(element) &&
+                isLockedByMe(element) &&
+                isMovable(element)
     }
 
-    public static LockerManager getInstance(Project project){
-        if(instance == null || instance.project != project)
-            instance = new LockerManager(project);
+    fun isLockedByOther(listElementsToLock: Collection<Element>): Boolean {
+        return listElementsToLock.any { element: Element -> isLockedByMe(element) && isLocked(element) }
 
-        return instance;
-    }
-
-    public boolean isLockedByOther(Collection<Element> listElementsToLock){
-
-        return listElementsToLock.stream().anyMatch(element -> isLockedByMe(element) && isLocked(element));
-
-//        for(Element e: listElementsToLock){
+        //        for(Element e: listElementsToLock){
 //            if (!projectService.isLockedByMe(e) && projectService.isLocked(e)) {
 //                return false;
 //            }
@@ -62,95 +56,123 @@ public class LockerManager {
 //        return true;
     }
 
-    private boolean isLockedByMe(Element element) {
-        if(projectService == null) return false;
-        return !projectService.isLockedByMe(element);
+    fun isLockedByMe(element: Element): Boolean {
+        if (projectService == null) return false
+        return !projectService!!.isLockedByMe(element)
     }
 
-    public boolean isEditable(Element element){
-
-        boolean isInAttachedProject = ProjectUtilities.isElementInAttachedProject(element);
-        boolean isEditable = element.isEditable();
-        return isEditable && !isInAttachedProject;
-    }
-    public boolean isLockedByOther(Element element) {
-        if(projectService == null) return false;
-        boolean isLocked = isLockedByMe(element) && isLocked(element);
-
-        return isLocked;
+    fun isEditable(element: Element): Boolean {
+        val isInAttachedProject = ProjectUtilities.isElementInAttachedProject(element)
+        val isEditable = element.isEditable
+        return isEditable && !isInAttachedProject
     }
 
-    public boolean isLocked(Element element){
-        if(projectService == null) return false;
-        return projectService.isLocked(element);
+    fun isLockedByOther(element: Element): Boolean {
+        if (projectService == null) return false
+        val isLocked = isLockedByMe(element) && isLocked(element)
+
+        return isLocked
     }
-    
-    public void checkIfEditable(Element element) {
-        boolean isEditable = isEditable(element) && !isLockedByOther(element);
-        String lockInfo = "";
 
-        projectService.getLockInfo(element);
+    fun isLocked(element: Element): Boolean {
+        if (projectService == null) return false
+        return projectService!!.isLocked(element)
+    }
 
-        if(isLockedByOther(element)) {
-            LegacyErrorHandler.handleException(new LockException("[LOCK ERROR] Element is locked by  " + lockInfo + "   PLEASE UNDO and resolve this lock issue", element));
-            return;
+    fun checkIfEditable(element: Element) {
+        val isEditable = isEditable(element) && !isLockedByOther(element)
+        val lockInfo = ""
+
+        projectService!!.getLockInfo(element)
+
+        if (isLockedByOther(element)) {
+            LegacyErrorHandler.handleException(
+                LockException(
+                    "[LOCK ERROR] Element is locked by  $lockInfo   PLEASE UNDO and resolve this lock issue", element
+                )
+            )
+            return
         }
 
-        if(!isEditable) {
-            LegacyErrorHandler.handleException(new LockException("[LOCK ERROR] Element is not editable => PLEASE UNDO and check if these elements are accessible (shared and read-only projects, libraries etc)  " + lockInfo, element));
-            return;
+        if (!isEditable) {
+            LegacyErrorHandler.handleException(
+                LockException(
+                    "[LOCK ERROR] Element is not editable => PLEASE UNDO and check if these elements are accessible (shared and read-only projects, libraries etc)  $lockInfo",
+                    element
+                )
+            )
+            return
         }
 
-        if(!projectService.isLocked(element)) {
-            LegacyErrorHandler.handleException(new LockException("[LOCK ERROR] Element is not lock. => PLEASE UNDO and lock these element before actions  " + lockInfo, element));
-            return;
+        if (!projectService!!.isLocked(element)) {
+            LegacyErrorHandler.handleException(
+                LockException(
+                    "[LOCK ERROR] Element is not lock. => PLEASE UNDO and lock these element before actions  $lockInfo",
+                    element
+                )
+            )
+            return
         }
     }
 
 
-    public LockException checkIfEditable2(Element element) {
-        boolean isEditable = isEditable(element) || isLockedByOther(element);
-        String lockInfo = "";
-        projectService.getLockInfo(element);
+    fun checkIfEditable2(element: Element): LockException? {
+        val isEditable = isEditable(element) || isLockedByOther(element)
+        val lockInfo = ""
+        projectService!!.getLockInfo(element)
 
-        if(isLockedByOther(element)) {
-            return new LockException("     [LOCKED BY] " + lockInfo, element);
+        if (isLockedByOther(element)) {
+            return LockException("     [LOCKED BY] $lockInfo", element)
         }
 
-        if(!isEditable) {
-            return new LockException("     [NON EDITABLE]  " + lockInfo, element);
+        if (!isEditable) {
+            return LockException("     [NON EDITABLE]  $lockInfo", element)
         }
 
-        if(!projectService.isLocked(element)) {
-            return new LockException("     [NOT LOCK] " + lockInfo, element);
+        if (!projectService!!.isLocked(element)) {
+            return LockException("     [NOT LOCK] $lockInfo", element)
         }
-        return null;
+        return null
     }
 
 
-    public List<LockException> checkCreation(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
-        return defaultCheck(events, checkedElements);
+    fun checkCreation(events: List<PropertyChangeEvent>, checkedElements: MutableSet<Element>): List<LockException> {
+        return defaultCheck(events, checkedElements)
     }
 
 
-    public Collection<LockException> checkUpdate(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
-        return defaultCheck(events, checkedElements);
+    fun checkUpdate(
+        events: List<PropertyChangeEvent>,
+        checkedElements: MutableSet<Element>
+    ): Collection<LockException> {
+        return defaultCheck(events, checkedElements)
     }
-    public Collection<LockException> checkDelete(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
-        return defaultCheck(events, checkedElements);
+
+    fun checkDelete(
+        events: List<PropertyChangeEvent>,
+        checkedElements: MutableSet<Element>
+    ): Collection<LockException> {
+        return defaultCheck(events, checkedElements)
     }
 
-    private List<LockException> defaultCheck(List<PropertyChangeEvent> events, Set<Element> checkedElements) {
-        Map<Element, String> elementsToCheckMap = filterElementToCheck(events, checkedElements);
+    private fun defaultCheck(
+        events: List<PropertyChangeEvent>,
+        checkedElements: MutableSet<Element>
+    ): List<LockException> {
+        val elementsToCheckMap = filterElementToCheck(events, checkedElements)
 
-        checkedElements.addAll(elementsToCheckMap.keySet());
+        checkedElements.addAll(elementsToCheckMap.keys)
 
-        ArrayList<LockException> lockExceptions = new ArrayList<>();
+        val lockExceptions = ArrayList<LockException>()
 
-        elementsToCheckMap.forEach((element, propertyName) ->
-                checkElement(element, propertyName).ifPresent(lockExceptions::add));
+        elementsToCheckMap.forEach { (element: Element, propertyName: String) ->
+            checkElement(
+                element,
+                propertyName
+            ).ifPresent { e: LockException -> lockExceptions.add(e) }
+        }
 
-        return lockExceptions;
+        return lockExceptions
     }
 
     /**
@@ -159,93 +181,141 @@ public class LockerManager {
      * @param propertyName
      * @return Optional OMFLockException
      */
-    private Optional<LockException> checkElement(Element elementToCheck, String propertyName) {
-        boolean isEditable = isEditable(elementToCheck);
-        boolean isMovable = elementToCheck.getOwner() == null ||  ModelHelper.canMoveChildInto(elementToCheck.getOwner(), elementToCheck);
+    private fun checkElement(elementToCheck: Element, propertyName: String): Optional<LockException> {
+        val isEditable = isEditable(elementToCheck)
+        val isMovable = isMovable(elementToCheck)
 
-        LockInfo lockInfo = null;
-        if(projectService != null)
-            lockInfo = projectService.getLockInfo(elementToCheck);
+        var lockInfo: LockInfo? = null
+        if (projectService != null) lockInfo = projectService!!.getLockInfo(elementToCheck)
 
-        String sLockInfo = Objects.isNull(lockInfo)? "":  lockInfo.toString();
+        val sLockInfo = if (Objects.isNull(lockInfo)) "" else lockInfo.toString()
 
-        if(!isEditable) return Optional.of(new LockException("     [NON EDITABLE]  " + sLockInfo + " - cause: " + propertyName, elementToCheck));
+        if (!isEditable) return Optional.of(
+            LockException(
+                "     [NON EDITABLE]  $sLockInfo - cause: $propertyName", elementToCheck
+            )
+        )
 
 
-        if(!isMovable) return Optional.of(new LockException("     [NON MOVABLE]  " + sLockInfo+ " - cause: " + propertyName, elementToCheck));
+        if (!isMovable) return Optional.of(
+            LockException(
+                "     [NON MOVABLE]  $sLockInfo - cause: $propertyName", elementToCheck
+            )
+        )
 
 
-        return Optional.empty();
+        return Optional.empty()
     }
+
+     fun isMovable(elementToCheck: Element) =
+        elementToCheck.owner == null || ModelHelper.canMoveChildInto(
+            elementToCheck.owner, elementToCheck
+        )
 
     /**
      * Will filter all events removing all already checked elements, and irrelevant elements. It will also retrieve the real modified element in the case of TaggedValue .
      * @param events
      * @param checkedElements
      * @return map<Modified Element, Modified PropertyName>
-     */
-    private Map<Element, String> filterElementToCheck(@CheckForNull List<PropertyChangeEvent> events, Set<Element> checkedElements) {
-        Predicate <? super PropertyChangeEvent> hasTheGoodClass =
-                   (evt -> Element.class.isInstance(evt.getSource())
-                            && !ConnectorEnd.class.isInstance(evt.getSource())
-                            && !Stereotype.class.isInstance(evt.getSource())
-                            && !Stereotype.class.isInstance(((Element) evt.getSource()).getOwner()));
-        Predicate <? super PropertyChangeEvent> isNotTaggedValue = evt -> !(evt.getPropertyName().equals("_elementTaggedValue"));
-        Predicate <? super PropertyChangeEvent> isNotEnd = evt -> !(evt.getPropertyName().equals("end"));
-        Predicate <? super PropertyChangeEvent> isNotParticipatesInInteraction = evt -> !(evt.getPropertyName().startsWith("participates"));
-        Predicate <? super PropertyChangeEvent> isTaggedValue =        evt -> (evt.getSource() instanceof TaggedValue);
-        Predicate <? super PropertyChangeEvent> isElementTaggedValue = evt -> (evt.getSource() instanceof ElementTaggedValue);
-        Predicate <? super PropertyChangeEvent> isNotAlreadyChecked = (evt -> !checkedElements.contains(evt.getSource()));
+    </Modified> */
+    private fun filterElementToCheck(
+        events: List<PropertyChangeEvent>,
+        checkedElements: MutableSet<Element>
+    ): Map<Element, String> {
+        val hasTheGoodClass: Predicate<in PropertyChangeEvent> =
+            (Predicate { evt: PropertyChangeEvent ->
+                (Element::class.java.isInstance(evt.source)
+                        && !ConnectorEnd::class.java.isInstance(evt.source)
+                        && !Stereotype::class.java.isInstance(evt.source)
+                        && !Stereotype::class.java.isInstance((evt.source as Element).owner))
+            })
+        val isNotTaggedValue: Predicate<in PropertyChangeEvent> =
+            Predicate { evt: PropertyChangeEvent -> evt.propertyName != "_elementTaggedValue" }
+        val isNotEnd: Predicate<in PropertyChangeEvent> =
+            Predicate { evt: PropertyChangeEvent -> evt.propertyName != "end" }
+        val isNotParticipatesInInteraction: Predicate<in PropertyChangeEvent> =
+            Predicate { evt: PropertyChangeEvent -> !(evt.propertyName.startsWith("participates")) }
+        val isTaggedValue: Predicate<in PropertyChangeEvent> =
+            Predicate { evt: PropertyChangeEvent -> (evt.source is TaggedValue) }
+        val isElementTaggedValue: Predicate<in PropertyChangeEvent> =
+            Predicate { evt: PropertyChangeEvent -> (evt.source is ElementTaggedValue) }
+        val isNotAlreadyChecked: Predicate<in PropertyChangeEvent> =
+            (Predicate { evt: PropertyChangeEvent -> !checkedElements.contains(evt.source) })
 
 
-        Predicate <? super Map.Entry> notNull = (entry -> entry.getKey() != null);
+        val notNull: Predicate<in Map.Entry<Element?, String>> = (Predicate { entry: Map.Entry<Element?, String> -> entry.key != null })
 
-        Predicate <? super Object> isNotAComputedProperty = evt -> !(((PropertyChangeEvent) evt).getPropertyName().startsWith("_"));
+        val isNotAComputedProperty =
+            Predicate { evt: Any -> !((evt as PropertyChangeEvent).propertyName.startsWith("_")) }
 
-        Function<? super  PropertyChangeEvent, Element> manageElementTaggedValue = evt -> {
-            if(isElementTaggedValue.test(evt)) {
-                checkedElements.addAll(((ElementTaggedValue) evt.getSource()).getValue().stream().filter(Element.class::isInstance).collect(Collectors.toList()));
-                return null;
+        val manageElementTaggedValue: Function<in PropertyChangeEvent, Element?> =
+            Function<PropertyChangeEvent, Element?> { evt: PropertyChangeEvent ->
+                if (isElementTaggedValue.test(evt)) {
+                    checkedElements.addAll(
+                        (evt.source as ElementTaggedValue).value
+                            .filter { obj: Element? -> Element::class.java.isInstance(obj) })
+                    return@Function null
+                }
+                if (isTaggedValue.test(evt)) {
+                    checkedElements.add(evt.source as TaggedValue)
+                    return@Function null
+                }
+                evt.source as Element
             }
-            if(isTaggedValue.test(evt)) {
-                checkedElements.add((TaggedValue) evt.getSource());
-                return null;
+
+        val evtToEntry: Function<in PropertyChangeEvent, Map.Entry<Element?, String>> =
+            Function<PropertyChangeEvent, Map.Entry<Element?, String>> { evt: PropertyChangeEvent ->
+                val element = manageElementTaggedValue.apply(evt)
+                AbstractMap.SimpleEntry(element, evt.propertyName)
             }
-            return (Element) evt.getSource();
-        };
-
-        Function<? super  PropertyChangeEvent, Map.Entry<Element, String>> evtToEntry = evt -> {
-            Element element = manageElementTaggedValue.apply(evt);
-            return new AbstractMap.SimpleEntry<>(element, evt.getPropertyName());
-        };
 
 
+        val elementToPropertiesNamesMap = HashMap<Element, String>()
+        events
+            .asSequence()
+            .filter{isNotTaggedValue.test(it)}
+            .filter{isNotEnd.test(it)}
+            .filter{isNotParticipatesInInteraction.test(it)}
+            .filter{isNotAComputedProperty.test(it)}
+            .filter{hasTheGoodClass.test(it)}
+            .filter{isNotAlreadyChecked.test(it)}
+            .map{evtToEntry.apply(it)}
+            .filter{notNull.test(it)}
+            .toList()
+            .forEach { entry: Map.Entry<Element?, String> -> elementToPropertiesNamesMap[entry.key!!] = entry.value }
 
-        HashMap<Element, String> elementToPropertieNamesMap = new HashMap<>();
-        events.stream()
-                .filter(isNotTaggedValue)
-                .filter(isNotEnd)
-                .filter(isNotParticipatesInInteraction)
-                .filter(isNotAComputedProperty)
-                .filter(hasTheGoodClass)
-                .filter(isNotAlreadyChecked)
-                .map(evtToEntry)
-                .filter(notNull)
-                .forEach(entry -> elementToPropertieNamesMap.put(entry.getKey(),entry.getValue()));
-
-        return elementToPropertieNamesMap;
+        return elementToPropertiesNamesMap
     }
 
-    public ModelValidationResult validateLocks(Element element)  {
-        boolean isEditable = isEditable(element) && !isLockedByOther(element);
+    fun validateLocks(element: Element): ModelValidationResult? {
+        val isEditable = isEditable(element) && !isLockedByOther(element)
 
-        if(!isLocked(element)) return new ModelValidationResult(element, "[LOCK ERROR] Element is not locked ");
+        if (!isLocked(element)) return ModelValidationResult(element, "[LOCK ERROR] Element is not locked ")
 
-        if(isLockedByOther(element)) return new ModelValidationResult(element, "[LOCK ERROR] Element is locked by  " + projectService.getLockInfo(element));
+        if (isLockedByOther(element)) return ModelValidationResult(
+            element,
+            "[LOCK ERROR] Element is locked by  " + projectService!!.getLockInfo(element)
+        )
 
-        if(!isEditable) return new ModelValidationResult(element, "[LOCK ERROR] Element is not editable  " + projectService.getLockInfo(element));
-        return null;
-
+        if (!isEditable) return ModelValidationResult(
+            element,
+            "[LOCK ERROR] Element is not editable  " + projectService!!.getLockInfo(element)
+        )
+        return null
     }
 
+    companion object {
+        private var instance: LockerManager? = null
+
+        @JvmStatic
+        fun getInstance(): LockerManager? {
+            return getInstance(OMFUtils.getProject())
+        }
+
+        fun getInstance(project: Project): LockerManager? {
+            if (instance == null || instance!!.project !== project) instance = LockerManager(project)
+
+            return instance
+        }
+    }
 }
