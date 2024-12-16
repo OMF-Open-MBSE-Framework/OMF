@@ -9,7 +9,6 @@ package com.samares_engineering.omf.omf_core_framework.utils;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.Project;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
-import com.nomagic.magicdraw.ui.browser.BrowserTabTree;
 import com.nomagic.magicdraw.uml.BaseElement;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
@@ -174,6 +173,7 @@ public class OMFUtils {
         selectElementInContainmentTree(element);
     }
 
+
     /**
      * Select an element in the containment tree.
      * MagicDraw containment tree shall be accessible in the API.
@@ -181,10 +181,29 @@ public class OMFUtils {
      */
     public static void selectElementInContainmentTree(BaseElement element) {
         try {
-            BrowserTabTree containmentTree = Application.getInstance().getMainFrame().getBrowser().getActiveTree();
-            containmentTree.openNode(element);
+            new ElementAction((Element) element).selectInBrowser();
         }catch (Exception e){
             throw new OMFCriticalException("SelectElementInContainmentTree failed cause: MagicDraw containment tree is not accessible", e);
+        }
+    }
+
+
+    public static void openSpecification(String id) {
+        try {
+            BaseElement element = OMFUtils.getProject().getElementByID(id);
+            if(element == null)
+                throw new NoElementFoundException("[API OPEN SPECIFICATION] ELEMENT NOT FOUND WITH ID: " + id);
+            openSpecification(element);
+        }catch (NoElementFoundException e){
+            throw new OMFCriticalException("OpenSpecification failed cause: Element not found", e);
+        }
+    }
+
+    public static void openSpecification(BaseElement element) {
+        try {
+            new ElementAction((Element) element).openSpecification();
+        }catch (Exception e){
+            throw new OMFCriticalException("OpenSpecification failed cause: MagicDraw containment tree is not accessible", e);
         }
     }
 

@@ -59,6 +59,13 @@ public class ExtHyperTextServerRouting {
           LegacyErrorHandler.handleException(e, false);
       }
     }
+    private static void handleOpenElementSpecification(String id) throws DevelopmentException {
+        try {
+            OMFUtils.selectElementInContainmentTree(id);
+        } catch (NoElementFoundException e) {
+            LegacyErrorHandler.handleException(e, false);
+        }
+    }
 
     //ROUTING
     public static RequestHandler openProject() {
@@ -88,8 +95,8 @@ public class ExtHyperTextServerRouting {
         projectsManager.loadProject(projectDescriptor, false);
 
         return OMFUtils.getProject();
-    }
 
+    }
 
     public static RequestHandler openTWCProject() {
         return new RequestHandler() {
@@ -113,6 +120,32 @@ public class ExtHyperTextServerRouting {
 
     private static Project handleTWCProjectOpening(String projectPath) throws LegacyOMFException {
         return new OMFProjectManager().openTWCProject(projectPath);
+    }
+
+    public static RequestHandler openSpecification() {
+        return new RequestHandler() {
+            @Override
+            public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) {
+                String id = request.getParameter("ID");
+                String projectPath = request.getParameter("projectPath");
+
+                if(Strings.isNullOrEmpty(id)){
+                    notFound("[Error] ID is Null", target, baseRequest, request, response);
+                    return;
+                }
+
+                if(!Strings.isNullOrEmpty(projectPath)) handleProjectOpening(projectPath);
+
+                try {
+                    handleOpenElementSpecification(id);
+                } catch (DevelopmentException e) {
+                    throw new RuntimeException(e);
+                }
+                String answer = "<h1>Element opened successfully!</h1>"
+                        + "\n" + "<p>The element with ID " + id + " has been opened in the browser.</p>";
+                successAnswer(answer, target, baseRequest, request, response);
+            }
+        };
     }
 
     public void handleElement(String id){

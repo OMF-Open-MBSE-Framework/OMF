@@ -6,7 +6,6 @@
  */
 package com.samares_engineering.omf.omf_example_plugin.features.miscergo.action
 
-import com.nomagic.magicdraw.ui.dialogs.specifications.SpecificationDialogManager
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TypedElement
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction

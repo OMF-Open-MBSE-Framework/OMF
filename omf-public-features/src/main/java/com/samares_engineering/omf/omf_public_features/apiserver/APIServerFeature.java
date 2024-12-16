@@ -88,6 +88,7 @@ public class APIServerFeature extends SimpleFeature {
         OMFApiServer.getInstance().addRoute("openProject", ExtHyperTextServerRouting.openProject());
         OMFApiServer.getInstance().addRoute("openTWCProject", ExtHyperTextServerRouting.openTWCProject());
         OMFApiServer.getInstance().addRoute("refmodel", ExtHyperTextServerRouting.refModel());
+        OMFApiServer.getInstance().addRoute("openSpecification", ExtHyperTextServerRouting.openSpecification());
     }
 
     @Override
