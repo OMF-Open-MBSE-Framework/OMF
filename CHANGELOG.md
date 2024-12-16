@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parametric Elements available in Factory
 - ElementAction add a new method to open specification dialog for a given element
 - API Server: Add a new method to open the specification dialog for a given element
+- TWC Utils: Adding new helper to deal with TWC, such as checking TWC accessibility, commits, etc.
 
 Examples
 - Parametric Diagram Generation example

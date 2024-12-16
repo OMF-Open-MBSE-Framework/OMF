@@ -61,11 +61,11 @@ public class RestrictedElementCheckerListener extends AElementListener implement
             boolean hasCreatedEvent = !CollectionUtils.isEmpty(groups.get(EVT_TYPE.UPDATE));
 
             Collection<LockException> deletions = hasDeletedEvent ?
-                    LockerManager.getInstance().checkDelete(groups.get(EVT_TYPE.DELETE), checkedElements) : Collections.emptyList();
+                    LockerManager.INSTANCE.checkDelete(groups.get(EVT_TYPE.DELETE), checkedElements) : Collections.emptyList();
             Collection<LockException> creations = hasUpdatedEvent ?
-                    LockerManager.getInstance().checkCreation(groups.get(EVT_TYPE.CREATION), checkedElements) : Collections.emptyList();
+                    LockerManager.INSTANCE.checkCreation(groups.get(EVT_TYPE.CREATION), checkedElements) : Collections.emptyList();
             Collection<LockException> updates = hasCreatedEvent ?
-                    LockerManager.getInstance().checkUpdate(groups.get(EVT_TYPE.UPDATE), checkedElements) : Collections.emptyList();
+                    LockerManager.INSTANCE.checkUpdate(groups.get(EVT_TYPE.UPDATE), checkedElements) : Collections.emptyList();
 
             deletions.forEach(e -> e.setUserMessage("D]-" + e.getUserMessage()));
             creations.forEach(e -> e.setUserMessage("C]-" + e.getUserMessage()));

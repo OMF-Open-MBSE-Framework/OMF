@@ -6,8 +6,6 @@
  */
 package com.samares_engineering.omf.omf_core_framework.utils
 
-import com.nomagic.ci.persistence.local.a.E
-import com.nomagic.ci.persistence.local.a.S
 import com.nomagic.magicdraw.core.Project
 import com.nomagic.magicdraw.core.ProjectUtilities
 import com.nomagic.magicdraw.teamwork2.locks.ILockProjectService
@@ -22,19 +20,26 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype
 import com.nomagic.uml2.transaction.ModelValidationResult
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.LockException
+import com.samares_engineering.omf.omf_core_framework.utils.twc.TWCUtils
 import java.beans.PropertyChangeEvent
 import java.util.*
 import java.util.function.Function
 import java.util.function.Predicate
-import java.util.stream.Collectors
 
-class LockerManager private constructor(project: Project) {
-    private val project: Project
-    private var projectService: ILockProjectService? = null
+object LockerManager {
+    private var project: Project? = defaultProject
+        get() = field ?: defaultProject
+    private val defaultProject: Project
+        get() = OMFUtils.getProject()
+    private val projectService: ILockProjectService?
+        get() = LockService.getLockService(project)
 
-    init {
-        this.projectService = LockService.getLockService(project)
+
+
+    @JvmStatic
+    fun withProject(project: Project): LockerManager {
         this.project = project
+        return this
     }
 
 
@@ -44,6 +49,14 @@ class LockerManager private constructor(project: Project) {
                 isLockedByMe(element) &&
                 isMovable(element)
     }
+
+    fun isLockFree(element: Element): Boolean {
+        return isNotTWCProject || (isLocked(element) && isLockedByMe(element))
+    }
+
+    val isNotTWCProject: Boolean
+        get() = TWCUtils.isItTWCProject
+
 
     fun isLockedByOther(listElementsToLock: Collection<Element>): Boolean {
         return listElementsToLock.any { element: Element -> isLockedByMe(element) && isLocked(element) }
@@ -304,18 +317,7 @@ class LockerManager private constructor(project: Project) {
         return null
     }
 
-    companion object {
-        private var instance: LockerManager? = null
 
-        @JvmStatic
-        fun getInstance(): LockerManager? {
-            return getInstance(OMFUtils.getProject())
-        }
 
-        fun getInstance(project: Project): LockerManager? {
-            if (instance == null || instance!!.project !== project) instance = LockerManager(project)
 
-            return instance
-        }
-    }
 }
