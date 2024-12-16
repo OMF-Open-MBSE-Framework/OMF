@@ -28,6 +28,7 @@ import java.util.function.Predicate
 
 object LockerManager {
     private var project: Project = defaultProject
+    private val areProjectTWC = HashMap<Project, Boolean>()
 
     private val defaultProject: Project
         get() = OMFUtils.getProject()
@@ -45,17 +46,17 @@ object LockerManager {
 
     fun canEdit(element: Element): Boolean {
         return isEditable(element) &&
-                !isLockedByOther(element) &&
-                isLockedByMe(element) &&
+                isLockFree(element) &&
                 isMovable(element)
     }
 
     fun isLockFree(element: Element): Boolean {
-        return isNotTWCProject || (isLocked(element) && isLockedByMe(element))
+        return isNotTWCProject() || (isLocked(element) && isLockedByMe(element))
     }
 
-    val isNotTWCProject: Boolean
-        get() = !TWCUtils.isItTWCProject(project)
+
+    fun isNotTWCProject(): Boolean =  !(areProjectTWC.computeIfAbsent(project) { TWCUtils.isItTWCProject(project) })
+
 
 
     fun isLockedByOther(listElementsToLock: Collection<Element>): Boolean {
