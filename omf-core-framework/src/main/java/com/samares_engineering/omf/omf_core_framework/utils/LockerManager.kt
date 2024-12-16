@@ -27,8 +27,8 @@ import java.util.function.Function
 import java.util.function.Predicate
 
 object LockerManager {
-    private var project: Project? = defaultProject
-        get() = field ?: defaultProject
+    private var project: Project = defaultProject
+
     private val defaultProject: Project
         get() = OMFUtils.getProject()
     private val projectService: ILockProjectService?
@@ -55,7 +55,7 @@ object LockerManager {
     }
 
     val isNotTWCProject: Boolean
-        get() = TWCUtils.isItTWCProject
+        get() = !TWCUtils.isItTWCProject(project)
 
 
     fun isLockedByOther(listElementsToLock: Collection<Element>): Boolean {
