@@ -145,8 +145,10 @@ public class OMFLog {
     }
 
     public String toHTMLFormat(OMFLogLevel logLevel, String pluginName, String featureName) {
-        return "<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel, pluginName, featureName) + " "
-                + toString(" ") + "</font>";
+        return "<font color=" + getMessageColor(logLevel) + ">"
+                + getPrefix(logLevel, pluginName, featureName) + " "
+                + toString(" ")
+                + "</font>";
     }
 
     public static String getPrefix(OMFLogLevel logLevel) {
@@ -271,9 +273,9 @@ public class OMFLog {
             return null;
         }
 
-        expandedLog
-                .messageComponents
-                .stream().filter(Objects::nonNull)
+        expandedLog.messageComponents
+                .stream()
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList())
                 .replaceAll(s -> s.replaceAll("\n", "<BR>"));
         return this;

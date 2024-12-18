@@ -23,6 +23,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.elementspecificat
 import com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.DiagramListenerFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.exportdiagram.ExportDiagramImagesFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.TemplateFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.featureexample.FeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.miscergo.MiscErgonomicFeature;
@@ -54,6 +55,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new CloneElementFeature(),
                 new GroupElementFeature(),
                 new SysMLBasicFeature(),
+                new FeatureExample(),
 //                new ConnectionFeatureExample(),
 //                new PatternCreationFeature(),
 //                new StateActionExample(),

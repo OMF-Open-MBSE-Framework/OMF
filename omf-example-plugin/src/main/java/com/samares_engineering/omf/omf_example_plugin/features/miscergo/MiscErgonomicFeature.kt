@@ -5,7 +5,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import com.samares_engineering.omf.omf_example_plugin.features.miscergo.action.OpenSpecificationFromPart
 import java.util.List.*
 
-class MiscErgonomicFeature : SimpleFeature("feature example") {
+class MiscErgonomicFeature : SimpleFeature("MISC Ergonomic feature") {
     override fun initFeatureActions(): List<UIAction> {
         return listOf<UIAction>(OpenSpecificationFromPart())
     }

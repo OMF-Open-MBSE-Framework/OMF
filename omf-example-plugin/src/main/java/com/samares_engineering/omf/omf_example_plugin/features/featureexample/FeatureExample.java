@@ -3,6 +3,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.featureexample;
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
 import com.samares_engineering.omf.omf_example_plugin.features.featureexample.action.DifferentBehaviorFomContextAction;
+import com.samares_engineering.omf.omf_example_plugin.features.featureexample.action.LoggingAction;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class FeatureExample extends SimpleFeature {
 
     @Override
     protected List<UIAction> initFeatureActions() {
-        return List.of(new DifferentBehaviorFomContextAction());
+        return List.of(new DifferentBehaviorFomContextAction(),
+                new LoggingAction());
     }
 }

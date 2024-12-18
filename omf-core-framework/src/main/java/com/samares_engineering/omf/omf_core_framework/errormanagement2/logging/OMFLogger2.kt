@@ -84,7 +84,7 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
     }
 
     fun success(message: OMFLog) {
-        log(OMFLog().colorAll(OMFColors.GREEN), OMFLogLevel.SUCCESS)
+        log(message.colorAll(OMFColors.GREEN), OMFLogLevel.SUCCESS)
     }
 
     fun warning(message: String) {
@@ -96,11 +96,11 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
     }
 
     fun error(message: String) {
-        log(OMFLog().colorAll(OMFColors.ERROR), OMFLogLevel.ERROR)
+        log(OMFLog(message).colorAll(OMFColors.ERROR), OMFLogLevel.ERROR)
     }
 
     fun error(message: OMFLog) {
-        log(OMFLog().colorAll(OMFColors.ERROR), OMFLogLevel.ERROR)
+        log(message.colorAll(OMFColors.ERROR), OMFLogLevel.ERROR)
     }
 
     private fun log(logMessage: OMFLog, logLevel: OMFLogLevel) {
@@ -145,12 +145,17 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
 
     private fun createNotification(logLevel: OMFLogLevel, logMessage: OMFLog): Notification {
         val title = OMFLog.getPrefix(logLevel, plugin.name, feature?.name)
-        return Notification(
+        val notification = Notification(
             "[Plugin Error]",
             title,
             logMessage.replaceNewLinesWithBreaks().toString(),
             getNotificationSeverity(logLevel)
         )
+        val expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog()
+        if (expandedMessage != null) notification.longText = expandedMessage.toString()
+
+        NotificationManager.getInstance().showNotification(notification)
+        return notification
     }
 
     private fun getNotificationSeverity(logLevel: OMFLogLevel): NotificationSeverity {
