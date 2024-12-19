@@ -65,7 +65,7 @@ class ModelUpdater(val generator: ModelArchitectureGenerator) {
              // Process interfaces
              processInterfaces(pluginClass, clazz)
          }catch (e: Throwable) {
-             OMFLogger.errorToSystemConsole(OMFLog().err("Error while treating class: ${pluginClass.name}").breakLine().err(OMFLog().text(e.message)))
+//             OMFLogger.errorToSystemConsole(OMFLog().err("Error while treating class: ${pluginClass.name}").breakLine().err(OMFLog().text(e.message)))
          }
     }
 

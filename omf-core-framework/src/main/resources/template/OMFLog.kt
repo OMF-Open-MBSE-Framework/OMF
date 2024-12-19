@@ -44,60 +44,63 @@ class OMFLog {
         return text("<BR>")
     }
 
-
+    @OMFLogEquivalent
     fun bold(string: String): OMFLog {
         return text("<B>$string</B>")
     }
 
-
+    @OMFLogEquivalent
     fun italic(string: String): OMFLog {
         return text("<I>$string</I>")
     }
 
-
+    @OMFLogEquivalent
     fun underline(string: String): OMFLog {
         return text("<U>$string</U>")
     }
 
-
+    @OMFLogEquivalent
     fun strike(string: String): OMFLog {
         return text("<S>$string</S>")
     }
 
-
+    @OMFLogEquivalent
     fun color(string: String, color: String): OMFLog {
         return text("<font color=$color>$string</font>")
     }
 
-
+    @OMFLogEquivalent
     fun colorAll(color: String): OMFLog {
         messageComponents.replaceAll { s: String -> "<font color=$color>$s</font>" }
         return this
     }
 
 
-
+    @OMFLogEquivalent
     fun warn(string: String): OMFLog {
         return color(string, OMFColors.WARN)
     }
 
-
+    @OMFLogEquivalent
     fun info(string: String): OMFLog {
         return color(string, OMFColors.INFO)
     }
 
-
+    @OMFLogEquivalent
     fun err(string: String): OMFLog {
         return color(string, OMFColors.ERROR)
     }
 
-
+    @OMFLogEquivalent
     fun linkElement(linkText: String, elementToLink: Element?): OMFLog {
         linkActionMapping[linkText] = Runnable {
             ElementAction(elementToLink).selectInBrowser()
         }
         return text("<A>$linkText</A>")
     }
+
+    //<--GENERATED METHOD -->
+    //--------------------------------------------------------------------------------------------------
 
     fun linkElementAndParent(elementToLink: Element?): OMFLog {
         var linkElementName = ""
@@ -117,56 +120,16 @@ class OMFLog {
         return text("<A>$linkElementName</A>::<A>$linkOwnerElementName</A>")
     }
 
-
+    @OMFLogEquivalent
     fun link(linkText: String, url: String): OMFLog {
         return text("<A href=$url>$linkText</A>")
     }
 
-
+    @OMFLogEquivalent
     fun linkAction(linkText: String, action: Runnable): OMFLog {
         linkActionMapping[linkText] = action
         return text("<A>$linkText</A>")
     }
-
-    fun bold(log: OMFLog): OMFLog {
-        return bold(log.toString())
-    }
-    fun italic(log: OMFLog): OMFLog {
-        return italic(log.toString())
-    }
-    fun underline(log: OMFLog): OMFLog {
-        return underline(log.toString())
-    }
-    fun strike(log: OMFLog): OMFLog {
-        return strike(log.toString())
-    }
-    fun color(log: OMFLog, color: String): OMFLog {
-        return color(log.toString(), color)
-    }
-    fun colorAll(log: OMFLog): OMFLog {
-        return colorAll(log.toString())
-    }
-    fun warn(log: OMFLog): OMFLog {
-        return warn(log.toString())
-    }
-    fun info(log: OMFLog): OMFLog {
-        return info(log.toString())
-    }
-    fun err(log: OMFLog): OMFLog {
-        return err(log.toString())
-    }
-    fun linkElement(log: OMFLog, elementToLink: Element?): OMFLog {
-        return linkElement(log.toString(), elementToLink)
-    }
-    fun link(log: OMFLog, url:String): OMFLog {
-        return link(log.toString(), url)
-    }
-    fun linkAction(log: OMFLog, action: Runnable): OMFLog {
-        return linkAction(log.toString(), action)
-    }
-
-
-
 
     /*
      * Log message formatting

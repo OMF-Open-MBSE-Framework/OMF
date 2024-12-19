@@ -124,7 +124,7 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
         formattedLog: String?,
         logMessage: OMFLog
     ) {
-        Application.getInstance().guiLog.addHyperlinkedText(formattedLog, logMessage.linkActionMapping)
+//        Application.getInstance().guiLog.addHyperlinkedText(formattedLog, logMessage.linkActionMapping)
     }
 
     private fun logToNotification(
