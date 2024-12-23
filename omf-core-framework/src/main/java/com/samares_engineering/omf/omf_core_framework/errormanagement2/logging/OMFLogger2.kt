@@ -1,10 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging
 
-import com.nomagic.magicdraw.core.Application
-import com.nomagic.magicdraw.ui.notification.Notification
-import com.nomagic.magicdraw.ui.notification.NotificationManager
-import com.nomagic.magicdraw.ui.notification.NotificationSeverity
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.concrete_loggers.NotificationLogger
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.concrete_loggers.SystemLogger
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.concrete_loggers.UILogger
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFColors
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel
@@ -23,9 +22,21 @@ fun main() {
 
 class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
 
+    private val mapLogger:MutableMap<String, OMFConcreteLogger> = mutableMapOf(
+        LogTarget.UI_CONSOLE.toString() to UILogger(plugin),
+        LogTarget.SYSTEM_CONSOLE.toString() to SystemLogger(plugin),
+        LogTarget.NOTIFICATION.toString() to NotificationLogger(plugin)
+    )
     private val logLevel: OMFLogLevel = OMFLogLevel.INFO
     private var currentTarget: LogTarget? = null
     private var feature: OMFFeature? = null
+
+    val uiLogger
+        get() = mapLogger["UI_CONSOLE"]
+    val systemLogger
+        get() = mapLogger["SYSTEM_CONSOLE"]
+    val notificationLogger
+        get() = mapLogger["NOTIFICATION"]
 
     enum class LogTarget {
         UI_CONSOLE, SYSTEM_CONSOLE, NOTIFICATION, ALL
@@ -75,6 +86,7 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
     fun feature(feature: OMFFeature): OMFLogger2 {
         return getInstance().apply { this.feature = feature }
     }
+
     fun log(message: OMFLog) {
         log(message, OMFLogLevel.INFO)
     }
@@ -115,6 +127,7 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
                     logToNotification(logLevel, logMessage)
                     printToSystemConsole(logLevel, logMessage.toString())
                 }
+
                 null -> {}
             }
         }
@@ -124,48 +137,21 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
         formattedLog: String?,
         logMessage: OMFLog
     ) {
-//        Application.getInstance().guiLog.addHyperlinkedText(formattedLog, logMessage.linkActionMapping)
+        uiLogger?.log(formattedLog?:"", logMessage, plugin, feature, logLevel)
     }
 
     private fun logToNotification(
         logLevel: OMFLogLevel,
         logMessage: OMFLog
     ) {
-        NotificationManager.getInstance().showNotification(createNotification(logLevel, logMessage))
+       notificationLogger?.log("", logMessage, plugin, feature, logLevel)
     }
-
     private fun printToSystemConsole(logLevel: OMFLogLevel, message: String) {
-        when (logLevel) {
-            OMFLogLevel.WARNING -> SysoutColorPrinter.warn(message)
-            OMFLogLevel.ERROR -> SysoutColorPrinter.err(message)
-            OMFLogLevel.SUCCESS -> SysoutColorPrinter.success(message)
-            OMFLogLevel.INFO -> SysoutColorPrinter.print(message)
-        }
+        val log = OMFLog(message)
+        systemLogger?.log("", log, plugin, feature, logLevel)
     }
 
-    private fun createNotification(logLevel: OMFLogLevel, logMessage: OMFLog): Notification {
-        val title = OMFLog.getPrefix(logLevel, plugin.name, feature?.name)
-        val notification = Notification(
-            "[Plugin Error]",
-            title,
-            logMessage.replaceNewLinesWithBreaks().toString(),
-            getNotificationSeverity(logLevel)
-        )
-        val expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog()
-        if (expandedMessage != null) notification.longText = expandedMessage.toString()
 
-        NotificationManager.getInstance().showNotification(notification)
-        return notification
-    }
-
-    private fun getNotificationSeverity(logLevel: OMFLogLevel): NotificationSeverity {
-        return when (logLevel) {
-            OMFLogLevel.WARNING -> NotificationSeverity.WARNING
-            OMFLogLevel.ERROR -> NotificationSeverity.ERROR
-            OMFLogLevel.INFO -> NotificationSeverity.INFO
-            else -> NotificationSeverity.INFO
-        }
-    }
 
     @GenerateLegacyMethods
     class OMFLogger2LegacyMethods {

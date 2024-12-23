@@ -12,7 +12,7 @@ import java.util.stream.Collectors
 
 class OMFLog {
     private val messageComponents: MutableList<String> = ArrayList()
-    private val linkActionMapping: MutableMap<String, Runnable> = HashMap()
+    val linkActionMapping: MutableMap<String, Runnable> = HashMap()
     private var expandedLog: OMFLog? = null
 
     constructor()
@@ -256,13 +256,6 @@ class OMFLog {
         return this
     }
 
-
-    /*
-     * Getters
-     */
-    fun getLinkActionMapping(): Map<String, Runnable> {
-        return linkActionMapping
-    }
 
     fun replaceNewLinesWithBreaks(): OMFLog {
         messageComponents.replaceAll { s: String -> s.replace("\n".toRegex(), "<BR>") }

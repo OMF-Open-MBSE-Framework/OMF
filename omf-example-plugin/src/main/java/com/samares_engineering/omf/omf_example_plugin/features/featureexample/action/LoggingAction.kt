@@ -37,7 +37,6 @@ class LoggingAction : AUIAction() {
             .info(OMFLog("1"))
 
         OMFLogger2.toAll().log(log)
-        Application.getInstance().guiLog.addHyperlinkedText("<b>Hyperlinked text</b>", null)
 
     }
 }

@@ -63,7 +63,7 @@ dependencies {
     mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
     mdLibrary fileTree(dir: 'build/install/plugins',
             include: ['*.jar', '**/*.jar'],
-            excludes: [examplePluginArtefactId + '/**/**.jar'])
+            excludes: [omfPackage + '/**/**.jar'])
 
     pluginLibrary project(':omf-test-framework')
     pluginLibrary project(":omf-core-framework")
