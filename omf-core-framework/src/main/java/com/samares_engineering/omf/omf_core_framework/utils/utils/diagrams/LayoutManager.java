@@ -1,11 +1,13 @@
 package com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams;
 
+import com.nomagic.magicdraw.actions.ActionsExecuter;
 import com.nomagic.magicdraw.context.PropertyPathChangeManager;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.openapi.uml.PresentationElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.DisplayPathElements;
+import com.nomagic.magicdraw.uml.symbols.OrthogonalLinkDiagramLayouterCustomSelection;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.uml.symbols.shapes.DiagramFrameView;
 import com.nomagic.magicdraw.uml.symbols.shapes.PartView;
@@ -142,6 +144,15 @@ public class LayoutManager {
     }
 
     /**
+     * Display all the paths FROM all the previous elements created.<br>
+     * Meaning that all path going from or to the given elements will be displayed.<br>
+     * NOTE: the elements must be displayed first.
+     * NOTE2: This method has been retro-engineered from the DisplayPathElements.displayPathElements method.
+     */
+    public void displayAllPaths(){
+        displayAllPaths(allDisplayedElements);
+    }
+    /**
      * Display all the paths FROM the given elements in the diagram.<br>
      * Meaning that all path going from or to the given elements will be displayed.<br>
      * NOTE: the elements must be displayed first.
@@ -246,5 +257,15 @@ public class LayoutManager {
      */
     public Set<PresentationElement> getAllDisplayedElements() {
         return allDisplayedElements;
+    }
+
+
+    public void applyQuickLayout(List<PresentationElement> presentationElementsToLayout) {
+        OrthogonalLinkDiagramLayouterCustomSelection orthoLayouter = new OrthogonalLinkDiagramLayouterCustomSelection(presentationElementsToLayout);
+        ActionsExecuter.runLayoutTask(orthoLayouter, diagramPresentationElement);
+    }
+
+    public void applyQuickLayout() {
+        Application.getInstance().getActionsManager().getActionsExecuter().layout(true);
     }
 }

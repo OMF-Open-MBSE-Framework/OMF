@@ -4,7 +4,7 @@
  * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since 0.0.0
  */
-package com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.diagramlistener
+package com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut.diagramlistener
 
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.RollbackException
 import com.samares_engineering.omf.omf_core_framework.errors.cancelsession.UndoManager

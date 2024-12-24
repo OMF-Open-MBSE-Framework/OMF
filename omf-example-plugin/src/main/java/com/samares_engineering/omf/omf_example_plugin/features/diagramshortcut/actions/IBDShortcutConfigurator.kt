@@ -1,4 +1,4 @@
-package com.samares_engineering.omf.omf_example_plugin.features.ergodiagram.actions
+package com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut.actions
 
 import com.nomagic.actions.ActionsManager
 import com.nomagic.magicdraw.actions.ActionsConfiguratorsManager
@@ -7,7 +7,6 @@ import com.nomagic.magicdraw.ui.actions.BaseDiagramShortcutsConfigurator
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.FeatureItemRegisterer
 import java.lang.reflect.ParameterizedType
 
 class IBDShortcutConfigurator(

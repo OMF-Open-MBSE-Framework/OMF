@@ -291,11 +291,6 @@ public class OMFFactory extends AMagicDrawFactory {
                 .collect(Collectors.toList());
     }
 
-    //Packages
-    public Package getSysMLTypeLibraryPackage() {
-        Model sysmlModel = Finder.byNameRecursively().find(OMFUtils.getProject(), Model.class, OMFConstants.SYSML_PACKAGE_NAME);
-        return Finder.byNameRecursively().find(sysmlModel, Package.class, OMFConstants.SYSML_LIBRARY_PACKAGE_NAME);
-    }
 
     private static class OMFHelperHolder {
         private static final OMFFactory instance = new OMFFactory();
