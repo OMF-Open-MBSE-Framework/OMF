@@ -18,6 +18,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorH
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFNotificationManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.PluginRegisteringException;
@@ -134,6 +135,7 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
     }
 
     protected void initLogger() {
+        OMFNotificationManager.init(10);
         OMFLogger.init(this);
         OMFLogger2.init(this);
     }

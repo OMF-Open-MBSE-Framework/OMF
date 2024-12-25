@@ -22,7 +22,7 @@ fun main() {
 
 class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
 
-    private val mapLogger:MutableMap<String, OMFConcreteLogger> = mutableMapOf(
+    private val mapLogger: MutableMap<String, OMFConcreteLogger> = mutableMapOf(
         LogTarget.UI_CONSOLE.toString() to UILogger(plugin),
         LogTarget.SYSTEM_CONSOLE.toString() to SystemLogger(plugin),
         LogTarget.NOTIFICATION.toString() to NotificationLogger(plugin)
@@ -137,21 +137,20 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
         formattedLog: String?,
         logMessage: OMFLog
     ) {
-        uiLogger?.log(formattedLog?:"", logMessage, plugin, feature, logLevel)
+        uiLogger?.log(formattedLog ?: "", logMessage, plugin, feature, logLevel)
     }
 
     private fun logToNotification(
         logLevel: OMFLogLevel,
         logMessage: OMFLog
     ) {
-       notificationLogger?.log("", logMessage, plugin, feature, logLevel)
+        notificationLogger?.log("", logMessage, plugin, feature, logLevel)
     }
+
     private fun printToSystemConsole(logLevel: OMFLogLevel, message: String) {
         val log = OMFLog(message)
         systemLogger?.log("", log, plugin, feature, logLevel)
     }
-
-
 
     @GenerateLegacyMethods
     class OMFLogger2LegacyMethods {
