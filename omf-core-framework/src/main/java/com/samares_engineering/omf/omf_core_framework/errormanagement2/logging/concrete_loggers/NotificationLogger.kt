@@ -1,9 +1,9 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.concrete_loggers
 
 import com.nomagic.magicdraw.ui.notification.Notification
-import com.nomagic.magicdraw.ui.notification.NotificationManager
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFConcreteLogger
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFNotificationManager
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel
@@ -11,7 +11,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin
 
 class NotificationLogger(override val plugin: OMFPlugin) : OMFConcreteLogger {
-
     override fun log(
         prefix: String,
         logMessage: OMFLog,
@@ -24,7 +23,7 @@ class NotificationLogger(override val plugin: OMFPlugin) : OMFConcreteLogger {
 
     private fun createNotification(logLevel: OMFLogLevel, logMessage: OMFLog, feature: OMFFeature?): Notification {
         val featureName = feature?.name ?: ""
-        val title = OMFLog.getPrefix(logLevel, featureName)
+        val title = OMFLogger2.getPrefix(logLevel, featureName)
         val notification = Notification(
             "[Plugin Error]", //id (not sure what is does)
             title,
@@ -46,6 +45,4 @@ class NotificationLogger(override val plugin: OMFPlugin) : OMFConcreteLogger {
             else -> NotificationSeverity.INFO
         }
     }
-
-
 }

@@ -1,13 +1,11 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log
 
-import com.google.common.base.Strings
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.utils.ElementAction
 import java.util.*
 import java.util.function.Consumer
-import java.util.function.UnaryOperator
 import java.util.stream.Collectors
 
 class OMFLog {
@@ -76,7 +74,6 @@ class OMFLog {
     }
 
 
-
     fun warn(string: String): OMFLog {
         return color(string, OMFColors.WARN)
     }
@@ -131,64 +128,67 @@ class OMFLog {
     fun bold(log: OMFLog): OMFLog {
         return bold(log.toString())
     }
+
     fun italic(log: OMFLog): OMFLog {
         return italic(log.toString())
     }
+
     fun underline(log: OMFLog): OMFLog {
         return underline(log.toString())
     }
+
     fun strike(log: OMFLog): OMFLog {
         return strike(log.toString())
     }
+
     fun color(log: OMFLog, color: String): OMFLog {
         return color(log.toString(), color)
     }
+
     fun colorAll(log: OMFLog): OMFLog {
         return colorAll(log.toString())
     }
+
     fun warn(log: OMFLog): OMFLog {
         return warn(log.toString())
     }
+
     fun info(log: OMFLog): OMFLog {
         return info(log.toString())
     }
+
     fun err(log: OMFLog): OMFLog {
         return err(log.toString())
     }
+
     fun linkElement(log: OMFLog, elementToLink: Element?): OMFLog {
         return linkElement(log.toString(), elementToLink)
     }
-    fun link(log: OMFLog, url:String): OMFLog {
+
+    fun link(log: OMFLog, url: String): OMFLog {
         return link(log.toString(), url)
     }
+
     fun linkAction(log: OMFLog, action: Runnable): OMFLog {
         return linkAction(log.toString(), action)
     }
-
-
-
 
     /*
      * Log message formatting
      */
     fun toHTMLFormat(logLevel: OMFLogLevel): String {
-        return ("<font color=" + getMessageColor(logLevel) + ">" + getPrefix(logLevel)
-                + " " + toString(" ") + "</font>")
-    }
-
-    fun toHTMLFormat(logLevel: OMFLogLevel, pluginName: String): String {
         val expandedLogString = if (expandedLog != null) "<BR>$expandedLog" else ""
 
         return ("<font color=" + getMessageColor(logLevel) + ">"
-                + getPrefix(logLevel, pluginName)
+                + OMFLogger.getPrefix(logLevel)
                 + " " + toString(" ")
                 + expandedLogString
                 + "</font>")
     }
 
-    fun toHTMLFormat(logLevel: OMFLogLevel, pluginName: String, featureName: String?): String {
+    fun toHTMLFormat(logLevel: OMFLogLevel, featureName: String?): String {
         return ("<font color=" + getMessageColor(logLevel) + ">"
-                + getPrefix(logLevel, pluginName, featureName) + " "
+                + OMFLogger.getPrefix(logLevel, featureName) + " "
                 + toString(" ")
                 + "</font>")
     }
@@ -256,7 +256,6 @@ class OMFLog {
         return this
     }
 
-
     fun replaceNewLinesWithBreaks(): OMFLog {
         messageComponents.replaceAll { s: String -> s.replace("\n".toRegex(), "<BR>") }
         return this
@@ -267,46 +266,19 @@ class OMFLog {
             return null
         }
 
-        expandedLog!!.messageComponents
-            .stream()
+        expandedLog!!.messageComponents.stream()
             .filter { obj: String? -> Objects.nonNull(obj) }
-            .collect(Collectors.toList<String>())
-            .replaceAll(UnaryOperator<String> { s: String -> s.replace("\n".toRegex(), "<BR>") })
+            .collect(Collectors.toList())
+            .replaceAll { s: String -> s.replace("\n".toRegex(), "<BR>") }
         return this
     }
 
-    companion object {
-        fun getPrefix(logLevel: OMFLogLevel): String {
-            return "[" + getLogLevelPrefix(logLevel) + "]"
-        }
-
-        @JvmStatic
-        fun getPrefix(logLevel: OMFLogLevel, pluginName: String): String {
-            return getPrefix(logLevel) + "[" + pluginName + "]"
-        }
-
-        @JvmStatic
-        fun getPrefix(logLevel: OMFLogLevel, pluginName: String, featureName: String?): String {
-            val featureTag = if (Strings.isNullOrEmpty(featureName)) "" else "[$featureName]"
-            return getPrefix(logLevel, pluginName) + featureTag
-        }
-
-        private fun getLogLevelPrefix(logLevel: OMFLogLevel): String {
-            return when (logLevel) {
-                OMFLogLevel.WARNING -> "Warning"
-                OMFLogLevel.ERROR -> "Error"
-                OMFLogLevel.INFO -> "Info"
-                else -> "Info"
-            }
-        }
-
-        private fun getMessageColor(logLevel: OMFLogLevel): String {
-            return when (logLevel) {
-                OMFLogLevel.WARNING -> OMFColors.WARN
-                OMFLogLevel.ERROR -> OMFColors.ERROR
-                OMFLogLevel.INFO -> OMFColors.INFO
-                else -> OMFColors.INFO
-            }
+    private fun getMessageColor(logLevel: OMFLogLevel): String {
+        return when (logLevel) {
+            OMFLogLevel.WARNING -> OMFColors.WARN
+            OMFLogLevel.ERROR -> OMFColors.ERROR
+            OMFLogLevel.INFO -> OMFColors.INFO
+            else -> OMFColors.INFO
         }
     }
 }

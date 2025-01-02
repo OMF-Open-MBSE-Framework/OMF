@@ -178,7 +178,6 @@ public abstract class AUIAction implements UIAction {
      * @param runnable The Runnable representing the UI action to be executed.
      */
     public void executeAUIActionWithinBarrier(Runnable runnable) {
-
         OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
     }
 

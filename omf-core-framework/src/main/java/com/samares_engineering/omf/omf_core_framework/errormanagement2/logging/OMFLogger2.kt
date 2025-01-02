@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging
 
+import com.google.common.base.Strings
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.concrete_loggers.NotificationLogger
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.concrete_loggers.SystemLogger
@@ -10,17 +11,19 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin
 
-fun main() {
-    OMFLogger2.toAll().warning("This is a warning message.")
-    OMFLogger2.toAll().warning(OMFLog("This is a warning message."))
+//fun main() {
+//    OMFLogger2.toAll().warning("This is a warning message.")
+//    OMFLogger2.toAll().warning(OMFLog("This is a warning message."))
+//
+//    OMFLogger2.toUI().log(OMFLog().text("This is a success message."))
+//
+//    OMFLogger.warn("This is a warning message.")
+//    OMFLogger.logToUIConsole(OMFLog().text("This is a success message."), OMFLogLevel.INFO)
+//}
 
-    OMFLogger2.toUI().log(OMFLog().text("This is a success message."))
-
-    OMFLogger.warn("This is a warning message.")
-    OMFLogger.logToUIConsole(OMFLog().text("This is a success message."), OMFLogLevel.INFO)
-}
-
-class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
+class OMFLogger2 private constructor(
+    private val plugin: OMFPlugin
+) {
 
     private val mapLogger: MutableMap<String, OMFConcreteLogger> = mutableMapOf(
         LogTarget.UI_CONSOLE.toString() to UILogger(plugin),
@@ -81,6 +84,26 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
         fun toAll(): OMFLogger2 {
             return getInstance().apply { currentTarget = LogTarget.ALL }
         }
+
+        // Utility methods
+        fun getPrefix(logLevel: OMFLogLevel): String {
+            val pluginPrefix = if (instance?.plugin != null) "[${instance?.plugin?.name}]" else ""
+            return "[" + getLogLevelPrefix(logLevel) + "]" + pluginPrefix
+        }
+
+        fun getPrefix(logLevel: OMFLogLevel, featureName: String): String {
+            val featureTag = if (Strings.isNullOrEmpty(featureName)) "" else "[$featureName]"
+            return getPrefix(logLevel) + featureTag
+        }
+
+        private fun getLogLevelPrefix(logLevel: OMFLogLevel): String {
+            return when (logLevel) {
+                OMFLogLevel.WARNING -> "Warning"
+                OMFLogLevel.ERROR -> "Error"
+                OMFLogLevel.INFO -> "Info"
+                else -> "Info"
+            }
+        }
     }
 
     fun feature(feature: OMFFeature): OMFLogger2 {
@@ -117,7 +140,7 @@ class OMFLogger2 private constructor(private val plugin: OMFPlugin) {
 
     private fun log(logMessage: OMFLog, logLevel: OMFLogLevel) {
         if (logLevel.ordinal >= this.logLevel.ordinal) {
-            val formattedLog = logMessage.toHTMLFormat(logLevel, plugin.name, feature?.name)
+            val formattedLog = logMessage.toHTMLFormat(logLevel, feature?.name)
             when (currentTarget) {
                 LogTarget.UI_CONSOLE -> logToMDConsole(formattedLog, logMessage)
                 LogTarget.NOTIFICATION -> logToNotification(logLevel, logMessage)

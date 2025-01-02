@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging;
 
+import com.google.common.base.Strings;
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
@@ -11,18 +12,20 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLogLevel;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin;
+import kotlin.jvm.JvmStatic;
 
 public class OMFLogger {
     private static OMFLogger instance;
     private final OMFPlugin plugin;
     private final OMFLogLevel logLevel = OMFLogLevel.INFO;
     private final OMFNotificationManager notificationThrottler = new OMFNotificationManager(5);
+
     protected OMFLogger(OMFPlugin plugin) {
         this.plugin = plugin;
     }
 
     //Rational, to avoid typing OMFLogger2.getInstance() everytime, it's included in each static method
-    private static OMFLogger getInstance() {
+    public static OMFLogger getInstance() {
         if (instance.plugin == null) {
             throw new CoreException2("The OMFLogger has not been initialized yet. Please call the init() method first.");
         }
@@ -50,7 +53,7 @@ public class OMFLogger {
 
     public static void logToUIConsole(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
-            String formattedLog = logMessage.toHTMLFormat(logLevel, getInstance().plugin.getName(), feature.getName());
+            String formattedLog = logMessage.toHTMLFormat(logLevel, feature.getName());
             Application.getInstance().getGUILog().addHyperlinkedText(formattedLog, logMessage.getLinkActionMapping());
         }
     }
@@ -61,12 +64,9 @@ public class OMFLogger {
 
     public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, String title) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) {
-            Notification notification = new Notification(
-                    "[Plugin Error]", //id (not sure what is does)
+            Notification notification = new Notification("[Plugin Error]", //id (not sure what is does)
                     title, //title
-                    logMessage.replaceNewLinesWithBreaks().toString(),
-                    getNotificationSeverity(logLevel)
-            );
+                    logMessage.replaceNewLinesWithBreaks().toString(), getNotificationSeverity(logLevel));
 
             OMFLog expandedMessage = logMessage.replaceNewLinesWithBreaksInExpandLog();
             if (expandedMessage != null) notification.setLongText(expandedMessage.toString());
@@ -76,17 +76,17 @@ public class OMFLogger {
     }
 
     public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel, OMFFeature feature) {
-        String title = OMFLog.getPrefix(logLevel, getInstance().plugin.getName(), feature.getName());
+        String title = getPrefix(logLevel, feature.getName());
         logToNotification(logMessage, logLevel, title);
     }
 
     public static void logToNotification(OMFLog logMessage, OMFLogLevel logLevel) {
-        String title = OMFLog.getPrefix(logLevel, getInstance().plugin.getName());
+        String title = getPrefix(logLevel, getInstance().plugin.getName());
         logToNotification(logMessage, logLevel, title);
     }
 
     public static void logToNotification(String message, OMFLogLevel logLevel, OMFFeature feature) {
-            logToNotification(new OMFLog().text(message).replaceNewLinesWithBreaks(), logLevel, feature);
+        logToNotification(new OMFLog().text(message).replaceNewLinesWithBreaks(), logLevel, feature);
     }
 
     public static void logToNotification(String message, OMFLogLevel logLevel) {
@@ -148,6 +148,7 @@ public class OMFLogger {
     public static void infoToNotification(String message) {
         logToNotification(message, OMFLogLevel.INFO);
     }
+
     public static void statusToNotification(String message) {
         logToNotification(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
     }
@@ -163,6 +164,7 @@ public class OMFLogger {
     public static void errorToNotification(OMFLog message) {
         logToNotification(message, OMFLogLevel.ERROR);
     }
+
     public static void successToNotification(OMFLog message) {
         logToNotification(message, OMFLogLevel.SUCCESS);
     }
@@ -170,6 +172,7 @@ public class OMFLogger {
     public static void infoToNotification(OMFLog message) {
         logToNotification(message, OMFLogLevel.INFO);
     }
+
     public static void statusToNotification(OMFLog message) {
         logToNotification(message, OMFLogLevel.INFO);
     }
@@ -181,6 +184,7 @@ public class OMFLogger {
     public static void successToUIConsole(String message) {
         logToUIConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.SUCCESS);
     }
+
     public static void statusToUIConsole(String message) {
         logToUIConsole(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
     }
@@ -188,6 +192,7 @@ public class OMFLogger {
     public static void warnToUIConsole(OMFLog message) {
         logToUIConsole(message, OMFLogLevel.WARNING);
     }
+
     public static void successToUIConsole(OMFLog message) {
         logToUIConsole(message, OMFLogLevel.SUCCESS);
     }
@@ -199,6 +204,7 @@ public class OMFLogger {
     public static void infoToUIConsole(OMFLog message) {
         logToUIConsole(message, OMFLogLevel.INFO);
     }
+
     public static void statusToUIConsole(OMFLog message) {
         logToUIConsole(message, OMFLogLevel.INFO);
     }
@@ -218,9 +224,11 @@ public class OMFLogger {
     public static void infoToSystemConsole(String message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
     }
+
     public static void successToSystemConsole(String message) {
         logToSystemConsole(new OMFLog().color(message, OMFColors.GREEN), OMFLogLevel.SUCCESS);
     }
+
     public static void statusToSystemConsole(String message) {
         logToSystemConsole(new OMFLog().color(message, OMFColors.BLUE), OMFLogLevel.INFO);
     }
@@ -232,6 +240,7 @@ public class OMFLogger {
     public static void errorToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.ERROR);
     }
+
     public static void successToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.SUCCESS);
     }
@@ -239,6 +248,7 @@ public class OMFLogger {
     public static void infoToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
     }
+
     public static void statusToSystemConsole(OMFLog message) {
         logToSystemConsole(message, OMFLogLevel.INFO);
     }
@@ -327,5 +337,29 @@ public class OMFLogger {
         statusToNotification(message);
         statusToUIConsole(message);
         statusToSystemConsole(message);
+    }
+
+    // Utility methods
+    public static String getPrefix(OMFLogLevel logLevel) {
+        var pluginPrefix = getInstance().plugin != null ? getInstance().plugin.getName() : "";
+        return "[" + getLogLevelPrefix(logLevel) + "]" + pluginPrefix;
+    }
+
+    public static String getPrefix(OMFLogLevel logLevel, String featureName) {
+        String featureTag = Strings.isNullOrEmpty(featureName) ? "" : "[" + featureName + "]";
+        return getPrefix(logLevel) + featureTag;
+    }
+
+    private static String getLogLevelPrefix(OMFLogLevel logLevel) {
+        switch (logLevel) {
+            case WARNING:
+                return "Warning";
+            case ERROR:
+                return "Error";
+            case INFO:
+                return "Info";
+            default:
+                return "Info";
+        }
     }
 }
