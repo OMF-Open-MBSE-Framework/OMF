@@ -2,7 +2,6 @@ package com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.
 
 import com.google.common.base.Strings
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.utils.ElementAction
 import java.util.*

@@ -12,6 +12,7 @@ import com.nomagic.magicdraw.openapi.uml.SessionManager;
 import com.nomagic.magicdraw.ui.notification.Notification;
 import com.nomagic.magicdraw.ui.notification.NotificationManager;
 import com.nomagic.magicdraw.ui.notification.NotificationSeverity;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFNotificationManager;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
@@ -151,7 +152,7 @@ public class UndoManager {
     public static void undo(Project project) {
         project.getCommandHistory().undo();
         if (project.getCommandHistory().getCommandForRedo() == null) // UNDO COMMAND WAS NOT PROCESSED CORRECTLY..
-            NotificationManager.getInstance().showNotification(new Notification(
+            OMFNotificationManager.getInstance().showNotification(new Notification(
                     " [LOCK/AUTO UNDO]",
                     "AUTO UNDO Couldn't be processed please execute UNDO manually ",
                     "AUTO UNDO Couldn't be processed please execute UNDO manually ",
