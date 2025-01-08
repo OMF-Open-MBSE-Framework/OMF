@@ -20,10 +20,8 @@ class UILogger(override val plugin: OMFPlugin) : OMFConcreteLogger {
     ) {
 //        Application.getInstance().guiLog.addHyperlinkedText, message.linkActionMapping)
 
-        val notification: Notification =
-            Notification(prefix+now(), prefix,  //title
-                logMessage.replaceNewLinesWithBreaks().toString())
-        notification.setContext(Notification.Context.PROJECT)
+        val notification = Notification(prefix+now(), prefix, logMessage.replaceNewLinesWithBreaks().toString())
+        notification.context = Notification.Context.PROJECT
         Application.getInstance().guiLog.log(notification, true) // set false to not activate Notifications Window
     }
 

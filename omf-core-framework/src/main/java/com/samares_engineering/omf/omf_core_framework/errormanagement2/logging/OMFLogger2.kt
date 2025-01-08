@@ -11,16 +11,6 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.l
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
 import com.samares_engineering.omf.omf_core_framework.plugin.OMFPlugin
 
-//fun main() {
-//    OMFLogger2.toAll().warning("This is a warning message.")
-//    OMFLogger2.toAll().warning(OMFLog("This is a warning message."))
-//
-//    OMFLogger2.toUI().log(OMFLog().text("This is a success message."))
-//
-//    OMFLogger.warn("This is a warning message.")
-//    OMFLogger.logToUIConsole(OMFLog().text("This is a success message."), OMFLogLevel.INFO)
-//}
-
 class OMFLogger2 private constructor(
     private val plugin: OMFPlugin
 ) {
