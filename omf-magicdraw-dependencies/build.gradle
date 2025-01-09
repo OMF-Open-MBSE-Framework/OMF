@@ -27,24 +27,19 @@ dependencies {
         mdApplicationArchive "com.nomagic:mcse:2021x_Refresh2_HF2@zip"
     } else if (mdVersionShort == "2022x_Refresh2") {
         mdApplicationArchive "com.nomagic:mcse:2022x_Refresh2@zip"
+    } else if (mdVersionShort == "2024x") {
+        mdApplicationArchive "com.nomagic:mcse:2024x@zip"
     } else if (mdVersionShort == "local" && localMagicdrawArchive != '') {
         mdApplicationArchive files(localMagicdrawArchive)
     } else {
         throw new GradleException("MagicDraw version not supported: $mdVersionShort")
     }
 
-
     // This ensures classpath load order to match the MagicDraw provided order and then includes extras needed for non-OpenAPI stuff.
     api fileTree(dir: "$project.parent.buildDir/install", include: ['lib/**.jar'])
 
     // SysML and MDCustomizationForSysMLProfile
     api fileTree(dir: "$project.parent.buildDir/install/plugins/com.nomagic.requirements", include: ['lib/**.jar'])
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
 }
 
 project.tasks.register('installMagicDraw') {
@@ -63,6 +58,12 @@ project.tasks.register('installMagicDraw') {
                 into "$project.parent.buildDir/install"
             }
         }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
     }
 }
 
