@@ -60,7 +60,7 @@ object LockerManager {
 
 
     fun isLockedByOther(listElementsToLock: Collection<Element>): Boolean {
-        return listElementsToLock.any { element: Element -> isLockedByMe(element) && isLocked(element) }
+        return listElementsToLock.any { element: Element -> !isLockedByMe(element) && isLocked(element) }
 
         //        for(Element e: listElementsToLock){
 //            if (!projectService.isLockedByMe(e) && projectService.isLocked(e)) {
@@ -72,7 +72,7 @@ object LockerManager {
 
     fun isLockedByMe(element: Element): Boolean {
         if (projectService == null) return false
-        return !projectService!!.isLockedByMe(element)
+        return projectService!!.isLockedByMe(element)
     }
 
     fun isEditable(element: Element): Boolean {
@@ -83,7 +83,7 @@ object LockerManager {
 
     fun isLockedByOther(element: Element): Boolean {
         if (projectService == null) return false
-        val isLocked = isLockedByMe(element) && isLocked(element)
+        val isLocked = !isLockedByMe(element) && isLocked(element)
 
         return isLocked
     }
