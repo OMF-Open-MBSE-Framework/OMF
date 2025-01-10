@@ -30,3 +30,12 @@ sonarqube {
         property "sonar.exclusions", "**/profile/**"
     }
 }
+
+tasks.register("megaClean", Delete) {
+    group = '_dev'
+    description = 'Delete gradle build directories in all subprojects'
+    delete rootProject.buildDir
+    rootProject.subprojects {
+        delete it.buildDir
+    }
+}
