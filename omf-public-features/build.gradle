@@ -27,7 +27,5 @@ dependencies {
     implementation 'org.jdom:jdom2:2.0.6'
     compileOnly fileTree(dir: 'build/install/plugins', include: ['**/*.jar'])
 
-
-
     implementation 'com.squareup:javapoet:1.13.0'
 }

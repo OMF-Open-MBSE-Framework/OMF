@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
+ * @since 0.0.0
  ******************************************************************************/
 package com.samares_engineering.omf.omf_example_plugin;
 
@@ -17,6 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.listeners.listeners.Projec
 import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
+import com.samares_engineering.omf.omf_example_plugin.features.connection.ConnectionFeatureExample;
 import com.samares_engineering.omf.omf_example_plugin.features.derivedproperty.DerivedPropertyExample;
 import com.samares_engineering.omf.omf_example_plugin.features.diagramshortcut.DiagramListenerFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
@@ -27,6 +28,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.featureexample.Fe
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.miscergo.MiscErgonomicFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.stateactionfeature.StateActionExample;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
@@ -34,13 +36,22 @@ import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeatur
 import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
 import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
 import com.samares_engineering.omf.omf_public_features.partblock_hyperttext.HyperLinkFeature;
+import com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.PatternCreationFeature;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OMFExamplePlugin extends AOMFPlugin {
     @Override
     public List<OMFFeature> initFeatures() {
-        return List.of(
+        List<OMFFeature> features = new ArrayList<>();
+        List<OMFFeature> featuresToDeactivateByDefaultOnStartUp = List.of(
+                new ConnectionFeatureExample(),
+                new PatternCreationFeature(),
+                new StateActionExample()
+        );
+        features.addAll(featuresToDeactivateByDefaultOnStartUp);
+        features.addAll(List.of(
                 new FeaturesDeactivationFeature(),
                 //USEFUL
                 new EnhancedDisplayFeature(),
@@ -53,14 +64,15 @@ public class OMFExamplePlugin extends AOMFPlugin {
 //                new StereotypesFeature(),
                 new MiscErgonomicFeature(),
                 new CloneElementFeature(),
-                new GroupElementFeature(),
-                new SysMLBasicFeature(),
-                new FeatureExample(),
 //                new ConnectionFeatureExample(),
 //                new PatternCreationFeature(),
 //                new StateActionExample(),
+
 //
 //                //Examples
+                new GroupElementFeature(),
+                new SysMLBasicFeature(),
+
 //                new SandboxFeature(),
                 new GeneratePluginModelArchi(),
 //                new ErrorManagementFeatureExample(),
@@ -70,11 +82,13 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new DiagramListenerFeature(),
                 new ElementSpecificationExample(),
                 new ExportDiagramImagesFeature(),
+                new FeatureExample(),
 
                 new ListenersFeature(),
                 // Deactivation of features
-                new FeatureActivationFromOptionFeature()
-        );
+                new FeatureActivationFromOptionFeature(featuresToDeactivateByDefaultOnStartUp)
+        ));
+        return features;
     }
 
     @Override

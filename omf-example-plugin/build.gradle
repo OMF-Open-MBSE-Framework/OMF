@@ -86,7 +86,7 @@ dependencies {
 
     pluginLibrary 'com.github.javaparser:javaparser-core:3.26.2'
 
-    pluginLibrary "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    pluginLibrary "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion" // Kotlin stdlib is included in the Kotlin plugin but we need to ad it to the pluginLibrary config to have it at runtime
 
     zippedMDPlugin 'com.nomagic.magicdraw:devtools:2022x_Refresh2@ZIP'
     zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2022x_Refresh2@zip"
