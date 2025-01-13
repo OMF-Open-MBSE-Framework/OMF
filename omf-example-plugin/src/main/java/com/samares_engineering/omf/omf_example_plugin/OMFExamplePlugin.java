@@ -86,7 +86,8 @@ public class OMFExamplePlugin extends AOMFPlugin {
 
                 new ListenersFeature(),
                 // Deactivation of features
-                new FeatureActivationFromOptionFeature(featuresToDeactivateByDefaultOnStartUp)
+                new FeatureActivationFromOptionFeature()
+                        .onStartupDeactivate(featuresToDeactivateByDefaultOnStartUp)
         ));
         return features;
     }

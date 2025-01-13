@@ -21,6 +21,7 @@ import com.samares_engineering.omf.omf_public_features.activablefeatureoption.li
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationFromOption_OptionHelper;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationManagerOptionGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +29,13 @@ import java.util.stream.Collectors;
  * This feature is used to manage the features of the plugin.
  * It will register a dedicated group of options in the Environment Options.
  * It creates the options to activate/deactivate the features and update the feature status according to the option value.
+ * It also can be used to deactivate some features by default on startup.
  * NOTE! Please register this after all other features.
  */
 public class FeatureActivationFromOptionFeature extends SimpleFeature {
     private final FeatureActivationManagerOptionGroup featureManagerOptionGroup;
     private final FeatureRegisteringListener featureRegisteringListener;
-    private List<OMFFeature> featuresToDeactivateByDefaultOnStartUp = List.of();
+    private List<OMFFeature> featuresToDeactivateByDefaultOnStartUp;
 
     public FeatureActivationFromOptionFeature() {
         this("Manage Features", List.of());
@@ -44,7 +46,7 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     }
 
     public FeatureActivationFromOptionFeature(String environmentOptionGroupName) {
-        this(environmentOptionGroupName, List.of());
+        this(environmentOptionGroupName, new ArrayList<>());
     }
 
     public FeatureActivationFromOptionFeature(String environmentOptionGroupName, List<OMFFeature> featuresToDeactivateByDefaultOnStartUp) {
@@ -53,6 +55,17 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
                 , environmentOptionGroupName);
         this.featureRegisteringListener = new FeatureRegisteringListener(this);
         this.featuresToDeactivateByDefaultOnStartUp = featuresToDeactivateByDefaultOnStartUp;
+    }
+
+    /**
+     * This method is used to set the features to deactivate by default on startup.
+     *
+     * @param featuresToDeactivateByDefaultOnStartUp the features to deactivate by default on startup
+     * @return this
+     */
+    public FeatureActivationFromOptionFeature onStartupDeactivate(List<OMFFeature> featuresToDeactivateByDefaultOnStartUp) {
+        this.featuresToDeactivateByDefaultOnStartUp = featuresToDeactivateByDefaultOnStartUp;
+        return this;
     }
 
     @Override
@@ -158,5 +171,9 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
 
     private FeatureRegisterer getFeatureRegister() {
         return getPlugin().getFeatureRegisterer();
+    }
+
+    public List<OMFFeature> getFeaturesToDeactivateByDefaultOnStartUp() {
+        return featuresToDeactivateByDefaultOnStartUp;
     }
 }
