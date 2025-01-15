@@ -22,8 +22,9 @@ class GoToType:AUIAction() {
     }
 
     override fun actionToPerform(selectedElements: MutableList<Element>) {
-//        OMFUtils.selectElementInContainmentTree(selectedElements
-//            .map{it as TypedElement}
-//            .map { it.type })
+        selectedElements
+            .map { it as TypedElement }
+            .map { it.type }
+            .forEach { OMFUtils.selectElementInContainmentTree(it) }
     }
 }

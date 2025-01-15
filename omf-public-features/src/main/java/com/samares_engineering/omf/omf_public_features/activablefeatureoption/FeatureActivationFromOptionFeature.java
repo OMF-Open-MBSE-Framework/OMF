@@ -1,14 +1,15 @@
 /*******************************************************************************
  * @copyright Copyright (c) 2022-2023 Samares-Engineering
  * @Licence: EPL 2.0
- * @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
- * @since     0.0.0
+ * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson, Calliopé Danton Laloy
+ * @since 0.0.0
  ******************************************************************************/
 
 package com.samares_engineering.omf.omf_public_features.activablefeatureoption;
 
 import com.nomagic.magicdraw.core.Application;
 import com.nomagic.magicdraw.core.options.EnvironmentOptions;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2;
 import com.samares_engineering.omf.omf_core_framework.feature.EnvOptionsHelper;
 import com.samares_engineering.omf.omf_core_framework.feature.FeatureRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
@@ -20,6 +21,7 @@ import com.samares_engineering.omf.omf_public_features.activablefeatureoption.li
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationFromOption_OptionHelper;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.options.FeatureActivationManagerOptionGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,21 +29,43 @@ import java.util.stream.Collectors;
  * This feature is used to manage the features of the plugin.
  * It will register a dedicated group of options in the Environment Options.
  * It creates the options to activate/deactivate the features and update the feature status according to the option value.
+ * It also can be used to deactivate some features by default on startup.
  * NOTE! Please register this after all other features.
  */
 public class FeatureActivationFromOptionFeature extends SimpleFeature {
     private final FeatureActivationManagerOptionGroup featureManagerOptionGroup;
     private final FeatureRegisteringListener featureRegisteringListener;
-
+    private List<OMFFeature> featuresToDeactivateByDefaultOnStartUp;
 
     public FeatureActivationFromOptionFeature() {
-        this("Manage Features");
+        this("Manage Features", List.of());
     }
+
+    public FeatureActivationFromOptionFeature(List<OMFFeature> featuresToDeactivateByDefaultOnStartUp) {
+        this("Manage Features", featuresToDeactivateByDefaultOnStartUp);
+    }
+
     public FeatureActivationFromOptionFeature(String environmentOptionGroupName) {
-        super( "Deactivate Features from Options Feature");
+        this(environmentOptionGroupName, new ArrayList<>());
+    }
+
+    public FeatureActivationFromOptionFeature(String environmentOptionGroupName, List<OMFFeature> featuresToDeactivateByDefaultOnStartUp) {
+        super("Deactivate Features from Options Feature");
         this.featureManagerOptionGroup = new FeatureActivationManagerOptionGroup("Manage registered Features "
                 , environmentOptionGroupName);
         this.featureRegisteringListener = new FeatureRegisteringListener(this);
+        this.featuresToDeactivateByDefaultOnStartUp = featuresToDeactivateByDefaultOnStartUp;
+    }
+
+    /**
+     * This method is used to set the features to deactivate by default on startup.
+     *
+     * @param featuresToDeactivateByDefaultOnStartUp the features to deactivate by default on startup
+     * @return this
+     */
+    public FeatureActivationFromOptionFeature onStartupDeactivate(List<OMFFeature> featuresToDeactivateByDefaultOnStartUp) {
+        this.featuresToDeactivateByDefaultOnStartUp = featuresToDeactivateByDefaultOnStartUp;
+        return this;
     }
 
     @Override
@@ -58,10 +82,8 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
     @Override
     public void onRegistering() {
         EnvironmentOptions options = Application.getInstance().getEnvironmentOptions();
-        if(options.getGroup(featureManagerOptionGroup.ID) == null)
+        if (options.getGroup(featureManagerOptionGroup.ID) == null)
             options.addGroup(featureManagerOptionGroup);
-
-
     }
 
     @Override
@@ -88,15 +110,25 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
      * This method is used to refresh the feature status (registering or unregistered) them according to the option value.
      */
     private void refreshFeatureRegisteringFromEnvOptions() {
-        getEnvOptionsHelper().getAllFeatureOptions().forEach(optionProperty ->
-            getEnvOptionsHelper().getFeatureFromOption(getPlugin(), optionProperty)
-                    .ifPresent(feature -> setFeatureActivation(feature, (boolean) optionProperty.getValue())));
-
-
+        for (var optionProperty : getEnvOptionsHelper().getAllFeatureOptions()) {
+            var featureOptional = getEnvOptionsHelper().getFeatureFromOption(getPlugin(), optionProperty);
+            if (featureOptional.isPresent()) {
+                var feature = featureOptional.get();
+                var deactivateOnStartup = featuresToDeactivateByDefaultOnStartUp.contains(feature);
+                var activatedInOptions = (boolean) optionProperty.getValue();
+                setFeatureActivation(feature, !deactivateOnStartup && activatedInOptions);
+                if (deactivateOnStartup) {
+                    optionProperty.setValue(false);
+                }
+            } else {
+                OMFLogger2.toSystem().warning("Feature not found for option " + optionProperty.getName());
+            }
+        }
     }
 
     /**
      * This method is used to register a listener to the feature registering/unregistering to update the option value accordingly.
+     *
      * @param featureRegisteringListener the listener
      */
     private void registerListener(FeatureRegisteringListener featureRegisteringListener) {
@@ -126,19 +158,22 @@ public class FeatureActivationFromOptionFeature extends SimpleFeature {
 
     /**
      * This method is used to update the feature status (registering or unregistered) according to the option value.
-     * @param feature the feature
+     *
+     * @param feature           the feature
      * @param shallBeRegistered true if the feature shall be registered, false otherwise
      */
     public void setFeatureActivation(OMFFeature feature, boolean shallBeRegistered) {
-        if(shallBeRegistered && !feature.isRegistered())
+        if (shallBeRegistered && !feature.isRegistered())
             getFeatureRegister().registerFeature(feature);
-        else if(!shallBeRegistered && feature.isRegistered())
+        else if (!shallBeRegistered && feature.isRegistered())
             getFeatureRegister().unregisterFeature(feature);
     }
-
 
     private FeatureRegisterer getFeatureRegister() {
         return getPlugin().getFeatureRegisterer();
     }
 
+    public List<OMFFeature> getFeaturesToDeactivateByDefaultOnStartUp() {
+        return featuresToDeactivateByDefaultOnStartUp;
+    }
 }

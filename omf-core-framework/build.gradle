@@ -1,18 +1,23 @@
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
-    id 'org.jetbrains.kotlin.kapt' version '1.9.0'
-
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 group omfPackage + '.' + mdVersionShort
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
     }
     withSourcesJar()
     withJavadocJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
 }
 
 repositories {
@@ -42,12 +47,10 @@ dependencies {
     compileOnly 'org.apache.commons:commons-lang3:3.12.0'
     compileOnly("com.squareup:kotlinpoet:1.10.0")
     compileOnly('com.google.auto.service:auto-service:1.0-rc7')
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
     kapt 'com.google.auto.service:auto-service:1.0-rc7'
 
-
     api project(":omf-utils")
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.23"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     api 'com.github.javaparser:javaparser-core:3.26.2'
 }
 

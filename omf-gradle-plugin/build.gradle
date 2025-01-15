@@ -3,7 +3,7 @@ apply plugin: 'java-gradle-plugin'
 apply plugin: 'maven-publish'
 
 group 'com.samares-engineering.omf.omf-gradle-plugin'
-version '0.116.1-SNAPSHOT'
+version '0.116.3-SNAPSHOT'
 ext.mainClass = 'com.samares_engineering.omf.omf_gradle_plugin.OmfGradlePlugin'
 ext.isRelease = !version.endsWith("-SNAPSHOT")
 
@@ -41,13 +41,6 @@ repositories {
 
 test {
     useJUnitPlatform()
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
-    }
-
 }
 
 jar {
