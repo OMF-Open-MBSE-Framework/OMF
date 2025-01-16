@@ -34,7 +34,7 @@ abstract class RunTests extends JavaExec {
                 "-XX:-OmitStackTraceInFastThrow",
                 "--illegal-access=permit",
                 "-Dfile.encoding=UTF-8",
-                "@bin/vm.options",
+//                "@bin/vm.options",
                 "-Djdk.util.zip.disableZip64ExtraFieldValidation=true"
         ]
         // Test args
