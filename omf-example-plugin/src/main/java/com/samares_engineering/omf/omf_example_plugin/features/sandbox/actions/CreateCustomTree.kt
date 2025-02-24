@@ -1,14 +1,5 @@
 package com.samares_engineering.omf.omf_example_plugin.features.sandbox.actions
 
-import com.nomagic.actions.ActionsManager
-import com.nomagic.magicdraw.core.Application
-import com.nomagic.magicdraw.core.Project
-import com.nomagic.magicdraw.ui.browser.Browser
-import com.nomagic.magicdraw.ui.browser.BrowserComponentInfo
-import com.nomagic.magicdraw.ui.browser.BrowserTabTree
-import com.nomagic.magicdraw.ui.browser.BrowserTreeFactory
-import com.nomagic.magicdraw.ui.browser.TreeRoot
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction

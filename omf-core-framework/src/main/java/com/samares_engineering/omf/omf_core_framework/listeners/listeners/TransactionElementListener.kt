@@ -34,7 +34,7 @@ class TransactionElementListener : AElementListener(), TransactionCommitListener
 
     private fun runnable() {
         try {
-            if (!isActivated || CopyPasteManager.isPasting()) return
+            if (!isActivated || CopyPasteManager.isPasting(OMFUtils.getProject())) return
 
             allTriggeredEventsInThisBatch!!.forEach(Consumer { event: PropertyChangeEvent? -> this.manageAnalysis(event) })
 
