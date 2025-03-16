@@ -3,171 +3,160 @@
  * @Licence: EPL 2.0
  * @Author: Quentin Cespédès, Clément Mezerette, Hugo Stinson
  * @since 0.0.0
- ******************************************************************************/
+ */
+package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions
 
-package com.samares_engineering.omf.omf_core_framework.feature.registrables.actions;
+import com.google.common.base.Strings
+import com.nomagic.actions.NMAction
+import com.nomagic.magicdraw.actions.DiagramAction
+import com.nomagic.magicdraw.actions.MDAction
+import com.nomagic.magicdraw.core.Project
+import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction
+import com.nomagic.magicdraw.ui.browser.Node
+import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction
+import com.nomagic.magicdraw.uml.BaseElement
+import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
+import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler
+import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException
+import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager
+import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction
+import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
+import java.awt.event.ActionEvent
+import java.util.*
+import java.util.concurrent.Callable
+import java.util.stream.Collectors
+import java.util.stream.Stream
+import javax.swing.KeyStroke
 
 
-import com.google.common.base.Strings;
-import com.nomagic.actions.NMAction;
-import com.nomagic.actions.NMStateAction;
-import com.nomagic.magicdraw.core.Project;
-import com.nomagic.magicdraw.ui.actions.DefaultDiagramAction;
-import com.nomagic.magicdraw.ui.browser.Browser;
-import com.nomagic.magicdraw.ui.browser.ContainmentTree;
-import com.nomagic.magicdraw.ui.browser.Node;
-import com.nomagic.magicdraw.ui.browser.actions.DefaultBrowserAction;
-import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
-import com.nomagic.magicdraw.uml.symbols.PresentationElement;
-import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier;
-import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
-import com.samares_engineering.omf.omf_core_framework.errors.exceptions.general.DevelopmentException;
-import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
-import com.samares_engineering.omf.omf_core_framework.feature.OMFFeature;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
-import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
+abstract class AUIAction<E : BaseElement, P> protected constructor(
+    private var categoryName: String,
+    private var name: String,
+    shallDeactivateListenerOnTrigger: Boolean
+) : UIAction {
+    var browserSelectedNodes: Array<Node> = emptyArray()
+        private set
+    var browserSelectedElements: List<E> = emptyList()
+        private set
+    var diagramSelectedPresentationElements: List<P> = emptyList()
+        private set
+    var diagramSelectedElements: List<E> = emptyList()
+        private set
 
-import javax.annotation.CheckForNull;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+    var browserNMAction: NMAction? = null
 
-public abstract class AUIAction implements UIAction {
+    var diagramNMAction: NMAction? = null
 
-    private Node[] browserSelectedNodes;
-    private List<Element> browserSelectedElements;
-    private List<PresentationElement> diagramSelectedPresentationElements;
-    private List<Element> diagramSelectedElements;
+    var menuNMAction: NMAction? = null
 
-    NMAction browserAction;
+    private var isActivated = true
 
-    NMAction diagramAction;
+    var isDeactivateListenerOnTrigger: Boolean = true
 
-    NMAction menuAction;
+    @JvmField
+    protected var feature: OMFFeature? = null
 
-    private String name;
-    private String categoryName;
+    constructor() : this("", "", false)
 
-    private boolean isActivated = true;
-
-    private boolean deactivateListenerOnTrigger = true;
-
-    protected OMFFeature feature;
-
-    public AUIAction() {
-        this("", "", false);
-    }
-
-    protected AUIAction(String categoryName, String name, boolean shallDeactivateListenerOnTrigger) {
-        this.categoryName = categoryName;
-        this.name = name;
-
-        deactivateListenerOnTrigger = hasDeactivateListenerAnnotation();
-        initTreeActions();
-        initDiagramActions();
-        initMenuActions();
+    init {
+        isDeactivateListenerOnTrigger = hasDeactivateListenerAnnotation()
+        initTreeActions()
+        initDiagramActions()
+        initMenuActions()
     }
 
     /**
      * Initialize the MenuActions, register the action and set the behavior.
      */
-    protected void initMenuActions() {
-        this.menuAction = new com.nomagic.magicdraw.actions.MDAction("", getName(), getKeyStroke(), null) {
-            @Override
-            public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
-                super.actionPerformed(actionEvent);
-                init();
-                executeMenuAction(browserSelectedElements);
-                OMFAutomationManager.getInstance().automationTriggered();
+    protected open fun initMenuActions() {
+        this.menuNMAction = object : MDAction("", getName(), keyStroke, null) {
+            override fun actionPerformed(actionEvent: ActionEvent?) {
+                super.actionPerformed(actionEvent)
+                init()
+                executeMenuAction(browserSelectedElements)
+                OMFAutomationManager.getInstance().automationTriggered()
             }
 
-            @Override
-            public void updateState() {
-                super.updateState();
-                setEnabled(checkMenuAvailability());
+            override fun updateState() {
+                super.updateState()
+                isEnabled = checkMenuAvailability()
             }
-        };
+        }
     }
 
     /**
      * Initialize the DiagramActions, register the action and set the behavior.
      */
-    protected void initDiagramActions() {
-        this.diagramAction = new DefaultDiagramAction("", getName(), getKeyStroke(), null) {
-            @Override
-            public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
-                if(OMFUtils.isProjectVoid() || OMFUtils.getProject().getActiveDiagram() == null) return;//CalledBy ConfiguratorAM on MD startup/Project Opening,
+    protected open fun initDiagramActions() {
+        this.diagramNMAction = object : DefaultDiagramAction("", getName(), keyStroke, null) {
+            override fun actionPerformed(actionEvent: ActionEvent?) {
+                if (OMFUtils.isProjectVoid() || OMFUtils.getProject().activeDiagram == null) return  //CalledBy ConfiguratorAM on MD startup/Project Opening,
+
                 // for some reason, the action is triggered before the updateState, so we need to check availability here ?
-                if (!checkDiagramAvailability()) return; //when called with shortcuts,
-                super.actionPerformed(actionEvent);
-                init();
-                ((com.nomagic.magicdraw.actions.DiagramAction) diagramAction).setDiagram(this.getDiagram()); //TODO: temporary fix, to be removed when the diagram action will be fixed
-                executeDiagramAction(diagramSelectedElements);
-                OMFAutomationManager.getInstance().automationTriggered();
+                if (!checkDiagramAvailability()) return  //when called with shortcuts,
+
+                super.actionPerformed(actionEvent)
+                init()
+                (diagramNMAction as DiagramAction?)!!.setDiagram(this.diagram) //TODO: temporary fix, to be removed when the diagram action will be fixed
+                executeDiagramAction(diagramSelectedElements)
+                OMFAutomationManager.getInstance().automationTriggered()
             }
 
-            @CheckForNull
-            @Override
-            public DiagramPresentationElement getDiagram() {
-                return super.getDiagram() == null ? OMFUtils.getActiveDiagram() : super.getDiagram();
+            override fun getDiagram(): DiagramPresentationElement? {
+                return if (super.getDiagram() == null) OMFUtils.getActiveDiagram() else super.getDiagram()
             }
 
-            @Override
-            public void updateState() {
-                super.updateState();
-                if(OMFUtils.isProjectVoid() || OMFUtils.getProject().getActiveDiagram() == null) {
-                    setEnabled(false);
-                    return;
+            override fun updateState() {
+                super.updateState()
+                if (OMFUtils.isProjectVoid() || OMFUtils.getProject().activeDiagram == null) {
+                    isEnabled = false
+                    return
                 }
-                setEnabled(checkDiagramAvailability());
+                isEnabled = checkDiagramAvailability()
             }
-        };
+        }
     }
 
     /**
      * Initialize the BrowserActions, register the action and set the behavior.
      */
-    protected void initTreeActions() {
-        this.browserAction = new DefaultBrowserAction("", getName(), getKeyStroke(), null) {
-            @Override
-            public void actionPerformed(@CheckForNull ActionEvent actionEvent) {
-                if(OMFUtils.isProjectVoid()) return;
-                if(!checkBrowserAvailability()) return; //when called with shortcuts,
+    protected open fun initTreeActions() {
+        this.browserNMAction = object : DefaultBrowserAction("", getName(), keyStroke, null) {
+            override fun actionPerformed(actionEvent: ActionEvent?) {
+                if (OMFUtils.isProjectVoid()) return
+                if (!checkBrowserAvailability()) return  //when called with shortcuts,
+
                 // action is triggered before updateState, so we need to check availability here
-                super.actionPerformed(actionEvent);
-                init();
-                executeBrowserAction(browserSelectedElements);
-                OMFAutomationManager.getInstance().automationTriggered();
+                super.actionPerformed(actionEvent)
+                init()
+                executeBrowserAction(browserSelectedElements)
+                OMFAutomationManager.getInstance().automationTriggered()
             }
 
-            @Override
-            public void updateState() {
-                super.updateState();
-                if(OMFUtils.isProjectVoid()) {
-                    setEnabled(false);
-                    return;
+            override fun updateState() {
+                super.updateState()
+                if (OMFUtils.isProjectVoid()) {
+                    isEnabled = false
+                    return
                 }
-                setEnabled(checkBrowserAvailability());
+                isEnabled = checkBrowserAvailability()
             }
-        };
+        }
     }
 
-    public AUIAction init() {
-        browserSelectedNodes = getSelectedBrowserNodes();
-        browserSelectedElements = getSelectedBrowserElements();
-        diagramSelectedPresentationElements = getSelectedDiagramPresentationElements();
-        diagramSelectedElements = getSelectedDiagramElements();
-        if (Strings.isNullOrEmpty(categoryName))
-            categoryName = getCategory();
-        if (Strings.isNullOrEmpty(name))
-            name = getCategory();
-        return this;
+    open fun init() {
+        browserSelectedNodes = getSelectedBrowserNodes()
+        browserSelectedElements = getSelectedBrowserElements()
+        diagramSelectedPresentationElements = getSelectedDiagramPresentationElements()
+        diagramSelectedElements = getSelectedDiagramElements()
+        if (Strings.isNullOrEmpty(categoryName)) categoryName = category
+        if (Strings.isNullOrEmpty(name)) name = category
     }
 
     /**
@@ -177,11 +166,16 @@ public abstract class AUIAction implements UIAction {
      *
      * @param runnable The Runnable representing the UI action to be executed.
      */
-    public void executeAUIActionWithinBarrier(Runnable runnable) {
+    fun executeAUIActionWithinBarrier(runnable: Runnable?) {
         if (OMFUtils.isProjectOpened()) {
-            OMFBarrierExecutor.executeInSessionWithinBarrier(runnable, getName(), getFeature(), isDeactivateListenerOnTrigger());
+            OMFBarrierExecutor.executeInSessionWithinBarrier(
+                runnable,
+                getName(),
+                getFeature(),
+                isDeactivateListenerOnTrigger
+            )
         } else {
-            OMFBarrierExecutor.executeWithinBarrier(runnable, getFeature(), isDeactivateListenerOnTrigger());
+            OMFBarrierExecutor.executeWithinBarrier(runnable, getFeature(), isDeactivateListenerOnTrigger)
         }
     }
 
@@ -191,8 +185,8 @@ public abstract class AUIAction implements UIAction {
      *
      * @param selectedElements selected elements
      */
-    public void executeDiagramAction(List<Element> selectedElements) {
-        executeAUIActionWithinBarrier((() -> actionToPerform(selectedElements)));
+    open fun executeDiagramAction(selectedElements: List<@JvmSuppressWildcards E>) {
+        executeAUIActionWithinBarrier((Runnable { actionToPerform(selectedElements) }))
     }
 
 
@@ -202,8 +196,8 @@ public abstract class AUIAction implements UIAction {
      *
      * @param selectedElements selected elements
      */
-    public void executeBrowserAction(List<Element> selectedElements) {
-       executeAUIActionWithinBarrier(() -> actionToPerform(selectedElements));
+    open fun executeBrowserAction(selectedElements: List<@JvmSuppressWildcards E>) {
+        executeAUIActionWithinBarrier { actionToPerform(selectedElements) }
     }
 
     /**
@@ -212,8 +206,8 @@ public abstract class AUIAction implements UIAction {
      *
      * @param selectedElements selected elements
      */
-    public void executeMenuAction(List<Element> selectedElements) {
-       executeAUIActionWithinBarrier(() -> actionToPerform(selectedElements));
+    open fun executeMenuAction(selectedElements: List<@JvmSuppressWildcards E>) {
+        executeAUIActionWithinBarrier { actionToPerform(selectedElements) }
     }
 
     /**
@@ -222,39 +216,52 @@ public abstract class AUIAction implements UIAction {
      *
      * @param selectedElements selected elements
      */
-    public abstract void actionToPerform(List<Element> selectedElements);
+    abstract fun actionToPerform(selectedElements: List<@JvmSuppressWildcards E>)
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Browser action configurator.
      * If there is a need to distinguish check from different action type, override the according function but do not forget to call the checkWithinOMFBarrier method.
-     * see: {@link #checkWithinOMFBarrier(Callable)}
+     * see: [.checkWithinOMFBarrier]
      * @return isAvailable
      */
-    public boolean checkBrowserAvailability() {
-        return checkWithinOMFBarrier(() -> isActivated() && checkAvailability(getSelectedBrowserElements()));
+    override fun checkBrowserAvailability(): Boolean {
+        return checkWithinOMFBarrier {
+            isActivated() && checkAvailability(
+                getSelectedBrowserElements()
+            )
+        }
     }
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Diagram action configurator.
      * If there is a need to distinguish check from different action type, override the according function but do not forget to call the checkWithinOMFBarrier method.
-     * see: {@link #checkWithinOMFBarrier(Callable)}
+     * see: [.checkWithinOMFBarrier]
      *
      * @return isAvailable
      */
-    public boolean checkDiagramAvailability() {
-        return checkWithinOMFBarrier(() -> isActivated() && checkAvailability(getSelectedDiagramElements()));
+    override fun checkDiagramAvailability(): Boolean {
+        return checkWithinOMFBarrier {
+            isActivated() && checkAvailability(
+                getSelectedDiagramElements()
+            )
+        }
     }
 
     /**
      * Evaluate if the action shall appear inside the predefined category for Menu action configurator.
      * If there is a need to distinguish check from different action type, override the according function but do not forget to call the checkWithinOMFBarrier method.
-     * see: {@link #checkWithinOMFBarrier(Callable)}
+     * see: [.checkWithinOMFBarrier]
      *
      * @return isAvailable
      */
-    public boolean checkMenuAvailability() {
-        return checkWithinOMFBarrier(() -> isActivated() && checkAvailability(Stream.of(getSelectedBrowserElements(), getSelectedDiagramElements())
-                .flatMap(Collection::stream).collect(Collectors.toList())));
+    override fun checkMenuAvailability(): Boolean {
+        return checkWithinOMFBarrier {
+            isActivated() && checkAvailability(Stream.of(
+                getSelectedBrowserElements(), getSelectedDiagramElements()
+            )
+                .flatMap { obj: List<E> -> obj.stream() }.collect(Collectors.toList())
+            )
+        }
     }
 
     /**
@@ -263,94 +270,73 @@ public abstract class AUIAction implements UIAction {
      * @param selectedElements selected elements
      * @return isAvailable
      */
-    public abstract boolean checkAvailability(List<Element> selectedElements);
+    abstract fun checkAvailability(selectedElements: List<@JvmSuppressWildcards E>): Boolean
 
     /**
-     * Check if the action is available within the OMF Barrier. <br>
+     * Check if the action is available within the OMF Barrier. <br></br>
      * Use this method if you override the XXXCheckAvailability method (Browser, Diagram, Menu).
      * @param checkAvailability The Callable to check the availability of the action.
      * @return True if the action is available, false otherwise.
      */
-    public boolean checkWithinOMFBarrier(Callable<Boolean> checkAvailability) {
-        return Boolean.TRUE.equals(OMFBarrierExecutor.<Boolean>executeWithinBarrier(() ->{
+    fun checkWithinOMFBarrier(checkAvailability: Callable<Boolean>): Boolean {
+        return java.lang.Boolean.TRUE == OMFBarrierExecutor.executeWithinBarrier<Boolean>({
             try {
-                return checkAvailability.call();
-            }catch (Exception e){
-                throw new OMFCriticalException("Error while checking the availability of the action: " + getName(), e, OMFExceptionModifier.DEACTIVATE_FEATURE);
+                return@executeWithinBarrier checkAvailability.call()
+            } catch (e: Exception) {
+                throw OMFCriticalException(
+                    "Error while checking the availability of the action: " + getName(),
+                    e,
+                    OMFExceptionModifier.DEACTIVATE_FEATURE
+                )
             }
-        }, getFeature()));
+        }, getFeature())
     }
-
     /**
      * Get the selected Nodes inside the Containment Tree.
-     * Hypothesis: Order corresponds to the user element selection one.
+     * Hypothesis: Order corresponds to the user E selection one.
      *
      * @return selected node list.
      */
-    public Node[] getSelectedBrowserNodes() {
-        if(isProjectVoid())
-            return null;
-        Browser browser = OMFUtils.getProject().getBrowser();
-        if(browser == null)
-            return null;
-        ContainmentTree containmentTree = browser.getContainmentTree();
-        if (containmentTree == null)
-            return null;
+    fun getSelectedBrowserNodes(): Array<Node>{
+            if (isProjectVoid) return emptyArray()
+            val browser = OMFUtils.getProject().browser ?: return emptyArray()
+            val containmentTree = browser.containmentTree ?: return emptyArray()
 
-        return containmentTree.getSelectedNodes();
-    }
+            return containmentTree.selectedNodes
+        }
 
     /**
      * Get the selected Elements inside the Containment Tree.
-     * Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user E selection one.
      *
      * @return selected elements list.
      */
-    public List<Element> getSelectedBrowserElements() {
-        if (getSelectedBrowserNodes() == null)
-            return Collections.emptyList();
-        return Arrays.stream(getSelectedBrowserNodes())
-                .map(Node::getUserObject)
-                .filter(Objects::nonNull)
-                .filter(Element.class::isInstance)
-                .map(Element.class::cast)
-                .collect(Collectors.toList());
-    }
+    abstract fun getSelectedBrowserElements(): List<E>
 
     /**
      * Get the Presentation elements of the selected elements inside the active diagram.
-     * Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user E selection one.
      *
-     * @return selected Presentation Element list.
+     * @return selected Presentation E list.
      */
-    public List<PresentationElement> getSelectedDiagramPresentationElements() {
-        if(isProjectVoid())
-            return Collections.emptyList();
-        DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
-        return Objects.nonNull(activeDiagram)? activeDiagram.getSelected(): new ArrayList<>();
-    }
+    abstract fun getSelectedDiagramPresentationElements(): List<P>
 
     /**
      * Get the selected Elements inside the active diagram.
-     * Hypothesis: Order correspond to the user element selection one.
+     * Hypothesis: Order correspond to the user E selection one.
      *
      * @return selected elements list.
      */
-    public List<Element> getSelectedDiagramElements() {
-        return getSelectedDiagramPresentationElements().stream()
-                .map(PresentationElement::getElement)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
+    abstract fun getSelectedDiagramElements(): List<E>
 
     /**
      * get the Browser MDAction called by the user.
      *
      * @return DefaultBrowserAction
      */
-    public NMAction getBrowserAction() {
-        checkAnnotationPresence();
-        return browserAction;
+    override fun getBrowserAction(): NMAction {
+        checkAnnotationPresence()
+        return browserNMAction!!
     }
 
     /**
@@ -358,10 +344,10 @@ public abstract class AUIAction implements UIAction {
      *
      * @return DefaultDiagramAction
      */
-    public NMAction getDiagramAction() {
-        checkAnnotationPresence();
+    override fun getDiagramAction(): NMAction {
+        checkAnnotationPresence()
 
-        return diagramAction;
+        return diagramNMAction!!
     }
 
     /**
@@ -369,10 +355,10 @@ public abstract class AUIAction implements UIAction {
      *
      * @return MDAction
      */
-    public NMAction getMenuAction() {
-        checkAnnotationPresence();
+    override fun getMenuAction(): NMAction {
+        checkAnnotationPresence()
 
-        return menuAction;
+        return menuNMAction!!
     }
 
 
@@ -380,144 +366,133 @@ public abstract class AUIAction implements UIAction {
      * Check if the Annotation is present in the declared classes.
      * //TODO Please deploy a solution to execute the check in the build phase. see: https://stackoverflow.com/questions/19252973/how-do-i-validate-an-annotation-at-compile-time
      */
-    private void checkAnnotationPresence() {
-        if (getClass().isAnnotationPresent(MDAction.class))
-            return;
+    private fun checkAnnotationPresence() {
+        if (javaClass.isAnnotationPresent(com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction::class.java)) return
 
-        LegacyErrorHandler.handleException(new DevelopmentException(
-                "Annotation " + MDAction.class.getSimpleName()
-                        + " present in the class: " + getClass().getSimpleName()
-                        + ", which is mandatory to register actions"));
-
+        LegacyErrorHandler.handleException(
+            DevelopmentException(
+                "Annotation " + com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction::class.java.simpleName
+                        + " present in the class: " + javaClass.simpleName
+                        + ", which is mandatory to register actions"
+            )
+        )
     }
 
-    public void activate() {
-        isActivated = true;
+    override fun activate() {
+        isActivated = true
     }
 
-    public void deactivate() {
-        isActivated = false;
+    override fun deactivate() {
+        isActivated = false
     }
 
-    public boolean isActivated() {
-        return isActivated;
+    override fun isActivated(): Boolean {
+        return isActivated
     }
 
-    public boolean isDeactivateListenerOnTrigger() {
-        return deactivateListenerOnTrigger;
+    fun getName(): String {
+        return javaClass.getAnnotation(
+            com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction::class.java
+        ).actionName
     }
 
-    public void setDeactivateListenerOnTrigger(boolean deactivateListenerOnTrigger) {
-        this.deactivateListenerOnTrigger = deactivateListenerOnTrigger;
+    override fun getCategory(): String {
+        return javaClass.getAnnotation(
+            com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction::class.java
+        ).category
     }
 
-    public String getName() {
-        return getClass().getAnnotation(MDAction.class).actionName();
+    val keyStroke: KeyStroke?
+        get() = KeyStroke.getKeyStroke(
+            java.lang.String.join(
+                "->", Arrays.asList(
+                    *javaClass.getAnnotation(
+                        com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction::class.java
+                    ).keyStroke
+                )
+            )
+        )
+
+    override fun isBrowserAction(): Boolean {
+        return javaClass.getAnnotation(
+            BrowserAction::class.java
+        ) != null
     }
 
-    public String getCategory() {
-        return getClass().getAnnotation(MDAction.class).category();
+    override fun isDiagramAction(): Boolean {
+        return javaClass.getAnnotation(
+            com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction::class.java
+        ) != null
     }
 
-    public KeyStroke getKeyStroke() {
-        return KeyStroke.getKeyStroke(String.join("->", Arrays.asList(getClass().getAnnotation(MDAction.class).keyStroke())));
+    override fun isMenuAction(): Boolean {
+        return javaClass.getAnnotation(
+            MenuAction::class.java
+        ) != null
     }
 
-    public boolean isBrowserAction() {
-        return getClass().getAnnotation(BrowserAction.class) != null;
+    private fun hasDeactivateListenerAnnotation(): Boolean {
+        return javaClass.getAnnotation(DeactivateListener::class.java) != null
     }
 
-    public boolean isDiagramAction() {
-        return getClass().getAnnotation(DiagramAction.class) != null;
-    }
-
-    public boolean isMenuAction() {
-        return getClass().getAnnotation(MenuAction.class) != null;
-    }
-
-    private boolean hasDeactivateListenerAnnotation() {
-        return getClass().getAnnotation(DeactivateListener.class) != null;
-    }
-
-    public List<NMAction> getAllActions() {
+    override fun getAllActions(): List<NMAction> {
         return Arrays.asList(
-                getBrowserAction(),
-                getDiagramAction(),
-                getMenuAction());
+            getBrowserAction(),
+            getDiagramAction(),
+            getMenuAction()
+        )
     }
 
-    @Override
-    public OMFFeature getFeature() {
-        return feature;
+    override fun getFeature(): OMFFeature {
+        return feature!!
     }
 
-    @Override
-    public void initRegistrableItem(OMFFeature feature) {
-        this.feature = feature;
+    override fun initRegistrableItem(feature: OMFFeature) {
+        this.feature = feature
     }
 
-    public Node[] getBrowserSelectedNodes() {
-        return browserSelectedNodes;
+    val project: Project
+        /**
+         * Retrieves the current project instance.
+         *
+         * @return The current Project instance.
+         */
+        get() = OMFUtils.getProject()
+
+    val diagram: DiagramPresentationElement
+        /**
+         * Retrieves the active diagram instance.
+         *
+         * @return The active Diagram instance.
+         */
+        get() = OMFUtils.getActiveDiagram()
+
+    val isProjectVoid: Boolean
+        /**
+         * Checks if the current project is void.
+         *
+         * @return True if the project is void, false otherwise.
+         */
+        get() = OMFUtils.isProjectVoid()
+
+    val isProjectOpened: Boolean
+        /**
+         * Checks if the current project is opened.
+         *
+         * @return True if the project is opened, false otherwise.
+         */
+        get() = OMFUtils.isProjectOpened()
+
+
+    fun setBrowserAction(browserAction: NMAction?) {
+        this.browserNMAction = browserAction
     }
 
-    public List<Element> getBrowserSelectedElements() {
-        return browserSelectedElements;
+    fun setDiagramAction(diagramAction: NMAction?) {
+        this.diagramNMAction = diagramAction
     }
 
-    public List<PresentationElement> getDiagramSelectedPresentationElements() {
-        return diagramSelectedPresentationElements;
-    }
-
-    public List<Element> getDiagramSelectedElements() {
-        return diagramSelectedElements;
-    }
-
-    /**
-     * Retrieves the current project instance.
-     *
-     * @return The current Project instance.
-     */
-    public Project getProject() {
-        return OMFUtils.getProject();
-    }
-
-    /**
-     * Retrieves the active diagram instance.
-     *
-     * @return The active Diagram instance.
-     */
-    public DiagramPresentationElement getDiagram() {
-        return OMFUtils.getActiveDiagram();
-    }
-
-    /**
-     * Checks if the current project is void.
-     *
-     * @return True if the project is void, false otherwise.
-     */
-    public boolean isProjectVoid() {
-        return OMFUtils.isProjectVoid();
-    }
-
-    /**
-     * Checks if the current project is opened.
-     *
-     * @return True if the project is opened, false otherwise.
-     */
-    public boolean isProjectOpened() {
-        return OMFUtils.isProjectOpened();
-    }
-
-
-    public void setBrowserAction(NMAction browserAction) {
-        this.browserAction = browserAction;
-    }
-
-    public void setDiagramAction(NMAction diagramAction) {
-        this.diagramAction = diagramAction;
-    }
-
-    public void setMenuAction(NMAction menuAction) {
-        this.menuAction = menuAction;
+    fun setMenuAction(menuAction: NMAction?) {
+        this.menuNMAction = menuAction
     }
 }

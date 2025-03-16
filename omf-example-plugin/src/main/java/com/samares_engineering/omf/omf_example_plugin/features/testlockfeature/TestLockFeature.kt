@@ -10,7 +10,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
@@ -79,7 +79,7 @@ class ChangePortTypeName : ALiveAction() {
 @DiagramAction
 @BrowserAction
 @MDAction(actionName = "Propagate Port Name to Interface/Flow", category = "LOCK TEST")
-class ChangeNameAction : AUIAction() {
+class ChangeNameAction : ElementUIAction() {
     /**
      * Available only When a Typed Port is selected
      * @param selectedElements selected elements from the browser, or the diagram

@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_public_features.clonefeature.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
@@ -22,7 +22,7 @@ import java.util.List;
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Clone Property", category = "OMF.Clone")
-public class CloneProperty extends AUIAction {
+public class CloneProperty extends ElementUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

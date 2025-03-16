@@ -12,7 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.DataType;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.commonbehaviors.mdcommunications.Signal;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
@@ -28,7 +28,7 @@ import java.util.List;
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Clone Part", category = "OMF.Clone")
-public class ClonePart extends AUIAction {
+public class ClonePart extends ElementUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

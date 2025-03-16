@@ -4,7 +4,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.NamedElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
@@ -22,7 +22,7 @@ import java.util.List;
 @BrowserAction
 @DeactivateListener
 @MDAction(actionName = "Generate Creation Test", category = "OMF.[TEST GENERATION]")
-public class GenerateCreationTest extends AUIAction {
+public class GenerateCreationTest extends ElementUIAction {
 
     // Where the test file should be generated
     public String generationPath;

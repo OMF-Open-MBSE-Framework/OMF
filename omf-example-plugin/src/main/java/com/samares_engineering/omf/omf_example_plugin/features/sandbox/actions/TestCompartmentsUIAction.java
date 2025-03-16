@@ -6,7 +6,7 @@ import com.nomagic.magicdraw.uml.symbols.CompartmentManager;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TaggedValue;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
@@ -16,7 +16,7 @@ import java.util.List;
 @MenuAction
 @DiagramAction
 @MDAction(actionName = "Test compartments", category = "OMF")
-public class TestCompartmentsUIAction extends AUIAction {
+public class TestCompartmentsUIAction extends ElementUIAction {
     @Override
     public void actionToPerform(List<Element> selectedElements) {
         Element elem = selectedElements.get(0);

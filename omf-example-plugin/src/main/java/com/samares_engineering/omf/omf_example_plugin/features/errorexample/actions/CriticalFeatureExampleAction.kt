@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.errorexample.act
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
 
 @BrowserAction
@@ -17,12 +17,12 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "CRITICAL ERROR", category = "Example.Error")
-class CriticalFeatureExampleAction : AUIAction() {
-    override fun checkAvailability(selectedElements: List<Element?>?): Boolean {
+class CriticalFeatureExampleAction : ElementUIAction() {
+    override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return true
     }
 
-    override fun actionToPerform(selectedElements: List<Element?>?) {
+    override fun actionToPerform(selectedElements: List<Element>) {
         throw OMFCriticalException(
                 "TESTING Framework CRITICAL FEATURE ERROR",
                 OMFExceptionModifier.NO_ROLLBACK,
@@ -31,7 +31,4 @@ class CriticalFeatureExampleAction : AUIAction() {
         )
     }
 
-    override fun executeDiagramAction(selectedElements: List<Element?>?) {
-        super.executeDiagramAction(selectedElements)
-    }
 }

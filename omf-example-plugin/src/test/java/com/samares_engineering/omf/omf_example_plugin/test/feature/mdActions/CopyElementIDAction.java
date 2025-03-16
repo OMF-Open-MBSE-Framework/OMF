@@ -8,7 +8,7 @@
 package com.samares_engineering.omf.omf_example_plugin.test.feature.mdActions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -24,7 +24,7 @@ import java.util.List;
 @MDAction(actionName = "Copy Element ID",
         category = "OMF Test",
         keyStroke = "control shift c")
-public class CopyElementIDAction extends AUIAction {
+public class CopyElementIDAction extends ElementUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         return isProjectOpened();

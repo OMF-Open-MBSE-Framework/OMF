@@ -10,6 +10,7 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.NMAction;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
+import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
@@ -22,12 +23,16 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.CheckForNull;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * OMF StateAction
  */
-public abstract class StateAction extends AUIAction {
+public abstract class StateAction extends AUIAction<Element, PresentationElement> {
 
     boolean isChecked = false;
 //    private StateBrowserAction browserAction;
@@ -35,10 +40,7 @@ public abstract class StateAction extends AUIAction {
     private NMAction diagramAction;
     private NMAction menuAction;
 
-    @Override
-    public AUIAction init() {
-        return super.init();
-    }
+
 
     /**
      * Initialize the StateBrowserAction, register the action, update the state and set the behavior.
@@ -201,6 +203,50 @@ public abstract class StateAction extends AUIAction {
     public StateMenuAction getStateMenuAction() {
         return (StateMenuAction) menuAction;
     }
+
+
+   /**
+     * Get the selected Elements inside the Containment Tree.
+     * Hypothesis: Order correspond to the user Element selection one.
+     *
+     * @return selected elements list.
+     */
+    @Override
+    public List<Element> getSelectedBrowserElements() {
+        if (getSelectedBrowserNodes().length == 0) return Collections.emptyList();
+        return Arrays.stream(getSelectedBrowserNodes())
+                .map(node -> node.getUserObject())
+                .filter(obj -> obj instanceof Element)
+                .map(obj -> (Element) obj)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get the Presentation elements of the selected elements inside the active diagram.
+     * Hypothesis: Order correspond to the user Element selection one.
+     *
+     * @return selected Presentation Element list.
+     */
+    @Override
+    public List<PresentationElement> getSelectedDiagramPresentationElements() {
+        if (isProjectVoid()) return Collections.emptyList();
+        DiagramPresentationElement activeDiagram = OMFUtils.getProject().getActiveDiagram();
+        return activeDiagram != null ? activeDiagram.getSelected() : new ArrayList<>();
+    }
+
+    /**
+     * Get the selected Elements inside the active diagram.
+     * Hypothesis: Order correspond to the user Element selection one.
+     *
+     * @return selected elements list.
+     */
+    @Override
+    public List<Element> getSelectedDiagramElements() {
+        return getSelectedDiagramPresentationElements().stream()
+                .map(presentationElement -> presentationElement.getElement())
+                .collect(Collectors.toList());
+    }
+
 }
 
 

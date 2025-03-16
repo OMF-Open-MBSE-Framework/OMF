@@ -31,6 +31,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.miscergo.MiscErgo
 import com.samares_engineering.omf.omf_example_plugin.features.stateactionfeature.StateActionExample;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.sysmlv2_explo.SysMLV2Feature;
 import com.samares_engineering.omf.omf_public_features.activablefeatureoption.FeatureActivationFromOptionFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 import com.samares_engineering.omf.omf_public_features.clonefeature.CloneElementFeature;
@@ -53,6 +54,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
         features.addAll(featuresToDeactivateByDefaultOnStartUp);
         features.addAll(List.of(
                 new FeaturesDeactivationFeature(),
+                new SysMLV2Feature(),
                 //USEFUL
                 new EnhancedDisplayFeature(),
                 new HyperLinkFeature(),

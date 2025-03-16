@@ -5,6 +5,7 @@ package com.samares_engineering.omf.omf_core_framework.genarchimodel.actions
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
 import com.samares_engineering.omf.omf_core_framework.genarchimodel.generator.ModelArchitectureGenerator
 
@@ -14,7 +15,7 @@ import com.samares_engineering.omf.omf_core_framework.genarchimodel.generator.Mo
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Generate Model Archi", category = "OMF.ArchiGeneration")
-class GenerateArchiModel_V3 : AUIAction() {
+class GenerateArchiModel_V3 : ElementUIAction() {
 
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         if (isProjectVoid) return false
@@ -28,7 +29,7 @@ class GenerateArchiModel_V3 : AUIAction() {
 
         ModelArchitectureGenerator("com.samares_engineering.omf",
             "C:\\Workspace\\Plugins\\OMF_Private",
-            feature.plugin).generateCodeModelArchitecture(owner)
+            feature?.plugin).generateCodeModelArchitecture(owner)
     }
 
 }

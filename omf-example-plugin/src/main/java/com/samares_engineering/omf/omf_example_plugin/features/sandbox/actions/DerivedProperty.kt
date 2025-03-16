@@ -3,7 +3,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.sandbox.actions
 import com.nomagic.uml2.MagicDrawProfile
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -14,7 +14,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
 @BrowserAction
 @DiagramAction
 @MDAction(actionName = "Sandbox UI Action", category = "OMF")
-class DerivedProperty : AUIAction() {
+class DerivedProperty : ElementUIAction() {
     override fun actionToPerform(selectedElements: List<Element>) {
         val myReq = selectedElements.get(0)
         val myStr = myReq.appliedStereotype.get(0)

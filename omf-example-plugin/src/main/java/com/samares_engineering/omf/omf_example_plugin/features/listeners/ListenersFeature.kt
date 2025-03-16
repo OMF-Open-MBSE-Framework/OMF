@@ -12,7 +12,7 @@ import com.nomagic.uml2.impl.PropertyNames
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.SimpleFeature
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.KeepListenerActivated
@@ -81,7 +81,7 @@ class ListenersFeature: SimpleFeature("Listeners Feature") {
 
     }
 
-    override fun initFeatureActions(): MutableList<AUIAction> {
+    override fun initFeatureActions(): MutableList<ElementUIAction> {
         return mutableListOf(ActivateDeactivateListeners())
     }
 }
@@ -90,12 +90,12 @@ class ListenersFeature: SimpleFeature("Listeners Feature") {
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Activate/deactivate LiveActions", category = "", keyStroke = ["alt shift L"])
-class ActivateDeactivateListeners : AUIAction() {
-    override fun checkAvailability(selectedElements: MutableList<Element>?): Boolean {
+class ActivateDeactivateListeners : ElementUIAction() {
+    override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return true
     }
 
-    override fun actionToPerform(selectedElements: MutableList<Element>?) {
+    override fun actionToPerform(selectedElements: List<Element>) {
         isListenerActivated = !isListenerActivated
         OMFLogger.infoToUIConsole("Listeners are now ${if (isListenerActivated) "activated" else "deactivated"}")
     }

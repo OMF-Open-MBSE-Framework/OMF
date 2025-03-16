@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.featureTemplate.
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Subcategory2", category = "OMF.ACTION CATEGORY NAME.Subcategory1")
-public class ExampleMDAction3 extends AUIAction {
+public class ExampleMDAction3 extends ElementUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         return isProjectOpened() && selectedElements.size() == 1;

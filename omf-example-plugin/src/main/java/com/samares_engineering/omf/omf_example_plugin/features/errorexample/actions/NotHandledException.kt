@@ -2,7 +2,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.errorexample.act
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
 import org.apache.commons.collections4.CollectionUtils
 
@@ -11,13 +11,13 @@ import org.apache.commons.collections4.CollectionUtils
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "NOT HANDLED ERROR", category = "Example.Error")
-class NotHandledException : AUIAction(){
+class NotHandledException : ElementUIAction(){
 
-    override fun checkAvailability(selectedElements: MutableList<Element>?): Boolean {
-        return isProjectOpened() && !CollectionUtils.isEmpty(selectedElements)
+    override fun checkAvailability(selectedElements: List<Element>): Boolean {
+        return isProjectOpened && !CollectionUtils.isEmpty(selectedElements)
     }
 
-    override fun actionToPerform(selectedElements: MutableList<Element>?) {
+    override fun actionToPerform(selectedElements: List<Element>) {
         failMethod()
     }
 

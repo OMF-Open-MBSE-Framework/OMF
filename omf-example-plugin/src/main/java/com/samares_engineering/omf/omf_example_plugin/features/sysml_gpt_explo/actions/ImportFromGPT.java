@@ -14,7 +14,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
@@ -33,7 +33,7 @@ import java.util.Map;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Import from GPT", category = "OMF.Gpt explo")
-public class ImportFromGPT extends AUIAction {
+public class ImportFromGPT extends ElementUIAction {
     private Map<String, Class> createdBlocks = new HashMap<>();
     private Map<Property, String> partPropertiesToConnect = new HashMap<>();
 

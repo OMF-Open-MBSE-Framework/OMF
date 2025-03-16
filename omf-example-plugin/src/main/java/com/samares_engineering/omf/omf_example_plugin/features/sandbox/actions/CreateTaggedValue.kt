@@ -4,7 +4,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.builders.BetaFactory.magicDrawFactory
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -16,7 +16,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 @BrowserAction
 @DiagramAction
 @MDAction(actionName = "Create TaggedValue", category = "OMF")
-class CreateTaggedValue : AUIAction() {
+class CreateTaggedValue : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return selectedElements.size == 1
     }

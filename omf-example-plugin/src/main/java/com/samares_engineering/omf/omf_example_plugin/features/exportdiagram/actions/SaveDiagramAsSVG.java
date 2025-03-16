@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.export.image.ImageExporter;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -18,7 +18,7 @@ import java.util.List;
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Save Diagram as SVG", category = "OMF EXAMPLE")
-public class SaveDiagramAsSVG extends AUIAction {
+public class SaveDiagramAsSVG extends ElementUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

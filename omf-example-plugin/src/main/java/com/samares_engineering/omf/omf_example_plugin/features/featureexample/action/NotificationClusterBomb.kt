@@ -14,7 +14,7 @@ import com.nomagic.magicdraw.ui.notification.NotificationSeverity
 import com.nomagic.magicdraw.ui.notification.config.NotificationViewConfig
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFNotificationManager
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction
@@ -28,7 +28,7 @@ import kotlin.random.Random
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Notification cluster bomb", category = "OMF")
-class NotificationClusterBomb : AUIAction() {
+class NotificationClusterBomb : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return true
     }

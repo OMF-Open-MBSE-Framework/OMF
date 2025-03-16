@@ -12,7 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Type
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.SysoutColorPrinter
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
@@ -25,7 +25,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.utils.UMLUtils
 @BrowserAction
 @DeactivateListener
 @MDAction(actionName = "Create Expression from derivedProperty", category = "EXPLO")
-class CreateExpressionFromDerivedProperty : AUIAction() {
+class CreateExpressionFromDerivedProperty : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         if (OMFUtils.isProjectVoid()) return false
 

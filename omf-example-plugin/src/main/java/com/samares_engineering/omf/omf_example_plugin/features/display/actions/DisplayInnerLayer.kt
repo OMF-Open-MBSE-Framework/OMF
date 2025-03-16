@@ -7,7 +7,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -19,7 +19,7 @@ import java.util.stream.Collectors
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Display Inner layer", category = "")
-class DisplayInnerLayer : AUIAction() {
+class DisplayInnerLayer : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         if (OMFUtils.isProjectVoid()) return false
         val activeDiagram = OMFUtils.getProject().activeDiagram ?: return false
@@ -29,7 +29,7 @@ class DisplayInnerLayer : AUIAction() {
 
     override fun actionToPerform(selectedElements: List<Element>) {
         val layoutManager = LayoutManager(
-                (diagramAction as DefaultDiagramAction).diagram
+                (diagramNMAction as DefaultDiagramAction).diagram
         )
         if (selectedElements.isEmpty()) {
             displayDiagramFirstLevel(layoutManager)

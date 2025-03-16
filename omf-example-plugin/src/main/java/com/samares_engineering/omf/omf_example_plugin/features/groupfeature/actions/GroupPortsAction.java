@@ -9,7 +9,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.Connector;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Group Ports", category = "OMF.Group")
-public class GroupPortsAction extends AUIAction {
+public class GroupPortsAction extends ElementUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

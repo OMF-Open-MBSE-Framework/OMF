@@ -10,7 +10,7 @@ import com.nomagic.uml2.ext.magicdraw.statemachines.mdbehaviorstatemachines.Tran
 import com.nomagic.uml2.impl.ElementsFactory;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -22,7 +22,7 @@ import java.util.List;
 @BrowserAction
 @DiagramAction
 @MDAction(actionName = "Create STM", category = "OMF")
-public class CreateStateMachineAction extends AUIAction {
+public class CreateStateMachineAction extends ElementUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         return selectedElements.size() == 1;

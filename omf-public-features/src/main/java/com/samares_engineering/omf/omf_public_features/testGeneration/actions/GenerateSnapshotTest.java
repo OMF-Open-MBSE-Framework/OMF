@@ -1,7 +1,7 @@
 package com.samares_engineering.omf.omf_public_features.testGeneration.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
@@ -16,7 +16,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Snapshot", category = "OMF.[TEST GENERATION]")
-public class GenerateSnapshotTest extends AUIAction {
+public class GenerateSnapshotTest extends ElementUIAction {
 
     // Package of the generated class
     private String SNAPSHOT_CLASS_PACKAGE = getCurrentPackageRoot() + ".generatedCode";

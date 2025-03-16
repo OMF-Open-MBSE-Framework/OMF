@@ -35,7 +35,8 @@ abstract class RunPlugin extends JavaExec {
                 "@bin/vm.options",
                 "-Djdk.util.zip.disableZip64ExtraFieldValidation=true",
                 "-Dmd.development=true",
-                "-Dmd.class.path=" + javaVersion
+                "-Dmd.class.path=" + javaVersion,
+                "-Dmd.sysml2.enabled=5dd52869-6f6b"
         ]
     }
 }

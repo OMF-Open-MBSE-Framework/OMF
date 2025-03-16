@@ -8,7 +8,7 @@
 package com.samares_engineering.omf.smart_private.privatefeaturelibrary.patterncreation.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
@@ -19,7 +19,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Refresh Pattern Configuration", category = "OMF.PATTERNS")
-public class RefreshPatternConfiguration extends AUIAction {
+public class RefreshPatternConfiguration extends ElementUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(isProjectVoid()) return false;

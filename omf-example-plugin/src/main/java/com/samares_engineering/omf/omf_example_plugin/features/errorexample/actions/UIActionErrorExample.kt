@@ -12,7 +12,7 @@ import com.samares_engineering.omf.omf_core_framework.errormanagement2.exception
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
 
 @BrowserAction
@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "ERROR Logging", category = "Example.Error")
-class UIActionErrorExample : AUIAction() {
+class UIActionErrorExample : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return true
     }
@@ -31,10 +31,6 @@ class UIActionErrorExample : AUIAction() {
             OMFLogger.errorToUIConsole(OMFLog().err("Something went wrong, the session will be rolled back."))
             OMFLogger.errorToNotification(OMFLog().err("Something went wrong, the session will be rolled back."))
         }
-    }
-
-    override fun executeDiagramAction(selectedElements: List<Element>) {
-        super.executeDiagramAction(selectedElements)
     }
 
 

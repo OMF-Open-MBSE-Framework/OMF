@@ -91,8 +91,11 @@ dependencies {
 
     pluginLibrary "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion" // Kotlin stdlib is included in the Kotlin plugin but we need to ad it to the pluginLibrary config to have it at runtime
 
-    zippedMDPlugin 'com.nomagic.magicdraw:devtools:2022x_Refresh2@ZIP'
-    zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2022x_Refresh2@zip"
+    zippedMDPlugin 'com.nomagic.magicdraw:devtools:2024x_Refresh2@zip'
+    zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2024x_Refresh2@zip"
+    zippedMDPlugin "com.nomagic.magicdraw:SysML_v2_Evaluation_Plugin:2024x_Refresh2@zip"
+    zippedMDPlugin "com.nomagic.magicdraw:SysML_v2_Plugin:2024x_Refresh2@zip"
+    zippedMDPlugin "com.nomagic.magicdraw:SysML_v2_Textual_Editor_Plugin_2024x_Refresh2:2024x_Refresh2@zip"
 //    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 //    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.matlab', include: ['**/*.jar'])
 //    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.scxml', include: ['**/*.jar'])

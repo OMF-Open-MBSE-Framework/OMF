@@ -4,7 +4,7 @@ import com.nomagic.magicdraw.core.Application;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -19,7 +19,7 @@ import static com.samares_engineering.omf.omf_core_framework.errormanagement2.OM
 @BrowserAction
 @DiagramAction
 @MDAction(actionName = "Error Handling test", category = "OMF")
-public class TestErrorHandling extends AUIAction {
+public class TestErrorHandling extends ElementUIAction {
     @Override
     public void actionToPerform(List<Element> selectedElements) {
         // Element created to test rollback

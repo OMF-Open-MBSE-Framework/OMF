@@ -13,7 +13,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Package;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -26,7 +26,7 @@ import java.util.List;
 @DiagramAction
 @BrowserAction
 @MDAction(actionName = "Different Behavior From Different Action Type", category = "SysMLBasic")
-public class DifferentBehaviorFomContextAction extends AUIAction {
+public class DifferentBehaviorFomContextAction extends ElementUIAction {
 
 
     /**
@@ -75,6 +75,7 @@ public class DifferentBehaviorFomContextAction extends AUIAction {
     public boolean checkBrowserAvailability() {
         return getSelectedBrowserElements().size() == 1 && getSelectedBrowserElements().get(0) instanceof Package;
     }
+
 
     @Override
     public void executeMenuAction(List<Element> selectedElements) {

@@ -10,7 +10,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Refresh stereotypes rules based on config files", category = "OMF")
-public class RefreshStereotypesRulesBasedOnConfigFiles extends AUIAction {
+public class RefreshStereotypesRulesBasedOnConfigFiles extends ElementUIAction {
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {

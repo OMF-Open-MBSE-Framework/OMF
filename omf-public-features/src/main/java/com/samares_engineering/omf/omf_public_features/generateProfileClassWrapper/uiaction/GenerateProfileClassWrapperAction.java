@@ -25,7 +25,7 @@ import com.nomagic.uml2.ext.magicdraw.mdprofiles.Profile;
 import com.samares_engineering.omf.omf_core_framework.errors.LegacyErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 @DeactivateListener
 @BrowserAction
 @MDAction(actionName = "Generate Profile Wrapper", category = "OMF Profile Wrapper")
-public class GenerateProfileClassWrapperAction extends AUIAction {
+public class GenerateProfileClassWrapperAction extends ElementUIAction {
 
     private String simpleName;
 

@@ -5,7 +5,7 @@ import com.nomagic.magicdraw.ui.browser.Node
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.TypedElement
 import com.nomagic.utils.Utilities
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -16,12 +16,12 @@ import javax.swing.tree.TreePath
 @DiagramAction
 @BrowserAction
 @MDAction(actionName = "Go to Type", category = "")
-class GoToType:AUIAction() {
-    override fun checkAvailability(selectedElements: MutableList<Element>): Boolean {
-        return OMFUtils.isProjectOpened() && selectedElements.isNotEmpty() && selectedElements.all { it is TypedElement }
+class GoToType:ElementUIAction() {
+    override fun checkAvailability(selectedElements: List<Element>): Boolean {
+        return isProjectOpened && selectedElements.isNotEmpty() && selectedElements.all { it is TypedElement }
     }
 
-    override fun actionToPerform(selectedElements: MutableList<Element>) {
+    override fun actionToPerform(selectedElements: List<Element>) {
         selectedElements
             .map { it as TypedElement }
             .map { it.type }

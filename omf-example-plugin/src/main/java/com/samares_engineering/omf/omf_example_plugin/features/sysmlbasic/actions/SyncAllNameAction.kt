@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actio
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -20,7 +20,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile
 @DiagramAction
 @BrowserAction
 @MDAction(actionName = "Propagate Port Name to Interface/Flow", category = "SysMLBasic")
-class SyncAllNameAction : AUIAction() {
+class SyncAllNameAction : ElementUIAction() {
     /**
      * Available only When a Typed Port is selected
      * @param selectedElements selected elements from the browser, or the diagram

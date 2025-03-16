@@ -12,7 +12,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.nomagic.uml2.ext.magicdraw.mdprofiles.Stereotype;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @DiagramAction
 @DeactivateListener
 @MDAction(actionName = "Group Parts", category = "OMF.Group")
-public class GroupPartsAction extends AUIAction {
+public class GroupPartsAction extends ElementUIAction {
 
     private ElementGetter elementGetter = new ElementGetter(); //Helper class to retrieve elements from others
 

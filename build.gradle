@@ -31,13 +31,13 @@ sonarqube {
     }
 }
 
-tasks.register("megaClean", Delete) {
-    group = '_dev'
-    description = 'Delete gradle build directories in all subprojects'
-    delete rootProject.buildDir
-    doLast {
-        rootProject.subprojects {
-            delete it.buildDir
-        }
-    }
-}
+//tasks.register("megaClean", Delete) {
+//    group = '_dev'
+//    description = 'Delete gradle build directories in all subprojects'
+//    delete rootProject.buildDir
+//    doLast {
+//        rootProject.subprojects {
+//            delete it.buildDir
+//        }
+//    }
+//}

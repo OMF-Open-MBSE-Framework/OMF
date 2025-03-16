@@ -16,7 +16,7 @@ import com.nomagic.uml2.ext.magicdraw.compositestructures.mdinternalstructures.C
 import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger;
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils;
 import com.samares_engineering.omf.omf_core_framework.utils.connections.DelegationConnection;
@@ -28,7 +28,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Delegate", category = "", keyStroke = "alt D")
-public class DelegateConnection extends AUIAction {
+public class DelegateConnection extends ElementUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         return OMFUtils.getProject() != null && selectedElements.size() == 1 && selectedElements.get(0) instanceof Connector;

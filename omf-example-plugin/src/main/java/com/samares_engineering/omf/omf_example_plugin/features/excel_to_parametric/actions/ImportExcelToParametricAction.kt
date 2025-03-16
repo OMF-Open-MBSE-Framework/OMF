@@ -5,7 +5,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -24,7 +24,7 @@ import java.util.function.Predicate
 @BrowserAction
 @DeactivateListener
 @MDAction(actionName = "Import Parametric from Excel", category = "MOE/MOP Transition")
-class ImportExcelToParametricAction : AUIAction() {
+class ImportExcelToParametricAction : ElementUIAction() {
     lateinit var importer: ExcelParametricImporter
     lateinit var parametricGenerator: ParametricGenerator
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
@@ -35,7 +35,7 @@ class ImportExcelToParametricAction : AUIAction() {
 
     }
 
-    override fun executeBrowserAction(selectedElements: MutableList<Element>) {
+    override fun executeBrowserAction(selectedElements: List<Element>) {
         OMFBarrierExecutor.executeInSessionWithinBarrier(
             { importExcelToParametric(selectedElements) },
             "Importing Excel to Parametric",

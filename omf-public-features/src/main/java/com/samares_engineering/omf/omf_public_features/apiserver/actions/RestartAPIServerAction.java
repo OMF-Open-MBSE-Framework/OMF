@@ -9,7 +9,7 @@ package com.samares_engineering.omf.omf_public_features.apiserver.actions;
 
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DeactivateListener;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MenuAction;
@@ -21,7 +21,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Restart API Server", category = "OMF.OMF ADVANCED")
-public class RestartAPIServerAction extends AUIAction {
+public class RestartAPIServerAction extends ElementUIAction {
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
         if(isProjectVoid()) return false;

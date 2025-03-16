@@ -7,7 +7,7 @@ import com.nomagic.uml2.MagicDrawProfile
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.nomagic.uml2.transaction.TransactionCommitListener
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent
 @BrowserAction
 @DiagramAction
 @MDAction(actionName = "Sandbox UI Action", category = "OMF")
-class GenericTableAction : AUIAction() {
+class GenericTableAction : ElementUIAction() {
     override fun actionToPerform(selectedElements: List<Element>) {
 
 

@@ -11,7 +11,7 @@ import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFColors
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*
 
 @DiagramAction
@@ -19,7 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Logging example", category = "OMF")
-class LoggingAction : AUIAction() {
+class LoggingAction : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return isProjectOpened && selectedElements.isNotEmpty()
     }

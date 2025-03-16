@@ -11,7 +11,7 @@ import com.nomagic.magicdraw.hyperlinks.Hyperlink;
 import com.nomagic.magicdraw.hyperlinks.HyperlinkUtils;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Property;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction;
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.*;
 import com.samares_engineering.omf.omf_core_framework.utils.profile.Profile;
 
@@ -22,7 +22,7 @@ import java.util.List;
 @MenuAction
 @DeactivateListener
 @MDAction(actionName = "Add HyperLink to Block", category = "OMF.Dev")
-public class AddHyperlinkToType extends AUIAction {
+public class AddHyperlinkToType extends ElementUIAction {
 
 
     @Override

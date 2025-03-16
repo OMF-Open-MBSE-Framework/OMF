@@ -8,7 +8,7 @@ import com.nomagic.magicdraw.ui.browser.BrowserComponentInfo
 import com.nomagic.magicdraw.ui.browser.BrowserTabTree
 import com.nomagic.magicdraw.ui.browser.BrowserTreeFactory
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.AUIAction
+import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.BrowserAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.DiagramAction
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.annotations.MDAction
@@ -19,7 +19,7 @@ import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 @BrowserAction
 @DiagramAction
 @MDAction(actionName = "Create Custom Tree", category = "OMF")
-class CreateCustomTree : AUIAction() {
+class CreateCustomTree : ElementUIAction() {
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
         return OMFUtils.isProjectOpened()
     }
