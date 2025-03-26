@@ -28,6 +28,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.featureexample.Fe
 import com.samares_engineering.omf.omf_example_plugin.features.groupfeature.GroupElementFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.listeners.ListenersFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.miscergo.MiscErgonomicFeature;
+import com.samares_engineering.omf.omf_public_features.open_project_onstart.OpenProjectOnStartFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.stateactionfeature.StateActionExample;
 import com.samares_engineering.omf.omf_example_plugin.features.sysml_gpt_explo.SysmlGptExploFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.SysMLBasicFeature;
@@ -83,6 +84,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
                 new ElementSpecificationExample(),
                 new ExportDiagramImagesFeature(),
                 new FeatureExample(),
+                new OpenProjectOnStartFeature("C:\\Workspace\\MBSE\\Untitled1.mdzip"),
 
                 new ListenersFeature(),
                 // Deactivation of features
