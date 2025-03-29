@@ -1,0 +1,31 @@
+plugins {
+    id 'java-library'
+}
+
+group omfPackage + '.' + mdVersionShort
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly project(":omf-magicdraw-dependencies")
+    compileOnly project(":omf-core-framework")
+    compileOnly project(":omf-test-framework")
+
+    implementation 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
+    implementation 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
+    implementation 'com.github.javaparser:javaparser-core:3.25.4'
+    implementation 'org.jdom:jdom2:2.0.6'
+    compileOnly fileTree(dir: 'build/install/plugins', include: ['**/*.jar'])
+
+    implementation 'com.squareup:javapoet:1.13.0'
+}

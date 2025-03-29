@@ -1,0 +1,29 @@
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ @copyright Copyright (c) 2022-2023 Samares-Engineering
+  ~ @Licence: EPL 2.0
+  ~ @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+  ~ @since     0.0.0
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<plugin
+        id="${plugin.id}"
+        packageName="${plugin.package}"
+        name="${plugin.name}"
+        internalVersion="${internal.version}"
+        version="${human.version}"
+        provider-name="Samares-Engineering"
+        class-lookup="LocalFirst"
+        ownClassloader="true"
+        class="${plugin.main}">
+
+    <requires>
+        <required-plugin id="com.nomagic.requirements" name="Cameo Requirements Modeler" version="2021x Refresh2"/>
+    </requires>
+
+    <runtime>
+        <!-- START AUTO-GENERATED -->
+        <!-- TEST UP-TO-DATE -->
+        <!-- END AUTO-GENERATED -->
+    </runtime>
+
+</plugin>

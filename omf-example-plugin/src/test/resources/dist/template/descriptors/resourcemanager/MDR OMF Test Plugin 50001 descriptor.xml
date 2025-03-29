@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ @copyright Copyright (c) 2022-2023 Samares-Engineering
+  ~ @Licence: EPL 2.0
+  ~ @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+  ~ @since     0.0.0
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<resourceDescriptor critical="false"
+                    date="${build.timestamp}"
+                    description="OMF Test Plugin"
+                    id="${plugin.id}"
+                    mdVersionMax="higher"
+                    mdVersionMin="2021x Refresh2"
+                    name="${plugin.name}"
+                    type="Plugin">
+    <version human="${human.version}" resource="${resource.version}" internal="${internal.version}"/>
+    <provider name="Samares-Engineering"/>
+
+    <edition>Enterprise</edition>
+    <edition>Architect</edition>
+    <edition>Standard</edition>
+    <edition>Professional Java</edition>
+    <edition>Professional C++</edition>
+    <edition>Professional C#</edition>
+    <edition>Professional ArcStyler</edition>
+    <edition>Reader</edition>
+    <edition>OptimalJ</edition>
+
+    <compatibleResources timestamp="1584141555675">
+        <resource name="Cameo Systems Modeler" compatible="false" version="2021x"/>
+        <resource name="Cameo Systems Modeler" compatible="false" version="2021x Refresh1"/>
+        <resource name="Cameo Systems Modeler" compatible="true" version="2021x Refresh2"/>
+        <resource name="MagicDraw Cyber System Engineering" compatible="false" version="2021x"/>
+        <resource name="MagicDraw Cyber System Engineering" compatible="false" version="2021x Refresh1"/>
+        <resource name="MagicDraw Cyber System Engineering" compatible="true" version="2021x Refresh2"/>
+    </compatibleResources>
+
+    <installation>
+        <!-- START AUTO-GENERATED -->
+        <!-- END AUTO-GENERATED -->
+    </installation>
+</resourceDescriptor>

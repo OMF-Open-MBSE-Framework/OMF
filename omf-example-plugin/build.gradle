@@ -1,0 +1,300 @@
+plugins {
+    id 'maven-publish'
+    id 'com.kncept.junit.reporter' version '2.1.0'
+    id 'com.samares-engineering.omf.omf-gradle-plugin'
+    id 'signing'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+group omfPackage + '.' + mdVersionShort
+
+// ============================= GLOBAL VARIABLES DECLARATION =============================
+ext.thePluginDeliveryName = omfPackage + ".plugin" + "_" + version
+ext.theTestPluginDeliveryName = omfPackage + ".test-plugin" + "_" + version
+
+// ============================= REPOSITORY DECLARATION & DEPENDENCIES =============================
+repositories {
+    maven {
+        allowInsecureProtocol = true
+        credentials {
+            username mavenRepoUsername
+            password mavenRepoPassword
+        }
+        url = mavenRepoUrl
+        name 'MavenReleaseRepo'
+    }
+    maven {
+        allowInsecureProtocol = true
+        credentials {
+            username mavenRepoUsername
+            password mavenRepoPassword
+        }
+        url = mavenSnapshotRepoUrl
+        name 'MavenSnapshotRepo'
+    }
+    mavenCentral()
+}
+
+/*
+ Use the following dependency configurations :
+    - mdApplicationArchive: declares the MagicDraw zip archive, should only be used once
+    - mdLibrary: declares dependencies that are added to the classpath when we launch MagicDraw. Only the libraries
+    in the magicdraw /lib folder should be added here.
+    - pluginLibrary: for dependencies that are required by the plugin at runtime
+    - testPluginLibrary: for dependencies that are required by the test plugin at runtime
+    - zippedMDPlugin: declares a plugin zip archive to be automatically installed in MagicDraw when we launch it.
+    - otherMDPluginLibrary: declares dependencies of a plugin that is marked as <required-plugin> in the plugin.xml.
+    In such cases MagicDraw will add the plugin to the classpath at runtime automatically but we need to add the jars
+    of the plugin in Gradle to be able to compile the code.
+ */
+dependencies {
+    if (mdVersionShort == "2021x_R1") {
+        mdApplicationArchive "com.nomagic.magicdraw:MagicDraw:2021x_RF1@zip"
+    } else if (mdVersionShort == "2021x_R2") {
+        mdApplicationArchive "com.nomagic:mcse:2021x_Refresh2_HF2@zip"
+    } else if (mdVersionShort == "2022x_Refresh2") {
+        mdApplicationArchive "com.nomagic:mcse:2022x_Refresh2@zip"
+    } else if (mdVersionShort == "2024x") {
+        mdApplicationArchive "com.nomagic:mcse:2024x@zip"
+    } else if (mdVersionShort == "local" && localMagicdrawArchive != '') {
+        mdApplicationArchive files(localMagicdrawArchive)
+    } else {
+        throw new GradleException("MagicDraw version not supported: $mdVersionShort")
+    }
+
+    mdLibrary fileTree(dir: 'build/install/lib', include: ['*.jar', '**/*.jar'])
+    mdLibrary fileTree(dir: 'build/install/plugins',
+            include: ['*.jar', '**/*.jar'],
+            excludes: [omfPackage + '/**/**.jar'])
+
+    pluginLibrary project(':omf-test-framework')
+    pluginLibrary project(":omf-core-framework")
+    pluginLibrary project(':omf-public-features')
+    pluginLibrary project(':smart-private')
+
+    testPluginLibrary 'ant:ant-junit:1.6.5'
+    testPluginLibrary 'org.apache.ant:ant:1.8.2'
+    testPluginLibrary 'org.eclipse.jetty:jetty-client:9.4.38.v20210224'
+    testPluginLibrary project(':omf-test-framework')
+    testPluginLibrary project(':omf-core-framework')
+
+    pluginLibrary 'com.squareup:javapoet:1.13.0'
+
+    pluginLibrary 'org.eclipse.jetty:jetty-server:9.4.38.v20210224'
+    pluginLibrary 'org.eclipse.jetty:jetty-servlet:9.4.38.v20210224'
+    pluginLibrary 'org.jetbrains.kotlin:kotlin-reflect:2.0.20'
+
+    pluginLibrary 'com.github.javaparser:javaparser-core:3.26.2'
+
+    pluginLibrary "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion" // Kotlin stdlib is included in the Kotlin plugin but we need to ad it to the pluginLibrary config to have it at runtime
+
+    zippedMDPlugin 'com.nomagic.magicdraw:devtools:2022x_Refresh2@ZIP'
+    zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2022x_Refresh2@zip"
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.matlab', include: ['**/*.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.scxml', include: ['**/*.jar'])
+//    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.magicupsell', include: ['**/*.jar'])
+}
+
+jar.dependsOn(':omf-test-framework:jar', ':omf-core-framework:jar', ':omf-public-features:jar', ':smart-private:jar')
+
+// Samares gradle plugin configuration
+mdPluginBuild {
+    humanVersion = version
+    myPluginName = pluginName
+    myPackage = omfPackage
+    myPluginId = pluginId
+    myPluginMainClass = pluginMainClass
+    localDeliveryDirectory = localDeliverPath + "/" + omfPackage + "/" + mdVersionShort + "/" + omfPackage + "_" +
+            mdVersionShort + "_" + version
+    pluginDeliveryName = thePluginDeliveryName
+    testPluginDeliveryName = theTestPluginDeliveryName
+    myTestPluginId = testPluginId
+    myTestPluginName = testPluginName
+    myTestPluginMainClass = testPluginMainClass
+    myTestPackage = testPluginPackage
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
+}
+
+// ============================= TASK CONFIGURATION =============================
+
+
+
+tasks.junitHtmlReport.doLast {
+    exec {
+        workingDir "$buildDir/test-reports/TEST-HTML"
+        //on windows:
+        commandLine 'cmd', '/c', 'start index.html'
+    }
+}
+
+junitHtmlReport {
+    testResultsDir = "test-reports/TEST-XML"
+    testReportsDir = "test-reports/TEST-HTML"
+}
+runTestsNoLog.finalizedBy 'junitHtmlReport'
+runTests.finalizedBy 'junitHtmlReport'
+debugTests.finalizedBy 'junitHtmlReport'
+
+
+signing {
+    if (isRelease) {
+        useGpgCmd()
+        sign(publishing.publications)
+    }
+}
+
+ext.setDefaultPomValues = { pom ->
+    // Project url
+    pom.url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+    pom.inceptionYear = '2022'
+
+    pom.licenses {
+        owner.license {
+            name = 'Eclipse Public License - v 2.0'
+            url = 'https://www.eclipse.org/legal/epl-2.0/'
+        }
+    }
+
+    pom.developers {
+        owner.developer {
+            id = 'hugostinson'
+            name = 'Hugo Stinson'
+            email = 'hugo.stinson@samares-engineering.com'
+        }
+
+        owner.developer {
+            id = 'clementmezerette'
+            name = 'Clement Mezerette'
+            email = 'clement.mezerette@samares-engineering.com'
+        }
+
+        owner.developer {
+            id = 'quentincespedes'
+            name = 'Quentin Cespedes'
+            email = 'quentin.cespedes@samares-engineering.com'
+        }
+    }
+
+    pom.scm {
+        connection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
+        developerConnection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
+        url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+    }
+}
+
+tasks.all { task ->
+    if (task.name.startsWith('publish')) {
+        task.dependsOn javadoc
+        task.dependsOn sourceJar
+        task.dependsOn ":omf-test-framework:jar"
+        task.dependsOn ":omf-core-framework:jar"
+        task.dependsOn ":omf-utils:jar"
+        task.dependsOn ":omf-public-features:jar"
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "PrivateSamaresRepo"
+            credentials {
+                username mavenRepoUsername
+                password mavenRepoPassword
+            }
+            def releasesRepoUrl = mavenRepoUrl
+            def snapshotsRepoUrl = mavenSnapshotRepoUrl
+            url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
+            allowInsecureProtocol true
+        }
+
+        maven {
+            name = "MavenCentral"
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
+            credentials {
+                username = mavenCentralUsername
+                password = mavenCentralPwd
+            }
+        }
+    }
+
+    publications {
+        // Publish built plugin .zip to Nexus repo
+        examplePluginZip(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = examplePluginArtefactId
+            artifact("$buildDir/builtPlugin/$project.version/${thePluginDeliveryName}.zip")
+            setDefaultPomValues(pom)
+            pom {
+                name = "$examplePluginArtefactId:$omfPackage"
+                description = "An example plugin demonstrating use of the framework."
+            }
+        }
+
+        coreFrameworkJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = coreFrameworkArtefactId
+            from project(":omf-core-framework").components.java
+            setDefaultPomValues(pom)
+            pom {
+                name = "$coreFrameworkArtefactId:$omfPackage"
+                description = "A framework for developing MagicDraw plugins."
+            }
+        }
+
+        testFrameworkJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = testFrameworkArtefactId
+            from project(":omf-test-framework").components.java
+            setDefaultPomValues(pom)
+            pom {
+                name = "$testFrameworkArtefactId:$omfPackage"
+                description = "A framework for developing functional tests for MagicDraw plugins."
+            }
+        }
+
+        publicFeaturesJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = publicFeaturesArtefactId
+            from project(":omf-public-features").components.java
+            setDefaultPomValues(pom)
+            pom {
+                name = "$publicFeaturesArtefactId:$omfPackage"
+                description = "A collection of open source features that can be integrated to third-party plugins."
+            }
+        }
+
+        utilsJar(MavenPublication) {
+            groupId = omfPackage + "." + mdVersionShort
+            artifactId = utilsArtefactId
+            from project(":omf-utils").components.java
+            setDefaultPomValues(pom)
+            pom {
+                name = "$utilsArtefactId:$omfPackage"
+                description = "A collection of utilities methods used in the framework as well as helpers for the " +
+                        "MagicDraw public api that can be useful for plugin regardless of whether they use the " +
+                        "framework or not."
+            }
+        }
+    }
+}
+
+
+// Todo : This is a temporary fix to the task graph (kotlin compile needs to happen after magicdraw install as we need md libs)
+// Todo : This logic needs to be integrated in the OMF Gradle plugin
+compileKotlin.dependsOn 'installMagicDraw', 'installZippedMDPlugins', 'clean'

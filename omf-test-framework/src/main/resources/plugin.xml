@@ -1,0 +1,27 @@
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ @copyright Copyright (c) 2022-2023 Samares-Engineering
+  ~ @Licence: EPL 2.0
+  ~ @Author:   Quentin Cespédès, Clément Mezerette, Hugo Stinson
+  ~ @since     0.0.0
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<plugin
+		id="${plugin.id}"
+		name="${plugin.name}"
+		internalVersion="${internal.version}"
+		version="${human.version}"
+		ownClassloader="false"
+		class-lookup="GlobalFirst"
+		provider-name="Samares-Engineering"
+		class="${plugin.main}">
+    
+    <requires>
+		<required-plugin id="${plugin.undertest.id}" name="${plugin.undertest.name}"/>
+	</requires>
+
+    <runtime>
+        <!-- START AUTO-GENERATED -->
+        <!-- END AUTO-GENERATED -->
+    </runtime>
+
+</plugin>

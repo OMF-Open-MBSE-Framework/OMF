@@ -1,0 +1,22 @@
+plugins {
+    id 'java-library'
+}
+
+group omfPackage + '.' + mdVersionShort
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly project(":omf-magicdraw-dependencies")
+}
+

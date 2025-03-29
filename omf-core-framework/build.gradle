@@ -1,0 +1,56 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.kapt'
+}
+
+group omfPackage + '.' + mdVersionShort
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(jvmVersion)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.annotationProcessorPath = configurations.kapt
+}
+tasks.named('compileJava') {
+    dependsOn 'generateCode'
+}
+tasks.register('generateCode') {
+    group = 'codegen'  // Vous pouvez choisir un nom de groupe qui a du sens pour l'organisation des tâches
+    description = 'Génère le code via kapt sans faire un build complet'
+
+    dependsOn 'kaptKotlin' // Dépendance sur la tâche `kaptKotlin`, qui est générée automatiquement par le plugin Kotlin
+
+    doLast {
+        println 'Code Generation Successful'
+    }
+}
+
+
+dependencies {
+    compileOnly project(":omf-magicdraw-dependencies")
+    compileOnly 'org.apache.commons:commons-lang3:3.12.0'
+    compileOnly("com.squareup:kotlinpoet:1.10.0")
+    compileOnly('com.google.auto.service:auto-service:1.0-rc7')
+    kapt 'com.google.auto.service:auto-service:1.0-rc7'
+
+    api project(":omf-utils")
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    api 'com.github.javaparser:javaparser-core:3.26.2'
+}
+

@@ -1,0 +1,8 @@
+TypeListener;TypeStereotype;InstanceStereotypeToApply;InstanceOwnerStereotype;Trigger;RuleId;Activated
+Class2Property;HardwareComponent;HardwareComponentPart;;onInstance;ID_0;x
+Class2Property;Function;Functional Part;;onInstance;ID_1;x
+Class2Property;Component;Component Part;;onInstance;ID_2;x
+Class2Property;Metamorph;Functional Part;Function;onInstance;ID_3;x
+Class2Property;Metamorph;Component Part;Component;onInstance;ID_4;x
+
+
