@@ -1,6 +1,7 @@
 # Open MBSE Framework
 This project contains a framework for the development of Magicdraw plugins. As such, and to demonstrate the capabilities of the framework through basic automations and use cases, you can find an example plugin attached. You can also clone the project (source code), or import the jar and take advantage of the developed automations (TBD).
 
+Official website: https://omf-website-48649.web.app/
 
 # Dev environment setup
 
