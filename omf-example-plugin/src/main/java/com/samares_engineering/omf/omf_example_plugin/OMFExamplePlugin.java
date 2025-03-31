@@ -17,6 +17,7 @@ import com.samares_engineering.omf.omf_core_framework.plugin.AOMFPlugin;
 import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFPropertyOptionsGroup;
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.demo.demo_option.OptionsDemoFeature;
+import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
 //                new HyperLinkFeature(),
 ////                new LockSafeFeature(),
 //                new DerivedPropertyExample(),
-//                new APIServerFeature("http://localhost", 9850),
+                new APIServerFeature("http://localhost", 9850),
 ////
 ////                //USEFUL for Modeling
 ////                new StereotypesFeature(),
