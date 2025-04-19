@@ -27,7 +27,7 @@ class DeactivableAction : AUIAction() {
 
     //AVAILABLE ONLY WHEN OPTION IS CHECKED
     override fun checkAvailability(selectedElements: List<Element>): Boolean {
-        return isProjectOpened && getFeature().envOptionsHelper.isDemoUIACtionAvailable
+        return isProjectOpened && getFeature().envOptionsHelper.isDemoUIActionAvailable
     }
 
 

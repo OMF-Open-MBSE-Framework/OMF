@@ -3,7 +3,8 @@
  * All rights reserved and granted to Renault.
  */
 
-package com.samares_engineering.omf.omf_public_features.generateProfileClassWrapper.uiaction;
+package com.samares_engineering.omf.omf_example_plugin.features.generateProfileClassWrapper.uiaction;
+
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
@@ -18,6 +19,7 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.nomagic.magicdraw.devtools.DevToolsc.DevToolsa.DevToolsn;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.profiles.ProfileImplementation;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
@@ -51,11 +53,15 @@ import java.util.stream.Collectors;
 @MDAction(actionName = "Generate Profile Wrapper", category = "OMF Profile Wrapper")
 public class GenerateProfileClassWrapperAction extends AUIAction {
 
-    private String simpleName;
+    private String profileName;
+
+    public GenerateProfileClassWrapperAction(String profileName) {
+        this.profileName = profileName;
+    }
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-
+        if(!OMFUtils.isDevMode()) return false;
         if(selectedElements.size() != 1) return false;
         if(selectedElements.get(0) instanceof Profile) return true;
         return false;
@@ -132,7 +138,7 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
     private void addDefaultOMFGetInstance(CompilationUnit cu) {
         // Ajouter la méthode getInstance()
         MethodDeclaration getInstanceMethod = addGetInstance();
-        ClassOrInterfaceDeclaration yourClass = cu.getClassByName(simpleName).get();
+        ClassOrInterfaceDeclaration yourClass = cu.getClassByName(profileName).get();
         yourClass.addMember(getInstanceMethod);
     }
 
@@ -147,7 +153,7 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
 
         getInstanceMethod.setModifiers(NodeList.nodeList(Modifier.publicModifier(), Modifier.staticModifier()));
 
-        getInstanceMethod.setType("MBSIProfile");
+        getInstanceMethod.setType(profileName);
         getInstanceMethod.setName("getInstance");
 
         BlockStmt body = new BlockStmt();
@@ -158,8 +164,8 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
     }
 
     private String getOriginalGenerateProfileWrapper(Profile profile) {
-//        return new DevToolso(profile).DevToolsa();
-        return "";
+        return (new DevToolsn(profile)).DevToolsa();
+//        return "";
     }
 
 
