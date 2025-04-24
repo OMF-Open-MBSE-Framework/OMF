@@ -41,3 +41,10 @@ tasks.register("megaClean", Delete) {
         }
     }
 }
+
+tasks.register("publishToSamaresNexus") {
+    group = '_dev'
+    description = 'Publish all publications to the private samares nexus repository. ' +
+            'Only use if the Jenkins is not working'
+    dependsOn(project(':omf-example-plugin').tasks.named('publishAllPublicationsToPrivateSamaresRepoRepository'))
+}
