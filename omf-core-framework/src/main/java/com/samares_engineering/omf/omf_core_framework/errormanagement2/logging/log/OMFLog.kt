@@ -199,16 +199,19 @@ class OMFLog {
         val expandedLogString = if (expandedLog != null) "<BR>$expandedLog" else ""
 
         return ("<font color=" + getMessageColor(logLevel) + ">"
-                + OMFLogger.getPrefix(logLevel)
+                + OMFLogger.getPrefix(logLevel) // TODO refactor this we go back and fort needlessly between OMFLogger & OMFLog
                 + " " + toString(" ")
                 + expandedLogString
                 + "</font>")
     }
 
     fun toHTMLFormat(logLevel: OMFLogLevel, featureName: String?): String {
+        val expandedLogString = if (expandedLog != null) "<BR>$expandedLog" else ""
+
         return ("<font color=" + getMessageColor(logLevel) + ">"
-                + OMFLogger.getPrefix(logLevel, featureName) + " "
+                + OMFLogger.getPrefix(logLevel, featureName) + " " // TODO refactor this we go back and fort needlessly between OMFLogger & OMFLog
                 + toString(" ")
+                + expandedLogString
                 + "</font>")
     }
 

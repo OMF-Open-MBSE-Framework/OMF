@@ -42,7 +42,7 @@ public class OMFLogger {
     public static void logToUIConsole(OMFLog logMessage, OMFLogLevel logLevel) {
         if (logLevel.ordinal() >= getInstance().logLevel.ordinal()) { //if the log level is higher than the current log level
             logMessage.replaceNewLinesWithBreaks();
-            String formattedLog = logMessage.toHTMLFormat(logLevel, getInstance().plugin.getName());
+            String formattedLog = logMessage.toHTMLFormat(logLevel);
             Application.getInstance().getGUILog().addHyperlinkedText(formattedLog, logMessage.getLinkActionMapping());
         }
     }
@@ -342,7 +342,7 @@ public class OMFLogger {
     // Utility methods
     public static String getPrefix(OMFLogLevel logLevel) {
         var pluginPrefix = getInstance().plugin != null ? getInstance().plugin.getName() : "";
-        return "[" + getLogLevelPrefix(logLevel) + "]" + pluginPrefix;
+        return "[" + getLogLevelPrefix(logLevel) + "]" + "[" + pluginPrefix + "]";
     }
 
     public static String getPrefix(OMFLogLevel logLevel, String featureName) {
