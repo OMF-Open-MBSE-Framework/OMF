@@ -67,33 +67,52 @@ class OMFLog {
         return text("<font color=$color>$string</font>")
     }
 
-
     fun colorAll(color: String): OMFLog {
         messageComponents.replaceAll { s: String -> "<font color=$color>$s</font>" }
         return this
     }
 
-
+    /**
+     * Add text with warn color
+     */
     fun warn(string: String): OMFLog {
         return color(string, OMFColors.WARN)
     }
 
 
+    /**
+     * Add text with info color
+     */
     fun info(string: String): OMFLog {
         return color(string, OMFColors.INFO)
     }
 
 
+    /**
+     * Add text with error color
+     */
     fun err(string: String): OMFLog {
         return color(string, OMFColors.ERROR)
     }
 
-
+    /**
+     * Add a link to the element location in containment tree.
+     * @linkText the text to display for the link
+     * @elementToLink the element to link to
+     */
     fun linkElement(linkText: String, elementToLink: Element?): OMFLog {
         linkActionMapping[linkText] = Runnable {
             ElementAction(elementToLink).selectInBrowser()
         }
         return text("<A>$linkText</A>")
+    }
+
+    /**
+     * Add a link to the element location in containment tree. The link text is the element name.
+     * @elementToLink the element to link to
+     */
+    fun linkElement(elementToLink: Element): OMFLog {
+        return linkElement(elementToLink.humanName, elementToLink)
     }
 
     fun linkElementAndParent(elementToLink: Element?): OMFLog {
