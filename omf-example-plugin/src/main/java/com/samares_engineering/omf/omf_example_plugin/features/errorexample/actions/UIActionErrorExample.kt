@@ -6,10 +6,14 @@
  */
 package com.samares_engineering.omf.omf_example_plugin.features.errorexample.actions
 
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Class
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+import com.nomagic.uml2.ext.magicdraw.compositestructures.mdports.Port
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFBarrierExecutor
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFExceptionModifier
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFCriticalException
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger2
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.log.OMFLog
 import com.samares_engineering.omf.omf_core_framework.factory.SysMLFactory
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.ElementUIAction
@@ -46,5 +50,26 @@ class UIActionErrorExample : ElementUIAction() {
                             .linkElement("the block", block), OMFExceptionModifier.DEACTIVATE_FEATURE
             )
         }
+    }
+
+    /**
+     * This method is used to demonstrate the rollback of the session when an exception is thrown.
+     * It creates a port with a type that does not exist, which will throw an exception.
+     * @param element The element to which the port will be added.
+     * @return The element passed as parameter.
+     */
+    fun doStuff(element: Class):Element {
+        try {
+            OMFBarrierExecutor.executeWithinBarrier {
+                // Do stuff here
+                val port = SysMLFactory.getInstance().createProxyPort(element)
+                port.name = "Port"
+                port.type!!.name = "PortType" //PORT TYPE DOES NOT EXIST --> THROWS EXCEPTION
+            }
+        }catch (e: OMFCriticalException) {
+            OMFLogger2.toAll().error("Something went wrong, the session has been rolled back, preventing the creation of the element.")
+        }
+
+        return element
     }
 }
