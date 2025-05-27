@@ -1,6 +1,6 @@
-# Open MBSE Framework
-This project contains a framework for the development of Magicdraw plugins. As such, and to demonstrate the capabilities of the framework through basic automations and use cases, you can find an example plugin attached. You can also clone the project (source code), or import the jar and take advantage of the developed automations (TBD).
+# <img src="omf-logo.png" align="right" width="100">Open MBSE Framework
 
+This project contains a framework for the development of Magicdraw plugins. As such, and to demonstrate the capabilities of the framework through basic automations and use cases, you can find an example plugin attached. You can also clone the project (source code), or import the jar and take advantage of the developed automations (TBD).
 
 # Dev environment setup
 
@@ -131,3 +131,4 @@ Prefix all classes (or rather interfaces) usable by the framework's user by “*
   - Quentin CESPEDES
   - Clément MEZERETTE
   - Hugo STINSON
+  - Calliopé DANTON LALOY
