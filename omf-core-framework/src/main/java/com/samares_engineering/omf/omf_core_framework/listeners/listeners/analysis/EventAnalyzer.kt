@@ -2,6 +2,7 @@ package com.samares_engineering.omf.omf_core_framework.listeners.listeners.analy
 
 import com.nomagic.uml2.ext.jmi.UML2MetamodelConstants
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.logging.OMFLogger
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.events.CharacterizedEvent
 import java.beans.PropertyChangeEvent
 import java.util.HashMap
@@ -10,6 +11,8 @@ class EventAnalyzer {
     val createdEvents = HashMap<Element, MutableList<PropertyChangeEvent>>()
     val updatedEvents = HashMap<Element, MutableList<PropertyChangeEvent>>()
     val deletedEvents = HashMap<Element, MutableList<PropertyChangeEvent>>()
+    // As the analysis is intensive O(n^2), we ignore the events if there is more than this number of events in the batch.
+    val MAX_EVENTS_TO_ANALYSE = 1000
 
     fun toCharacterizedEvents(events:HashMap<Element, MutableList<PropertyChangeEvent>>): List<CharacterizedEvent> {
         return events.map { CharacterizedEvent(it.key, it.value) }
@@ -27,6 +30,11 @@ class EventAnalyzer {
 
 
     fun analyzeSessionBatch(allEventsInSession: List<PropertyChangeEvent>): EventAnalyzer {
+        if (allEventsInSession.size > MAX_EVENTS_TO_ANALYSE) {
+            OMFLogger.infoToSystemConsole("Skipping analysis of event batch with ${allEventsInSession.size} events.")
+            return this // Prevent excessive analysis
+        }
+
         val uncategorizedEvents = allEventsInSession.toMutableList()
 
         // Process created/updated events
