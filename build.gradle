@@ -69,11 +69,11 @@ jreleaser {
                     stagingRepository('omf-example-plugin/build/staging-deploy')
                     // Check deployment status every minute for an hour (can take a while)
                     retryDelay = 60
-                    retryCount = 60
+                    maxRetries = 60
                 }
             }
         }
     }
 }
 
-jreleaserDeploy.dependsOn("omf-example-plugin:publishAllPublicationsToStagingDeployRepository")
+jreleaserDeploy.dependsOn(":omf-example-plugin:publishAllPublicationsToStagingDeployRepository")

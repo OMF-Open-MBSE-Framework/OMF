@@ -103,7 +103,7 @@ to tell OMF how to handle the exception:
 by libraries). These exceptions are handled with the default behaviour explained above.
 
 
-# Release process (for maintainers)
+# Release process (for maintainers) NEEDS UPDATE AFTER CHANGES TO MAVEN CENTRAL PUBLISHING
 - Update release notes in `CHANGELOG.md` (see [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)) by moving  [UNRELEASED] changes to a new version
 - Commit changes
 - Create a new branch from `0-DEV` with the name `RELEASE/<version>` (e.g. `RELEASE/1.0.0`)

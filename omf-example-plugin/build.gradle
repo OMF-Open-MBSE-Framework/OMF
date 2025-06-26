@@ -220,7 +220,7 @@ publishing {
         // Local staging repository used by the jreleaser plugin to deploy artifacts
         maven {
             name = "StagingDeploy"
-            url = layout.buildDirectory.dir('../staging-deploy')
+            url = layout.buildDirectory.dir('/build/staging-deploy')
         }
     }
 
