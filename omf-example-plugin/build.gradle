@@ -2,7 +2,6 @@ plugins {
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
     id 'com.samares-engineering.omf.omf-gradle-plugin'
-    id 'signing'
     id 'org.jetbrains.kotlin.jvm'
 }
 
@@ -132,7 +131,6 @@ kotlin {
 // ============================= TASK CONFIGURATION =============================
 
 
-
 tasks.junitHtmlReport.doLast {
     exec {
         workingDir "$buildDir/test-reports/TEST-HTML"
@@ -149,17 +147,9 @@ runTestsNoLog.finalizedBy 'junitHtmlReport'
 runTests.finalizedBy 'junitHtmlReport'
 debugTests.finalizedBy 'junitHtmlReport'
 
-
-signing {
-    if (isRelease) {
-        useGpgCmd()
-        sign(publishing.publications)
-    }
-}
-
 ext.setDefaultPomValues = { pom ->
     // Project url
-    pom.url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+    pom.url = "https://github.com/OMF-Open-MBSE-Framework/OMF"
     pom.inceptionYear = '2022'
 
     pom.licenses {
@@ -171,9 +161,21 @@ ext.setDefaultPomValues = { pom ->
 
     pom.developers {
         owner.developer {
+            id = 'quentincespedes'
+            name = 'Quentin Cespedes'
+            email = 'quentin.cespedes@samares-engineering.com'
+        }
+
+        owner.developer {
             id = 'hugostinson'
             name = 'Hugo Stinson'
             email = 'hugo.stinson@samares-engineering.com'
+        }
+
+        owner.developer {
+            id = 'calliopedantonlaloy'
+            name = 'Calliope Danton-Laloy'
+            email = 'calliope.dantonlaloy@samares-engineering.com'
         }
 
         owner.developer {
@@ -181,18 +183,12 @@ ext.setDefaultPomValues = { pom ->
             name = 'Clement Mezerette'
             email = 'clement.mezerette@samares-engineering.com'
         }
-
-        owner.developer {
-            id = 'quentincespedes'
-            name = 'Quentin Cespedes'
-            email = 'quentin.cespedes@samares-engineering.com'
-        }
     }
 
     pom.scm {
-        connection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
-        developerConnection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
-        url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+        connection = "scm:git:git:https://github.com/OMF-Open-MBSE-Framework/OMF.git"
+        developerConnection = "scm:git:git:https://github.com/OMF-Open-MBSE-Framework/OMF.git"
+        url = "https://github.com/OMF-Open-MBSE-Framework/OMF"
     }
 }
 
@@ -221,31 +217,14 @@ publishing {
             allowInsecureProtocol true
         }
 
+        // Local staging repository used by the jreleaser plugin to deploy artifacts
         maven {
-            name = "MavenCentral"
-            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
-            credentials {
-                username = mavenCentralUsername
-                password = mavenCentralPwd
-            }
+            name = "StagingDeploy"
+            url = layout.buildDirectory.dir('../staging-deploy')
         }
     }
 
     publications {
-        // Publish built plugin .zip to Nexus repo
-        examplePluginZip(MavenPublication) {
-            groupId = omfPackage + "." + mdVersionShort
-            artifactId = examplePluginArtefactId
-            artifact("$buildDir/builtPlugin/$project.version/${thePluginDeliveryName}.zip")
-            setDefaultPomValues(pom)
-            pom {
-                name = "$examplePluginArtefactId:$omfPackage"
-                description = "An example plugin demonstrating use of the framework."
-            }
-        }
-
         coreFrameworkJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = coreFrameworkArtefactId
@@ -293,7 +272,6 @@ publishing {
         }
     }
 }
-
 
 // Todo : This is a temporary fix to the task graph (kotlin compile needs to happen after magicdraw install as we need md libs)
 // Todo : This logic needs to be integrated in the OMF Gradle plugin

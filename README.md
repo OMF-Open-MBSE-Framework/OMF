@@ -58,6 +58,17 @@ This project contains a framework for the development of Magicdraw plugins. As s
 #### IntelliJ
 - Right click the "runTest" task and select "Debug 'runTest'".
 
+# Naming conventions
+We follow the classic Java guidelines (**PascalCase** for classes, **camelCase** for methods/variables, **UPPER_SNAKE_CASE** for constants/enums)
+
+**Packages:**  lowercase all attached as much as possible, can use underscores “_” if it makes things clearer
+
+**Interfaces:** Don't prefix with “I”
+
+**Abstract:** Prefix with A and do not use as type, only in extend. Use the interface instead.
+
+Prefix all classes (or rather interfaces) usable by the framework's user by “**OMF**”, don't prefix for internal framework classes.
+
 ### Modifying the plugin packaging
 The plugin is packaged from the template in _src/main/resources/dist/template_.
 
@@ -113,17 +124,6 @@ to Nexus & Maven Central staging (this is broken at the moment, so you will have
 - Update the OMF public repo (is this still worth it?)
 - Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch to the next patch version (SNAPSHOT version should be the next patch version, for example if the latest release is 2.1.0 it shoud be 2.1.1-SNAPSHOT)
 - Commit and push
-
-# Naming conventions
-We follow the classic Java guidelines (**PascalCase** for classes, **camelCase** for methods/variables, **UPPER_SNAKE_CASE** for constants/enums)
-
-**Packages:**  lowercase all attached as much as possible, can use underscores “_” if it makes things clearer
-
-**Interfaces:** Don't prefix with “I”
-
-**Abstract:** Prefix with A and do not use as type, only in extend. Use the interface instead.
-
-Prefix all classes (or rather interfaces) usable by the framework's user by “**OMF**”, don't prefix for internal framework classes.
 
 # Authors
 

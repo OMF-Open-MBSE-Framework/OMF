@@ -11,3 +11,4 @@ out
 */bin/
 .DS_Store
 *.zip
+jreleaser-secrets.yml
