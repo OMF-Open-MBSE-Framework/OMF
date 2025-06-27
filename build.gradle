@@ -1,24 +1,11 @@
 plugins {
     //id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
     id "org.sonarqube" version "4.0.0.2929"
+    id "java"
     id 'org.jreleaser' version '1.17.0'
 }
 
 group omfPackage + '.' + mdVersionShort
-
-// Config for the nexus publish plugin which automates the release of artifacts from the staging repository to the
-// release repository. Doesn't work at the moment.
-//nexusPublishing {
-//    repositories {
-//        sonatype {
-//            username = mavenCentralUsername
-//            password = mavenCentralPwd
-//            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-//            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-//        }
-//    }
-//}
-
 
 sonarqube {
     properties {
@@ -64,9 +51,9 @@ jreleaser {
                     active = 'ALWAYS'
                     url = 'https://central.sonatype.com/api/v1/publisher'
                     stagingRepository('omf-example-plugin/build/staging-deploy')
-                    // Check deployment status every minute for an hour (can take a while)
-                    retryDelay = 60
-                    retryCount = 60
+                    // Check deployment status every 10s for an hour (can take a while)
+                    retryDelay = 10
+                    maxRetries = 360
                 }
             }
         }
