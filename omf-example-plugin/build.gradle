@@ -47,16 +47,18 @@ repositories {
     of the plugin in Gradle to be able to compile the code.
  */
 dependencies {
-    if (mdVersionShort == "2021x_R1") {
+    if (localMagicdrawArchive != '') {
+        mdApplicationArchive files(localMagicdrawArchive)
+    } else if (mdVersionShort == "2021x_Refresh1") {
         mdApplicationArchive "com.nomagic.magicdraw:MagicDraw:2021x_RF1@zip"
-    } else if (mdVersionShort == "2021x_R2") {
+    } else if (mdVersionShort == "2021x_Refresh2") {
         mdApplicationArchive "com.nomagic:mcse:2021x_Refresh2_HF2@zip"
+    } else if (mdVersionShort == "2022x") {
+        mdApplicationArchive "com.nomagic:mcse:2022x@zip"
     } else if (mdVersionShort == "2022x_Refresh2") {
         mdApplicationArchive "com.nomagic:mcse:2022x_Refresh2@zip"
-    } else if (mdVersionShort == "2024x") {
-        mdApplicationArchive "com.nomagic:mcse:2024x@zip"
-    } else if (mdVersionShort == "local" && localMagicdrawArchive != '') {
-        mdApplicationArchive files(localMagicdrawArchive)
+    } else if (mdVersionShort == "2022x_Refresh2_HF3") {
+        mdApplicationArchive "com.nomagic:mcse:2022x_Refresh2_HF3@zip"
     } else {
         throw new GradleException("MagicDraw version not supported: $mdVersionShort")
     }
