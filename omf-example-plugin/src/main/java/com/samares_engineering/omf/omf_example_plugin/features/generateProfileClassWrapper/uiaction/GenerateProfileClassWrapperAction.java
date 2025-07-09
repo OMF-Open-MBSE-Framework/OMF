@@ -19,7 +19,6 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.nomagic.magicdraw.devtools.DevToolsc.DevToolsa.DevToolsn;
 import com.nomagic.magicdraw.sysml.util.SysMLProfile;
 import com.nomagic.profiles.ProfileImplementation;
 import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element;
@@ -41,6 +40,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.nomagic.magicdraw.devtools.DevToolsb.DevToolsf.DevToolsn;
 
 /**
  * Generate a wrapper class for a profile, using the original wrapper class from DevelopmentTools plugin.
@@ -164,7 +165,7 @@ public class GenerateProfileClassWrapperAction extends AUIAction {
     }
 
     private String getOriginalGenerateProfileWrapper(Profile profile) {
-        return (new DevToolsn(profile)).DevToolsa();
+        return new com.nomagic.magicdraw.devtools.DevToolsa.DevToolsa.DevToolse(profile).DevToolsa();
 //        return "";
     }
 
