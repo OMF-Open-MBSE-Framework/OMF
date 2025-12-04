@@ -26,7 +26,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public static final String ORGANIZER_ACTIVATION_ID = "Activate automatic element organization";
 
     public static String getOrganizerConfigFilePathDefaultValue() {
-        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf.plugin/resources/organizer_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf/resources/organizer_config.csv";
     }
 
     public String getOrganizerConfigFilePath() {
@@ -68,7 +68,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public static final String INSTANCE_ACTIVATION_ID = "Activate automatic instance stereotype application";
 
     public static String getInstanceConfigFilePathDefaultValue() {
-        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf.plugin/resources/instance_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf/resources/instance_config.csv";
     }
 
     public String getInstanceConfigFilePath() {
@@ -96,7 +96,7 @@ public class StereotypesEnvOptionsHelper extends EnvOptionsHelper {
     public static final String TYPE_ACTIVATION_ID = "Activate automatic type creation on instance creation";
 
     public static String getTypeConfigFilePathDefaultValue() {
-        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf.plugin/resources/type_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf/resources/type_config.csv";
     }
 
     public boolean isTypeActivated() {

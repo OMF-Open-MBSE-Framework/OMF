@@ -18,6 +18,8 @@ import com.samares_engineering.omf.omf_core_framework.ui.environmentoptions.OMFP
 import com.samares_engineering.omf.omf_core_framework.ui.projectoptions.FeatureProjectOptionsConfigurator;
 import com.samares_engineering.omf.omf_example_plugin.features.demo.demo_option.OptionsDemoFeature;
 import com.samares_engineering.omf.omf_public_features.apiserver.APIServerFeature;
+import com.samares_engineering.omf.omf_public_features.featuredeactivation.FeaturesDeactivationFeature;
+import com.samares_engineering.omf.omf_public_features.stereotypes.StereotypesFeature;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +35,14 @@ public class OMFExamplePlugin extends AOMFPlugin {
 //        );
 //        features.addAll(featuresToDeactivateByDefaultOnStartUp);
         features.addAll(List.of(
-//                new FeaturesDeactivationFeature(),
+                new FeaturesDeactivationFeature(),
+                new StereotypesFeature(),
 //                //USEFUL
 //                new EnhancedDisplayFeature(),
 //                new HyperLinkFeature(),
 ////                new LockSafeFeature(),
 //                new DerivedPropertyExample(),
-                new APIServerFeature("http://localhost", 9850),
+//                new APIServerFeature("http://localhost", 9850),
 ////
 ////                //USEFUL for Modeling
 ////                new StereotypesFeature(),
