@@ -31,15 +31,16 @@ public class ClassToCreateLiveAction extends ALiveAction {
         if (!StereotypesEnvOptionsHelper.getInstance(getFeature()).isTypeActivated()) {
             return false;
         }
-        if (evt.getSource() instanceof Property) {
-            Property part = (Property) evt.getSource();
-            if(part.getOwner() == null)
-                return false;
-            if (null != evt.getSource() &&  StereotypesLiveActionsUtils.isInstancePropertyWithStr(part, this.strInstance) &&
-                        StereotypesLiveActionsUtils.isTypeElementTypeNull(part)) {
-                System.out.println("[Test]-Part: " + part.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
-                return true;
-            }
+        if (!(evt.getSource() instanceof Property)) {
+            return false;
+        }
+        Property part = (Property) evt.getSource();
+        if(part.getOwner() == null)
+            return false;
+        if (null != part &&  StereotypesLiveActionsUtils.isInstancePropertyWithStr(part, this.strInstance) &&
+                    StereotypesLiveActionsUtils.isTypeElementTypeNull(part)) {
+            System.out.println("[Test]-Part: " + part.getHumanName() + " TRUE" + "\n" + "ID : " + this.id);
+            return true;
         }
         return false;
     }

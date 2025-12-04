@@ -28,7 +28,7 @@ public class APIEnvOptionsHelper extends EnvOptionsHelper {
     public static final String API_SERVER_ACTIVATED = "is Server Activated:";
 
     public static String getOrganizerConfigFilePathDefaultValue() {
-        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf.plugin/resources/organizer_config.csv";
+        return OMFUtils.getUserDir() + "/plugins/com.samares-engineering.omf/resources/organizer_config.csv";
     }
 
     public String getServerURL() {
