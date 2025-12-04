@@ -13,7 +13,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.livea
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionEngine
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine.LiveActionType
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.Option
-import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.actions.DeactivableAction
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.live.creation.CreateAutoInterface_OnPortCreation
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlbasic.options.SysMLBasicOptionHelper
 
@@ -28,7 +27,6 @@ class SysMLBasicFeature : SimpleFeature("SysML Basic") {
 
     public override fun initFeatureActions(): List<UIAction> {
         return listOf<UIAction>( //             new ResetListeners()
-            DeactivableAction()
         )
     }
 
