@@ -9,7 +9,6 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.actions.AMConfigurator;
 import com.nomagic.actions.ActionsManager;
-import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.UIAction;
@@ -19,11 +18,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.actio
 import java.util.ArrayList;
 
 public class OMFMainMenuConfigurator extends AUIActionConfigurator implements AMConfigurator {
-    @Override
-    public int getPriority() {
-        return PriorityProvider.MEDIUM_PRIORITY;
-    }
-
     /**
      * Action will be added to manager.
      * Menu actions are kind of bugged : unregistering/registering them after magicdraw init leads to weird behaviors.

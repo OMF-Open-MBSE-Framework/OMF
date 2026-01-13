@@ -12,7 +12,6 @@ import com.nomagic.actions.ActionsManager;
 import com.nomagic.magicdraw.actions.DiagramContextAMConfigurator;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
-import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.OMFErrorHandler;
 import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.CoreException2;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.actions.stateactions.StateAction;
@@ -24,10 +23,6 @@ import javax.annotation.CheckForNull;
 import java.util.ArrayList;
 
 public class OMFDiagramConfigurator extends AUIActionConfigurator implements DiagramContextAMConfigurator, AMConfigurator {
-    @Override
-    public int getPriority() {
-        return PriorityProvider.MEDIUM_PRIORITY;
-    }
 
     /**
      * Called when MagicDraw is launched when a project is Opened. Not sure if the behavior is useful.

@@ -127,14 +127,6 @@ class LiveActionEngineImpl(category: LiveActionType, priority: Int = -1) :
     /*
     Accessors
      */
-    override fun getPriority(): Int {
-        return priority
-    }
-
-    override fun setPriority(priority: Int) {
-        this.priority = priority
-    }
-
     override fun getType(): String {
         return category
     }
@@ -175,6 +167,7 @@ class LiveActionEngineImpl(category: LiveActionType, priority: Int = -1) :
     override fun removeAllLiveActions() {
         liveActions.clear()
     }
+
 
     override fun getLiveActions(): MutableList<LiveAction<CharacterizedEvent, CharacterizedEvent>> {
         return liveActions

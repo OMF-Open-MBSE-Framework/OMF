@@ -105,7 +105,7 @@ public abstract class StateAction extends AUIAction<Element, PresentationElement
 
             @Override
             public void setDiagram(@Nullable DiagramPresentationElement diagramPresentationElement) {
-                super.setDiagram(diagramPresentationElement == null ? OMFUtils.getActiveDiagram().getDiagramPresentationElement(): diagramPresentationElement);
+                super.setDiagram(diagramPresentationElement == null ? OMFUtils.getActiveDiagram(): diagramPresentationElement);
             }
 
             @Override

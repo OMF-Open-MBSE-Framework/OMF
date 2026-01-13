@@ -16,6 +16,7 @@ import com.nomagic.magicdraw.esi.EsiUtils;
 import com.nomagic.magicdraw.teamwork2.ITeamworkService;
 import com.nomagic.magicdraw.teamwork2.ServerLoginInfo;
 import com.nomagic.task.EmptyProgressStatus;
+import com.samares_engineering.omf.omf_core_framework.errormanagement2.exceptions.OMFLogException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.GenericException;
 import com.samares_engineering.omf.omf_core_framework.errors.exceptions.core.LegacyOMFException;
 
@@ -67,15 +68,17 @@ public class TwcAccessor
      * @throws LegacyOMFException Exception
      */
     public void openProject(String projectName) throws LegacyOMFException {
-        ProjectDescriptor projectDescriptor;
-        try {
-            projectDescriptor = iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
-        }catch (Exception exception){
-            throw new LegacyOMFException("[TWC Accessor]- Cannot open project : " + projectName, GenericException.ECriticality.CRITICAL);
-        }
+        throw new OMFLogException("Needs to be migrated to 2026x+");
 
-        if(projectDescriptor != null)
-            Application.getInstance().getProjectsManager().loadProject(projectDescriptor, EmptyProgressStatus.getDefault());
+//        ProjectDescriptor projectDescriptor;
+//        try {
+//            projectDescriptor = iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
+//        }catch (Exception exception){
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot open project : " + projectName, GenericException.ECriticality.CRITICAL);
+//        }
+//
+//        if(projectDescriptor != null)
+//            Application.getInstance().getProjectsManager().loadProject(projectDescriptor, EmptyProgressStatus.getDefault());
     }
 
 
@@ -86,17 +89,19 @@ public class TwcAccessor
      * @throws LegacyOMFException Exception
      */
     public void openBranchProject(String projectName, String branchName) throws LegacyOMFException {
-        ProjectDescriptor projectDescriptor;
-        try {
-            projectDescriptor = iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
-        }catch (Exception exception){
-            throw new LegacyOMFException("[TWC Accessor]- Cannot open project : " + projectName, GenericException.ECriticality.CRITICAL);
-        }
+        throw new OMFLogException("Needs to be migrated to 2026x+");
 
-        if(projectDescriptor != null){
-            final ProjectDescriptor branchDescriptor = EsiUtils.getDescriptorForBranch(projectDescriptor, branchName);
-            Application.getInstance().getProjectsManager().loadProject(branchDescriptor,EmptyProgressStatus.getDefault());
-        }
+//        ProjectDescriptor projectDescriptor;
+//        try {
+//            projectDescriptor = iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
+//        }catch (Exception exception){
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot open project : " + projectName, GenericException.ECriticality.CRITICAL);
+//        }
+//
+//        if(projectDescriptor != null){
+//            final ProjectDescriptor branchDescriptor = EsiUtils.getDescriptorForBranch(projectDescriptor, branchName);
+//            Application.getInstance().getProjectsManager().loadProject(branchDescriptor,EmptyProgressStatus.getDefault());
+//        }
     }
 
 
@@ -108,21 +113,22 @@ public class TwcAccessor
      * @throws LegacyOMFException Exception
      */
     public void createBranch(String projectName, String branchName, String branchDescription) throws LegacyOMFException {
+        throw new OMFLogException("Needs to be migrated to 2026x+");
 
-        ProjectDescriptor projectDescriptor;
-        try {
-            projectDescriptor = iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
-        } catch (Exception exception) {
-            throw new LegacyOMFException("[TWC Accessor]- Cannot open project : " + projectName, GenericException.ECriticality.CRITICAL);
-        }
-
-        Collection<EsiUtils.EsiBranchInfo> branches = EsiUtils.getBranches(projectDescriptor);
-
-        if(branches.stream().anyMatch(info -> info.getName().equalsIgnoreCase(branchName))){
-           EsiUtils.deleteBranch(projectDescriptor, branchName);
-        }
-
-        EsiUtils.createBranch(projectDescriptor, EsiUtils.getLastVersion(projectDescriptor), branchName, branchDescription);
+//        ProjectDescriptor projectDescriptor;
+//        try {
+//            projectDescriptor = iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
+//        } catch (Exception exception) {
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot open project : " + projectName, GenericException.ECriticality.CRITICAL);
+//        }
+//
+//        Collection<EsiUtils.EsiBranchInfo> branches = EsiUtils.getBranches(projectDescriptor);
+//
+//        if(branches.stream().anyMatch(info -> info.getName().equalsIgnoreCase(branchName))){
+//           EsiUtils.deleteBranch(projectDescriptor, branchName);
+//        }
+//
+//        EsiUtils.createBranch(projectDescriptor, EsiUtils.getLastVersion(projectDescriptor), branchName, branchDescription);
     }
 
     public void saveFromTwcToLocal(String projectName, String localPath) throws LegacyOMFException {
@@ -138,23 +144,25 @@ public class TwcAccessor
      * @throws LegacyOMFException Exception if project cannot be created
      */
     public Project createProject(String projectName) throws LegacyOMFException {
-        final Project project;
-        try {
-            project = EsiUtils.createProject("Project1", "category");
-        } catch (PersistenceException e) {
-            throw new LegacyOMFException("[TWC Accessor]- Cannot create project : " + projectName, GenericException.ECriticality.CRITICAL);
-        }
-
-        final org.eclipse.emf.common.util.URI locationURI = project.getPrimaryProject().getLocationURI();
-        ProjectDescriptor projectDescriptorFound = getExistingProjectDescriptor(locationURI);
-
-        try {
-            EsiUtils.setProjectName(projectDescriptorFound, projectName);
-        } catch (PersistenceException e) {
-            throw new LegacyOMFException("[TWC Accessor]- Cannot set name of project : " + projectName, GenericException.ECriticality.CRITICAL);
-        }
-
-        return project;
+        throw new OMFLogException("Needs to be migrated to 2026x+");
+//
+//        final Project project;
+//        try {
+//            project = EsiUtils.createProject("Project1", "category");
+//        } catch (PersistenceException e) {
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot create project : " + projectName, GenericException.ECriticality.CRITICAL);
+//        }
+//
+//        final org.eclipse.emf.common.util.URI locationURI = project.getPrimaryProject().getLocationURI();
+//        ProjectDescriptor projectDescriptorFound = getExistingProjectDescriptor(locationURI);
+//
+//        try {
+//            EsiUtils.setProjectName(projectDescriptorFound, projectName);
+//        } catch (PersistenceException e) {
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot set name of project : " + projectName, GenericException.ECriticality.CRITICAL);
+//        }
+//
+//        return project;
     }
 
 
@@ -167,15 +175,18 @@ public class TwcAccessor
     @CheckForNull
     private ProjectDescriptor getExistingProjectDescriptor(org.eclipse.emf.common.util.URI locationURI) throws LegacyOMFException
     {
-        final URI projectURI = ProjectUtilities.getURI(locationURI);
-        try {
-            return EsiUtils.getRemoteProjectDescriptors().stream()
-                    .filter(projectDescriptor -> projectDescriptor.getURI().equals(projectURI))
-                    .findFirst()
-                    .orElse(null);
-        } catch (Exception e) {
-            throw new LegacyOMFException("[TWC Accessor]- Cannot access project URI: " + projectURI, GenericException.ECriticality.CRITICAL);
-        }
+        throw new OMFLogException("Needs to be migrated to 2026x+");
+
+
+//        final URI projectURI = ProjectUtilities.getURI(locationURI);
+//        try {
+//            return EsiUtils.getRemoteProjectDescriptors().stream()
+//                    .filter(projectDescriptor -> projectDescriptor.getURI().equals(projectURI))
+//                    .findFirst()
+//                    .orElse(null);
+//        } catch (Exception e) {
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot access project URI: " + projectURI, GenericException.ECriticality.CRITICAL);
+//        }
     }
 
 
@@ -187,11 +198,13 @@ public class TwcAccessor
      */
     @CheckForNull
     public ProjectDescriptor getExistingProjectDescriptor(String projectName) throws LegacyOMFException {
-        try {
-            return iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
-        } catch (Exception e) {
-            throw new LegacyOMFException("[TWC Accessor]- Cannot access projectDescriptor : " + projectName, GenericException.ECriticality.CRITICAL);
-        }
+        throw new OMFLogException("Needs to be migrated to 2026x+");
+
+//        try {
+//            return iTeamworkService.getProjectDescriptorByQualifiedName(projectName);
+//        } catch (Exception e) {
+//            throw new LegacyOMFException("[TWC Accessor]- Cannot access projectDescriptor : " + projectName, GenericException.ECriticality.CRITICAL);
+//        }
     }
 
 }

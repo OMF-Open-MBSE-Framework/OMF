@@ -187,8 +187,9 @@ public class UndoManager {
      @param project project where the redo shall be processed
      */
     public static void deactivateFirstRedo(Project project) {
-        if (project.getCommandHistory().getCommandForRedo() != null)
-            project.getCommandHistory().getCommandForRedo().clearCommands();
+        // TODO migrate this behavior to 2026x
+//        if (project.getCommandHistory().getCommandForRedo() != null)
+//            project.getCommandHistory().getCommandForRedo().clearCommands();
     }
 
 

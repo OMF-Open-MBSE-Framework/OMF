@@ -15,6 +15,7 @@ import com.nomagic.magicdraw.properties.PropertyPool;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.DisplayPathElements;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
+import com.nomagic.magicdraw.uml.symbols.layout.Layouting;
 import com.nomagic.magicdraw.uml.symbols.layout.composite.CompositeStructureDiagramLayouter;
 import com.nomagic.magicdraw.uml.symbols.paths.ConnectorView;
 import com.nomagic.magicdraw.uml.symbols.shapes.PartView;
@@ -169,9 +170,13 @@ public class InternalDiagramManagement {
     }
 
     public static void refreshSinglePortInEveryDiagrams(Port portToRefresh, Property mbsePart) {
-        for (PresentationElement pe : OMFUtils.getProject().getSymbolElementMap().getAllPresentationElements(mbsePart)) {
-            Diagram diagram = pe.getDiagramPresentationElement().getDiagram();
-            refreshSinglePort(portToRefresh, mbsePart, diagram);
+        // TODO : Changed algo as part of migration to 2026x, untested
+        for (var diag: OMFUtils.getProject().getDiagrams()) {
+            diag.getPresentationElements().stream()
+                    .map(PresentationElement::getElement)
+                    .filter(Objects::nonNull)
+                    .filter(elem -> elem.equals(portToRefresh))
+                    .forEach(ppee -> refreshSinglePort(portToRefresh, mbsePart, diag.getDiagram()));
         }
     }
 
@@ -191,19 +196,15 @@ public class InternalDiagramManagement {
         }
     }
 
-    public static void layoutSinglePart(Property mbsePart, Diagram currentDiagram) {
-        List<PresentationElement> listPartPresentationElement = new ArrayList<>();
-        List<PresentationElement> allPresentationElementOfThisPart = OMFUtils.getProject().getSymbolElementMap().getAllPresentationElements(mbsePart);
-        PresentationElementsManager manager = PresentationElementsManager.getInstance();
-        for (PresentationElement pePart : allPresentationElementOfThisPart) {
-            DiagramPresentationElement dpe = pePart.getDiagramPresentationElement();
-            PresentationElement partPresentationElement = dpe.findPresentationElement(mbsePart, PartView.class);
+    public static void layoutSinglePart(Property mbsePart) {
+        for (var diag : OMFUtils.getProject().getDiagrams()) {
+            PresentationElement partPresentationElement = diag.findPresentationElement(mbsePart, PartView.class);
             if (partPresentationElement != null) {
-                listPartPresentationElement.add(partPresentationElement);
-                setSelectedElements(dpe, listPartPresentationElement);
-                dpe.layout(false, new CompositeStructureDiagramLayouter());
+                List<PresentationElement> listPartPresentationElement = Collections.singletonList(partPresentationElement);
+                setSelectedElements(diag, listPartPresentationElement);
+                diag.open();
+                Layouting.layout(diag, Layouting.COMPOSITE_DIAGRAM_LAYOUTER);
             }
-            listPartPresentationElement.clear();
         }
     }
 
@@ -544,6 +545,7 @@ public class InternalDiagramManagement {
         DiagramPresentationElement diagramPresentationElement = DiagramUtils.getDiagram(diagram);
         List<PresentationElement> listPresentationElement = new ArrayList<>();
         setSelectedElements(diagramPresentationElement, listPresentationElement);
-        diagramPresentationElement.layout(false, new CompositeStructureDiagramLayouter());
+        diagramPresentationElement.open();
+        Layouting.layout(diagramPresentationElement, Layouting.COMPOSITE_DIAGRAM_LAYOUTER);
     }
 }

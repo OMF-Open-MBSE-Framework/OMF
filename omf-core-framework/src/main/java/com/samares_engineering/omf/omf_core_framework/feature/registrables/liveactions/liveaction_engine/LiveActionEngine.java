@@ -8,7 +8,6 @@
 package com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction_engine;
 
 
-import com.nomagic.magicdraw.utils.PriorityProvider;
 import com.samares_engineering.omf.omf_core_framework.feature.OMFAutomationManager;
 import com.samares_engineering.omf.omf_core_framework.feature.RegistrableFeatureItem;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.liveactions.liveaction.LiveAction;
@@ -18,7 +17,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
-public interface LiveActionEngine<EVT> extends PriorityProvider, RegistrableFeatureItem {
+public interface LiveActionEngine<EVT> extends RegistrableFeatureItem {
 
 
 
@@ -42,8 +41,6 @@ public interface LiveActionEngine<EVT> extends PriorityProvider, RegistrableFeat
     void removeLiveActions(List<LiveAction<EVT, EVT>> liveActions);
 
     void removeAllLiveActions();
-
-    void setPriority(int priority);
 
     default <T> boolean checkLiveActionEngineType(Class<T> clazz) {
         Type[] genericInterfaces = getClass().getGenericInterfaces();

@@ -27,13 +27,6 @@ public abstract class AListener implements IListener{
         this.activated = activated;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
     @Override
     public boolean isRegistered() {
         return isRegistered;

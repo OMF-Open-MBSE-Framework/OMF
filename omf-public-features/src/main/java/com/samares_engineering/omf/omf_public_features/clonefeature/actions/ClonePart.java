@@ -51,7 +51,7 @@ public class ClonePart extends ElementUIAction {
                 .map(Property.class::cast)
                 .forEach(part -> {
                     cloneManager.clonePart(part);
-                    InternalDiagramManagement.layoutSinglePart((Property) cloneManager.retrieveClonedElement(part), activeDiagram.getDiagram());
+                    InternalDiagramManagement.layoutSinglePart((Property) cloneManager.retrieveClonedElement(part));
                 });
     }
 

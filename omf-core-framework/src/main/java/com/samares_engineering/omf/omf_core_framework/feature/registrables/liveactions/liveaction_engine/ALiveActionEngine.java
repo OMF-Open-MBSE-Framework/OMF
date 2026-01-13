@@ -144,13 +144,6 @@ public class ALiveActionEngine implements LiveActionEngine<PropertyChangeEvent> 
     Accessors
      */
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
 
     public String getType() {
         return category;

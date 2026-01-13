@@ -1,5 +1,6 @@
 package com.samares_engineering.omf.omf_core_framework.utils.utils.diagrams;
 
+import com.dassault_systemes.modeler.foundation.diagram.ylayout.orthogonal.OrthogonalLinkDiagramLayouterCustomSelection;
 import com.nomagic.magicdraw.actions.ActionsExecuter;
 import com.nomagic.magicdraw.context.PropertyPathChangeManager;
 import com.nomagic.magicdraw.core.Application;
@@ -7,7 +8,6 @@ import com.nomagic.magicdraw.openapi.uml.PresentationElementsManager;
 import com.nomagic.magicdraw.openapi.uml.ReadOnlyElementException;
 import com.nomagic.magicdraw.uml.symbols.DiagramPresentationElement;
 import com.nomagic.magicdraw.uml.symbols.DisplayPathElements;
-import com.nomagic.magicdraw.uml.symbols.OrthogonalLinkDiagramLayouterCustomSelection;
 import com.nomagic.magicdraw.uml.symbols.PresentationElement;
 import com.nomagic.magicdraw.uml.symbols.shapes.DiagramFrameView;
 import com.nomagic.magicdraw.uml.symbols.shapes.PartView;

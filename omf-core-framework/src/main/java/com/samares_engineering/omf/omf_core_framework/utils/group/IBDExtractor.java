@@ -56,7 +56,7 @@ public class IBDExtractor {
         ExtractManager extractManager = Refactoring.Extracting.createExtractManager(arrayPE);
 
 
-        String diagramType = partsPEToExtract.get(0).getDiagramPresentationElement().getDiagramType().getType();
+        String diagramType = partsPEToExtract.get(0).getAbstractDiagramPresentationElement().getDiagramTypeAsString();
 
         ExtractSource extractSource = refactorSourcesReferences(strPartsToApply, extractManager);
         ExtractTarget extractTarget = refactorTargetReferences(strPartOwnerToApply, extractManager, ownerPackage, diagramType);

@@ -109,15 +109,6 @@ public class LiveActionEngineCharacterized implements LiveActionEngine<Character
     /*
     Accessors
      */
-    @Override
-    public int getPriority() {
-        return priority;
-    }
-
-    @Override
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
 
     @Override
     public String getType() {

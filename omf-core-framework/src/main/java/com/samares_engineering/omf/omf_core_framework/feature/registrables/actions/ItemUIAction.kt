@@ -2,14 +2,15 @@ package com.samares_engineering.omf.omf_core_framework.feature.registrables.acti
 
 import com.nomagic.magicdraw.ui.browser.Node
 import com.nomagic.magicdraw.uml.symbols.PresentationElement
-import com.dassault_systemes.modeler.kerml.model.kerml.Element
-import com.dassault_systemes.modeler.kerml.ui.ElementRepresentation
+import com.nomagic.magicdraw.uml2.Elements
+import com.nomagic.uml2.ext.magicdraw.classes.mdkernel.Element
+
 import com.samares_engineering.omf.omf_core_framework.utils.OMFUtils
 import java.util.*
 import java.util.function.Function
 import java.util.stream.Collectors
 
-abstract class V2ElementUIAction: AUIAction<Element, ElementRepresentation>() {
+abstract class V2ElementUIAction: AUIAction<Element, PresentationElement>() {
     /**
      * Get the selected Elements inside the Containment Tree.
      * Hypothesis: Order correspond to the user Element selection one.
@@ -30,7 +31,7 @@ abstract class V2ElementUIAction: AUIAction<Element, ElementRepresentation>() {
      *
      * @return selected Presentation Element list.
      */
-    override fun getSelectedDiagramPresentationElements(): List<ElementRepresentation> {
+    override fun getSelectedDiagramPresentationElements(): List<PresentationElement> {
         if (isProjectVoid) return emptyList()
         return emptyList()
     }

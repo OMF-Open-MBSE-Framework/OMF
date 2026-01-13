@@ -125,6 +125,65 @@ to Nexus & Maven Central staging (this is broken at the moment, so you will have
 - Increment SNAPSHOT version in `gradle.properties` on `0-DEV` branch to the next patch version (SNAPSHOT version should be the next patch version, for example if the latest release is 2.1.0 it shoud be 2.1.1-SNAPSHOT)
 - Commit and push
 
+# 2026x Migration
+
+This section documents breaking changes and temporary deactivations due to MagicDraw API changes in the 2026x release.
+
+### Environment Changes
+- **JVM Version**: Updated from JVM 17 to JVM 21
+
+### Removed APIs
+
+#### PriorityProvider Interface
+The `PriorityProvider` interface and associated `getPriority()`/`setPriority()` methods have been removed from the MagicDraw API. Affected classes:
+- `OMFBrowserConfigurator`
+- `OMFDiagramConfigurator`
+- `OMFMainMenuConfigurator`
+- `LiveActionEngine` interface and all implementations (`ALiveActionEngine`, `LiveActionEngineCharacterized`, `LiveActionEngineImpl`, `LiveActionEngineSession`)
+- `AListener`
+
+As time was limited, I just removed the method, didn't check if it breaks anything. Probably replaced by some other system which should be investigated.
+
+#### Diagram Layout API
+Auto layouting has changed, new pattern:
+```java
+// Old API
+diagramPE.layout(false, new CompositeStructureDiagramLayouter());
+
+// New API
+diagramPE.open();
+Layouting.layout(diagramPE, Layouting.COMPOSITE_DIAGRAM_LAYOUTER);
+```
+
+#### SymbolElementMap Access Pattern
+Method to access diagram from presentation element has been removed. Fixed by change logic to iterating over diagrams
+first then fetching their presentation elements.
+
+#### Other API Changes
+- `PresentationElement.getDiagramPresentationElement().getDiagramType().getType()` → `getAbstractDiagramPresentationElement().getDiagramTypeAsString()`
+- `OMFUtils.getActiveDiagram().getDiagramPresentationElement()` → `OMFUtils.getActiveDiagram()` (already returns DiagramPresentationElement)
+
+### Temporarily Deactivated Features
+
+As I did not have enough time, I commented out code relying on breaking api changes. Throw an exception on usage to warn
+about this. Will have to be migrated in future.
+
+#### UndoManager
+- `deactivateFirstRedo()`: Command history clearing disabled (TODO: migrate to new API). Affects testing framework.
+
+#### TwcAccessor (Teamwork Cloud)
+The following methods now throw `OMFLogException("Needs to be migrated to 2026x+")`:
+- `openProject(String projectName)`
+- `openBranchProject(String projectName, String branchName)`
+- `createBranch(String projectName, String branchName, String branchDescription)`
+- `createProject(String projectName)`
+- `getExistingProjectDescriptor(...)` (both overloads)
+
+These methods relied on `ITeamworkService.getProjectDescriptorByQualifiedName()` and `EsiUtils` methods that have changed in 2026x.
+
+### V2ElementUIAction
+Changed from using Dassault KerML types (`com.dassault_systemes.modeler.kerml`) to standard MagicDraw types. Untested.
+
 # Authors
 
 - ### Samares Engineering
