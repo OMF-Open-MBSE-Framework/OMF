@@ -37,6 +37,10 @@ class UIActionErrorExample : ElementUIAction() {
         }
     }
 
+    override fun executeDiagramAction(selectedElements: List<Element>) {
+        super.executeDiagramAction(selectedElements)
+    }
+
 
     companion object {
         private fun createBlock(selectedElements: List<Element>) {

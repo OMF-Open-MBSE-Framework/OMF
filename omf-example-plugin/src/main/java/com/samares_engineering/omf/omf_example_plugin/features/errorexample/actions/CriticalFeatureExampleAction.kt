@@ -30,5 +30,4 @@ class CriticalFeatureExampleAction : ElementUIAction() {
                 OMFExceptionModifier.DEACTIVATE_FEATURE
         )
     }
-
 }

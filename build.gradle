@@ -4,6 +4,7 @@ plugins {
     id "java"
     id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion" apply false
     id 'org.jetbrains.kotlin.kapt' version "$kotlinVersion" apply false
+    id 'org.jreleaser' version '1.17.0'
 }
 
 group omfPackage + '.' + mdVersionShort
@@ -31,13 +32,48 @@ sonarqube {
     }
 }
 
-//tasks.register("megaClean", Delete) {
-//    group = '_dev'
-//    description = 'Delete gradle build directories in all subprojects'
-//    delete rootProject.buildDir
-//    doLast {
-//        rootProject.subprojects {
-//            delete it.buildDir
-//        }
-//    }
-//}
+tasks.register("megaClean", Delete) {
+    group = '_dev'
+    description = 'Delete gradle build directories in all subprojects'
+    delete rootProject.buildDir
+    doLast {
+        rootProject.subprojects {
+            delete it.buildDir
+        }
+    }
+}
+
+tasks.register("publishToSamaresNexus") {
+    group = '_dev'
+    description = 'Publish all publications to the private samares nexus repository. ' +
+            'Only use if the Jenkins is not working'
+    dependsOn(project(':omf-example-plugin').tasks.named('publishAllPublicationsToPrivateSamaresRepoRepository'))
+}
+
+jreleaser {
+    environment {
+        variables = 'jreleaser-secrets.yml'
+    }
+
+    signing {
+        active = 'ALWAYS'
+        armored = true
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                sonatype {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    stagingRepository('omf-example-plugin/build/staging-deploy')
+                    // Check deployment status every minute for an hour (can take a while)
+                    retryDelay = 60
+                    maxRetries = 60
+                }
+            }
+        }
+    }
+}
+
+jreleaserDeploy.dependsOn(":omf-example-plugin:publishAllPublicationsToStagingDeployRepository")

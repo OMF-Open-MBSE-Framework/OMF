@@ -67,33 +67,52 @@ class OMFLog {
         return text("<font color=$color>$string</font>")
     }
 
-
     fun colorAll(color: String): OMFLog {
         messageComponents.replaceAll { s: String -> "<font color=$color>$s</font>" }
         return this
     }
 
-
+    /**
+     * Add text with warn color
+     */
     fun warn(string: String): OMFLog {
         return color(string, OMFColors.WARN)
     }
 
 
+    /**
+     * Add text with info color
+     */
     fun info(string: String): OMFLog {
         return color(string, OMFColors.INFO)
     }
 
 
+    /**
+     * Add text with error color
+     */
     fun err(string: String): OMFLog {
         return color(string, OMFColors.ERROR)
     }
 
-
+    /**
+     * Add a link to the element location in containment tree.
+     * @linkText the text to display for the link
+     * @elementToLink the element to link to
+     */
     fun linkElement(linkText: String, elementToLink: Element?): OMFLog {
         linkActionMapping[linkText] = Runnable {
             ElementAction(elementToLink).selectInBrowser()
         }
         return text("<A>$linkText</A>")
+    }
+
+    /**
+     * Add a link to the element location in containment tree. The link text is the element name.
+     * @elementToLink the element to link to
+     */
+    fun linkElement(elementToLink: Element): OMFLog {
+        return linkElement(elementToLink.humanName, elementToLink)
     }
 
     fun linkElementAndParent(elementToLink: Element?): OMFLog {
@@ -180,22 +199,25 @@ class OMFLog {
         val expandedLogString = if (expandedLog != null) "<BR>$expandedLog" else ""
 
         return ("<font color=" + getMessageColor(logLevel) + ">"
-                + OMFLogger.getPrefix(logLevel)
+                + OMFLogger.getPrefix(logLevel) // TODO refactor this we go back and fort needlessly between OMFLogger & OMFLog
                 + " " + toString(" ")
                 + expandedLogString
                 + "</font>")
     }
 
     fun toHTMLFormat(logLevel: OMFLogLevel, featureName: String?): String {
+        val expandedLogString = if (expandedLog != null) "<BR>$expandedLog" else ""
+
         return ("<font color=" + getMessageColor(logLevel) + ">"
                 + OMFLogger.getPrefix(logLevel, featureName) + " "
                 + toString(" ")
+                + expandedLogString
                 + "</font>")
     }
 
     fun toString(delimiter: String?): String {
         val message = StringBuilder()
-        messageComponents.forEach(Consumer { component: String? -> message.append(component).append(delimiter) })
+        messageComponents.forEach { message.append(it).append(delimiter) }
         return message.toString()
     }
 

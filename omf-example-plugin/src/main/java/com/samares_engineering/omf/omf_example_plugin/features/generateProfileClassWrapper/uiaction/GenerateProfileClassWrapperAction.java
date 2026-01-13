@@ -3,7 +3,8 @@
  * All rights reserved and granted to Renault.
  */
 
-package com.samares_engineering.omf.omf_public_features.generateProfileClassWrapper.uiaction;
+package com.samares_engineering.omf.omf_example_plugin.features.generateProfileClassWrapper.uiaction;
+
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
@@ -40,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 /**
  * Generate a wrapper class for a profile, using the original wrapper class from DevelopmentTools plugin.
  * Add a default getInstance() method, using OMFUtils.getProject().
@@ -51,11 +53,15 @@ import java.util.stream.Collectors;
 @MDAction(actionName = "Generate Profile Wrapper", category = "OMF Profile Wrapper")
 public class GenerateProfileClassWrapperAction extends ElementUIAction {
 
-    private String simpleName;
+    private String profileName;
+
+    public GenerateProfileClassWrapperAction(String profileName) {
+        this.profileName = profileName;
+    }
 
     @Override
     public boolean checkAvailability(List<Element> selectedElements) {
-
+        if(!OMFUtils.isDevMode()) return false;
         if(selectedElements.size() != 1) return false;
         if(selectedElements.get(0) instanceof Profile) return true;
         return false;
@@ -132,7 +138,7 @@ public class GenerateProfileClassWrapperAction extends ElementUIAction {
     private void addDefaultOMFGetInstance(CompilationUnit cu) {
         // Ajouter la méthode getInstance()
         MethodDeclaration getInstanceMethod = addGetInstance();
-        ClassOrInterfaceDeclaration yourClass = cu.getClassByName(simpleName).get();
+        ClassOrInterfaceDeclaration yourClass = cu.getClassByName(profileName).get();
         yourClass.addMember(getInstanceMethod);
     }
 
@@ -147,7 +153,7 @@ public class GenerateProfileClassWrapperAction extends ElementUIAction {
 
         getInstanceMethod.setModifiers(NodeList.nodeList(Modifier.publicModifier(), Modifier.staticModifier()));
 
-        getInstanceMethod.setType("MBSIProfile");
+        getInstanceMethod.setType(profileName);
         getInstanceMethod.setName("getInstance");
 
         BlockStmt body = new BlockStmt();
@@ -158,7 +164,8 @@ public class GenerateProfileClassWrapperAction extends ElementUIAction {
     }
 
     private String getOriginalGenerateProfileWrapper(Profile profile) {
-//        return new DevToolso(profile).DevToolsa();
+        // TODO Migrate this hack to 2026+ version
+        //return new com.nomagic.magicdraw.devtools.DevToolsd.DevToolsa.DevToolsE(profile).DevToolsa();
         return "";
     }
 

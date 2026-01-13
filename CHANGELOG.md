@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [Unreleased]
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [2.2.0] - 2025-06-26
 ### Added
 - OMFDiagramConfigurator is now available for any diagram type
 - AutoLayout Utility: Allows to apply the auto-layout on a diagram
@@ -14,12 +20,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API Server: Add a new method to open the specification dialog for a given element
 - TWC Utils: Adding new helper to deal with TWC, such as checking TWC accessibility, commits, etc.
 - Limitation to the frequency of notifications 
+- A "megaClean" gradle task to delete build directories of all omf subprojects
+- Functionality to flag some features as deactivated by default on startup
+- Feature to open magicdraw project automatically on startup
+- Feature to facilitate generation of profile class (GenerateProfileClassWrapper)
+- A more convenient method to log element link without specifying the element name
 
 Examples
 - Parametric Diagram Generation example
 
 ### Changed
+- Improve omf notification manager to be able to accept custom notifications
+- Update gradle plugin to launch java with the jvmVersion specified in the gradle.properties (no need to change gradle jvm now !)
+- Release process to maven central changed to use jrelease gradle plugin & the publish portal API as the previous way was deprecated
+
 ### Fixed
+- Issue with batch analyzer taking too long on large event batches
+- Issue where actions are launched in session even if no project is opened
+- Plugin name not appearing in log prefix
+- Gradle plugin, missing jvm arguments which where causing failure during magicdraw startup (when giving licence info)
 
 ## [2.1.1] 2024-09-08
 ### Added

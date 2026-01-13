@@ -342,7 +342,7 @@ public class OMFLogger {
     // Utility methods
     public static String getPrefix(OMFLogLevel logLevel) {
         var pluginPrefix = getInstance().plugin != null ? getInstance().plugin.getName() : "";
-        return "[" + getLogLevelPrefix(logLevel) + "]" + pluginPrefix;
+        return "[" + getLogLevelPrefix(logLevel) + "]" + "[" + pluginPrefix + "]";
     }
 
     public static String getPrefix(OMFLogLevel logLevel, String featureName) {

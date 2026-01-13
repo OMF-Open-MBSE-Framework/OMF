@@ -2,7 +2,6 @@ plugins {
     id 'maven-publish'
     id 'com.kncept.junit.reporter' version '2.1.0'
     id 'com.samares-engineering.omf.omf-gradle-plugin'
-    id 'signing'
     id 'org.jetbrains.kotlin.jvm'
 }
 
@@ -48,19 +47,20 @@ repositories {
     of the plugin in Gradle to be able to compile the code.
  */
 dependencies {
-
-    if (mdVersionShort == "2021x_R1") {
-        mdApplicationArchive "com.nomagic.magicdraw:MagicDraw:2021x_RF1@zip"
-    } else if (mdVersionShort == "2021x_R2") {
-        mdApplicationArchive "com.nomagic:mcse:2021x_Refresh2_HF2@zip"
-    } else if (mdVersionShort == "2022x_Refresh2") {
-        mdApplicationArchive "com.nomagic:mcse:2022x_Refresh2@zip"
-    } else if (mdVersionShort == "2024x") {
-        mdApplicationArchive "com.nomagic:mcse:2024x@zip"
-    } else if (mdVersionShort == "2024x_Refresh2_SysmlV2") {
-        mdApplicationArchive "com.nomagic:mcse:2024x_Refresh2_SysmlV2@zip"
-    } else if (mdVersionShort == "local" && localMagicdrawArchive != '') {
+    def archiveMap = [
+            "2021x_R1"                 : "com.nomagic.magicdraw:MagicDraw:2021x_RF1@zip",
+            "2021x_R2"                 : "com.nomagic:mcse:2021x_Refresh2_HF2@zip",
+            "2022x_Refresh2"           : "com.nomagic:mcse:2022x_Refresh2@zip",
+            "2024x"                    : "com.nomagic:mcse:2024x@zip",
+            "2024x_Refresh2"           : "com.nomagic:mcse:2024x_Refresh2@zip",
+            "2024x_Refresh2_HF2"       : "com.nomagic:mcse:2024x_Refresh2_HF2@zip",
+            "2024x_Refresh2_SysmlV2"   : "com.nomagic:mcse:2024x_Refresh2_SysmlV2@zip",
+            "MSoSA_2026x"              : "com.nomagic.magicdraw:msosa:2026x@zip"
+    ]
+    if (mdVersionShort == "local" && localMagicdrawArchive) {
         mdApplicationArchive files(localMagicdrawArchive)
+    } else if (archiveMap.containsKey(mdVersionShort)) {
+        mdApplicationArchive archiveMap[mdVersionShort]
     } else {
         throw new GradleException("MagicDraw version not supported: $mdVersionShort")
     }
@@ -92,10 +92,8 @@ dependencies {
     pluginLibrary "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion" // Kotlin stdlib is included in the Kotlin plugin but we need to ad it to the pluginLibrary config to have it at runtime
 
     zippedMDPlugin 'com.nomagic.magicdraw:devtools:2024x_Refresh2@zip'
-    zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2024x_Refresh2@zip"
-    zippedMDPlugin "com.nomagic.magicdraw:SysML_v2_Evaluation_Plugin:2024x_Refresh2@zip"
-    zippedMDPlugin "com.nomagic.magicdraw:SysML_v2_Plugin:2024x_Refresh2@zip"
-    zippedMDPlugin "com.nomagic.magicdraw:SysML_v2_Textual_Editor_Plugin_2024x_Refresh2:2024x_Refresh2@zip"
+    zippedMDPlugin fileTree(dir: "mdplugins", include: ['*.zip'])
+    //zippedMDPlugin "com.nomagic.magicdraw:Magic_Model_Analyst_Plugin:2022x_Refresh2@zip"
 //    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.requirements', include: ['lib/**.jar'])
 //    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.matlab', include: ['**/*.jar'])
 //    otherMDPluginLibrary fileTree(dir: 'build/install/plugins/com.nomagic.magicdraw.simulation.scxml', include: ['**/*.jar'])
@@ -155,17 +153,9 @@ runTestsNoLog.finalizedBy 'junitHtmlReport'
 runTests.finalizedBy 'junitHtmlReport'
 debugTests.finalizedBy 'junitHtmlReport'
 
-
-signing {
-    if (isRelease) {
-        useGpgCmd()
-        sign(publishing.publications)
-    }
-}
-
 ext.setDefaultPomValues = { pom ->
     // Project url
-    pom.url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+    pom.url = "https://github.com/OMF-Open-MBSE-Framework/OMF"
     pom.inceptionYear = '2022'
 
     pom.licenses {
@@ -177,9 +167,21 @@ ext.setDefaultPomValues = { pom ->
 
     pom.developers {
         owner.developer {
+            id = 'quentincespedes'
+            name = 'Quentin Cespedes'
+            email = 'quentin.cespedes@samares-engineering.com'
+        }
+
+        owner.developer {
             id = 'hugostinson'
             name = 'Hugo Stinson'
             email = 'hugo.stinson@samares-engineering.com'
+        }
+
+        owner.developer {
+            id = 'calliopedantonlaloy'
+            name = 'Calliope Danton-Laloy'
+            email = 'calliope.dantonlaloy@samares-engineering.com'
         }
 
         owner.developer {
@@ -187,18 +189,12 @@ ext.setDefaultPomValues = { pom ->
             name = 'Clement Mezerette'
             email = 'clement.mezerette@samares-engineering.com'
         }
-
-        owner.developer {
-            id = 'quentincespedes'
-            name = 'Quentin Cespedes'
-            email = 'quentin.cespedes@samares-engineering.com'
-        }
     }
 
     pom.scm {
-        connection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
-        developerConnection = "scm:git:git:https://gitlab.com/samaresengineeringpublic/samaresmbseframework.git"
-        url = "https://gitlab.com/samaresengineeringpublic/samaresmbseframework"
+        connection = "scm:git:git:https://github.com/OMF-Open-MBSE-Framework/OMF.git"
+        developerConnection = "scm:git:git:https://github.com/OMF-Open-MBSE-Framework/OMF.git"
+        url = "https://github.com/OMF-Open-MBSE-Framework/OMF"
     }
 }
 
@@ -227,31 +223,14 @@ publishing {
             allowInsecureProtocol true
         }
 
+        // Local staging repository used by the jreleaser plugin to deploy artifacts
         maven {
-            name = "MavenCentral"
-            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            url = isRelease ? releasesRepoUrl : snapshotsRepoUrl
-            credentials {
-                username = mavenCentralUsername
-                password = mavenCentralPwd
-            }
+            name = "StagingDeploy"
+            url = layout.buildDirectory.dir('/build/staging-deploy')
         }
     }
 
     publications {
-        // Publish built plugin .zip to Nexus repo
-        examplePluginZip(MavenPublication) {
-            groupId = omfPackage + "." + mdVersionShort
-            artifactId = examplePluginArtefactId
-            artifact("$buildDir/builtPlugin/$project.version/${thePluginDeliveryName}.zip")
-            setDefaultPomValues(pom)
-            pom {
-                name = "$examplePluginArtefactId:$omfPackage"
-                description = "An example plugin demonstrating use of the framework."
-            }
-        }
-
         coreFrameworkJar(MavenPublication) {
             groupId = omfPackage + "." + mdVersionShort
             artifactId = coreFrameworkArtefactId

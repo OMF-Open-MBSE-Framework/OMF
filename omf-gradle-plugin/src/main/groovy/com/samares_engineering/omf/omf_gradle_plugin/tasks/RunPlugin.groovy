@@ -36,7 +36,7 @@ abstract class RunPlugin extends JavaExec {
                 "-Djdk.util.zip.disableZip64ExtraFieldValidation=true",
                 "-Dmd.development=true",
                 "-Dmd.class.path=" + javaVersion,
-                "-Dmd.sysml2.enabled=5dd52869-6f6b"
+                "-Dmd.sysml2.enabled=5dd52869-6f6b" //TODO: Is this still needed in 2026 ?
         ]
     }
 }

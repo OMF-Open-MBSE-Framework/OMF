@@ -28,7 +28,8 @@ dependencies {
             "2024x"                    : "com.nomagic:mcse:2024x@zip",
             "2024x_Refresh2"           : "com.nomagic:mcse:2024x_Refresh2@zip",
             "2024x_Refresh2_HF2"       : "com.nomagic:mcse:2024x_Refresh2_HF2@zip",
-            "2024x_Refresh2_SysmlV2"   : "com.nomagic:mcse:2024x_Refresh2_SysmlV2@zip"
+            "2024x_Refresh2_SysmlV2"   : "com.nomagic:mcse:2024x_Refresh2_SysmlV2@zip",
+            "MSoSA_2026x"              : "com.nomagic.magicdraw:msosa:2026x@zip"
     ]
     if (mdVersionShort == "local" && localMagicdrawArchive) {
         mdApplicationArchive files(localMagicdrawArchive)
