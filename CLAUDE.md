@@ -10,6 +10,8 @@ Open MBSE Framework (OMF) is a framework for developing MagicDraw/Cameo plugins.
 - Model comparison utilities
 - Test framework for functional testing inside MagicDraw
 
+See [README.md](README.md) for the developer guide (how to build features) and [ARCHITECTURE.md](ARCHITECTURE.md) for internal implementation details.
+
 ## Build Commands
 
 This is a Gradle multi-project build. Run from project root:
@@ -96,8 +98,12 @@ When configuring `omf-example-plugin/build.gradle`:
 - **Internal classes**: No prefix
 - **Packages**: lowercase, underscores allowed for clarity
 
+## Guidelines
+
+- Use Koltin for all new code unless otherwise specified
+
 ## Requirements
 
 - JDK 17
 - Kotlin 1.9.23
-- MagicDraw 2024x Refresh2 (configurable via `mdVersionShort` in gradle.properties)
+- A MagicDraw 2026x version (configurable via `mdVersionShort` in gradle.properties)
