@@ -13,7 +13,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemr
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.MagicDrawLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.ProjectLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyLiveActionEngineFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyUIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
@@ -66,8 +65,6 @@ public interface OMFPlugin {
     ProjectOnlyUIActionFeatureItemRegisterer getProjectOnlyUiActionRegisterer();
 
     ProjectOnlyLiveActionEngineFeatureItemRegisterer getProjectOnlyLiveActionEngineFeatureItemRegisterer();
-
-    ProjectOnlyOptionFeatureItemRegisterer getProjectOnlyOptionFeatureItemRegisterer();
 
     LiveActionEngineFeatureItemRegisterer getLiveActionEngineFeatureItemRegisterer();
 

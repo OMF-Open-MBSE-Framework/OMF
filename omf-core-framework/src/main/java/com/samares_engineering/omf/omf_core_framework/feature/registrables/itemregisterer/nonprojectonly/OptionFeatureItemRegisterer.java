@@ -48,7 +48,6 @@ public class OptionFeatureItemRegisterer implements FeatureItemRegisterer<Option
     public void registerFeatureItem(Option option) {
         try {
             if (option == null || !option.isActivated()) return;
-            if (option.getKind() == OptionKind.Project && OMFUtils.isProjectVoid()) return;
 
             option.register();
             registeredFeatureItems.add(option);

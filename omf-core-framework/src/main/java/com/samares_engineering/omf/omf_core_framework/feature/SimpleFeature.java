@@ -34,11 +34,6 @@ public abstract class SimpleFeature extends AFeature{
     }
 
     @Override
-    protected List<Option> initProjectOnlyOptions() {
-        return Collections.emptyList();
-    }
-
-    @Override
     protected List<Hook> initLifeCycleHooks() {
         return Collections.emptyList();
     }

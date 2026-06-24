@@ -42,7 +42,6 @@ public interface OMFFeature {
 
     List<UIAction> getProjectOnlyUIActions();
     List<LiveActionEngine> getProjectOnlyLiveActionEngines();
-    List<Option> getProjectOnlyOptions();
 
     void initFeature(OMFPlugin plugin);
     void initFeatureItems();

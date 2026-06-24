@@ -37,7 +37,6 @@ import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemr
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.MagicDrawLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.nonprojectonly.hooks.ProjectLifeCycleHookFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyLiveActionEngineFeatureItemRegisterer;
-import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyOptionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.itemregisterer.projectonly.ProjectOnlyUIActionFeatureItemRegisterer;
 import com.samares_engineering.omf.omf_core_framework.feature.registrables.options.option.AOptionListener;
 import com.samares_engineering.omf.omf_core_framework.listeners.IListenerManager;
@@ -79,7 +78,6 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
     private OptionFeatureItemRegisterer optionFeatureItemRegisterer;
     private ProjectOnlyUIActionFeatureItemRegisterer projectOnlyUiActionRegisterer;
     private ProjectOnlyLiveActionEngineFeatureItemRegisterer projectOnlyLiveActionEngineFeatureItemRegisterer;
-    private ProjectOnlyOptionFeatureItemRegisterer projectOnlyOptionFeatureItemRegisterer;
     private ProjectLifeCycleHookFeatureItemRegisterer projectLifeCycleHookFeatureItemRegisterer;
     private MagicDrawLifeCycleHookFeatureItemRegisterer magicDrawLifeCycleHookFeatureItemRegisterer;
     private FeatureLifeCycleHookFeatureItemRegisterer featureLifeCycleHookFeatureItemRegisterer;
@@ -221,7 +219,6 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
             this.optionFeatureItemRegisterer = new OptionFeatureItemRegisterer();
             this.projectOnlyUiActionRegisterer = new ProjectOnlyUIActionFeatureItemRegisterer(this);
             this.projectOnlyLiveActionEngineFeatureItemRegisterer = new ProjectOnlyLiveActionEngineFeatureItemRegisterer();
-            this.projectOnlyOptionFeatureItemRegisterer = new ProjectOnlyOptionFeatureItemRegisterer();
             this.projectLifeCycleHookFeatureItemRegisterer = new ProjectLifeCycleHookFeatureItemRegisterer();
             this.magicDrawLifeCycleHookFeatureItemRegisterer = new MagicDrawLifeCycleHookFeatureItemRegisterer();
             this.featureLifeCycleHookFeatureItemRegisterer = new FeatureLifeCycleHookFeatureItemRegisterer();
@@ -236,8 +233,7 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
             );
 
             List<ProjectOnlyFeatureItemRegisterer> defaultProjectOnlyFeatureRegisterer = List.of(projectOnlyUiActionRegisterer,
-                    projectOnlyLiveActionEngineFeatureItemRegisterer,
-                    projectOnlyOptionFeatureItemRegisterer);
+                    projectOnlyLiveActionEngineFeatureItemRegisterer);
             featureRegisterer.addAllIFeatureItemRegisterer(defaultFeatureRegisterer);
             featureRegisterer.addAllProjectOnlyFeatureItemRegisterer(defaultProjectOnlyFeatureRegisterer);
         } catch (Exception e) {
@@ -492,11 +488,6 @@ public abstract class AOMFPlugin extends Plugin implements OMFPlugin, OMFPluginI
     @Override
     public ProjectOnlyLiveActionEngineFeatureItemRegisterer getProjectOnlyLiveActionEngineFeatureItemRegisterer() {
         return projectOnlyLiveActionEngineFeatureItemRegisterer;
-    }
-
-    @Override
-    public ProjectOnlyOptionFeatureItemRegisterer getProjectOnlyOptionFeatureItemRegisterer() {
-        return projectOnlyOptionFeatureItemRegisterer;
     }
 
     @Override

@@ -79,11 +79,6 @@ public class APIServerFeature extends SimpleFeature {
         );
     }
 
-    @Override
-    protected List<Option> initProjectOnlyOptions() {
-        return Collections.emptyList();
-    }
-
     private void registerRouting() {
         OMFApiServer.getInstance().addRoute("openProject", ExtHyperTextServerRouting.openProject());
         OMFApiServer.getInstance().addRoute("openTWCProject", ExtHyperTextServerRouting.openTWCProject());

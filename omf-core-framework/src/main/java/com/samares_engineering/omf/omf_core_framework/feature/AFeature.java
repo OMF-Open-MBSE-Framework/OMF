@@ -53,7 +53,6 @@ public abstract class AFeature implements OMFFeature {
     private final List<Hook> hooksHolders = new ArrayList<>();
 
     // Delayed registrable items
-    private final List<Option> projectOnlyOptions = new ArrayList<>();
     private final List<UIAction> projectOnlyMdActions = new ArrayList<>();
     private final List<LiveActionEngine> projectOnlyLiveActionEngines = new ArrayList<>();
 
@@ -126,13 +125,6 @@ public abstract class AFeature implements OMFFeature {
         if (isProjectOnlyItemsInitialised) return;
 
         try {
-            this.projectOnlyOptions.addAll(initProjectOnlyOptions());
-            projectOnlyOptions.forEach(this::initRegistrableItem);
-        } catch (Exception e) {
-            throw new FeatureRegisteringException("Error while instantiating project only options for feature " + name, e);
-        }
-
-        try {
             this.projectOnlyLiveActionEngines.addAll(initProjectOnlyLiveActions());
             projectOnlyLiveActionEngines.forEach(this::initRegistrableItem);
         } catch (Exception e) {
@@ -179,13 +171,6 @@ public abstract class AFeature implements OMFFeature {
      * @return list of IOption to register
      */
     protected abstract List<Option> initOptions();
-    /**
-     * Define all the project only options (Environment and Project) there, it will be automatically registered with the feature.
-     *
-     * @return list of IOption to register
-     */
-    protected abstract List<Option> initProjectOnlyOptions();
-
     /**
      * Define all the lifecycle hooks there, it will be automatically registered with the feature.
      * @return list of LifeCycleHook to register
@@ -290,10 +275,6 @@ public abstract class AFeature implements OMFFeature {
     @Override
     public List<UIAction> getUIActions() {
         return mdActions;
-    }
-    @Override
-    public List<Option> getProjectOnlyOptions() {
-        return projectOnlyOptions;
     }
     @Override
     public List<LiveActionEngine> getProjectOnlyLiveActionEngines() {

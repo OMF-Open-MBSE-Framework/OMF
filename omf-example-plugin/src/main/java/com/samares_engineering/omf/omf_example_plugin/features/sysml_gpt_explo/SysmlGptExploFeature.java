@@ -32,7 +32,7 @@ public class SysmlGptExploFeature extends SimpleFeature {
     }
 
     @Override
-    protected List<Option> initProjectOnlyOptions() {
+    protected List<Option> initOptions() {
         var projectOpt = createEnvOption(
                 new StringProperty(GPT_GENERATED_JSON_TO_IMPORT,
                         "C:\\Users\\HugoStinson\\OneDrive - SAMARES ENGINEERING\\Bureau\\gptMagicdrawTest.json"),
