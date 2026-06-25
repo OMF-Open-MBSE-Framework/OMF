@@ -101,6 +101,13 @@ When configuring `omf-example-plugin/build.gradle`:
 ## Guidelines
 
 - Use Koltin for all new code unless otherwise specified
+- You should have access to the IntelliJ IDEA MCP server, if not, remind the user to activate it
+- When unsure about the Magicdraw API (in order of priority):
+  - look for examples in the existing code
+  - check the doc/MAGICDRAW_SECRET_DOCS.md file
+  - check the MagicDraw API documentation at https://docs.nomagic.com/DEVG/2026x
+  - look at the decompiled MagicDraw classes in IntelliJ external libraries
+- When you are sure about some obscure/undocumented MagicDraw aspect, update the doc/MAGICDRAW_SECRET_DOCS.md file
 
 ## Requirements
 

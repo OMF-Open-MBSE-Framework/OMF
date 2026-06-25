@@ -20,6 +20,7 @@ import com.samares_engineering.omf.omf_example_plugin.features.connection.Connec
 import com.samares_engineering.omf.omf_example_plugin.features.derivedproperty.DerivedPropertyExample;
 import com.samares_engineering.omf.omf_example_plugin.features.display.EnhancedDisplayFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.miscergo.MiscErgonomicFeature;
+import com.samares_engineering.omf.omf_example_plugin.features.optionsexample.OptionsExampleFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.stateactionfeature.StateActionExample;
 import com.samares_engineering.omf.omf_example_plugin.features.stellantis.StellantisFeature;
 import com.samares_engineering.omf.omf_example_plugin.features.sysmlv2_explo.SysMLV2Feature;
@@ -77,7 +78,7 @@ public class OMFExamplePlugin extends AOMFPlugin {
 //                new FeatureExample(),
 
                 new StellantisFeature(),
-//                new ListenersFeature(),
+                new OptionsExampleFeature(),
 
                 // Default deactivation of features
                 new FeatureActivationFromOptionFeature()
