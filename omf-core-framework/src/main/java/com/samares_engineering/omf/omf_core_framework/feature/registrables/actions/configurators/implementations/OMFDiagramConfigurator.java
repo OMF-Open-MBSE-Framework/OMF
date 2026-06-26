@@ -28,12 +28,16 @@ public class OMFDiagramConfigurator extends AUIActionConfigurator implements Dia
      * Called when MagicDraw is launched when a project is Opened. Not sure if the behavior is useful.
      * @param actionsManager the actions manager
      */
+    /**
+     * Called by the shortcut configurator path (when a keyboard shortcut is pressed with a diagram focused).
+     * Registers all enabled diagram actions so MagicDraw can match the pressed keystroke to an action.
+     */
     @Override
     public void configure(ActionsManager actionsManager){
-//        new ArrayList<>(registeredActions).stream()
-//                .filter(UIAction::isDiagramAction)
-//                .filter(UIAction::checkDiagramAvailability)
-//                .forEach(action -> this.registerDiagramAction(actionsManager, action));
+        new ArrayList<>(registeredActions).stream()
+                .filter(UIAction::isDiagramAction)
+                .filter(UIAction::checkDiagramAvailability)
+                .forEach(action -> this.registerDiagramAction(actionsManager, action));
     }
     @Override
     public void configure(ActionsManager actionsManager, DiagramPresentationElement diagramPresentationElement,

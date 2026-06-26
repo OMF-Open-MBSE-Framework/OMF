@@ -27,15 +27,15 @@ import java.util.ArrayList;
 public class OMFBrowserConfigurator extends AUIActionConfigurator implements BrowserContextAMConfigurator, AMConfigurator {
 
     /**
-     * Called when MagicDraw is launched when a project is Opened. Not sure if the behavior is useful.
-     * @param actionsManager the actions manager
+     * Called by the shortcut configurator path (when a keyboard shortcut is pressed with the browser focused).
+     * Registers all enabled browser actions so MagicDraw can match the pressed keystroke to an action.
      */
     @Override
     public void configure(ActionsManager actionsManager) {
-//        new ArrayList<>(registeredActions).stream()
-//                .filter(UIAction::isBrowserAction)
-//                .filter(UIAction::checkBrowserAvailability)
-//                .forEach(action -> this.registerBrowserAction(actionsManager, action));
+        new ArrayList<>(registeredActions).stream()
+                .filter(UIAction::isBrowserAction)
+                .filter(UIAction::checkBrowserAvailability)
+                .forEach(action -> this.registerBrowserAction(actionsManager, action));
     }
 
     /**
