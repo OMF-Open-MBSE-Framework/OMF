@@ -11,6 +11,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Removed
 
+## [2.3.0] - 2026-06-30
+### Added
+- Support for MagicDraw/Cameo MCSE 2026x
+- Two new `AUIAction` subclasses: `ElementUIAction` and `V2ElementUIAction` to handle SysMLV2 elements alongside standard UML elements
+
+Examples
+- `ActionShowcaseFeature`: comprehensive showcase of menu action types and configurations (browser-only, diagram-only, multi-select, type filters, keyboard shortcuts, icons/mnemonics, groups, separators, stateful checkboxes, per-context availability)
+- `OptionsExampleFeature`: demonstrates how to define and use environment and project property options
+
+### Changed
+- **BREAKING**: Migrated to 2026x API — several API changes in SysMLV2, TWC, and diagram management
+- **BREAKING**: JVM version upgraded from 17 to 21
+- Kotlin upgraded to 2.4.0
+- OMF User Guide added to README
+- OMF Developer Guide added to ARCHITECTURE.md
+- MagicDraw API secret documentation significantly expanded
+
+### Fixed
+- Issues with the Stereotypes feature; added example configuration files
+
+### Removed
+- **BREAKING**: Removed the "project only options" concept (`ProjectOnlyOptionFeatureItemRegisterer`) — project options must now be declared and configured at MagicDraw startup time like environment options
+
 ## [2.2.0] - 2025-06-26
 ### Added
 - OMFDiagramConfigurator is now available for any diagram type
