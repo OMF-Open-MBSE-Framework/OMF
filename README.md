@@ -412,7 +412,7 @@ Features go through a two-phase initialisation so that items requiring an open p
 A UI Action is something the user triggers explicitly — via a right-click context menu in the browser, on a diagram element, or from the main menu. Each action class can expose itself in all three places or just one.
 
 ```kotlin
-class MyAction : AUIAction<Element, PresentationElement>() {
+class MyAction : ElementUIAction() {
     override fun getName() = "Do Something"
 
     @BrowserAction
@@ -428,6 +428,7 @@ class MyAction : AUIAction<Element, PresentationElement>() {
 ```
 
 **Key points:**
+- Extend `ElementUIAction` (not `AUIAction` directly) — it provides default implementations of `getSelectedBrowserElements()`, `getSelectedDiagramElements()`, and `getSelectedDiagramPresentationElements()` typed to `Element`/`PresentationElement`, which covers the vast majority of use cases. Use `AUIAction<E, PE>` directly only when you need custom element types.
 - Annotate `check*` and `execute*` overrides with `@BrowserAction`, `@DiagramAction`, or `@MenuAction`. Without the annotation the method is ignored by that context. A single action class can carry multiple annotations if it should appear in multiple contexts.
 - `checkAvailability` is called by MagicDraw every time the context menu is rebuilt — keep it fast and side-effect free.
 - `executeAction` is always called inside an MD session wrapped by OMF's error barrier. Never open a `SessionManager` session manually inside an action.
